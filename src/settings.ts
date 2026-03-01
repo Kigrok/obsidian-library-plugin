@@ -13,10 +13,13 @@ export class LibrarySettingTab extends PluginSettingTab {
 	display(): void {
 		const { containerEl } = this;
 		containerEl.empty();
-		containerEl.createEl("h2", { text: tr("settings.title") });
+
+		new Setting(containerEl).setName(tr("settings.title")).setHeading();
 		containerEl.createEl("p", { text: tr("settings.intro") });
 
-		containerEl.createEl("h3", { text: tr("settings.section.general") });
+		new Setting(containerEl)
+			.setName(tr("settings.section.general"))
+			.setHeading();
 
 		new Setting(containerEl)
 			.setName(tr("settings.libraryFile.name"))
@@ -44,15 +47,15 @@ export class LibrarySettingTab extends PluginSettingTab {
 					}),
 			);
 
-		containerEl.createEl("h3", { text: tr("settings.section.categories") });
+		new Setting(containerEl)
+			.setName(tr("settings.section.categories"))
+			.setHeading();
 		containerEl.createEl("p", { text: tr("settings.categories.desc") });
 
 		this.plugin.settings.categories.forEach((cat, i) => {
-			const div = containerEl.createDiv({ cls: "setting-item-custom" });
-			div.style.border = "1px solid var(--background-modifier-border)";
-			div.style.padding = "8px";
-			div.style.marginBottom = "8px";
-			div.style.borderRadius = "6px";
+			const div = containerEl.createDiv({
+				cls: "library-settings-category",
+			});
 
 			new Setting(div)
 				.setName(tr("settings.category.name", { index: i + 1 }))
@@ -105,7 +108,9 @@ export class LibrarySettingTab extends PluginSettingTab {
 				}),
 		);
 
-		containerEl.createEl("h3", { text: tr("settings.section.example") });
+		new Setting(containerEl)
+			.setName(tr("settings.section.example"))
+			.setHeading();
 		containerEl.createEl("p", { text: tr("settings.example.desc") });
 		containerEl.createEl("pre", {
 			text: "---\nType: Movie\nURL: https://www.imdb.com/title/tt.....\n---",

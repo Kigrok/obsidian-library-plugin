@@ -124,6 +124,10 @@
 	margin-bottom: 1%;
 }
 
+.library-toolbar-spacer {
+	flex-grow: 1;
+}
+
 .library-collapse-btn {
 	background: none;
 	border: none;
@@ -277,6 +281,13 @@
 	height: 100%;
 	background: var(--interactive-accent);
 	border-radius: 3px;
+}
+
+.library-settings-category {
+	border: 1px solid var(--background-modifier-border);
+	padding: 8px;
+	margin-bottom: 8px;
+	border-radius: 6px;
 }
 
 body.is-library-wide .workspace-leaf.mod-active .markdown-source-view.mod-cm6 .cm-contentContainer,

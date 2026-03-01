@@ -38,8 +38,14 @@ interface CardData {
 	date: number
 }
 
+function toStr(val: unknown): string {
+	if (val == null) return ''
+	if (Array.isArray(val)) return val.join(', ')
+	return String(val)
+}
+
 function sanitize(val: string): string {
-	return val.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, '').trim()
+	return val.replace(/[^\x20-\x7E\u00A0-\uFFFF]/g, '').trim()
 }
 
 function parseProgress(val: unknown): number {
@@ -54,7 +60,7 @@ function parseProgress(val: unknown): number {
 
 function parseDate(val: unknown): number {
 	if (!val) return 0
-	const raw = String(val).trim()
+	const raw = toStr(val)
 	const dmyMatch = raw.match(dmyDatePattern)
 	if (dmyMatch) {
 		return new Date(Number(dmyMatch[3]), Number(dmyMatch[2]) - 1, Number(dmyMatch[1])).getTime()
@@ -82,7 +88,7 @@ export default class LibraryPlugin extends Plugin {
 			if (file.path === this.settings.libraryFilePath) return
 			if (isTemplateFile(file.path)) return
 			if (this.updateTimer) clearTimeout(this.updateTimer)
-			this.updateTimer = setTimeout(() => this.updateLibraryFile(), 500)
+			this.updateTimer = setTimeout(() => { void this.updateLibraryFile() }, 500)
 		}))
 
 		this.registerEvent(this.app.workspace.on('layout-change', () => this.applyWideStyle()))
@@ -97,17 +103,17 @@ export default class LibraryPlugin extends Plugin {
 		this.registerEvent(
 			this.app.workspace.on('active-leaf-change', () => {
 				if (this.fetchTimer) clearTimeout(this.fetchTimer)
-				this.fetchTimer = setTimeout(() => this.tryFetchIMDbRating(), 300)
+				this.fetchTimer = setTimeout(() => { void this.tryFetchIMDbRating() }, 300)
 			})
 		)
 
 		this.addCommand({
 			id: 'fetch-imdb-rating',
 			name: tr('cmd.fetchImdb'),
-			callback: () => this.tryFetchIMDbRating(true)
+			callback: () => { void this.tryFetchIMDbRating(true) }
 		})
 
-		this.app.workspace.onLayoutReady(() => this.updateLibraryFile())
+		this.app.workspace.onLayoutReady(() => { void this.updateLibraryFile() })
 	}
 
 	onunload(): void {
@@ -191,8 +197,9 @@ export default class LibraryPlugin extends Plugin {
 		const fm = cache?.frontmatter as Record<string, unknown> | undefined
 		if (!fm) return
 
-		const imdbIdMatch = fm.URL ? String(fm.URL).match(/\/title\/(tt\d+)/) : null
-		const imdbID = imdbIdMatch ? imdbIdMatch[1] : undefined
+		const urlStr = toStr(fm.URL)
+		const imdbIdMatch = urlStr ? urlStr.match(/\/title\/(tt\d+)/) : null
+		const imdbID = imdbIdMatch?.[1]
 
 		const hasType = fm.Type === 'Movie' || fm.Type === 'Series'
 		if (!hasType && !imdbID) return
@@ -214,8 +221,8 @@ export default class LibraryPlugin extends Plugin {
 			!needProgress && !needSeriesUpdate
 		) return
 
-		const title = String(fm.Name || file.basename)
-		const year = fm.Year ? String(fm.Year) : undefined
+		const title = toStr(fm.Name) || file.basename
+		const year = fm.Year ? toStr(fm.Year) : undefined
 		const type = fm.Type === 'Series' ? 'series' : fm.Type === 'Movie' ? 'movie' : undefined
 
 		try {
@@ -238,7 +245,7 @@ export default class LibraryPlugin extends Plugin {
 			if (needRating && data.imdbRating && data.imdbRating !== 'N/A') {
 				const rating = parseFloat(data.imdbRating)
 				await this.updateFrontmatterField(file, 'Rating IMDB', rating)
-				filled.push(`IMDb: ${rating}`)
+				filled.push('IMDb: ' + String(rating))
 			}
 
 			if (needCover && data.Poster && data.Poster !== 'N/A') {
@@ -280,7 +287,7 @@ export default class LibraryPlugin extends Plugin {
 			}
 
 			if (needURL && data.imdbID) {
-				await this.updateFrontmatterField(file, 'URL', `https://www.imdb.com/title/${data.imdbID}/`)
+				await this.updateFrontmatterField(file, 'URL', 'https://www.imdb.com/title/' + data.imdbID + '/')
 				filled.push('URL')
 			}
 
@@ -295,7 +302,7 @@ export default class LibraryPlugin extends Plugin {
 			await this.ensureFrontmatterFields(file)
 
 			if (filled.length > 0) {
-				new Notice(`${title}: ${filled.join(', ')}`)
+				new Notice(title + ': ' + filled.join(', '))
 			}
 		} catch (e) {
 			console.error('Library: OMDb fetch error', e)
@@ -324,17 +331,17 @@ export default class LibraryPlugin extends Plugin {
 		if (data.imdbID && fm.Complete !== true) {
 			const totalEpisodes = await this.fetchTotalEpisodes(data.imdbID, totalSeasons)
 			if (totalEpisodes > 0) {
-				const progressStr = fm.Progress != null ? String(fm.Progress) : null
+				const progressStr = fm.Progress != null ? toStr(fm.Progress) : null
 				const progressMatch = progressStr?.match(/^(\d+)\s*\/\s*(\d+)$/)
 				if (progressMatch?.[1] && progressMatch[2]) {
 					const current = parseInt(progressMatch[1])
 					const oldTotal = parseInt(progressMatch[2])
 					if (totalEpisodes !== oldTotal) {
-						await this.updateFrontmatterField(file, 'Progress', `${current}/${totalEpisodes}`)
+						await this.updateFrontmatterField(file, 'Progress', current + '/' + String(totalEpisodes))
 						filled.push(tr('notice.episodes', { value: totalEpisodes }))
 					}
 				} else {
-					await this.updateFrontmatterField(file, 'Progress', `0/${totalEpisodes}`)
+					await this.updateFrontmatterField(file, 'Progress', '0/' + String(totalEpisodes))
 					filled.push(tr('notice.episodes', { value: totalEpisodes }))
 				}
 			}
@@ -357,7 +364,7 @@ export default class LibraryPlugin extends Plugin {
 			if (type) params.set('type', type)
 		}
 
-		const resp = await requestUrl({ url: `https://www.omdbapi.com/?${params.toString()}` })
+		const resp = await requestUrl({ url: 'https://www.omdbapi.com/?' + params.toString() })
 		if (resp.status === 200 && resp.json?.Response !== 'False') {
 			return resp.json as OMDbResponse
 		}
@@ -373,13 +380,13 @@ export default class LibraryPlugin extends Plugin {
 					i: imdbID,
 					Season: String(s)
 				})
-				const resp = await requestUrl({ url: `https://www.omdbapi.com/?${params.toString()}` })
+				const resp = await requestUrl({ url: 'https://www.omdbapi.com/?' + params.toString() })
 				const data = resp.json as OMDbSeasonResponse
 				if (resp.status === 200 && data.Episodes) {
 					total += data.Episodes.length
 				}
 			} catch (e) {
-				console.error(`Library: OMDb season ${s} fetch error`, e)
+				console.error('Library: OMDb season ' + String(s) + ' fetch error', e)
 			}
 		}
 		return total
@@ -399,7 +406,7 @@ export default class LibraryPlugin extends Plugin {
 		const now = new Date()
 		const dd = String(now.getDate()).padStart(2, '0')
 		const mm = String(now.getMonth() + 1).padStart(2, '0')
-		const todayStr = `${dd}.${mm}.${now.getFullYear()}`
+		const todayStr = dd + '.' + mm + '.' + String(now.getFullYear())
 
 		const defaults: Record<string, unknown> = {
 			Name: file.basename,
@@ -441,7 +448,7 @@ export default class LibraryPlugin extends Plugin {
 					link,
 					targetFile,
 					fm,
-					name: String(fm.Name || targetFile.basename),
+					name: toStr(fm.Name) || targetFile.basename,
 					year: Number(fm.Year) || 0,
 					rating: Number(fm['My Rating'] || fm.Rating) || 0,
 					date: parseDate(fm.Date)
@@ -467,7 +474,7 @@ export default class LibraryPlugin extends Plugin {
 			]
 
 			const spacer = document.createElement('div')
-			spacer.style.flexGrow = '1'
+			spacer.classList.add('library-toolbar-spacer')
 			toolbar.appendChild(spacer)
 
 			const sortDropdown = document.createElement('div')
@@ -475,7 +482,7 @@ export default class LibraryPlugin extends Plugin {
 
 			const sortTrigger = document.createElement('button')
 			sortTrigger.classList.add('library-sort-trigger')
-			sortTrigger.setText(`${tr('sort.name')} \u25be`)
+			sortTrigger.setText(tr('sort.name') + ' \u25be')
 			sortDropdown.appendChild(sortTrigger)
 
 			const sortMenu = document.createElement('div')
@@ -488,7 +495,7 @@ export default class LibraryPlugin extends Plugin {
 			const updateTriggerLabel = (): void => {
 				const opt = sortOptions.find(o => o.key === currentSort)
 				const arrow = sortAsc ? '\u2191' : '\u2193'
-				sortTrigger.setText(`${opt?.label} ${arrow}`)
+				sortTrigger.setText((opt?.label ?? '') + ' ' + arrow)
 			}
 
 			sortOptions.forEach(opt => {
@@ -558,14 +565,14 @@ export default class LibraryPlugin extends Plugin {
 				sorted.forEach(({ link, targetFile, fm }) => {
 					const card = container.createDiv({ cls: 'library-card' })
 					card.onClickEvent(() => {
-						this.app.workspace.getLeaf(false).openFile(targetFile)
+						void this.app.workspace.getLeaf(false).openFile(targetFile)
 					})
 
 					const cover = fm.Cover || fm.Image || fm.Baner
 					const imgDiv = card.createDiv({ cls: 'card-image' })
 					if (cover) {
 						const img = document.createElement('img')
-						const coverStr = String(cover)
+						const coverStr = toStr(cover)
 						img.src = coverStr.startsWith('http')
 							? coverStr
 							: this.app.vault.adapter.getResourcePath(coverStr)
@@ -581,19 +588,19 @@ export default class LibraryPlugin extends Plugin {
 					const authorValue = fm.Author || fm.Creator || fm.Director || fm.Artist
 					if (authorValue) {
 						const authorDiv = infoDiv.createDiv({ cls: 'card-author' })
-						authorDiv.setText(Array.isArray(authorValue) ? authorValue.join(', ') : String(authorValue))
+						authorDiv.setText(toStr(authorValue))
 					}
 
 					if (fm.Year) {
-						infoDiv.createDiv({ cls: 'card-year' }).setText(String(fm.Year))
+						infoDiv.createDiv({ cls: 'card-year' }).setText(toStr(fm.Year))
 					}
 
 					const myRating = fm['My Rating'] || fm.Rating
 					const imdbRating = fm['Rating IMDB']
 					if (imdbRating || myRating) {
 						const parts: string[] = []
-						if (imdbRating) parts.push(`IMDb ${imdbRating}`)
-						if (myRating) parts.push(`My ${myRating}`)
+						if (imdbRating) parts.push('IMDb ' + toStr(imdbRating))
+						if (myRating) parts.push('My ' + toStr(myRating))
 						infoDiv.createDiv({ cls: 'card-rating' }).setText(parts.join(' | '))
 					}
 
@@ -601,9 +608,10 @@ export default class LibraryPlugin extends Plugin {
 						const percent = parseProgress(fm.Progress)
 						if (percent > 0) {
 							const progressContainer = infoDiv.createDiv({ cls: 'card-progress' })
-							progressContainer.createDiv({ cls: 'card-progress-label' }).setText(`${percent}%`)
+							progressContainer.createDiv({ cls: 'card-progress-label' }).setText(String(percent) + '%')
 							const progressBar = progressContainer.createDiv({ cls: 'card-progress-bar' })
-							progressBar.createDiv({ cls: 'card-progress-fill' }).style.width = `${percent}%`
+							const progressFill = progressBar.createDiv({ cls: 'card-progress-fill' })
+							progressFill.setCssStyles({ width: String(percent) + '%' })
 						}
 					}
 				})
@@ -626,7 +634,7 @@ export default class LibraryPlugin extends Plugin {
 		if (!fm) return
 
 		const knownTypes = this.settings.categories.map(c => c.typeValue)
-		if (!fm.Type || !knownTypes.includes(String(fm.Type))) return
+		if (!fm.Type || !knownTypes.includes(toStr(fm.Type))) return
 
 		const parent = element.closest('.markdown-preview-sizer, .markdown-rendered')
 		if (parent?.querySelector('.note-header')) return
@@ -635,18 +643,16 @@ export default class LibraryPlugin extends Plugin {
 		if (!firstEl) return
 
 		const cover = fm.Cover || fm.Image || fm.Baner
-		const name = String(fm.Name || file.basename)
+		const name = toStr(fm.Name) || file.basename
 		const creator = fm.Creator || fm.Director || fm.Author || fm.Artist
-		const creatorStr = creator
-			? Array.isArray(creator) ? creator.join(', ') : String(creator)
-			: ''
-		const year = fm.Year ? String(fm.Year) : ''
-		const endYear = fm['End Year'] ? String(fm['End Year']) : ''
-		const season = fm.Season ? String(fm.Season) : ''
-		const ratingIMDB = fm['Rating IMDB'] ? String(fm['Rating IMDB']) : ''
-		const myRating = fm['My Rating'] ? String(fm['My Rating']) : ''
+		const creatorStr = creator ? toStr(creator) : ''
+		const year = fm.Year ? toStr(fm.Year) : ''
+		const endYear = fm['End Year'] ? toStr(fm['End Year']) : ''
+		const season = fm.Season ? toStr(fm.Season) : ''
+		const ratingIMDB = fm['Rating IMDB'] ? toStr(fm['Rating IMDB']) : ''
+		const myRating = fm['My Rating'] ? toStr(fm['My Rating']) : ''
 		const complete = fm.Complete === true
-		const url = fm.URL ? String(fm.URL) : ''
+		const url = fm.URL ? toStr(fm.URL) : ''
 
 		let progressPercent = 0
 		if (fm.Progress != null) {
@@ -660,7 +666,7 @@ export default class LibraryPlugin extends Plugin {
 		imgSide.classList.add('note-header-cover')
 		if (cover) {
 			const img = document.createElement('img')
-			const coverStr = String(cover)
+			const coverStr = toStr(cover)
 			img.src = coverStr.startsWith('http')
 				? coverStr
 				: this.app.vault.adapter.getResourcePath(coverStr)
@@ -671,7 +677,7 @@ export default class LibraryPlugin extends Plugin {
 		const infoSide = document.createElement('div')
 		infoSide.classList.add('note-header-info')
 
-		const titleEl = document.createElement('h1')
+		const titleEl = document.createElement('div')
 		titleEl.classList.add('note-header-title')
 		if (url) {
 			const a = document.createElement('a')
@@ -704,7 +710,7 @@ export default class LibraryPlugin extends Plugin {
 
 		const genre = fm.Genre
 		if (genre) {
-			addRow(tr('header.genre'), Array.isArray(genre) ? genre.join(', ') : String(genre))
+			addRow(tr('header.genre'), toStr(genre))
 		}
 
 		if (ratingIMDB) addRow('IMDb', ratingIMDB)
@@ -714,14 +720,14 @@ export default class LibraryPlugin extends Plugin {
 			const progRow = document.createElement('div')
 			progRow.classList.add('note-header-row')
 			const b = document.createElement('b')
-			b.setText(`${tr('header.progress')}: `)
+			b.setText(tr('header.progress') + ': ')
 			progRow.appendChild(b)
-			progRow.appendText(`${progressPercent}%`)
+			progRow.appendText(String(progressPercent) + '%')
 			const bar = document.createElement('div')
 			bar.classList.add('note-header-progress-bar')
 			const fill = document.createElement('div')
 			fill.classList.add('note-header-progress-fill')
-			fill.style.width = `${progressPercent}%`
+			fill.setCssStyles({ width: String(progressPercent) + '%' })
 			bar.appendChild(fill)
 			progRow.appendChild(bar)
 			infoSide.appendChild(progRow)
