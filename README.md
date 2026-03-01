@@ -1,90 +1,136 @@
-# Obsidian Sample Plugin
+<p align="center">
+  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+</p>
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+<h1 align="center">Obsidian Library</h1>
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+<p align="center">
+  <img src="https://img.shields.io/github/manifest-json/v/Kigrok/obsidian-library-plugin?color=blue&label=version" alt="Version">
+  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
+  <img src="https://img.shields.io/badge/Obsidian-v0.15.0+-purple" alt="Obsidian Version">
+  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
+</p>
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open modal (simple)" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+<p align="center">
+  <b>Organize your movies, series, and books into a stunning visual gallery directly within Obsidian.</b>
+  <br />
+  Automatically fetch metadata, track your viewing progress, and manage your media collection with ease.
+</p>
 
-## First time developing plugins?
+---
 
-Quick starting guide for new plugin devs:
+## ✨ Key Features
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+- 🖼️ **Visual Card Grid** — Transform simple markdown notes into a beautiful gallery of cover-art cards.
+- 🤖 **OMDb Integration** — Automatically pull ratings, posters, genres, and directors using the OMDb API.
+- 📺 **Smart Series Tracking** — Keep track of seasons and episodes for ongoing shows with auto-updates.
+- 📊 **Progress Indicators** — Visual progress bars on cards and note headers to show exactly how much you've watched or read.
+- 📑 **Rich Note Headers** — Every media note gets a beautiful, auto-generated header containing all key metadata.
+- 🛠️ **Custom Categories** — Fully flexible! Create categories for Movies, TV Shows, Books, Games, or Anime.
+- 🔀 **Sorting** — Sort your cards by name, year, rating, or date added — ascending or descending.
+- 📁 **Collapsible Sections** — Collapse/expand each category in the library view.
+- 🖥️ **Wide Mode** — Library note automatically switches to a full-width layout for a better overview.
+- 🌍 **Multilingual** — Native support for English, Russian, German, Spanish, and French.
 
-## Releasing new releases
+---
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+## 🚀 Quick Start
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+### 1. Installation
 
-## Adding your plugin to the community plugin list
+Find **Library** in the Obsidian Community Plugins browser, or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+### 2. Basic Setup
 
-## How to use
+1. Go to **Settings** → **Library**.
+2. Set your **Library file** path (e.g., `Library.md`).
+3. Add your **Categories** (e.g., Name: `🎬 Movies`, Type: `Movie`).
+4. _(Optional)_ Enter your [OMDb API Key](https://www.omdbapi.com/apikey.aspx) for automated metadata fetching.
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+### 3. Create a Media Note
 
-## Manually installing the plugin
+Create a new note and add the IMDb URL to the frontmatter — the plugin will automatically fetch all metadata:
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
-
-## Improve code quality with eslint
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- This project already has eslint preconfigured, you can invoke a check by running`npm run lint`
-- Together with a custom eslint [plugin](https://github.com/obsidianmd/eslint-plugin) for Obsidan specific code guidelines.
-- A GitHub action is preconfigured to automatically lint every commit on all branches.
-
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
+```yaml
+---
+Type: Movie
+URL: https://www.imdb.com/title/tt1375666/
+---
 ```
 
-If you have multiple URLs, you can also do:
+> **⚠️ Important:** To trigger automatic metadata fetching, add the `URL` field with a link to the movie or series page on [IMDb](https://www.imdb.com). The plugin extracts the IMDb ID from the URL and uses it to pull all data (title, year, genre, poster, rating, creator, etc.) via the OMDb API.
+>
+> You can also fill in `Type` and `Name` without a URL — the plugin will search OMDb by title. However, providing the IMDb URL guarantees the most accurate match.
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
+---
+
+## 📝 Frontmatter Schema
+
+The plugin reads and writes to standard YAML frontmatter. You can edit these fields manually or let the plugin manage them automatically.
+
+### Movie
+
+```yaml
+---
+Type: Movie
+Name: Inception
+Year: 2010
+Genre:
+    - Action
+    - Sci-Fi
+Creator:
+    - Christopher Nolan
+Rating IMDB: 8.8
+My Rating: 9
+Cover: https://m.media-amazon.com/images/...
+URL: https://www.imdb.com/title/tt1375666/
+Progress: 1/1
+Complete: true
+Date: 01.03.2026
+---
 ```
 
-## API Documentation
+### Series
 
-See https://docs.obsidian.md
+```yaml
+---
+Type: Series
+Name: Stranger Things
+Year: 2016
+End Year: 2025
+Season: 5
+Genre:
+    - Drama
+    - Fantasy
+    - Horror
+Creator:
+    - The Duffer Brothers
+Rating IMDB: 8.7
+My Rating: 9
+Cover: https://m.media-amazon.com/images/...
+URL: https://www.imdb.com/title/tt4574334/
+Progress: 25/42
+Complete: false
+Date: 01.03.2026
+---
+```
+
+> **📺 Series auto-update:** When new episodes air, the plugin automatically updates the total episode count in `Progress` (e.g., `25/42` → `25/50`) and the `Season` count, while keeping your watched count intact.
+
+---
+
+## 🛠 Commands
+
+| Command                              | Description                                                                                                |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `Fetch IMDb rating for current note` | Manually trigger a full metadata update for the active note. Also runs automatically when you open a note. |
+
+---
+
+## 🤝 Contributing & Support
+
+- 🐛 **Found a bug?** Open an [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
+- 💡 **Have a feature idea?** Start a [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
+- ⭐ **Love the plugin?** Consider starring the repository to show your support!
+
+---
