@@ -50,7 +50,7 @@ function sanitize(val: string): string {
 
 function parseProgress(val: unknown): number {
 	if (typeof val === 'number') return val <= 1 ? Math.round(val * 100) : Math.round(val)
-	const match = String(val).match(progressPattern)
+	const match = toStr(val).match(progressPattern)
 	if (!match) return 0
 	const current = Number(match[1])
 	const total = Number(match[2])
@@ -194,7 +194,7 @@ export default class LibraryPlugin extends Plugin {
 		this.fetchCooldowns.set(file.path, Date.now())
 
 		const cache = this.app.metadataCache.getFileCache(file)
-		const fm = cache?.frontmatter as Record<string, unknown> | undefined
+		const fm: Record<string, unknown> | undefined = cache?.frontmatter
 		if (!fm) return
 
 		const urlStr = toStr(fm.URL)
@@ -230,7 +230,7 @@ export default class LibraryPlugin extends Plugin {
 			if (!data) return
 
 			const filled: string[] = []
-			let resolvedType = fm.Type as string | undefined
+			let resolvedType: string | undefined = typeof fm.Type === 'string' ? fm.Type : undefined
 
 			if (needType && data.Type) {
 				const omdbType = data.Type.toLowerCase()
@@ -366,7 +366,8 @@ export default class LibraryPlugin extends Plugin {
 
 		const resp = await requestUrl({ url: 'https://www.omdbapi.com/?' + params.toString() })
 		if (resp.status === 200 && resp.json?.Response !== 'False') {
-			return resp.json as OMDbResponse
+			const result: OMDbResponse = resp.json
+			return result
 		}
 		return null
 	}
@@ -381,7 +382,7 @@ export default class LibraryPlugin extends Plugin {
 					Season: String(s)
 				})
 				const resp = await requestUrl({ url: 'https://www.omdbapi.com/?' + params.toString() })
-				const data = resp.json as OMDbSeasonResponse
+				const data: OMDbSeasonResponse = resp.json
 				if (resp.status === 200 && data.Episodes) {
 					total += data.Episodes.length
 				}
@@ -436,16 +437,16 @@ export default class LibraryPlugin extends Plugin {
 			const items = ul.querySelectorAll('li')
 
 			items.forEach(li => {
-				const link = li.querySelector('a.internal-link') as HTMLElement | null
-				if (!link) return
-				const fileName = link.getAttribute('data-href') || link.innerText
+				const linkEl = li.querySelector('a.internal-link')
+				if (!(linkEl instanceof HTMLElement)) return
+				const fileName = linkEl.getAttribute('data-href') || linkEl.innerText
 				const targetFile = this.app.metadataCache.getFirstLinkpathDest(fileName, context.sourcePath)
 				if (!(targetFile instanceof TFile)) return
 
 				const cache = this.app.metadataCache.getFileCache(targetFile)
 				const fm = cache?.frontmatter ?? {}
 				cards.push({
-					link,
+					link: linkEl,
 					targetFile,
 					fm,
 					name: toStr(fm.Name) || targetFile.basename,
@@ -539,8 +540,8 @@ export default class LibraryPlugin extends Plugin {
 				const isCollapsed = container.classList.toggle('collapsed')
 				collapseBtn.setText(isCollapsed ? '\u25b6' : '\u25bc')
 				if (isCollapsed) {
-					const firstCard = container.querySelector('.library-card') as HTMLElement | null
-					if (firstCard) {
+					const firstCard = container.querySelector('.library-card')
+					if (firstCard instanceof HTMLElement) {
 						container.style.setProperty('--row-height', firstCard.offsetHeight + 'px')
 					}
 				} else {
@@ -630,7 +631,7 @@ export default class LibraryPlugin extends Plugin {
 		if (!(file instanceof TFile)) return
 
 		const cache = this.app.metadataCache.getFileCache(file)
-		const fm = cache?.frontmatter as Record<string, unknown> | undefined
+		const fm: Record<string, unknown> | undefined = cache?.frontmatter
 		if (!fm) return
 
 		const knownTypes = this.settings.categories.map(c => c.typeValue)
