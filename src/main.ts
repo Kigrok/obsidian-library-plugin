@@ -41,6 +41,7 @@ interface CardData {
 function toStr(val: unknown): string {
 	if (val == null) return ''
 	if (Array.isArray(val)) return val.join(', ')
+	if (typeof val === 'object') return JSON.stringify(val)
 	return String(val)
 }
 
