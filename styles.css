@@ -50,7 +50,7 @@
 
 .card-title a {
 	color: var(--text-normal);
-	text-decoration: none !important;
+	text-decoration: none;
 }
 
 .card-author {
@@ -238,9 +238,9 @@
 }
 
 .note-header-title {
-	margin: 8% 0 6% 0 !important;
-	font-size: 1.6em !important;
-	line-height: 1.2 !important;
+	margin: 8% 0 6% 0;
+	font-size: 1.6em;
+	line-height: 1.2;
 }
 
 .note-header-title a {
@@ -295,7 +295,7 @@ body.is-library-wide .workspace-leaf.mod-active .markdown-source-view.mod-cm6 .c
 body.is-library-wide .workspace-leaf.mod-active .markdown-rendered,
 body.is-library-wide .workspace-leaf.mod-active .markdown-preview-sizer,
 body.is-library-wide .workspace-leaf.mod-active .markdown-readable-line-length {
-	max-width: 90% !important;
-	width: 90% !important;
-	margin: 0 auto !important;
+	max-width: 90%;
+	width: 90%;
+	margin: 0 auto;
 }
