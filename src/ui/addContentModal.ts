@@ -6,7 +6,7 @@ export class AddContentModal extends SuggestModal<SearchResult> {
 	private provider: ContentProvider
 	private type: ContentType
 	private onPick: (result: SearchResult) => void
-	private debounceTimer: ReturnType<typeof setTimeout> | null = null
+	private debounceTimer: number | null = null
 	private cache = new Map<string, SearchResult[]>()
 
 	constructor(
@@ -29,8 +29,8 @@ export class AddContentModal extends SuggestModal<SearchResult> {
 		if (cached) return cached
 
 		await new Promise<void>((resolve) => {
-			if (this.debounceTimer) clearTimeout(this.debounceTimer)
-			this.debounceTimer = setTimeout(resolve, 300)
+			if (this.debounceTimer) window.clearTimeout(this.debounceTimer)
+			this.debounceTimer = window.setTimeout(resolve, 300)
 		})
 
 		try {

@@ -17,7 +17,7 @@ export class LibrarySearchModal extends FuzzySuggestModal<TFile> {
 	}
 
 	getItemText(file: TFile): string {
-		const name = this.app.metadataCache.getFileCache(file)?.frontmatter?.Name
+		const name: unknown = this.app.metadataCache.getFileCache(file)?.frontmatter?.Name
 		return typeof name === 'string' && name ? name : file.basename
 	}
 

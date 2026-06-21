@@ -2,7 +2,7 @@ import { requestUrl } from 'obsidian'
 import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
 
 function delay(ms: number): Promise<void> {
-	return new Promise((resolve) => setTimeout(resolve, ms))
+	return new Promise((resolve) => window.setTimeout(resolve, ms))
 }
 
 interface OmdbSearchItem {
@@ -69,7 +69,7 @@ export class OmdbProvider implements ContentProvider {
 		const omdbType = type === 'series' ? 'series' : 'movie'
 		const resp = await requestUrl({ url: this.url({ s: query, type: omdbType }) })
 		if (resp.status !== 200) return []
-		const data: OmdbSearchResponse = resp.json
+		const data = resp.json as OmdbSearchResponse
 		if (data.Response === 'False') return []
 		return (data.Search ?? []).map((item) => ({
 			provider: this.id,
@@ -86,7 +86,7 @@ export class OmdbProvider implements ContentProvider {
 		if (!this.getKey()) return null
 		const resp = await requestUrl({ url: this.url({ i: sourceId }) })
 		if (resp.status !== 200) return null
-		const details: OmdbDetails = resp.json
+		const details = resp.json as OmdbDetails
 		if (details.Response === 'False') return null
 
 		const creatorSource = na(details.Director) ?? na(details.Writer)
@@ -135,7 +135,7 @@ export class OmdbProvider implements ContentProvider {
 			try {
 				const resp = await requestUrl({ url: this.url({ i: imdbId, Season: String(season) }) })
 				if (resp.status !== 200) continue
-				const data: OmdbSeasonResponse = resp.json
+				const data = resp.json as OmdbSeasonResponse
 				if (data.Episodes) total += data.Episodes.length
 			} catch (e) {
 				console.error('Library: OMDb season fetch error', e)

@@ -19,7 +19,7 @@ type SortKey = 'name' | 'year' | 'rating' | 'date'
 
 export class LibraryView extends ItemView {
 	private plugin: LibraryPlugin
-	private renderTimer: ReturnType<typeof setTimeout> | null = null
+	private renderTimer: number | null = null
 
 	constructor(leaf: WorkspaceLeaf, plugin: LibraryPlugin) {
 		super(leaf)
@@ -43,15 +43,15 @@ export class LibraryView extends ItemView {
 		this.registerEvent(this.app.vault.on('create', () => this.scheduleRender()))
 		this.registerEvent(this.app.vault.on('delete', () => this.scheduleRender()))
 		this.registerEvent(this.app.vault.on('rename', () => this.scheduleRender()))
-		this.registerDomEvent(document, 'click', () => {
+		this.registerDomEvent(activeDocument, 'click', () => {
 			this.contentEl.querySelectorAll('.library-sort-menu.open').forEach(m => m.removeClass('open'))
 		})
 		this.render()
 	}
 
 	private scheduleRender(): void {
-		if (this.renderTimer) clearTimeout(this.renderTimer)
-		this.renderTimer = setTimeout(() => this.render(), 300)
+		if (this.renderTimer) window.clearTimeout(this.renderTimer)
+		this.renderTimer = window.setTimeout(() => this.render(), 300)
 	}
 
 	private collectCards(category: ICategory): CardData[] {
@@ -248,6 +248,6 @@ export class LibraryView extends ItemView {
 	}
 
 	async onClose(): Promise<void> {
-		if (this.renderTimer) clearTimeout(this.renderTimer)
+		if (this.renderTimer) window.clearTimeout(this.renderTimer)
 	}
 }

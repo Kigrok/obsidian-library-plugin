@@ -33,7 +33,7 @@ export class OpenLibraryProvider implements ContentProvider {
 		const params = new URLSearchParams({ q: query, fields: OpenLibraryProvider.FIELDS, limit: '20' })
 		const resp = await requestUrl({ url: `${OpenLibraryProvider.SEARCH}?${params.toString()}` })
 		if (resp.status !== 200) return []
-		const data: OpenLibrarySearchResponse = resp.json
+		const data = resp.json as OpenLibrarySearchResponse
 		return (data.docs ?? []).map((doc) => ({
 			provider: this.id,
 			sourceId: doc.key,
