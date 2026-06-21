@@ -1,7 +1,8 @@
+import { getLanguage } from 'obsidian'
 import { localeMap, I18N, type SupportedLocale } from './constants'
 
 export function tr(key: string, vars?: Record<string, string | number>): string {
-	const language: string = (window.localStorage.getItem('language') ?? 'en').toLowerCase()
+	const language: string = getLanguage().toLowerCase()
 	const locale: SupportedLocale = (Object.keys(localeMap).find(lang =>
 		language.startsWith(lang)
 	) ?? 'en') as SupportedLocale
