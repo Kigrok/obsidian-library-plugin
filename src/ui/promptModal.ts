@@ -13,7 +13,7 @@ export class PromptModal extends Modal {
 
 	onOpen(): void {
 		const { contentEl } = this
-		contentEl.createEl('h3', { text: tr('modal.manualTitle') })
+		this.setTitle(tr('modal.manualTitle'))
 		const input = contentEl.createEl('input', { type: 'text', cls: 'library-prompt-input' })
 		input.placeholder = this.placeholder
 		input.focus()

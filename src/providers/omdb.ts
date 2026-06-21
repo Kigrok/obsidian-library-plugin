@@ -70,8 +70,9 @@ export class OmdbProvider implements ContentProvider {
 		const resp = await requestUrl({ url: this.url({ s: query, type: omdbType }) })
 		if (resp.status !== 200) return []
 		const data = resp.json as OmdbSearchResponse
-		if (data.Response === 'False') return []
-		return (data.Search ?? []).map((item) => ({
+		if (!data || typeof data !== 'object' || data.Response === 'False') return []
+		const items = Array.isArray(data.Search) ? data.Search : []
+		return items.map((item) => ({
 			provider: this.id,
 			sourceId: item.imdbID,
 			title: item.Title,
@@ -87,14 +88,15 @@ export class OmdbProvider implements ContentProvider {
 		const resp = await requestUrl({ url: this.url({ i: sourceId }) })
 		if (resp.status !== 200) return null
 		const details = resp.json as OmdbDetails
-		if (details.Response === 'False') return null
+		if (!details || typeof details !== 'object' || details.Response === 'False') return null
 
 		const creatorSource = na(details.Director) ?? na(details.Writer)
 		const creators = creatorSource
 			? creatorSource.split(',').map((s) => s.trim()).filter(Boolean)
 			: []
-		const genres = na(details.Genre)
-			? (details.Genre as string).split(',').map((s) => s.trim()).filter(Boolean)
+		const genreSource = na(details.Genre)
+		const genres = genreSource
+			? genreSource.split(',').map((s) => s.trim()).filter(Boolean)
 			: []
 		const rawYear = na(details.Year)
 		const rating = na(details.imdbRating)
@@ -136,7 +138,7 @@ export class OmdbProvider implements ContentProvider {
 				const resp = await requestUrl({ url: this.url({ i: imdbId, Season: String(season) }) })
 				if (resp.status !== 200) continue
 				const data = resp.json as OmdbSeasonResponse
-				if (data.Episodes) total += data.Episodes.length
+				if (Array.isArray(data?.Episodes)) total += data.Episodes.length
 			} catch (e) {
 				console.error('Library: OMDb season fetch error', e)
 			}

@@ -34,7 +34,8 @@ export class OpenLibraryProvider implements ContentProvider {
 		const resp = await requestUrl({ url: `${OpenLibraryProvider.SEARCH}?${params.toString()}` })
 		if (resp.status !== 200) return []
 		const data = resp.json as OpenLibrarySearchResponse
-		return (data.docs ?? []).map((doc) => ({
+		const docs = Array.isArray(data?.docs) ? data.docs : []
+		return docs.map((doc) => ({
 			provider: this.id,
 			sourceId: doc.key,
 			title: doc.title,
@@ -47,8 +48,9 @@ export class OpenLibraryProvider implements ContentProvider {
 
 	// Open Library search already carries full doc; refetch без raw не имеет источника, поэтому no-op.
 	async fetch(_sourceId: string, _type: ContentType, raw?: unknown): Promise<NormalizedMetadata | null> {
-		const doc = raw as OpenLibraryDoc | undefined
-		if (!doc) return null
+		if (!raw || typeof raw !== 'object') return null
+		const doc = raw as OpenLibraryDoc
+		if (!doc.title) return null
 		const fields: Record<string, unknown> = {
 			Name: doc.title,
 			Year: doc.first_publish_year ?? null,

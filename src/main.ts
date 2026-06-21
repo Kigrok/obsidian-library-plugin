@@ -27,7 +27,8 @@ import {
 	sanitizeFilename,
 	isTemplateFile,
 	isEmptyValue,
-	inferContentType
+	inferContentType,
+	coverSrc
 } from './util'
 
 export default class LibraryPlugin extends Plugin {
@@ -446,12 +447,10 @@ export default class LibraryPlugin extends Plugin {
 
 		const imgSide = activeDocument.createElement('div')
 		imgSide.classList.add('note-header-cover')
-		if (cover) {
+		const headerCover = coverSrc(this.app, cover)
+		if (headerCover) {
 			const img = activeDocument.createElement('img')
-			const coverStr = toStr(cover)
-			img.src = coverStr.startsWith('http')
-				? coverStr
-				: this.app.vault.adapter.getResourcePath(coverStr)
+			img.src = headerCover
 			imgSide.appendChild(img)
 		}
 		header.appendChild(imgSide)
@@ -527,8 +526,10 @@ export default class LibraryPlugin extends Plugin {
 	}
 
 	private async loadSettings(): Promise<void> {
-		const saved = (await this.loadData()) as Partial<ILibrarySettings> | null
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, saved)
+		const saved: unknown = await this.loadData()
+		const data = saved && typeof saved === 'object' ? (saved as Partial<ILibrarySettings>) : null
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, data)
+		if (!Array.isArray(this.settings.categories)) this.settings.categories = []
 		for (const cat of this.settings.categories) {
 			if (!cat.contentType) cat.contentType = inferContentType(cat.typeValue)
 			if (cat.folder === undefined) cat.folder = ''

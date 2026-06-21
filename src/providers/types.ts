@@ -1,4 +1,9 @@
-export type ContentType = 'movie' | 'series' | 'book' | 'game' | 'anime' | 'manual'
+export const CONTENT_TYPES = ['movie', 'series', 'book', 'game', 'anime', 'manual'] as const
+export type ContentType = (typeof CONTENT_TYPES)[number]
+
+export function isContentType(value: string): value is ContentType {
+	return (CONTENT_TYPES as readonly string[]).includes(value)
+}
 
 export interface SearchResult {
 	provider: string

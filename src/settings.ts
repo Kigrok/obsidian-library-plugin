@@ -1,6 +1,6 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
 import type LibraryPlugin from "./main";
-import type { ICategory } from "./constants";
+import { isContentType } from "./providers/types";
 import { tr } from "./i18n";
 
 export class LibrarySettingTab extends PluginSettingTab {
@@ -15,12 +15,7 @@ export class LibrarySettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 
-		new Setting(containerEl).setName(tr("settings.title")).setHeading();
 		containerEl.createEl("p", { text: tr("settings.intro") });
-
-		new Setting(containerEl)
-			.setName(tr("settings.section.general"))
-			.setHeading();
 
 		new Setting(containerEl)
 			.setName(tr("settings.omdb.name"))
@@ -78,7 +73,7 @@ export class LibrarySettingTab extends PluginSettingTab {
 						.addOption("manual", tr("settings.category.manual"))
 						.setValue(cat.contentType)
 						.onChange(async (v) => {
-							cat.contentType = v as ICategory["contentType"];
+							if (isContentType(v)) cat.contentType = v;
 							await this.plugin.saveSettings();
 						}),
 				)

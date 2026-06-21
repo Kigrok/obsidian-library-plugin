@@ -7,7 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/version-2.0.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
-  <img src="https://img.shields.io/badge/Obsidian-v0.15.0+-purple" alt="Obsidian Version">
+  <img src="https://img.shields.io/badge/Obsidian-v1.7.2+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
 </p>
 
@@ -77,6 +77,20 @@ Each category is bound to a source that powers its search:
 | **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
 | **Open Library** | Books           | None                                                        |
 | **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
+
+---
+
+## 🔒 Privacy & Network Use
+
+Library is **offline-first**. The plugin only contacts the network when you actively search for a title to add, and only with the search terms you type:
+
+| Service | When | What is sent | Why |
+| --- | --- | --- | --- |
+| `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
+| `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
+| `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
+
+No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. The OMDb API key you enter is stored only in your local plugin settings and is sent solely to `www.omdbapi.com`. Movie and series cover images load directly from the poster URLs returned by OMDb.
 
 ---
 

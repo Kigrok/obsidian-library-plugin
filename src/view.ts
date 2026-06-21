@@ -2,7 +2,7 @@ import { ItemView, WorkspaceLeaf, TFile, setIcon } from 'obsidian'
 import type LibraryPlugin from './main'
 import type { ICategory } from './constants'
 import { tr } from './i18n'
-import { toStr, parseProgress, parseDate, isTemplateFile } from './util'
+import { toStr, parseProgress, parseDate, isTemplateFile, coverSrc } from './util'
 
 export const LIBRARY_VIEW_TYPE = 'library-view'
 
@@ -210,12 +210,9 @@ export class LibraryView extends ItemView {
 
 		const cover = fm.Cover || fm.Image || fm.Baner
 		const imgDiv = cardEl.createDiv({ cls: 'card-image' })
-		if (cover) {
-			const img = imgDiv.createEl('img')
-			const coverStr = toStr(cover)
-			img.src = coverStr.startsWith('http')
-				? coverStr
-				: this.app.vault.adapter.getResourcePath(coverStr)
+		const cardCover = coverSrc(this.app, cover)
+		if (cardCover) {
+			imgDiv.createEl('img').src = cardCover
 		} else {
 			imgDiv.createSpan({ text: '🎬' })
 		}

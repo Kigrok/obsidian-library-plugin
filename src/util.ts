@@ -1,3 +1,4 @@
+import { App, normalizePath } from 'obsidian'
 import { progressPattern, dmyDatePattern } from './constants'
 import type { ContentType } from './providers/types'
 
@@ -75,4 +76,12 @@ export function inferContentType(typeValue: string): ContentType {
 		case 'Book': return 'book'
 		default: return 'movie'
 	}
+}
+
+export function coverSrc(app: App, raw: unknown): string | null {
+	const value = toStr(raw).trim()
+	if (!value) return null
+	if (value.startsWith('http')) return value
+	const file = app.vault.getFileByPath(normalizePath(value))
+	return file ? app.vault.getResourcePath(file) : null
 }
