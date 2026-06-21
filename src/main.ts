@@ -143,7 +143,7 @@ export default class LibraryPlugin extends Plugin {
 		const types = new Set(this.settings.categories.map(c => c.typeValue))
 		const files = this.app.vault.getMarkdownFiles().filter(f => {
 			if (isTemplateFile(f.path)) return false
-			const type = this.app.metadataCache.getFileCache(f)?.frontmatter?.Type
+			const type: unknown = this.app.metadataCache.getFileCache(f)?.frontmatter?.Type
 			return typeof type === 'string' && types.has(type)
 		})
 		new LibrarySearchModal(this.app, files, (file) => {
@@ -312,7 +312,7 @@ export default class LibraryPlugin extends Plugin {
 		const types = new Set(this.settings.categories.map(c => c.typeValue))
 		const files = this.app.vault.getMarkdownFiles().filter(f => {
 			if (isTemplateFile(f.path)) return false
-			const type = this.app.metadataCache.getFileCache(f)?.frontmatter?.Type
+			const type: unknown = this.app.metadataCache.getFileCache(f)?.frontmatter?.Type
 			return typeof type === 'string' && types.has(type)
 		})
 		let count = 0

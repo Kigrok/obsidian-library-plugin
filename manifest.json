@@ -2,7 +2,7 @@
 	"id": "library",
 	"name": "Library",
 	"version": "2.0.1",
-	"minAppVersion": "1.5.0",
+	"minAppVersion": "1.7.2",
 	"description": "Organize movies, series, and other media as visual cards with automatic metadata from OMDb.",
 	"author": "Kigrok",
 	"authorUrl": "https://github.com/Kigrok",
