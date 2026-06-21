@@ -1,5 +1,6 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
 import type LibraryPlugin from "./main";
+import type { ICategory } from "./constants";
 import { tr } from "./i18n";
 
 export class LibrarySettingTab extends PluginSettingTab {
@@ -20,19 +21,6 @@ export class LibrarySettingTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName(tr("settings.section.general"))
 			.setHeading();
-
-		new Setting(containerEl)
-			.setName(tr("settings.libraryFile.name"))
-			.setDesc(tr("settings.libraryFile.desc"))
-			.addText((text) =>
-				text
-					.setPlaceholder(tr("settings.libraryFile.placeholder"))
-					.setValue(this.plugin.settings.libraryFilePath)
-					.onChange(async (v) => {
-						this.plugin.settings.libraryFilePath = v.trim();
-						await this.plugin.saveSettings();
-					}),
-			);
 
 		new Setting(containerEl)
 			.setName(tr("settings.omdb.name"))
@@ -82,6 +70,18 @@ export class LibrarySettingTab extends PluginSettingTab {
 							await this.plugin.saveSettings();
 						}),
 				)
+				.addDropdown((d) =>
+					d
+						.addOption("movie", "OMDb · movie")
+						.addOption("series", "OMDb · series")
+						.addOption("book", "Open Library · book")
+						.addOption("manual", tr("settings.category.manual"))
+						.setValue(cat.contentType)
+						.onChange(async (v) => {
+							cat.contentType = v as ICategory["contentType"];
+							await this.plugin.saveSettings();
+						}),
+				)
 				.addButton((b) =>
 					b
 						.setIcon("trash")
@@ -90,6 +90,20 @@ export class LibrarySettingTab extends PluginSettingTab {
 							this.plugin.settings.categories.splice(i, 1);
 							await this.plugin.saveSettings();
 							this.display();
+						}),
+				);
+
+			new Setting(div)
+				.setName(tr("settings.category.folder"))
+				.addText((t) =>
+					t
+						.setPlaceholder(
+							tr("settings.category.folder.placeholder"),
+						)
+						.setValue(cat.folder)
+						.onChange(async (v) => {
+							cat.folder = v.trim();
+							await this.plugin.saveSettings();
 						}),
 				);
 		});
@@ -101,7 +115,9 @@ export class LibrarySettingTab extends PluginSettingTab {
 				.onClick(async () => {
 					this.plugin.settings.categories.push({
 						name: tr("settings.newCategory"),
-						typeValue: "NewType",
+						typeValue: "Movie",
+						contentType: "movie",
+						folder: "",
 					});
 					await this.plugin.saveSettings();
 					this.display();

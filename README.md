@@ -2,34 +2,41 @@
   <img src="banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
-<h1 align="center">Obsidian Library</h1>
+<h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/github/manifest-json/v/Kigrok/obsidian-library-plugin?color=blue&label=version" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.0.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v0.15.0+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
 </p>
 
 <p align="center">
-  <b>Organize your movies, series, and books into a stunning visual gallery directly within Obsidian.</b>
+  <b>Organize your movies, series, books, and more into a visual gallery — right inside Obsidian.</b>
   <br />
-  Automatically fetch metadata, track your viewing progress, and manage your media collection with ease.
+  Search and add titles in-app, auto-fetch metadata, track progress, and wire everything into your graph.
 </p>
+
+<p align="center">
+  <a href="https://community.obsidian.md/plugins/library">📦 View on the Obsidian Community Plugins directory</a>
+</p>
+
+---
+
+> **Version 2** — full rewrite. Library is now a dedicated tab (ribbon icon), with in-app search across multiple sources (OMDb, Open Library), per-category folders, manual categories for anything, and graph links stored in frontmatter. See [Quick Start](#-quick-start).
 
 ---
 
 ## ✨ Key Features
 
-- 🖼️ **Visual Card Grid** — Transform simple markdown notes into a beautiful gallery of cover-art cards.
-- 🤖 **OMDb Integration** — Automatically pull ratings, posters, genres, and directors using the OMDb API.
-- 📺 **Smart Series Tracking** — Keep track of seasons and episodes for ongoing shows with auto-updates.
-- 📊 **Progress Indicators** — Visual progress bars on cards and note headers to show exactly how much you've watched or read.
-- 📑 **Rich Note Headers** — Every media note gets a beautiful, auto-generated header containing all key metadata.
-- 🛠️ **Custom Categories** — Fully flexible! Create categories for Movies, TV Shows, Books, Games, or Anime.
-- 🔀 **Sorting** — Sort your cards by name, year, rating, or date added — ascending or descending.
-- 📁 **Collapsible Sections** — Collapse/expand each category in the library view.
-- 🖥️ **Wide Mode** — Library note automatically switches to a full-width layout for a better overview.
+- 🖼️ **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
+- 🔎 **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library for books.
+- 📺 **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
+- 📊 **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
+- 📑 **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
+- 🛠️ **Custom Categories** — Create categories for Movies, Series, Books, or anything else via the manual source.
+- 🕸️ **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
+- 🔀 **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
 - 🌍 **Multilingual** — Native support for English, Russian, German, Spanish, and French.
 
 ---
@@ -38,35 +45,44 @@
 
 ### 1. Installation
 
-Find **Library** in the Obsidian Community Plugins browser, or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
+Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings → Community plugins → Browse → search “Library”), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 
 ### 2. Basic Setup
 
 1. Go to **Settings** → **Library**.
-2. Set your **Library file** path (e.g., `Library.md`).
-3. Add your **Categories** (e.g., Name: `🎬 Movies`, Type: `Movie`).
-4. _(Optional)_ Enter your [OMDb API Key](https://www.omdbapi.com/apikey.aspx) for automated metadata fetching.
+2. Add your **Categories** — each has a name (e.g. `🎬 Movies`), a `Type` value (e.g. `Movie`), a source (OMDb, Open Library, or Manual), and an optional folder.
+3. _(Optional)_ Enter your [OMDb API key](https://www.omdbapi.com/apikey.aspx) to enable movie and series search.
 
-### 3. Create a Media Note
+### 3. Add a Card by Title
 
-Create a new note and add the IMDb URL to the frontmatter — the plugin will automatically fetch all metadata:
+No more filling in frontmatter by hand — add a movie, series, or book just by searching its name:
 
-```yaml
+1. Open the **Library** tab from the ribbon icon (or run `Open Library`).
+2. Click the **＋** button in the top-right of the Library page (or run `Add content`).
+3. Pick a category, type the **title** into the search box, and select a result.
+4. A card is created instantly, with poster, year, genre, creators, and rating filled in automatically.
+
+The **🔍** button next to **＋** searches titles already in your library.
+
+For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
+
 ---
-Type: Movie
-URL: https://www.imdb.com/title/tt1375666/
----
-```
 
-> **⚠️ Important:** To trigger automatic metadata fetching, add the `URL` field with a link to the movie or series page on [IMDb](https://www.imdb.com). The plugin extracts the IMDb ID from the URL and uses it to pull all data (title, year, genre, poster, rating, creator, etc.) via the OMDb API.
->
-> You can also fill in `Type` and `Name` without a URL — the plugin will search OMDb by title. However, providing the IMDb URL guarantees the most accurate match.
+## 🔌 Sources
+
+Each category is bound to a source that powers its search:
+
+| Source           | Content types   | API key                                                      |
+| ---------------- | --------------- | ----------------------------------------------------------- |
+| **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
+| **Open Library** | Books           | None                                                        |
+| **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
 
 ---
 
 ## 📝 Frontmatter Schema
 
-The plugin reads and writes to standard YAML frontmatter. You can edit these fields manually or let the plugin manage them automatically.
+The plugin reads and writes to standard YAML frontmatter. Notes are created for you, but every field is editable. `Source` and `Source ID` let the plugin refresh metadata later.
 
 ### Movie
 
@@ -87,6 +103,8 @@ URL: https://www.imdb.com/title/tt1375666/
 Progress: 1/1
 Complete: true
 Date: 01.03.2026
+Source: omdb
+Source ID: tt1375666
 ---
 ```
 
@@ -112,18 +130,62 @@ URL: https://www.imdb.com/title/tt4574334/
 Progress: 25/42
 Complete: false
 Date: 01.03.2026
+Source: omdb
+Source ID: tt4574334
 ---
 ```
 
-> **📺 Series auto-update:** When new episodes air, the plugin automatically updates the total episode count in `Progress` (e.g., `25/42` → `25/50`) and the `Season` count, while keeping your watched count intact.
+> **📺 Series auto-update:** Run `Refresh metadata for current note` (or just open the note) and the plugin updates the total episode count in `Progress` (e.g., `25/42` → `25/50`) and the `Season` count, while keeping your watched count intact.
+
+### Book
+
+```yaml
+---
+Type: Book
+Name: Dune
+Year: 1965
+Genre:
+    - Science Fiction
+Creator:
+    - Frank Herbert
+Cover: https://covers.openlibrary.org/b/id/...-L.jpg
+ISBN: 9780441013593
+My Rating: 9
+Progress: 412/688
+Complete: false
+Date: 01.03.2026
+Source: openlibrary
+Source ID: /works/OL893415W
+---
+```
+
+---
+
+## 🕸️ Graph Links
+
+Each content note gets a `Related` frontmatter property, kept up to date automatically — the note body is never touched:
+
+```yaml
+Related:
+    - "[[Movie]]"
+    - "[[Action]]"
+    - "[[Sci-Fi]]"
+    - "[[Christopher Nolan]]"
+```
+
+These links connect your notes through shared categories, genres, and creators, so the Obsidian graph view forms clean clusters. A real hub note is created per category (e.g. `Movie`) so clusters show even with unresolved links hidden. The property is written when a note is created and refreshed whenever its metadata changes — run `Rebuild graph links` only if you want to force a full rebuild.
 
 ---
 
 ## 🛠 Commands
 
-| Command                              | Description                                                                                                |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| `Fetch IMDb rating for current note` | Manually trigger a full metadata update for the active note. Also runs automatically when you open a note. |
+| Command                              | Description                                                              |
+| ------------------------------------ | ----------------------------------------------------------------------- |
+| `Open Library`                       | Open the Library gallery tab.                                           |
+| `Add content`                        | Search a source and create a content note (or type a title for Manual). |
+| `Search your library`                | Fuzzy-search and open any note already in your library.                 |
+| `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
+| `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
 
 ---
 

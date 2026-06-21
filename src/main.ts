@@ -1,650 +1,429 @@
 import {
 	Plugin,
 	TFile,
-	MarkdownPostProcessorContext,
+	MarkdownView,
 	Notice,
-	requestUrl
+	normalizePath
 } from 'obsidian'
-import { progressPattern, dmyDatePattern, type ILibrarySettings, DEFAULT_SETTINGS } from './constants'
+import { progressPattern, type ICategory, type ILibrarySettings, DEFAULT_SETTINGS } from './constants'
 import { tr } from './i18n'
 import { LibrarySettingTab } from './settings'
-
-interface OMDbResponse {
-	imdbRating?: string
-	Poster?: string
-	Director?: string
-	Creator?: string
-	Writer?: string
-	Year?: string
-	Genre?: string
-	totalSeasons?: string
-	imdbID?: string
-	Type?: string
-	Response?: string
-}
-
-interface OMDbSeasonResponse {
-	Episodes?: { Episode: string }[]
-	Response?: string
-}
-
-interface CardData {
-	link: HTMLElement
-	targetFile: TFile
-	fm: Record<string, unknown>
-	name: string
-	year: number
-	rating: number
-	date: number
-}
-
-function toStr(val: unknown): string {
-	if (typeof val === 'string') return val
-	if (typeof val === 'number' || typeof val === 'boolean') return String(val)
-	if (val == null) return ''
-	if (Array.isArray(val)) return val.join(', ')
-	return JSON.stringify(val)
-}
-
-function sanitize(val: string): string {
-	return val.replace(/[^\x20-\x7E\u00A0-\uFFFF]/g, '').trim()
-}
-
-function parseProgress(val: unknown): number {
-	if (typeof val === 'number') return val <= 1 ? Math.round(val * 100) : Math.round(val)
-	const match = toStr(val).match(progressPattern)
-	if (!match) return 0
-	const current = Number(match[1])
-	const total = Number(match[2])
-	if (!Number.isFinite(current) || !Number.isFinite(total) || total <= 0) return 0
-	return Math.round((current / total) * 100)
-}
-
-function parseDate(val: unknown): number {
-	if (!val) return 0
-	const raw = toStr(val)
-	const dmyMatch = raw.match(dmyDatePattern)
-	if (dmyMatch) {
-		return new Date(Number(dmyMatch[3]), Number(dmyMatch[2]) - 1, Number(dmyMatch[1])).getTime()
-	}
-	const timestamp = new Date(raw).getTime()
-	return Number.isNaN(timestamp) ? 0 : timestamp
-}
-
-function isTemplateFile(path: string): boolean {
-	return path.split('/').some(p => p.startsWith('_') || p.toLowerCase().includes('template'))
-}
+import { ProviderRegistry } from './providers/registry'
+import { OmdbProvider } from './providers/omdb'
+import { OpenLibraryProvider } from './providers/openlibrary'
+import type { NormalizedMetadata, SearchResult } from './providers/types'
+import { PickTypeModal } from './ui/pickTypeModal'
+import { AddContentModal } from './ui/addContentModal'
+import { LibrarySearchModal } from './ui/librarySearchModal'
+import { PromptModal } from './ui/promptModal'
+import { LibraryView, LIBRARY_VIEW_TYPE } from './view'
+import {
+	toStr,
+	toStrArray,
+	sanitizeLink,
+	parseProgress,
+	parseWatched,
+	todayDmy,
+	sanitizeFilename,
+	isTemplateFile,
+	isEmptyValue,
+	inferContentType
+} from './util'
 
 export default class LibraryPlugin extends Plugin {
 	settings!: ILibrarySettings
-	private updateTimer: ReturnType<typeof setTimeout> | null = null
-	private fetchTimer: ReturnType<typeof setTimeout> | null = null
-	private isFetching = false
-	private fetchCooldowns = new Map<string, number>()
+	private registry = new ProviderRegistry()
+	private refreshTimer: ReturnType<typeof setTimeout> | null = null
+	private isRefreshing = false
+	private refreshCooldowns = new Map<string, number>()
+	private syncingLinks = new Set<string>()
+	private linkTimers = new Map<string, ReturnType<typeof setTimeout>>()
 
 	async onload(): Promise<void> {
 		await this.loadSettings()
+		this.registry.register(new OmdbProvider(() => this.settings.omdbApiKey))
+		this.registry.register(new OpenLibraryProvider())
 		this.addSettingTab(new LibrarySettingTab(this.app, this))
 
-		this.registerEvent(this.app.metadataCache.on('changed', (file) => {
-			if (file.path === this.settings.libraryFilePath) return
-			if (isTemplateFile(file.path)) return
-			if (this.updateTimer) clearTimeout(this.updateTimer)
-			this.updateTimer = setTimeout(() => { void this.updateLibraryFile() }, 500)
+		this.registerView(LIBRARY_VIEW_TYPE, (leaf) => new LibraryView(leaf, this))
+		this.addRibbonIcon('library', tr('view.title'), () => { void this.activateView() })
+
+		const banner = (): number => window.setTimeout(() => this.refreshBanner(), 50)
+		this.registerEvent(this.app.workspace.on('file-open', (file) => {
+			banner()
+			if (file instanceof TFile) window.setTimeout(() => { void this.syncNote(file) }, 400)
 		}))
-
-		this.registerEvent(this.app.workspace.on('layout-change', () => this.applyWideStyle()))
-
-		this.registerMarkdownPostProcessor((element, context) => {
-			this.renderCards(element, context)
-			this.renderNoteHeader(element, context)
-		})
-
-		this.applyWideStyle()
+		this.registerEvent(this.app.workspace.on('layout-change', () => { banner() }))
+		this.app.workspace.onLayoutReady(() => { this.refreshBanner() })
 
 		this.registerEvent(
 			this.app.workspace.on('active-leaf-change', () => {
-				if (this.fetchTimer) clearTimeout(this.fetchTimer)
-				this.fetchTimer = setTimeout(() => { void this.tryFetchIMDbRating() }, 300)
+				if (this.refreshTimer) clearTimeout(this.refreshTimer)
+				this.refreshTimer = setTimeout(() => { void this.tryRefresh(false) }, 300)
+				banner()
+			})
+		)
+
+		this.registerEvent(
+			this.app.metadataCache.on('changed', (file) => {
+				if (this.app.workspace.getActiveFile()?.path === file.path) banner()
+				if (this.syncingLinks.has(file.path)) return
+				if (isTemplateFile(file.path)) return
+				const existing = this.linkTimers.get(file.path)
+				if (existing) clearTimeout(existing)
+				this.linkTimers.set(file.path, setTimeout(() => {
+					this.linkTimers.delete(file.path)
+					void this.syncNote(file)
+				}, 800))
 			})
 		)
 
 		this.addCommand({
-			id: 'fetch-imdb-rating',
-			name: tr('cmd.fetchImdb'),
-			callback: () => { void this.tryFetchIMDbRating(true) }
+			id: 'open-library',
+			name: tr('cmd.openLibrary'),
+			callback: () => { void this.activateView() }
 		})
 
-		this.app.workspace.onLayoutReady(() => { void this.updateLibraryFile() })
+		this.addCommand({
+			id: 'add-content',
+			name: tr('cmd.addContent'),
+			callback: () => this.openAddContent()
+		})
+
+		this.addCommand({
+			id: 'refresh-metadata',
+			name: tr('cmd.refresh'),
+			callback: () => { void this.tryRefresh(true) }
+		})
+
+		this.addCommand({
+			id: 'search-library',
+			name: tr('cmd.searchLibrary'),
+			callback: () => this.openLibrarySearch()
+		})
+
+		this.addCommand({
+			id: 'rebuild-graph-links',
+			name: tr('cmd.rebuildLinks'),
+			callback: () => { void this.rebuildGraphLinks() }
+		})
 	}
 
 	onunload(): void {
-		document.body.classList.remove('is-library-wide')
+		if (this.refreshTimer) clearTimeout(this.refreshTimer)
+		for (const timer of this.linkTimers.values()) clearTimeout(timer)
+		this.linkTimers.clear()
+		this.refreshCooldowns.clear()
 	}
 
 	async saveSettings(): Promise<void> {
 		await this.saveData(this.settings)
-		await this.updateLibraryFile()
+		this.refreshViews()
 	}
 
-	private applyWideStyle(): void {
-		setTimeout(() => {
-			const activeFile = this.app.workspace.getActiveFile()
-			if (activeFile?.path === this.settings.libraryFilePath) {
-				document.body.classList.add('is-library-wide')
-			} else {
-				document.body.classList.remove('is-library-wide')
-			}
-		}, 50)
+	private async activateView(): Promise<void> {
+		const { workspace } = this.app
+		const existing = workspace.getLeavesOfType(LIBRARY_VIEW_TYPE)
+		if (existing[0]) {
+			void workspace.revealLeaf(existing[0])
+			return
+		}
+		const leaf = workspace.getLeaf('tab')
+		await leaf.setViewState({ type: LIBRARY_VIEW_TYPE, active: true })
+		void workspace.revealLeaf(leaf)
 	}
 
-	private async updateLibraryFile(): Promise<void> {
-		const { libraryFilePath, categories } = this.settings
-		const file = this.app.vault.getAbstractFileByPath(libraryFilePath)
-		if (!(file instanceof TFile)) return
+	private refreshViews(): void {
+		for (const leaf of this.app.workspace.getLeavesOfType(LIBRARY_VIEW_TYPE)) {
+			if (leaf.view instanceof LibraryView) leaf.view.render()
+		}
+	}
 
-		const allFiles = this.app.vault.getMarkdownFiles()
-		let finalContent = ''
+	openLibrarySearch(): void {
+		const types = new Set(this.settings.categories.map(c => c.typeValue))
+		const files = this.app.vault.getMarkdownFiles().filter(f => {
+			if (isTemplateFile(f.path)) return false
+			const type = this.app.metadataCache.getFileCache(f)?.frontmatter?.Type
+			return typeof type === 'string' && types.has(type)
+		})
+		new LibrarySearchModal(this.app, files, (file) => {
+			void this.app.workspace.getLeaf(false).openFile(file)
+		}).open()
+	}
 
-		categories.forEach((cat, index) => {
-			if (index > 0) finalContent += '\n'
-			finalContent += `## ${cat.name}\n`
-
-			const filteredFiles = allFiles.filter(f => {
-				if (f.path === libraryFilePath) return false
-				if (isTemplateFile(f.path)) return false
-				const cache = this.app.metadataCache.getFileCache(f)
-				return cache?.frontmatter?.Type === cat.typeValue
-			})
-
-			filteredFiles.sort((a, b) => a.basename.localeCompare(b.basename))
-
-			if (filteredFiles.length > 0) {
-				filteredFiles.forEach(f => {
-					finalContent += `- [[${f.basename}]]\n`
-				})
-			} else {
-				finalContent += `${tr('library.emptyList')}\n`
+	openAddContent(): void {
+		const categories = this.settings.categories
+		if (categories.length === 0) {
+			new Notice(tr('modal.noCategories'))
+			return
+		}
+		new PickTypeModal(this.app, categories, (category) => {
+			const provider = this.registry.forType(category.contentType)
+			if (!provider) {
+				new PromptModal(this.app, tr('modal.search.placeholder'), (title) => {
+					void this.createManual(category, title)
+				}).open()
+				return
 			}
+			new AddContentModal(this.app, provider, category.contentType, (result) => {
+				void this.createFromResult(category, result)
+			}).open()
+		}).open()
+	}
+
+	private async createManual(category: ICategory, title: string): Promise<void> {
+		const path = await this.uniqueNotePath(title, category.folder)
+		const file = await this.app.vault.create(path, '')
+		await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
+			fm.Type = category.typeValue
+			fm.Name = title
+			fm['My Rating'] = null
+			fm.Complete = false
+			fm.Progress = ''
+			fm.Date = todayDmy()
+		})
+		await this.ensureHub(category)
+		await this.writeGraphLinks(file, category.typeValue, [], [])
+		await this.app.workspace.getLeaf(false).openFile(file)
+		new Notice(tr('notice.created', { name: title }))
+	}
+
+	private async createFromResult(category: ICategory, result: SearchResult): Promise<void> {
+		const provider = this.registry.forType(category.contentType)
+		if (!provider) return
+		new Notice(tr('notice.searching'))
+		const meta = await provider.fetch(result.sourceId, category.contentType, result.raw)
+		if (!meta) {
+			new Notice(tr('notice.notFound'))
+			return
+		}
+
+		const path = await this.uniqueNotePath(result.title, category.folder)
+		const file = await this.app.vault.create(path, '')
+
+		await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
+			fm.Type = category.typeValue
+			this.applyMetaFields(fm, meta)
+			fm.Progress = meta.progressTotal ? `0/${String(meta.progressTotal)}` : ''
+			fm['My Rating'] = null
+			fm.Complete = false
+			fm.Date = todayDmy()
+			fm.Source = provider.id
+			fm['Source ID'] = result.sourceId
 		})
 
-		const currentContent = await this.app.vault.read(file)
-		if (currentContent !== finalContent) {
-			await this.app.vault.modify(file, finalContent)
-		}
+		await this.ensureHub(category)
+		await this.writeGraphLinks(
+			file,
+			category.typeValue,
+			toStrArray(meta.fields.Genre),
+			toStrArray(meta.fields.Creator)
+		)
+
+		await this.app.workspace.getLeaf(false).openFile(file)
+		new Notice(tr('notice.created', { name: toStr(meta.fields.Name) || result.title }))
 	}
 
-	private async tryFetchIMDbRating(force = false): Promise<void> {
-		if (!this.settings.omdbApiKey) return
-		if (this.isFetching) return
-		this.isFetching = true
+	private async ensureHub(category: ICategory): Promise<void> {
+		const name = sanitizeLink(category.typeValue)
+		if (!name) return
+		const dir = category.folder.trim()
+		if (dir && !this.app.vault.getAbstractFileByPath(normalizePath(dir))) {
+			try {
+				await this.app.vault.createFolder(normalizePath(dir))
+			} catch (e) {
+				console.error('Library: hub folder error', e)
+			}
+		}
+		const path = normalizePath(dir ? `${dir}/${name}.md` : `${name}.md`)
+		if (this.app.vault.getAbstractFileByPath(path)) return
+		await this.app.vault.create(path, `# ${category.name}\n`)
+	}
+
+	private async writeGraphLinks(
+		file: TFile,
+		typeValue: string,
+		genres: string[],
+		creators: string[]
+	): Promise<void> {
+		const targets = [typeValue, ...genres, ...creators].map(sanitizeLink).filter(Boolean)
+		if (targets.length === 0) return
+		const links = targets.map(t => `[[${t}]]`)
+		const marker = '%%library-links%%'
+
+		const cache = this.app.metadataCache.getFileCache(file)?.frontmatter
+		const currentLinks = Array.isArray(cache?.Related) ? cache.Related.map(String) : []
+		const sameLinks =
+			currentLinks.length === links.length && currentLinks.every((v, i) => v === links[i])
+
+		const body = await this.app.vault.read(file)
+		const hasLegacy = body.includes(marker)
+		if (sameLinks && !hasLegacy) return
+
+		if (this.syncingLinks.has(file.path)) return
+		this.syncingLinks.add(file.path)
 		try {
-			await this.fetchAndUpdateMetadata(force)
+			if (hasLegacy) {
+				await this.app.vault.process(file, (data) => {
+					const i = data.indexOf(marker)
+					return i >= 0 ? data.slice(0, i).trimEnd() + '\n' : data
+				})
+			}
+			if (!sameLinks) {
+				await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
+					fm.Related = links
+				})
+			}
 		} finally {
-			this.isFetching = false
+			this.syncingLinks.delete(file.path)
 		}
 	}
 
-	private async fetchAndUpdateMetadata(force: boolean): Promise<void> {
+	private async syncNote(file: TFile): Promise<void> {
+		const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+		if (!fm) return
+		const category = this.settings.categories.find(c => c.typeValue === toStr(fm.Type))
+		if (!category) return
+		await this.syncCompleteProgress(file, fm)
+		await this.ensureHub(category)
+		await this.writeGraphLinks(file, category.typeValue, toStrArray(fm.Genre), toStrArray(fm.Creator))
+	}
+
+	private async syncCompleteProgress(file: TFile, fm: Record<string, unknown>): Promise<void> {
+		if (fm.Complete !== true) return
+		const match = toStr(fm.Progress).match(progressPattern)
+		if (!match) return
+		const watched = Number(match[1])
+		const total = Number(match[2])
+		if (total <= 0 || watched === total) return
+		if (this.syncingLinks.has(file.path)) return
+		this.syncingLinks.add(file.path)
+		try {
+			await this.app.fileManager.processFrontMatter(file, (current: Record<string, unknown>) => {
+				current.Progress = `${String(total)}/${String(total)}`
+			})
+		} finally {
+			this.syncingLinks.delete(file.path)
+		}
+	}
+
+	private async rebuildGraphLinks(): Promise<void> {
+		for (const category of this.settings.categories) await this.ensureHub(category)
+		const types = new Set(this.settings.categories.map(c => c.typeValue))
+		const files = this.app.vault.getMarkdownFiles().filter(f => {
+			if (isTemplateFile(f.path)) return false
+			const type = this.app.metadataCache.getFileCache(f)?.frontmatter?.Type
+			return typeof type === 'string' && types.has(type)
+		})
+		let count = 0
+		for (const file of files) {
+			await this.syncNote(file)
+			count++
+		}
+		new Notice(tr('notice.linksRebuilt', { count }))
+	}
+
+	private applyMetaFields(fm: Record<string, unknown>, meta: NormalizedMetadata): void {
+		for (const [key, value] of Object.entries(meta.fields)) {
+			if (isEmptyValue(value)) continue
+			fm[key] = value
+		}
+	}
+
+	private async uniqueNotePath(title: string, categoryFolder: string): Promise<string> {
+		const folder = categoryFolder.trim()
+		const base = sanitizeFilename(title)
+		const dir = folder ? normalizePath(folder) : ''
+		if (dir && !this.app.vault.getAbstractFileByPath(dir)) {
+			try {
+				await this.app.vault.createFolder(dir)
+			} catch (e) {
+				console.error('Library: folder create error', e)
+			}
+		}
+		const build = (name: string): string => normalizePath(dir ? `${dir}/${name}.md` : `${name}.md`)
+		let candidate = build(base)
+		let counter = 2
+		while (this.app.vault.getAbstractFileByPath(candidate)) {
+			candidate = build(`${base} (${String(counter)})`)
+			counter++
+		}
+		return candidate
+	}
+
+	private async tryRefresh(force: boolean): Promise<void> {
+		if (this.isRefreshing) return
 		const file = this.app.workspace.getActiveFile()
-		if (!file || !(file instanceof TFile)) return
+		if (!(file instanceof TFile)) return
+
+		const cache = this.app.metadataCache.getFileCache(file)
+		const fm: Record<string, unknown> | undefined = cache?.frontmatter
+		if (!fm) return
+
+		const category = this.settings.categories.find(c => c.typeValue === toStr(fm.Type))
+		if (!category) return
+		const provider = this.registry.forType(category.contentType)
+		if (!provider) return
+		const sourceId = toStr(fm['Source ID'])
+		if (!sourceId) return
 
 		if (!force) {
-			const lastFetch = this.fetchCooldowns.get(file.path)
-			if (lastFetch && Date.now() - lastFetch < 5 * 60 * 1000) return
+			const last = this.refreshCooldowns.get(file.path)
+			if (last && Date.now() - last < 5 * 60 * 1000) return
 		}
-		this.fetchCooldowns.set(file.path, Date.now())
+		this.refreshCooldowns.set(file.path, Date.now())
 
-		const cache = this.app.metadataCache.getFileCache(file)
-		const fm: Record<string, unknown> | undefined = cache?.frontmatter
-		if (!fm) return
-
-		const urlStr = toStr(fm.URL)
-		const imdbIdMatch = urlStr ? urlStr.match(/\/title\/(tt\d+)/) : null
-		const imdbID = imdbIdMatch?.[1]
-
-		const hasType = fm.Type === 'Movie' || fm.Type === 'Series'
-		if (!hasType && !imdbID) return
-
-		const needType = !hasType && !!imdbID
-		const needRating = force || !fm['Rating IMDB']
-		const needCover = force || !(fm.Cover || fm.Image || fm.Baner)
-		const needCreator = force || !(fm.Creator || fm.Director)
-		const needYear = force || !fm.Year
-		const needGenre = force || !fm.Genre
-		const needURL = force || !fm.URL
-		const needSeason = force || (fm.Type === 'Series' && !fm.Season)
-		const needProgress = force || fm.Progress == null
-		const needSeriesUpdate = fm.Type === 'Series' && fm.Complete !== true && !!imdbID
-
-		if (
-			!needType && !needRating && !needCover && !needCreator &&
-			!needYear && !needGenre && !needURL && !needSeason &&
-			!needProgress && !needSeriesUpdate
-		) return
-
-		const title = toStr(fm.Name) || file.basename
-		const year = fm.Year ? toStr(fm.Year) : undefined
-		const type = fm.Type === 'Series' ? 'series' : fm.Type === 'Movie' ? 'movie' : undefined
-
+		this.isRefreshing = true
 		try {
-			const data = await this.fetchOMDb(title, year, type, imdbID)
-			if (!data) return
+			const meta = await provider.fetch(sourceId, category.contentType)
+			if (!meta) {
+				if (force) new Notice(tr('notice.notFound'))
+				return
+			}
+			const watched = parseWatched(fm.Progress)
 
-			const filled: string[] = []
-			let resolvedType: string | undefined = typeof fm.Type === 'string' ? fm.Type : undefined
-
-			if (needType && data.Type) {
-				const omdbType = data.Type.toLowerCase()
-				if (omdbType === 'movie') resolvedType = 'Movie'
-				else if (omdbType === 'series') resolvedType = 'Series'
-				if (resolvedType) {
-					await this.updateFrontmatterField(file, 'Type', resolvedType)
-					filled.push(tr('notice.type', { value: resolvedType }))
+			await this.app.fileManager.processFrontMatter(file, (current: Record<string, unknown>) => {
+				for (const [key, value] of Object.entries(meta.fields)) {
+					if (isEmptyValue(value)) continue
+					if (isEmptyValue(current[key])) current[key] = value
 				}
-			}
-
-			if (needRating && data.imdbRating && data.imdbRating !== 'N/A') {
-				const rating = parseFloat(data.imdbRating)
-				await this.updateFrontmatterField(file, 'Rating IMDB', rating)
-				filled.push('IMDb: ' + String(rating))
-			}
-
-			if (needCover && data.Poster && data.Poster !== 'N/A') {
-				await this.updateFrontmatterField(file, 'Cover', data.Poster)
-				filled.push(tr('notice.poster'))
-			}
-
-			if (needCreator) {
-				const creatorSource =
-					data.Creator && data.Creator !== 'N/A' ? data.Creator
-					: data.Writer && data.Writer !== 'N/A' ? data.Writer
-					: data.Director && data.Director !== 'N/A' ? data.Director
-					: null
-				if (creatorSource) {
-					const persons = creatorSource.split(',').map(s => sanitize(s)).filter(Boolean)
-					await this.updateFrontmatterField(file, 'Creator', persons)
-					filled.push(tr('notice.creator'))
+				if (typeof meta.fields.Season === 'number' && meta.fields.Season > Number(current.Season || 0)) {
+					current.Season = meta.fields.Season
 				}
-			}
-
-			if (needYear && data.Year && data.Year !== 'N/A') {
-				const yearMatch = data.Year.match(/^(\d{4})/)
-				const yearStr = yearMatch?.[1]
-				if (yearStr) {
-					await this.updateFrontmatterField(file, 'Year', parseInt(yearStr))
-					filled.push(tr('notice.year', { value: yearStr }))
+				if (meta.progressTotal) {
+					current.Progress = `${String(watched)}/${String(meta.progressTotal)}`
 				}
-				const endMatch = data.Year.match(/\u2013(\d{4})/)
-				const endStr = endMatch?.[1]
-				if (endStr) {
-					await this.updateFrontmatterField(file, 'End Year', parseInt(endStr))
-				}
-			}
+			})
 
-			if (needGenre && data.Genre && data.Genre !== 'N/A') {
-				const genres = data.Genre.split(',').map(s => sanitize(s)).filter(Boolean)
-				await this.updateFrontmatterField(file, 'Genre', genres)
-				filled.push(tr('notice.genres'))
-			}
-
-			if (needURL && data.imdbID) {
-				await this.updateFrontmatterField(file, 'URL', 'https://www.imdb.com/title/' + data.imdbID + '/')
-				filled.push('URL')
-			}
-
-			if (resolvedType === 'Series' && data.totalSeasons && data.totalSeasons !== 'N/A') {
-				await this.updateSeriesProgress(file, fm, data, force, filled)
-			}
-
-			if (resolvedType === 'Movie' && (force || fm.Progress == null)) {
-				await this.updateFrontmatterField(file, 'Progress', '0/1')
-			}
-
-			await this.ensureFrontmatterFields(file)
-
-			if (filled.length > 0) {
-				new Notice(title + ': ' + filled.join(', '))
-			}
+			if (force) new Notice(tr('notice.created', { name: toStr(meta.fields.Name) || file.basename }))
 		} catch (e) {
-			console.error('Library: OMDb fetch error', e)
+			console.error('Library: refresh error', e)
+		} finally {
+			this.isRefreshing = false
 		}
 	}
 
-	private async updateSeriesProgress(
-		file: TFile,
-		fm: Record<string, unknown>,
-		data: OMDbResponse,
-		force: boolean,
-		filled: string[]
-	): Promise<void> {
-		const totalSeasons = parseInt(data.totalSeasons!)
+	private refreshBanner(): void {
+		const view = this.app.workspace.getActiveViewOfType(MarkdownView)
+		if (!view || !view.file) return
+		const sizer = view.containerEl.querySelector('.markdown-preview-sizer')
+		if (!(sizer instanceof HTMLElement)) return
+		sizer.querySelectorAll('.note-header').forEach(h => h.remove())
 
-		if (force || !fm.Season) {
-			await this.updateFrontmatterField(file, 'Season', totalSeasons)
-			filled.push(tr('notice.seasons', { value: totalSeasons }))
-		}
-
-		if (fm.Season && totalSeasons > Number(fm.Season)) {
-			await this.updateFrontmatterField(file, 'Season', totalSeasons)
-			filled.push(tr('notice.seasons', { value: totalSeasons }))
-		}
-
-		if (data.imdbID && fm.Complete !== true) {
-			const totalEpisodes = await this.fetchTotalEpisodes(data.imdbID, totalSeasons)
-			if (totalEpisodes > 0) {
-				const progressStr = fm.Progress != null ? toStr(fm.Progress) : null
-				const progressMatch = progressStr?.match(/^(\d+)\s*\/\s*(\d+)$/)
-				if (progressMatch?.[1] && progressMatch[2]) {
-					const current = parseInt(progressMatch[1])
-					const oldTotal = parseInt(progressMatch[2])
-					if (totalEpisodes !== oldTotal) {
-						await this.updateFrontmatterField(file, 'Progress', current + '/' + String(totalEpisodes))
-						filled.push(tr('notice.episodes', { value: totalEpisodes }))
-					}
-				} else {
-					await this.updateFrontmatterField(file, 'Progress', '0/' + String(totalEpisodes))
-					filled.push(tr('notice.episodes', { value: totalEpisodes }))
-				}
-			}
-		}
-	}
-
-	private async fetchOMDb(
-		title: string,
-		year?: string,
-		type?: string,
-		imdbID?: string
-	): Promise<OMDbResponse | null> {
-		const params = new URLSearchParams({ apikey: this.settings.omdbApiKey })
-
-		if (imdbID) {
-			params.set('i', imdbID)
-		} else {
-			params.set('t', title)
-			if (year) params.set('y', year)
-			if (type) params.set('type', type)
-		}
-
-		const resp = await requestUrl({ url: 'https://www.omdbapi.com/?' + params.toString() })
-		if (resp.status === 200 && resp.json?.Response !== 'False') {
-			const result: OMDbResponse = resp.json
-			return result
-		}
-		return null
-	}
-
-	private async fetchTotalEpisodes(imdbID: string, totalSeasons: number): Promise<number> {
-		let total = 0
-		for (let s = 1; s <= totalSeasons; s++) {
-			try {
-				const params = new URLSearchParams({
-					apikey: this.settings.omdbApiKey,
-					i: imdbID,
-					Season: String(s)
-				})
-				const resp = await requestUrl({ url: 'https://www.omdbapi.com/?' + params.toString() })
-				const data: OMDbSeasonResponse = resp.json
-				if (resp.status === 200 && data.Episodes) {
-					total += data.Episodes.length
-				}
-			} catch (e) {
-				console.error('Library: OMDb season ' + String(s) + ' fetch error', e)
-			}
-		}
-		return total
-	}
-
-	private async updateFrontmatterField(
-		file: TFile,
-		field: string,
-		value: string | number | string[]
-	): Promise<void> {
-		await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
-			fm[field] = value
-		})
-	}
-
-	private async ensureFrontmatterFields(file: TFile): Promise<void> {
-		const now = new Date()
-		const dd = String(now.getDate()).padStart(2, '0')
-		const mm = String(now.getMonth() + 1).padStart(2, '0')
-		const todayStr = dd + '.' + mm + '.' + String(now.getFullYear())
-
-		const defaults: Record<string, unknown> = {
-			Name: file.basename,
-			Progress: '',
-			Complete: '',
-			'My Rating': '',
-			Date: todayStr,
-			URL: ''
-		}
-
-		await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
-			for (const [field, defaultValue] of Object.entries(defaults)) {
-				if (fm[field] === undefined) {
-					fm[field] = defaultValue
-				}
-			}
-		})
-	}
-
-	private renderCards(element: HTMLElement, context: MarkdownPostProcessorContext): void {
-		if (context.sourcePath !== this.settings.libraryFilePath) return
-
-		const lists = element.querySelectorAll('ul')
-
-		lists.forEach(ul => {
-			const cards: CardData[] = []
-			const items = ul.querySelectorAll('li')
-
-			items.forEach(li => {
-				const linkEl = li.querySelector('a.internal-link')
-				if (!(linkEl instanceof HTMLElement)) return
-				const fileName = linkEl.getAttribute('data-href') || linkEl.innerText
-				const targetFile = this.app.metadataCache.getFirstLinkpathDest(fileName, context.sourcePath)
-				if (!(targetFile instanceof TFile)) return
-
-				const cache = this.app.metadataCache.getFileCache(targetFile)
-				const fm = cache?.frontmatter ?? {}
-				cards.push({
-					link: linkEl,
-					targetFile,
-					fm,
-					name: toStr(fm.Name) || targetFile.basename,
-					year: Number(fm.Year) || 0,
-					rating: Number(fm['My Rating'] || fm.Rating) || 0,
-					date: parseDate(fm.Date)
-				})
-			})
-
-			const wrapper = document.createElement('div')
-			wrapper.classList.add('library-section')
-
-			const toolbar = document.createElement('div')
-			toolbar.classList.add('library-toolbar')
-
-			const collapseBtn = document.createElement('button')
-			collapseBtn.classList.add('library-collapse-btn')
-			collapseBtn.setText('\u25bc')
-			toolbar.appendChild(collapseBtn)
-
-			const sortOptions = [
-				{ label: tr('sort.name'), key: 'name' },
-				{ label: tr('sort.year'), key: 'year' },
-				{ label: tr('sort.rating'), key: 'rating' },
-				{ label: tr('sort.date'), key: 'date' }
-			]
-
-			const spacer = document.createElement('div')
-			spacer.classList.add('library-toolbar-spacer')
-			toolbar.appendChild(spacer)
-
-			const sortDropdown = document.createElement('div')
-			sortDropdown.classList.add('library-sort-dropdown')
-
-			const sortTrigger = document.createElement('button')
-			sortTrigger.classList.add('library-sort-trigger')
-			sortTrigger.setText(tr('sort.name') + ' \u25be')
-			sortDropdown.appendChild(sortTrigger)
-
-			const sortMenu = document.createElement('div')
-			sortMenu.classList.add('library-sort-menu')
-			sortDropdown.appendChild(sortMenu)
-
-			let currentSort = 'name'
-			let sortAsc = true
-
-			const updateTriggerLabel = (): void => {
-				const opt = sortOptions.find(o => o.key === currentSort)
-				const arrow = sortAsc ? '\u2191' : '\u2193'
-				sortTrigger.setText((opt?.label ?? '') + ' ' + arrow)
-			}
-
-			sortOptions.forEach(opt => {
-				const item = document.createElement('button')
-				item.classList.add('library-sort-menu-item')
-				if (opt.key === 'name') item.classList.add('active')
-				item.setText(opt.label)
-				item.addEventListener('click', e => {
-					e.stopPropagation()
-					if (currentSort === opt.key) {
-						sortAsc = !sortAsc
-					} else {
-						currentSort = opt.key
-						sortAsc = opt.key === 'name'
-					}
-					sortMenu.querySelectorAll('.library-sort-menu-item').forEach(b => b.classList.remove('active'))
-					item.classList.add('active')
-					updateTriggerLabel()
-					sortMenu.classList.remove('open')
-					renderSorted()
-				})
-				sortMenu.appendChild(item)
-			})
-
-			sortTrigger.addEventListener('click', e => {
-				e.stopPropagation()
-				sortMenu.classList.toggle('open')
-			})
-
-			this.registerDomEvent(document, 'click', () => {
-				sortMenu.classList.remove('open')
-			})
-
-			toolbar.appendChild(sortDropdown)
-			wrapper.appendChild(toolbar)
-
-			const container = document.createElement('div')
-			container.classList.add('library-grid')
-
-			collapseBtn.addEventListener('click', () => {
-				const isCollapsed = container.classList.toggle('collapsed')
-				collapseBtn.setText(isCollapsed ? '\u25b6' : '\u25bc')
-				if (isCollapsed) {
-					const firstCard = container.querySelector('.library-card')
-					if (firstCard instanceof HTMLElement) {
-						container.style.setProperty('--row-height', firstCard.offsetHeight + 'px')
-					}
-				} else {
-					container.style.removeProperty('--row-height')
-				}
-			})
-
-			const renderSorted = (): void => {
-				const sorted = [...cards]
-				sorted.sort((a, b) => {
-					let cmp = 0
-					switch (currentSort) {
-						case 'name': cmp = a.name.localeCompare(b.name); break
-						case 'year': cmp = a.year - b.year; break
-						case 'rating': cmp = a.rating - b.rating; break
-						case 'date': cmp = a.date - b.date; break
-					}
-					return sortAsc ? cmp : -cmp
-				})
-
-				container.empty()
-				sorted.forEach(({ link, targetFile, fm }) => {
-					const card = container.createDiv({ cls: 'library-card' })
-					card.onClickEvent(() => {
-						void this.app.workspace.getLeaf(false).openFile(targetFile)
-					})
-
-					const cover = fm.Cover || fm.Image || fm.Baner
-					const imgDiv = card.createDiv({ cls: 'card-image' })
-					if (cover) {
-						const img = document.createElement('img')
-						const coverStr = toStr(cover)
-						img.src = coverStr.startsWith('http')
-							? coverStr
-							: this.app.vault.adapter.getResourcePath(coverStr)
-						imgDiv.appendChild(img)
-					} else {
-						imgDiv.createSpan({ text: '\ud83c\udfac' })
-					}
-
-					const infoDiv = card.createDiv({ cls: 'card-info' })
-					const titleDiv = infoDiv.createDiv({ cls: 'card-title' })
-					titleDiv.appendChild(link.cloneNode(true))
-
-					const authorValue = fm.Author || fm.Creator || fm.Director || fm.Artist
-					if (authorValue) {
-						const authorDiv = infoDiv.createDiv({ cls: 'card-author' })
-						authorDiv.setText(toStr(authorValue))
-					}
-
-					if (fm.Year) {
-						infoDiv.createDiv({ cls: 'card-year' }).setText(toStr(fm.Year))
-					}
-
-					const myRating = fm['My Rating'] || fm.Rating
-					const imdbRating = fm['Rating IMDB']
-					if (imdbRating || myRating) {
-						const parts: string[] = []
-						if (imdbRating) parts.push('IMDb ' + toStr(imdbRating))
-						if (myRating) parts.push('My ' + toStr(myRating))
-						infoDiv.createDiv({ cls: 'card-rating' }).setText(parts.join(' | '))
-					}
-
-					if (fm.Complete !== true && fm.Progress != null) {
-						const percent = parseProgress(fm.Progress)
-						if (percent > 0) {
-							const progressContainer = infoDiv.createDiv({ cls: 'card-progress' })
-							progressContainer.createDiv({ cls: 'card-progress-label' }).setText(String(percent) + '%')
-							const progressBar = progressContainer.createDiv({ cls: 'card-progress-bar' })
-							const progressFill = progressBar.createDiv({ cls: 'card-progress-fill' })
-							progressFill.setCssStyles({ width: String(percent) + '%' })
-						}
-					}
-				})
-			}
-
-			renderSorted()
-			wrapper.appendChild(container)
-			ul.replaceWith(wrapper)
-		})
-	}
-
-	private renderNoteHeader(element: HTMLElement, context: MarkdownPostProcessorContext): void {
-		if (context.sourcePath === this.settings.libraryFilePath) return
-
-		const file = this.app.metadataCache.getFirstLinkpathDest(context.sourcePath, '')
-		if (!(file instanceof TFile)) return
-
-		const cache = this.app.metadataCache.getFileCache(file)
-		const fm: Record<string, unknown> | undefined = cache?.frontmatter
+		const fm = this.app.metadataCache.getFileCache(view.file)?.frontmatter
 		if (!fm) return
+		if (!this.settings.categories.some(c => c.typeValue === toStr(fm.Type))) return
 
-		const knownTypes = this.settings.categories.map(c => c.typeValue)
-		if (!fm.Type || !knownTypes.includes(toStr(fm.Type))) return
+		const header = this.buildNoteHeader(view.file, fm)
+		const props = sizer.querySelector('.metadata-container')
+		if (props) {
+			props.insertAdjacentElement('afterend', header)
+		} else {
+			sizer.insertBefore(header, sizer.firstChild)
+		}
+	}
 
-		const parent = element.closest('.markdown-preview-sizer, .markdown-rendered')
-		if (parent?.querySelector('.note-header')) return
-
-		const firstEl = element.querySelector('h1, h2, h3, p, ul, ol, hr, blockquote, table, pre')
-		if (!firstEl) return
-
+	private buildNoteHeader(file: TFile, fm: Record<string, unknown>): HTMLElement {
 		const cover = fm.Cover || fm.Image || fm.Baner
 		const name = toStr(fm.Name) || file.basename
 		const creator = fm.Creator || fm.Director || fm.Author || fm.Artist
@@ -707,7 +486,7 @@ export default class LibraryPlugin extends Plugin {
 		}
 
 		if (creatorStr) addRow(tr('header.creator'), creatorStr)
-		const yearsStr = year + (endYear ? '\u2013' + endYear : '')
+		const yearsStr = year + (endYear ? '–' + endYear : '')
 		if (yearsStr) addRow(tr('header.years'), yearsStr)
 		if (season) addRow(tr('header.seasons'), season)
 
@@ -744,10 +523,14 @@ export default class LibraryPlugin extends Plugin {
 		}
 
 		header.appendChild(infoSide)
-		element.insertBefore(header, element.firstChild)
+		return header
 	}
 
 	private async loadSettings(): Promise<void> {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData())
+		for (const cat of this.settings.categories) {
+			if (!cat.contentType) cat.contentType = inferContentType(cat.typeValue)
+			if (cat.folder === undefined) cat.folder = ''
+		}
 	}
 }

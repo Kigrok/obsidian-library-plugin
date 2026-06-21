@@ -290,12 +290,143 @@
 	border-radius: 6px;
 }
 
-body.is-library-wide .workspace-leaf.mod-active .markdown-source-view.mod-cm6 .cm-contentContainer,
-body.is-library-wide .workspace-leaf.mod-active .markdown-source-view.mod-cm6 .cm-content,
-body.is-library-wide .workspace-leaf.mod-active .markdown-rendered,
-body.is-library-wide .workspace-leaf.mod-active .markdown-preview-sizer,
-body.is-library-wide .workspace-leaf.mod-active .markdown-readable-line-length {
-	max-width: 90%;
-	width: 90%;
-	margin: 0 auto;
+.library-view {
+	padding: 28px 36px 48px;
+	overflow-y: auto;
+	scrollbar-gutter: stable both-edges;
+	box-sizing: border-box;
+}
+
+.library-view .library-toolbar {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.library-view .library-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	gap: 20px;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.library-view .library-grid .library-card {
+	width: auto;
+}
+
+.library-view .library-page-header {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 24px;
+	flex-wrap: wrap;
+}
+
+.library-toc {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+	flex-grow: 1;
+}
+
+.library-toc-item {
+	background: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 14px;
+	padding: 4px 12px;
+	font-size: 0.8em;
+	cursor: pointer;
+	color: var(--text-muted);
+}
+
+.library-toc-item:hover {
+	color: var(--text-normal);
+	background: var(--background-modifier-hover);
+}
+
+.library-actions {
+	display: flex;
+	gap: 6px;
+	margin-left: auto;
+}
+
+.library-icon-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 6px;
+	cursor: pointer;
+	border: 1px solid var(--background-modifier-border);
+	background: var(--background-secondary);
+	color: var(--text-normal);
+}
+
+.library-icon-btn:hover {
+	background: var(--background-modifier-hover);
+}
+
+.library-icon-btn .svg-icon {
+	width: 22px;
+	height: 22px;
+}
+
+.library-view .library-section {
+	margin-bottom: 36px;
+}
+
+.library-view .library-section h2 {
+	margin: 0 0 4px;
+}
+
+.library-view .library-toolbar {
+	margin-bottom: 14px;
+}
+
+.library-page-header {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 16px;
+}
+
+.library-prompt-input {
+	width: 100%;
+	margin-bottom: 12px;
+}
+
+.library-suggest {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.library-suggest-cover {
+	width: 36px;
+	height: 54px;
+	object-fit: cover;
+	border-radius: 4px;
+	flex-shrink: 0;
+}
+
+.library-suggest-info {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+.library-suggest-title {
+	font-weight: 600;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.library-suggest-meta {
+	font-size: 0.8em;
+	color: var(--text-muted);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
