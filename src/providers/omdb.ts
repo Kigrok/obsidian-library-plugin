@@ -67,7 +67,7 @@ export class OmdbProvider implements ContentProvider {
 	async search(query: string, type: ContentType): Promise<SearchResult[]> {
 		if (!this.getKey()) return []
 		const omdbType = type === 'series' ? 'series' : 'movie'
-		const resp = await requestUrl({ url: this.url({ s: query, type: omdbType }) })
+		const resp = await requestUrl({ url: this.url({ s: query, type: omdbType }), throw: false })
 		if (resp.status !== 200) return []
 		const data = resp.json as OmdbSearchResponse
 		if (!data || typeof data !== 'object' || data.Response === 'False') return []
@@ -85,7 +85,7 @@ export class OmdbProvider implements ContentProvider {
 
 	async fetch(sourceId: string, type: ContentType): Promise<NormalizedMetadata | null> {
 		if (!this.getKey()) return null
-		const resp = await requestUrl({ url: this.url({ i: sourceId }) })
+		const resp = await requestUrl({ url: this.url({ i: sourceId }), throw: false })
 		if (resp.status !== 200) return null
 		const details = resp.json as OmdbDetails
 		if (!details || typeof details !== 'object' || details.Response === 'False') return null
@@ -135,7 +135,7 @@ export class OmdbProvider implements ContentProvider {
 		let total = 0
 		for (let season = 1; season <= totalSeasons; season++) {
 			try {
-				const resp = await requestUrl({ url: this.url({ i: imdbId, Season: String(season) }) })
+				const resp = await requestUrl({ url: this.url({ i: imdbId, Season: String(season) }), throw: false })
 				if (resp.status !== 200) continue
 				const data = resp.json as OmdbSeasonResponse
 				if (Array.isArray(data?.Episodes)) total += data.Episodes.length

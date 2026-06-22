@@ -49,6 +49,14 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'settings.omdb.desc':
 			'Used to auto-fill IMDb rating and metadata for movies and series. Get a key at: https://www.omdbapi.com/apikey.aspx',
 		'settings.omdb.placeholder': 'Example: a1b2c3d4',
+		'settings.google.name': 'Google Books API key (optional)',
+		'settings.google.desc':
+			'Required for Google Books search — the keyless quota is shared and usually exhausted. Get a free key: enable the Books API at https://console.cloud.google.com/apis/library/books.googleapis.com',
+		'settings.google.placeholder': 'Example: AIzaSy…',
+		'settings.rawg.name': 'RAWG API key (for games)',
+		'settings.rawg.desc':
+			'Required for game search. Get a free key at: https://rawg.io/apidocs',
+		'settings.rawg.placeholder': 'Example: 0a1b2c3d…',
 		'settings.section.categories': 'Categories',
 		'settings.categories.desc':
 			'Each category shows notes whose Type frontmatter equals the value below.',
@@ -427,9 +435,13 @@ export interface ICategory {
 export interface ILibrarySettings {
 	categories: ICategory[]
 	omdbApiKey: string
+	googleBooksApiKey: string
+	rawgApiKey: string
 }
 
 export const DEFAULT_SETTINGS: ILibrarySettings = {
 	categories: [],
-	omdbApiKey: ''
+	omdbApiKey: '',
+	googleBooksApiKey: '',
+	rawgApiKey: ''
 }

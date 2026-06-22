@@ -31,6 +31,32 @@ export class LibrarySettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
+			.setName(tr("settings.google.name"))
+			.setDesc(tr("settings.google.desc"))
+			.addText((text) =>
+				text
+					.setPlaceholder(tr("settings.google.placeholder"))
+					.setValue(this.plugin.settings.googleBooksApiKey)
+					.onChange(async (v) => {
+						this.plugin.settings.googleBooksApiKey = v.trim();
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl)
+			.setName(tr("settings.rawg.name"))
+			.setDesc(tr("settings.rawg.desc"))
+			.addText((text) =>
+				text
+					.setPlaceholder(tr("settings.rawg.placeholder"))
+					.setValue(this.plugin.settings.rawgApiKey)
+					.onChange(async (v) => {
+						this.plugin.settings.rawgApiKey = v.trim();
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl)
 			.setName(tr("settings.section.categories"))
 			.setHeading();
 		containerEl.createEl("p", { text: tr("settings.categories.desc") });
@@ -69,7 +95,9 @@ export class LibrarySettingTab extends PluginSettingTab {
 					d
 						.addOption("movie", "OMDb · movie")
 						.addOption("series", "OMDb · series")
-						.addOption("book", "Open Library · book")
+						.addOption("book", "Books · Google + Open Library")
+						.addOption("game", "RAWG · game")
+						.addOption("music", "Deezer · music")
 						.addOption("manual", tr("settings.category.manual"))
 						.setValue(cat.contentType)
 						.onChange(async (v) => {

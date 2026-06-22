@@ -11,6 +11,10 @@ import { LibrarySettingTab } from './settings'
 import { ProviderRegistry } from './providers/registry'
 import { OmdbProvider } from './providers/omdb'
 import { OpenLibraryProvider } from './providers/openlibrary'
+import { GoogleBooksProvider } from './providers/googlebooks'
+import { BookAggregatorProvider } from './providers/bookAggregator'
+import { RawgProvider } from './providers/rawg'
+import { DeezerProvider } from './providers/deezer'
 import type { NormalizedMetadata, SearchResult } from './providers/types'
 import { PickTypeModal } from './ui/pickTypeModal'
 import { AddContentModal } from './ui/addContentModal'
@@ -42,8 +46,12 @@ export default class LibraryPlugin extends Plugin {
 
 	async onload(): Promise<void> {
 		await this.loadSettings()
+		const googleBooks = new GoogleBooksProvider(() => this.settings.googleBooksApiKey)
+		const openLibrary = new OpenLibraryProvider()
 		this.registry.register(new OmdbProvider(() => this.settings.omdbApiKey))
-		this.registry.register(new OpenLibraryProvider())
+		this.registry.register(new BookAggregatorProvider(googleBooks, openLibrary))
+		this.registry.register(new RawgProvider(() => this.settings.rawgApiKey))
+		this.registry.register(new DeezerProvider())
 		this.addSettingTab(new LibrarySettingTab(this.app, this))
 
 		this.registerView(LIBRARY_VIEW_TYPE, (leaf) => new LibraryView(leaf, this))
@@ -532,6 +540,7 @@ export default class LibraryPlugin extends Plugin {
 		if (!Array.isArray(this.settings.categories)) this.settings.categories = []
 		for (const cat of this.settings.categories) {
 			if (!cat.contentType) cat.contentType = inferContentType(cat.typeValue)
+			if (cat.contentType === 'googlebook') cat.contentType = 'book'
 			if (cat.folder === undefined) cat.folder = ''
 		}
 	}

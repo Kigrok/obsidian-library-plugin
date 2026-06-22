@@ -31,7 +31,7 @@ export class OpenLibraryProvider implements ContentProvider {
 
 	async search(query: string): Promise<SearchResult[]> {
 		const params = new URLSearchParams({ q: query, fields: OpenLibraryProvider.FIELDS, limit: '20' })
-		const resp = await requestUrl({ url: `${OpenLibraryProvider.SEARCH}?${params.toString()}` })
+		const resp = await requestUrl({ url: `${OpenLibraryProvider.SEARCH}?${params.toString()}`, throw: false })
 		if (resp.status !== 200) return []
 		const data = resp.json as OpenLibrarySearchResponse
 		const docs = Array.isArray(data?.docs) ? data.docs : []

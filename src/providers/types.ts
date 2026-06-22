@@ -1,4 +1,4 @@
-export const CONTENT_TYPES = ['movie', 'series', 'book', 'game', 'anime', 'manual'] as const
+export const CONTENT_TYPES = ['movie', 'series', 'book', 'googlebook', 'game', 'music', 'anime', 'manual'] as const
 export type ContentType = (typeof CONTENT_TYPES)[number]
 
 export function isContentType(value: string): value is ContentType {

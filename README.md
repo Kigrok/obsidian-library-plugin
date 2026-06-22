@@ -30,7 +30,7 @@
 ## ✨ Key Features
 
 - 🖼️ **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- 🔎 **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library for books.
+- 🔎 **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books.
 - 📺 **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
 - 📊 **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
 - 📑 **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
@@ -75,7 +75,9 @@ Each category is bound to a source that powers its search:
 | Source           | Content types   | API key                                                      |
 | ---------------- | --------------- | ----------------------------------------------------------- |
 | **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Open Library** | Books           | None                                                        |
+| **Books**        | Books           | Open Library (no key) + Google Books (optional free key). Results are merged — Google Books first, Open Library below. |
+| **RAWG**         | Games           | Free key required — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Deezer**       | Music (albums)  | None                                                        |
 | **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
 
 ---
@@ -89,6 +91,9 @@ Library is **offline-first**. The plugin only contacts the network when you acti
 | `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
 | `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
 | `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
+| `www.googleapis.com` | You search a Google Books category | The title you type and your Google Books key | Fetch book metadata (author, year, categories, page count, cover, ISBN) |
+| `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
+| `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
 
 No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. The OMDb API key you enter is stored only in your local plugin settings and is sent solely to `www.omdbapi.com`. Movie and series cover images load directly from the poster URLs returned by OMDb.
 
