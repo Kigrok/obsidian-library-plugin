@@ -6,10 +6,13 @@ export const localeMap: Record<string, SupportedLocale> = {
 	ru: 'ru',
 	de: 'de',
 	es: 'es',
-	fr: 'fr'
+	fr: 'fr',
+	zh: 'zh',
+	ar: 'ar',
+	he: 'he'
 }
 
-export type SupportedLocale = 'en' | 'ru' | 'de' | 'es' | 'fr'
+export type SupportedLocale = 'en' | 'ru' | 'de' | 'es' | 'fr' | 'zh' | 'ar' | 'he'
 
 export const I18N: Record<SupportedLocale, Record<string, string>> = {
 	en: {
@@ -261,6 +264,156 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'settings.section.example': 'Note d’exemple',
 		'settings.example.desc':
 			'Pour inclure une note dans une catégorie, renseignez le champ Type dans le frontmatter.'
+	},
+	zh: {
+		'cmd.addContent': '添加内容',
+		'cmd.refresh': '刷新当前笔记的元数据',
+		'cmd.searchLibrary': '搜索你的库',
+		'cmd.openLibrary': '打开库',
+		'cmd.rebuildLinks': '重建关系图链接',
+		'view.title': '库',
+		'modal.pickType': '选择分类',
+		'modal.search.placeholder': '按标题搜索…',
+		'modal.searchLibrary': '搜索你的库…',
+		'modal.noCategories': '请先在设置中添加分类',
+		'modal.manualTitle': '新条目',
+		'modal.manualCreate': '创建',
+		'notice.created': '已创建：{name}',
+		'notice.notFound': '没有可更新的内容',
+		'notice.searching': '正在获取元数据…',
+		'notice.linksRebuilt': '已重建关系图链接：{count}',
+		'sort.name': 'A-Z',
+		'sort.year': '年份',
+		'sort.rating': '评分',
+		'sort.date': '日期',
+		'header.creator': '创作者',
+		'header.years': '年份',
+		'header.seasons': '季数',
+		'header.genre': '类型',
+		'header.myRating': '我的评分',
+		'header.progress': '进度',
+		'header.complete': '已完成',
+		'settings.intro':
+			'配置内容分类。从侧边栏图标打开“库”标签页以添加内容；笔记会根据其 frontmatter 中的 Type 字段归入分类。',
+		'settings.omdb.name': 'OMDb API 密钥（可选）',
+		'settings.omdb.desc':
+			'用于自动填充电影和剧集的 IMDb 评分和元数据。获取密钥：https://www.omdbapi.com/apikey.aspx',
+		'settings.omdb.placeholder': '例如：a1b2c3d4',
+		'settings.section.categories': '分类',
+		'settings.categories.desc':
+			'每个分类显示 Type frontmatter 等于下方值的笔记。',
+		'settings.category.name': '分类 {index}',
+		'settings.category.desc': '显示名称、匹配的 Type 值和来源',
+		'settings.category.name.placeholder': '名称（例如：电影）',
+		'settings.category.type.placeholder': 'Type（例如：Movie）',
+		'settings.category.folder': '文件夹',
+		'settings.category.folder.placeholder': '例如：Media/Movies',
+		'settings.category.manual': '手动 · 无来源',
+		'settings.addCategory': '添加分类',
+		'settings.newCategory': '新分类',
+		'settings.section.example': '示例笔记',
+		'settings.example.desc':
+			'要将笔记归入某个分类，请在 frontmatter 中设置 Type 字段。'
+	},
+	ar: {
+		'cmd.addContent': 'إضافة محتوى',
+		'cmd.refresh': 'تحديث البيانات الوصفية للملاحظة الحالية',
+		'cmd.searchLibrary': 'ابحث في مكتبتك',
+		'cmd.openLibrary': 'فتح المكتبة',
+		'cmd.rebuildLinks': 'إعادة بناء روابط الرسم البياني',
+		'view.title': 'المكتبة',
+		'modal.pickType': 'اختر فئة',
+		'modal.search.placeholder': 'ابحث بالعنوان…',
+		'modal.searchLibrary': 'ابحث في مكتبتك…',
+		'modal.noCategories': 'أضف فئة في الإعدادات أولاً',
+		'modal.manualTitle': 'إدخال جديد',
+		'modal.manualCreate': 'إنشاء',
+		'notice.created': 'تم الإنشاء: {name}',
+		'notice.notFound': 'لا يوجد شيء للتحديث',
+		'notice.searching': 'جارٍ جلب البيانات الوصفية…',
+		'notice.linksRebuilt': 'تمت إعادة بناء روابط الرسم البياني: {count}',
+		'sort.name': 'أ-ي',
+		'sort.year': 'السنة',
+		'sort.rating': 'التقييم',
+		'sort.date': 'التاريخ',
+		'header.creator': 'المُنشئ',
+		'header.years': 'السنوات',
+		'header.seasons': 'المواسم',
+		'header.genre': 'النوع',
+		'header.myRating': 'تقييمي',
+		'header.progress': 'التقدّم',
+		'header.complete': 'مكتمل',
+		'settings.intro':
+			'اضبط فئات المحتوى. افتح علامة تبويب المكتبة من الشريط الجانبي لإضافة محتوى؛ تُجمَّع الملاحظات في فئات حسب حقل Type في الـ frontmatter.',
+		'settings.omdb.name': 'مفتاح OMDb API (اختياري)',
+		'settings.omdb.desc':
+			'يُستخدم لملء تقييم IMDb والبيانات الوصفية للأفلام والمسلسلات تلقائيًا. احصل على مفتاح من: https://www.omdbapi.com/apikey.aspx',
+		'settings.omdb.placeholder': 'مثال: a1b2c3d4',
+		'settings.section.categories': 'الفئات',
+		'settings.categories.desc':
+			'تعرض كل فئة الملاحظات التي يساوي فيها حقل Type القيمة أدناه.',
+		'settings.category.name': 'الفئة {index}',
+		'settings.category.desc': 'الاسم المعروض، وقيمة Type المطابقة، والمصدر',
+		'settings.category.name.placeholder': 'الاسم (مثل: أفلام)',
+		'settings.category.type.placeholder': 'Type (مثل: Movie)',
+		'settings.category.folder': 'المجلد',
+		'settings.category.folder.placeholder': 'مثل: Media/Movies',
+		'settings.category.manual': 'يدوي · بدون مصدر',
+		'settings.addCategory': 'إضافة فئة',
+		'settings.newCategory': 'فئة جديدة',
+		'settings.section.example': 'ملاحظة مثال',
+		'settings.example.desc':
+			'لإدراج ملاحظة في فئة، عيّن حقل Type في الـ frontmatter.'
+	},
+	he: {
+		'cmd.addContent': 'הוסף תוכן',
+		'cmd.refresh': 'רענן מטא-נתונים של הפתק הנוכחי',
+		'cmd.searchLibrary': 'חפש בספרייה שלך',
+		'cmd.openLibrary': 'פתח את הספרייה',
+		'cmd.rebuildLinks': 'בנה מחדש קישורי גרף',
+		'view.title': 'ספרייה',
+		'modal.pickType': 'בחר קטגוריה',
+		'modal.search.placeholder': 'חיפוש לפי כותרת…',
+		'modal.searchLibrary': 'חפש בספרייה שלך…',
+		'modal.noCategories': 'הוסף קטגוריה בהגדרות תחילה',
+		'modal.manualTitle': 'רשומה חדשה',
+		'modal.manualCreate': 'צור',
+		'notice.created': 'נוצר: {name}',
+		'notice.notFound': 'אין מה לעדכן',
+		'notice.searching': 'מאחזר מטא-נתונים…',
+		'notice.linksRebuilt': 'קישורי הגרף נבנו מחדש: {count}',
+		'sort.name': 'א-ת',
+		'sort.year': 'שנה',
+		'sort.rating': 'דירוג',
+		'sort.date': 'תאריך',
+		'header.creator': 'יוצר',
+		'header.years': 'שנים',
+		'header.seasons': 'עונות',
+		'header.genre': 'ז׳אנר',
+		'header.myRating': 'הדירוג שלי',
+		'header.progress': 'התקדמות',
+		'header.complete': 'הושלם',
+		'settings.intro':
+			'הגדר קטגוריות תוכן. פתח את לשונית הספרייה מסרגל הצד כדי להוסיף תוכן; פתקים מקובצים לקטגוריות לפי שדה ה-Type ב-frontmatter.',
+		'settings.omdb.name': 'מפתח OMDb API (אופציונלי)',
+		'settings.omdb.desc':
+			'משמש למילוי אוטומטי של דירוג IMDb ומטא-נתונים לסרטים וסדרות. קבל מפתח בכתובת: https://www.omdbapi.com/apikey.aspx',
+		'settings.omdb.placeholder': 'לדוגמה: a1b2c3d4',
+		'settings.section.categories': 'קטגוריות',
+		'settings.categories.desc':
+			'כל קטגוריה מציגה פתקים שבהם שדה ה-Type שווה לערך שלמטה.',
+		'settings.category.name': 'קטגוריה {index}',
+		'settings.category.desc': 'שם תצוגה, ערך Type תואם, ומקור',
+		'settings.category.name.placeholder': 'שם (לדוגמה: סרטים)',
+		'settings.category.type.placeholder': 'Type (לדוגמה: Movie)',
+		'settings.category.folder': 'תיקייה',
+		'settings.category.folder.placeholder': 'לדוגמה: Media/Movies',
+		'settings.category.manual': 'ידני · ללא מקור',
+		'settings.addCategory': 'הוסף קטגוריה',
+		'settings.newCategory': 'קטגוריה חדשה',
+		'settings.section.example': 'פתק לדוגמה',
+		'settings.example.desc':
+			'כדי לכלול פתק בקטגוריה, הגדר את שדה ה-Type ב-frontmatter.'
 	}
 }
 
