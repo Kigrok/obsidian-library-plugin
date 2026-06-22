@@ -5,7 +5,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.0.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.0.1-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -37,7 +37,7 @@
 - 🛠️ **Custom Categories** — Create categories for Movies, Series, Books, or anything else via the manual source.
 - 🕸️ **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
 - 🔀 **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
-- 🌍 **Multilingual** — Native support for English, Russian, German, Spanish, and French.
+- 🌍 **Multilingual** — Native support for English, Russian, German, Spanish, French, Chinese, Arabic, and Hebrew.
 
 ---
 
