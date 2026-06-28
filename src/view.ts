@@ -2,7 +2,7 @@ import { ItemView, WorkspaceLeaf, TFile, setIcon } from 'obsidian'
 import type LibraryPlugin from './main'
 import type { ICategory } from './constants'
 import { tr } from './i18n'
-import { toStr, parseProgress, parseDate, isTemplateFile, coverSrc } from './util'
+import { toStr, toStrArray, parseProgress, parseDate, isTemplateFile, coverSrc } from './util'
 
 export const LIBRARY_VIEW_TYPE = 'library-view'
 
@@ -72,6 +72,156 @@ export class LibraryView extends ItemView {
 		return cards
 	}
 
+	private collectStats(): {
+		genres: [string, number][]
+		creators: [string, number][]
+		categoryTop: { name: string; items: CardData[] }[]
+	} {
+		const genres = new Map<string, number>()
+		const creators = new Map<string, number>()
+		const catCards = new Map<string, CardData[]>()
+		const mediaTypes = new Set(
+			this.plugin.settings.categories
+				.filter(c => c.contentType === 'movie' || c.contentType === 'series')
+				.map(c => c.typeValue)
+		)
+
+		for (const file of this.app.vault.getMarkdownFiles()) {
+			if (isTemplateFile(file.path)) continue
+			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+			if (!fm) continue
+
+			for (const g of toStrArray(fm.Genre)) {
+				genres.set(g, (genres.get(g) || 0) + 1)
+			}
+			if (fm.Type && mediaTypes.has(fm.Type)) {
+				for (const c of toStrArray(fm.Creator)) {
+					creators.set(c, (creators.get(c) || 0) + 1)
+				}
+			}
+
+			const cat = this.plugin.settings.categories.find(c => c.typeValue === fm.Type)
+			if (cat) {
+				const list = catCards.get(cat.name) || []
+				const rating = Number(fm['My Rating'] || fm['Rating IMDB'] || fm.Rating) || 0
+				list.push({
+					file,
+					fm,
+					name: toStr(fm.Name) || file.basename,
+					year: Number(fm.Year) || 0,
+					rating,
+					date: parseDate(fm.Date)
+				})
+				catCards.set(cat.name, list)
+			}
+		}
+
+		const sortMap = (m: Map<string, number>): [string, number][] =>
+			[...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3)
+
+		const categoryTop = this.plugin.settings.categories
+			.map(cat => ({
+				name: cat.name,
+				items: (catCards.get(cat.name) || [])
+					.sort((a, b) => b.rating - a.rating)
+					.slice(0, 3)
+			}))
+			.filter(c => c.items.length > 0)
+
+		return {
+			genres: sortMap(genres),
+			creators: sortMap(creators),
+			categoryTop
+		}
+	}
+
+	private renderStats(root: HTMLElement): void {
+		const { genres, creators, categoryTop } = this.collectStats()
+		if (genres.length === 0 && creators.length === 0 && categoryTop.length === 0) return
+
+		const section = root.createDiv({ cls: 'library-stats' })
+		const header = section.createDiv({ cls: 'library-stats-header' })
+		setIcon(header.createSpan({ cls: 'library-stats-icon' }), 'bar-chart-2')
+		header.createSpan({ text: tr('stats.title') })
+
+		const collapseBtn = header.createEl('button', {
+			cls: 'library-collapse-btn',
+			text: '▼',
+			attr: { 'aria-label': tr('stats.title'), 'aria-expanded': 'true' }
+		})
+		const body = section.createDiv({ cls: 'library-stats-body' })
+
+		const medals = ['🥇', '🥈', '🥉']
+
+		const worksLabel = (n: number): string => {
+			const w5 = tr('stats.works5')
+			if (w5 !== 'stats.works5') {
+				const abs = Math.abs(n) % 100
+				const last = abs % 10
+				if (abs > 10 && abs < 20) return w5
+				if (last > 1 && last < 5) return tr('stats.works2')
+				return w5
+			}
+			return n === 1 ? tr('stats.works1') : tr('stats.works2')
+		}
+
+		const renderMedalCol = (title: string, items: [string, number][]): void => {
+			const col = body.createDiv({ cls: 'library-stats-col' })
+			col.createEl('h3', { text: title })
+			if (items.length === 0) {
+				col.createEl('p', { cls: 'library-stats-empty', text: tr('stats.noData') })
+				return
+			}
+			for (let i = 0; i < items.length; i++) {
+				const item = items[i]
+				if (!item) break
+				const [name, count] = item
+				const row = col.createDiv({ cls: 'library-stats-medal' })
+				row.createSpan({ cls: 'library-stats-medal-icon', text: medals[i] || '' })
+				const label = row.createDiv({ cls: 'library-stats-medal-label' })
+				label.createSpan({ cls: 'library-stats-medal-name', text: name })
+				label.createSpan({ cls: 'library-stats-medal-count', text: `${count} ${worksLabel(count)}` })
+			}
+		}
+
+		renderMedalCol(tr('stats.topGenres'), genres)
+		renderMedalCol(tr('stats.topCreators'), creators)
+
+		for (const cat of categoryTop) {
+			const col = body.createDiv({ cls: 'library-stats-col' })
+			col.createEl('h3', { text: tr('stats.topCategory', { name: cat.name }) })
+			for (let i = 0; i < cat.items.length; i++) {
+				const item: CardData | undefined = cat.items[i]
+				if (!item) continue
+				const fm = item.fm
+				const row = col.createDiv({ cls: 'library-stats-medal' })
+				row.createSpan({ cls: 'library-stats-medal-icon', text: medals[i] || '' })
+				const cover = fm.Cover || fm.Image || fm.Baner
+				const src = coverSrc(this.app, cover)
+				if (src) {
+					row.createEl('img', { cls: 'library-stats-medal-cover', attr: { src } })
+				}
+				const info = row.createDiv({ cls: 'library-stats-medal-label' })
+				const nameEl = info.createDiv({ cls: 'library-stats-medal-name', text: item.name })
+				nameEl.addEventListener('click', () => {
+					void this.app.workspace.getLeaf(false).openFile(item.file)
+				})
+				const meta: string[] = []
+				if (fm.Year) meta.push(toStr(fm.Year))
+				if (item.rating) meta.push('★ ' + toStr(item.rating))
+				if (meta.length) {
+					info.createDiv({ cls: 'library-stats-medal-count', text: meta.join(' · ') })
+				}
+			}
+		}
+
+		collapseBtn.addEventListener('click', () => {
+			const collapsed = body.classList.toggle('collapsed')
+			collapseBtn.setText(collapsed ? '▶' : '▼')
+			collapseBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true')
+		})
+	}
+
 	render(): void {
 		const root = this.contentEl
 		root.empty()
@@ -86,20 +236,26 @@ export class LibraryView extends ItemView {
 		const toc = header.createDiv({ cls: 'library-toc' })
 		const actions = header.createDiv({ cls: 'library-actions' })
 
-		const addBtn = actions.createEl('button', { cls: 'library-icon-btn' })
+		const addBtn = actions.createEl('button', {
+			cls: 'library-icon-btn',
+			attr: { 'aria-label': tr('cmd.addContent') }
+		})
 		setIcon(addBtn, 'plus')
-		addBtn.setAttribute('aria-label', tr('cmd.addContent'))
 		addBtn.addEventListener('click', () => this.plugin.openAddContent())
 
-		const searchBtn = actions.createEl('button', { cls: 'library-icon-btn' })
+		const searchBtn = actions.createEl('button', {
+			cls: 'library-icon-btn',
+			attr: { 'aria-label': tr('cmd.searchLibrary') }
+		})
 		setIcon(searchBtn, 'search')
-		searchBtn.setAttribute('aria-label', tr('cmd.searchLibrary'))
 		searchBtn.addEventListener('click', () => this.plugin.openLibrarySearch())
 
 		if (sections.length === 0) {
 			root.createEl('p', { text: tr('modal.noCategories') })
 			return
 		}
+
+		this.renderStats(root)
 
 		for (const { category, cards } of sections) {
 			const sectionEl = this.renderSection(root, category, cards)
@@ -118,13 +274,22 @@ export class LibraryView extends ItemView {
 		section.createEl('h2', { text: category.name })
 
 		const toolbar = section.createDiv({ cls: 'library-toolbar' })
-		const collapseBtn = toolbar.createEl('button', { cls: 'library-collapse-btn', text: '▼' })
+		const collapseBtn = toolbar.createEl('button', {
+			cls: 'library-collapse-btn',
+			text: '▼',
+			attr: { 'aria-label': category.name, 'aria-expanded': 'true' }
+		})
 		toolbar.createDiv({ cls: 'library-toolbar-spacer' })
 
 		const sortDropdown = toolbar.createDiv({ cls: 'library-sort-dropdown' })
 		const sortTrigger = sortDropdown.createEl('button', {
 			cls: 'library-sort-trigger',
-			text: tr('sort.name') + ' ▾'
+			text: tr('sort.name') + ' ▾',
+			attr: {
+				'aria-label': tr('sort.name'),
+				'aria-haspopup': 'true',
+				'aria-expanded': 'false'
+			}
 		})
 		const sortMenu = sortDropdown.createDiv({ cls: 'library-sort-menu' })
 
@@ -181,12 +346,15 @@ export class LibraryView extends ItemView {
 
 		sortTrigger.addEventListener('click', e => {
 			e.stopPropagation()
-			sortMenu.toggleClass('open', !sortMenu.hasClass('open'))
+			const isOpen = !sortMenu.hasClass('open')
+			sortMenu.toggleClass('open', isOpen)
+			sortTrigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false')
 		})
 
 		collapseBtn.addEventListener('click', () => {
 			const collapsed = grid.classList.toggle('collapsed')
 			collapseBtn.setText(collapsed ? '▶' : '▼')
+			collapseBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true')
 			if (collapsed) {
 				const first = grid.querySelector('.library-card')
 				if (first instanceof HTMLElement) {
@@ -203,16 +371,29 @@ export class LibraryView extends ItemView {
 
 	private renderCard(grid: HTMLElement, card: CardData): void {
 		const { file, fm } = card
-		const cardEl = grid.createDiv({ cls: 'library-card' })
+		const cardEl = grid.createDiv({
+			cls: 'library-card',
+			attr: {
+				'role': 'button',
+				'tabindex': '0',
+				'aria-label': card.name
+			}
+		})
 		cardEl.addEventListener('click', () => {
 			void this.app.workspace.getLeaf(false).openFile(file)
+		})
+		cardEl.addEventListener('keydown', (e) => {
+			if (e.key === 'Enter' || e.key === ' ') {
+				e.preventDefault()
+				void this.app.workspace.getLeaf(false).openFile(file)
+			}
 		})
 
 		const cover = fm.Cover || fm.Image || fm.Baner
 		const imgDiv = cardEl.createDiv({ cls: 'card-image' })
 		const cardCover = coverSrc(this.app, cover)
 		if (cardCover) {
-			imgDiv.createEl('img').src = cardCover
+			imgDiv.createEl('img', { attr: { src: cardCover, alt: card.name } })
 		} else {
 			imgDiv.createSpan({ text: '🎬' })
 		}

@@ -30,6 +30,7 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'modal.manualCreate': 'Create',
 		'notice.created': 'Created: {name}',
 		'notice.notFound': 'Nothing found to update',
+		'notice.refreshError': 'Failed to refresh metadata',
 		'notice.searching': 'Fetching metadata…',
 		'notice.linksRebuilt': 'Graph links rebuilt: {count}',
 		'sort.name': 'A-Z',
@@ -71,7 +72,21 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'settings.newCategory': 'New category',
 		'settings.section.example': 'Example note',
 		'settings.example.desc':
-			'To include a note in a category, set the Type field in frontmatter.'
+			'To include a note in a category, set the Type field in frontmatter.',
+		'stats.title': 'Statistics',
+		'stats.topGenres': 'Top Genres',
+		'stats.topCreators': 'Top Creators',
+		'stats.topCategory': 'Top {name}',
+		'stats.noData': 'No data yet',
+		'stats.works1': 'work',
+		'stats.works2': 'works',
+		'cmd.findDuplicates': 'Find & remove duplicates',
+		'dup.none': 'No duplicates found',
+		'dup.title': 'Duplicates by URL',
+		'dup.keep': 'Keep',
+		'dup.remove': 'Remove',
+		'dup.removed': 'Removed {count} duplicate(s)',
+		'notice.duplicate': 'Already in library, opening…'
 	},
 	ru: {
 		'cmd.addContent': 'Добавить контент',
@@ -88,6 +103,7 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'modal.manualCreate': 'Создать',
 		'notice.created': 'Создано: {name}',
 		'notice.notFound': 'Нечего обновлять',
+		'notice.refreshError': 'Не удалось обновить метаданные',
 		'notice.searching': 'Загрузка метаданных…',
 		'notice.linksRebuilt': 'Связи для графа перестроены: {count}',
 		'sort.name': 'А-Я',
@@ -121,7 +137,22 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'settings.newCategory': 'Новая категория',
 		'settings.section.example': 'Пример заметки',
 		'settings.example.desc':
-			'Чтобы заметка попала в категорию, укажите поле Type во фронтматтере.'
+			'Чтобы заметка попала в категорию, укажите поле Type во фронтматтере.',
+		'stats.title': 'Статистика',
+		'stats.topGenres': 'Топ жанров',
+		'stats.topCreators': 'Топ создателей',
+		'stats.topCategory': 'Топ {name}',
+		'stats.noData': 'Пока нет данных',
+		'stats.works1': 'картина',
+		'stats.works2': 'картины',
+		'stats.works5': 'картин',
+		'cmd.findDuplicates': 'Найти и удалить дубли',
+		'dup.none': 'Дубли не найдены',
+		'dup.title': 'Дубли по URL',
+		'dup.keep': 'Оставить',
+		'dup.remove': 'Удалить',
+		'dup.removed': 'Удалено дублей: {count}',
+		'notice.duplicate': 'Уже в библиотеке, открываем…'
 	},
 	de: {
 		'cmd.addContent': 'Inhalt hinzufügen',
@@ -138,6 +169,7 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'modal.manualCreate': 'Erstellen',
 		'notice.created': 'Erstellt: {name}',
 		'notice.notFound': 'Nichts zum Aktualisieren gefunden',
+		'notice.refreshError': 'Metadaten konnten nicht aktualisiert werden',
 		'notice.searching': 'Metadaten werden geladen…',
 		'notice.linksRebuilt': 'Graph-Verknüpfungen neu aufgebaut: {count}',
 		'sort.name': 'A-Z',
@@ -171,7 +203,21 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'settings.newCategory': 'Neue Kategorie',
 		'settings.section.example': 'Beispielnotiz',
 		'settings.example.desc':
-			'Damit eine Notiz in eine Kategorie fällt, setze das Type-Feld im Frontmatter.'
+			'Damit eine Notiz in eine Kategorie fällt, setze das Type-Feld im Frontmatter.',
+		'stats.title': 'Statistik',
+		'stats.topGenres': 'Top Genres',
+		'stats.topCreators': 'Top Autoren',
+		'stats.topCategory': 'Top {name}',
+		'stats.noData': 'Noch keine Daten',
+		'stats.works1': 'Werk',
+		'stats.works2': 'Werke',
+		'cmd.findDuplicates': 'Doppelte finden & entfernen',
+		'dup.none': 'Keine Doppelten gefunden',
+		'dup.title': 'Doppelte nach URL',
+		'dup.keep': 'Behalten',
+		'dup.remove': 'Entfernen',
+		'dup.removed': '{count} Doppelte entfernt',
+		'notice.duplicate': 'Bereits in der Bibliothek, öffne…'
 	},
 	es: {
 		'cmd.addContent': 'Agregar contenido',
@@ -188,6 +234,7 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'modal.manualCreate': 'Crear',
 		'notice.created': 'Creado: {name}',
 		'notice.notFound': 'No hay nada que actualizar',
+		'notice.refreshError': 'Error al actualizar metadatos',
 		'notice.searching': 'Obteniendo metadatos…',
 		'notice.linksRebuilt': 'Enlaces del grafo reconstruidos: {count}',
 		'sort.name': 'A-Z',
@@ -221,7 +268,21 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'settings.newCategory': 'Nueva categoría',
 		'settings.section.example': 'Nota de ejemplo',
 		'settings.example.desc':
-			'Para incluir una nota en una categoría, define el campo Type en el frontmatter.'
+			'Para incluir una nota en una categoría, define el campo Type en el frontmatter.',
+		'stats.title': 'Estadísticas',
+		'stats.topGenres': 'Top Géneros',
+		'stats.topCreators': 'Top Creadores',
+		'stats.topCategory': 'Top {name}',
+		'stats.noData': 'Sin datos aún',
+		'stats.works1': 'obra',
+		'stats.works2': 'obras',
+		'cmd.findDuplicates': 'Encontrar y eliminar duplicados',
+		'dup.none': 'No se encontraron duplicados',
+		'dup.title': 'Duplicados por URL',
+		'dup.keep': 'Mantener',
+		'dup.remove': 'Eliminar',
+		'dup.removed': '{count} duplicado(s) eliminado(s)',
+		'notice.duplicate': 'Ya en la biblioteca, abriendo…'
 	},
 	fr: {
 		'cmd.addContent': 'Ajouter du contenu',
@@ -238,6 +299,7 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'modal.manualCreate': 'Créer',
 		'notice.created': 'Créé : {name}',
 		'notice.notFound': 'Rien à mettre à jour',
+		'notice.refreshError': 'Échec de la mise à jour des métadonnées',
 		'notice.searching': 'Récupération des métadonnées…',
 		'notice.linksRebuilt': 'Liens du graphe reconstruits : {count}',
 		'sort.name': 'A-Z',
@@ -269,9 +331,23 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'settings.category.manual': 'Manuel · sans source',
 		'settings.addCategory': 'Ajouter une catégorie',
 		'settings.newCategory': 'Nouvelle catégorie',
-		'settings.section.example': 'Note d’exemple',
+		'settings.section.example': 'Note d\u2019exemple',
 		'settings.example.desc':
-			'Pour inclure une note dans une catégorie, renseignez le champ Type dans le frontmatter.'
+			'Pour inclure une note dans une catégorie, renseignez le champ Type dans le frontmatter.',
+		'stats.title': 'Statistiques',
+		'stats.topGenres': 'Top Genres',
+		'stats.topCreators': 'Top Créateurs',
+		'stats.topCategory': 'Top {name}',
+		'stats.noData': 'Pas encore de données',
+		'stats.works1': 'œuvre',
+		'stats.works2': 'œuvres',
+		'cmd.findDuplicates': 'Trouver et supprimer les doublons',
+		'dup.none': 'Aucun doublon trouvé',
+		'dup.title': 'Doublons par URL',
+		'dup.keep': 'Conserver',
+		'dup.remove': 'Supprimer',
+		'dup.removed': '{count} doublon(s) supprimé(s)',
+		'notice.duplicate': 'Déjà dans la bibliothèque, ouverture…'
 	},
 	zh: {
 		'cmd.addContent': '添加内容',
@@ -288,6 +364,7 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'modal.manualCreate': '创建',
 		'notice.created': '已创建：{name}',
 		'notice.notFound': '没有可更新的内容',
+		'notice.refreshError': '刷新元数据失败',
 		'notice.searching': '正在获取元数据…',
 		'notice.linksRebuilt': '已重建关系图链接：{count}',
 		'sort.name': 'A-Z',
@@ -321,7 +398,21 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'settings.newCategory': '新分类',
 		'settings.section.example': '示例笔记',
 		'settings.example.desc':
-			'要将笔记归入某个分类，请在 frontmatter 中设置 Type 字段。'
+			'要将笔记归入某个分类，请在 frontmatter 中设置 Type 字段。',
+		'stats.title': '统计',
+		'stats.topGenres': '热门类型',
+		'stats.topCreators': '热门创作者',
+		'stats.topCategory': '热门 {name}',
+		'stats.noData': '暂无数据',
+		'stats.works1': '部作品',
+		'stats.works2': '部作品',
+		'cmd.findDuplicates': '查找并删除重复项',
+		'dup.none': '未找到重复项',
+		'dup.title': '按 URL 查找重复',
+		'dup.keep': '保留',
+		'dup.remove': '删除',
+		'dup.removed': '已删除 {count} 个重复项',
+		'notice.duplicate': '已在库中，正在打开…'
 	},
 	ar: {
 		'cmd.addContent': 'إضافة محتوى',
@@ -338,6 +429,7 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'modal.manualCreate': 'إنشاء',
 		'notice.created': 'تم الإنشاء: {name}',
 		'notice.notFound': 'لا يوجد شيء للتحديث',
+		'notice.refreshError': 'فشل تحديث البيانات الوصفية',
 		'notice.searching': 'جارٍ جلب البيانات الوصفية…',
 		'notice.linksRebuilt': 'تمت إعادة بناء روابط الرسم البياني: {count}',
 		'sort.name': 'أ-ي',
@@ -371,7 +463,21 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'settings.newCategory': 'فئة جديدة',
 		'settings.section.example': 'ملاحظة مثال',
 		'settings.example.desc':
-			'لإدراج ملاحظة في فئة، عيّن حقل Type في الـ frontmatter.'
+			'لإدراج ملاحظة في فئة، عيّن حقل Type في الـ frontmatter.',
+		'stats.title': 'الإحصائيات',
+		'stats.topGenres': 'أفضل الأنواع',
+		'stats.topCreators': 'أفضل المبدعين',
+		'stats.topCategory': 'أفضل {name}',
+		'stats.noData': 'لا توجد بيانات بعد',
+		'stats.works1': 'عمل',
+		'stats.works2': 'عملاً',
+		'cmd.findDuplicates': 'البحث عن التكرارات وإزالتها',
+		'dup.none': 'لم يتم العثور على تكرارات',
+		'dup.title': 'التكرارات حسب URL',
+		'dup.keep': 'إبقاء',
+		'dup.remove': 'إزالة',
+		'dup.removed': 'تمت إزالة {count} تكرار(ات)',
+		'notice.duplicate': 'موجود بالفعل في المكتبة، جارٍ الفتح…'
 	},
 	he: {
 		'cmd.addContent': 'הוסף תוכן',
@@ -388,6 +494,7 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'modal.manualCreate': 'צור',
 		'notice.created': 'נוצר: {name}',
 		'notice.notFound': 'אין מה לעדכן',
+		'notice.refreshError': 'כשלון בעדכון מטא-נתונים',
 		'notice.searching': 'מאחזר מטא-נתונים…',
 		'notice.linksRebuilt': 'קישורי הגרף נבנו מחדש: {count}',
 		'sort.name': 'א-ת',
@@ -421,7 +528,21 @@ export const I18N: Record<SupportedLocale, Record<string, string>> = {
 		'settings.newCategory': 'קטגוריה חדשה',
 		'settings.section.example': 'פתק לדוגמה',
 		'settings.example.desc':
-			'כדי לכלול פתק בקטגוריה, הגדר את שדה ה-Type ב-frontmatter.'
+			'כדי לכלול פתק בקטגוריה, הגדר את שדה ה-Type ב-frontmatter.',
+		'stats.title': 'סטטיסטיקות',
+		'stats.topGenres': 'ז\'אנרים מובילים',
+		'stats.topCreators': 'יוצרים מובילים',
+		'stats.topCategory': '{name} מובילים',
+		'stats.noData': 'אין עדיין נתונים',
+		'stats.works1': 'יצירה',
+		'stats.works2': 'יצירות',
+		'cmd.findDuplicates': 'למצור ולהסיר כפולים',
+		'dup.none': 'לא נמצאו כפולים',
+		'dup.title': 'כפולים לפי URL',
+		'dup.keep': 'להשאיר',
+		'dup.remove': 'להסיר',
+		'dup.removed': 'הוסרו {count} כפולים',
+		'notice.duplicate': 'כבר בספרייה, פותח…'
 	}
 }
 

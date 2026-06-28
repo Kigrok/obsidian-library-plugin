@@ -30,20 +30,25 @@ export class OpenLibraryProvider implements ContentProvider {
 	}
 
 	async search(query: string): Promise<SearchResult[]> {
-		const params = new URLSearchParams({ q: query, fields: OpenLibraryProvider.FIELDS, limit: '20' })
-		const resp = await requestUrl({ url: `${OpenLibraryProvider.SEARCH}?${params.toString()}`, throw: false })
-		if (resp.status !== 200) return []
-		const data = resp.json as OpenLibrarySearchResponse
-		const docs = Array.isArray(data?.docs) ? data.docs : []
-		return docs.map((doc) => ({
-			provider: this.id,
-			sourceId: doc.key,
-			title: doc.title,
-			year: doc.first_publish_year ?? null,
-			cover: this.cover(doc.cover_i),
-			subtitle: (doc.author_name ?? []).join(', ') || null,
-			raw: doc
-		}))
+		try {
+			const params = new URLSearchParams({ q: query, fields: OpenLibraryProvider.FIELDS, limit: '20' })
+			const resp = await requestUrl({ url: `${OpenLibraryProvider.SEARCH}?${params.toString()}`, throw: false })
+			if (resp.status !== 200) return []
+			const data = resp.json as OpenLibrarySearchResponse
+			const docs = Array.isArray(data?.docs) ? data.docs : []
+			return docs.map((doc) => ({
+				provider: this.id,
+				sourceId: doc.key,
+				title: doc.title,
+				year: doc.first_publish_year ?? null,
+				cover: this.cover(doc.cover_i),
+				subtitle: (doc.author_name ?? []).join(', ') || null,
+				raw: doc
+			}))
+		} catch (e) {
+			console.error('Library: Open Library search error', e)
+			return []
+		}
 	}
 
 	// Open Library search already carries full doc; refetch без raw не имеет источника, поэтому no-op.

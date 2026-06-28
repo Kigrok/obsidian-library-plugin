@@ -20,6 +20,7 @@ import { PickTypeModal } from './ui/pickTypeModal'
 import { AddContentModal } from './ui/addContentModal'
 import { LibrarySearchModal } from './ui/librarySearchModal'
 import { PromptModal } from './ui/promptModal'
+import { DuplicateRemovalModal, type DuplicateGroup } from './ui/duplicateModal'
 import { LibraryView, LIBRARY_VIEW_TYPE } from './view'
 import {
 	toStr,
@@ -116,6 +117,12 @@ export default class LibraryPlugin extends Plugin {
 			name: tr('cmd.rebuildLinks'),
 			callback: () => { void this.rebuildGraphLinks() }
 		})
+
+		this.addCommand({
+			id: 'find-duplicates',
+			name: tr('cmd.findDuplicates'),
+			callback: () => this.openDuplicates()
+		})
 	}
 
 	onunload(): void {
@@ -205,6 +212,16 @@ export default class LibraryPlugin extends Plugin {
 		if (!meta) {
 			new Notice(tr('notice.notFound'))
 			return
+		}
+
+		const url = toStr(meta.fields.URL)
+		if (url) {
+			const existing = this.findFileByUrl(url)
+			if (existing) {
+				new Notice(tr('notice.duplicate'))
+				void this.app.workspace.getLeaf(false).openFile(existing)
+				return
+			}
 		}
 
 		const path = await this.uniqueNotePath(result.title, category.folder)
@@ -332,6 +349,53 @@ export default class LibraryPlugin extends Plugin {
 		new Notice(tr('notice.linksRebuilt', { count }))
 	}
 
+	private findFileByUrl(url: string): TFile | null {
+		const types = new Set(this.settings.categories.map(c => c.typeValue))
+		for (const file of this.app.vault.getMarkdownFiles()) {
+			if (isTemplateFile(file.path)) continue
+			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+			if (!fm || !types.has(fm.Type)) continue
+			if (toStr(fm.URL) === url) return file
+		}
+		return null
+	}
+
+	findDuplicates(): DuplicateGroup[] {
+		const types = new Set(this.settings.categories.map(c => c.typeValue))
+		const urlMap = new Map<string, TFile[]>()
+
+		for (const file of this.app.vault.getMarkdownFiles()) {
+			if (isTemplateFile(file.path)) continue
+			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+			if (!fm || !types.has(fm.Type)) continue
+			const url = toStr(fm.URL).trim()
+			if (!url) continue
+			const list = urlMap.get(url) || []
+			list.push(file)
+			urlMap.set(url, list)
+		}
+
+		const groups: DuplicateGroup[] = []
+		for (const [url, files] of urlMap) {
+			if (files.length > 1) {
+				groups.push({ url, files })
+			}
+		}
+		return groups
+	}
+
+	openDuplicates(): void {
+		const groups = this.findDuplicates()
+		if (groups.length === 0) {
+			new Notice(tr('dup.none'))
+			return
+		}
+		new DuplicateRemovalModal(this.app, groups, (removed) => {
+			new Notice(tr('dup.removed', { count: removed }))
+			this.refreshViews()
+		}).open()
+	}
+
 	private applyMetaFields(fm: Record<string, unknown>, meta: NormalizedMetadata): void {
 		for (const [key, value] of Object.entries(meta.fields)) {
 			if (isEmptyValue(value)) continue
@@ -407,6 +471,9 @@ export default class LibraryPlugin extends Plugin {
 			if (force) new Notice(tr('notice.created', { name: toStr(meta.fields.Name) || file.basename }))
 		} catch (e) {
 			console.error('Library: refresh error', e)
+			if (force) {
+				new Notice(tr('notice.refreshError'))
+			}
 		} finally {
 			this.isRefreshing = false
 		}

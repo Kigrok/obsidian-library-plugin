@@ -65,56 +65,66 @@ export class OmdbProvider implements ContentProvider {
 	}
 
 	async search(query: string, type: ContentType): Promise<SearchResult[]> {
-		if (!this.getKey()) return []
-		const omdbType = type === 'series' ? 'series' : 'movie'
-		const resp = await requestUrl({ url: this.url({ s: query, type: omdbType }), throw: false })
-		if (resp.status !== 200) return []
-		const data = resp.json as OmdbSearchResponse
-		if (!data || typeof data !== 'object' || data.Response === 'False') return []
-		const items = Array.isArray(data.Search) ? data.Search : []
-		return items.map((item) => ({
-			provider: this.id,
-			sourceId: item.imdbID,
-			title: item.Title,
-			year: this.year(na(item.Year)),
-			cover: this.cover(item.Poster),
-			subtitle: null,
-			raw: item
-		}))
+		try {
+			if (!this.getKey()) return []
+			const omdbType = type === 'series' ? 'series' : 'movie'
+			const resp = await requestUrl({ url: this.url({ s: query, type: omdbType }), throw: false })
+			if (resp.status !== 200) return []
+			const data = resp.json as OmdbSearchResponse
+			if (!data || typeof data !== 'object' || data.Response === 'False') return []
+			const items = Array.isArray(data.Search) ? data.Search : []
+			return items.map((item) => ({
+				provider: this.id,
+				sourceId: item.imdbID,
+				title: item.Title,
+				year: this.year(na(item.Year)),
+				cover: this.cover(item.Poster),
+				subtitle: null,
+				raw: item
+			}))
+		} catch (e) {
+			console.error('Library: OMDb search error', e)
+			return []
+		}
 	}
 
 	async fetch(sourceId: string, type: ContentType): Promise<NormalizedMetadata | null> {
-		if (!this.getKey()) return null
-		const resp = await requestUrl({ url: this.url({ i: sourceId }), throw: false })
-		if (resp.status !== 200) return null
-		const details = resp.json as OmdbDetails
-		if (!details || typeof details !== 'object' || details.Response === 'False') return null
+		try {
+			if (!this.getKey()) return null
+			const resp = await requestUrl({ url: this.url({ i: sourceId }), throw: false })
+			if (resp.status !== 200) return null
+			const details = resp.json as OmdbDetails
+			if (!details || typeof details !== 'object' || details.Response === 'False') return null
 
-		const creatorSource = na(details.Director) ?? na(details.Writer)
-		const creators = creatorSource
-			? creatorSource.split(',').map((s) => s.trim()).filter(Boolean)
-			: []
-		const genreSource = na(details.Genre)
-		const genres = genreSource
-			? genreSource.split(',').map((s) => s.trim()).filter(Boolean)
-			: []
-		const rawYear = na(details.Year)
-		const rating = na(details.imdbRating)
+			const creatorSource = na(details.Director) ?? na(details.Writer)
+			const creators = creatorSource
+				? creatorSource.split(',').map((s) => s.trim()).filter(Boolean)
+				: []
+			const genreSource = na(details.Genre)
+			const genres = genreSource
+				? genreSource.split(',').map((s) => s.trim()).filter(Boolean)
+				: []
+			const rawYear = na(details.Year)
+			const rating = na(details.imdbRating)
 
-		const fields: Record<string, unknown> = {
-			Name: details.Title,
-			Year: this.year(rawYear),
-			Genre: genres,
-			Creator: creators,
-			Cover: this.cover(details.Poster),
-			URL: `https://www.imdb.com/title/${details.imdbID}/`
+			const fields: Record<string, unknown> = {
+				Name: details.Title,
+				Year: this.year(rawYear),
+				Genre: genres,
+				Creator: creators,
+				Cover: this.cover(details.Poster),
+				URL: `https://www.imdb.com/title/${details.imdbID}/`
+			}
+			if (rating) fields['Rating IMDB'] = parseFloat(rating)
+
+			if (type === 'series') {
+				return this.enrichSeries(fields, details, sourceId)
+			}
+			return { fields, progressTotal: 1, imdbId: details.imdbID }
+		} catch (e) {
+			console.error('Library: OMDb fetch error', e)
+			return null
 		}
-		if (rating) fields['Rating IMDB'] = parseFloat(rating)
-
-		if (type === 'series') {
-			return this.enrichSeries(fields, details, sourceId)
-		}
-		return { fields, progressTotal: 1, imdbId: details.imdbID }
 	}
 
 	private async enrichSeries(

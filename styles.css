@@ -430,3 +430,154 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
+.library-stats {
+	margin-bottom: 24px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.library-stats-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 14px;
+	background: var(--background-secondary);
+	cursor: default;
+	font-weight: 600;
+}
+
+.library-stats-icon {
+	display: flex;
+	align-items: center;
+	color: var(--text-muted);
+}
+
+.library-stats-header .library-collapse-btn {
+	margin-left: auto;
+}
+
+.library-stats-body {
+	display: flex;
+	gap: 24px;
+	padding: 14px;
+}
+
+.library-stats-body.collapsed {
+	display: none;
+}
+
+.library-stats-col {
+	flex: 1;
+	min-width: 0;
+}
+
+.library-stats-col h3 {
+	margin: 0 0 10px;
+	font-size: 0.9em;
+	color: var(--text-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.library-stats-empty {
+	margin: 0;
+	font-size: 0.85em;
+	color: var(--text-muted);
+	font-style: italic;
+}
+
+.library-stats-medal {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 8px;
+}
+
+.library-stats-medal-icon {
+	font-size: 1.4em;
+	flex-shrink: 0;
+	width: 28px;
+	text-align: center;
+}
+
+.library-stats-medal-cover {
+	width: 28px;
+	height: 40px;
+	object-fit: cover;
+	border-radius: 3px;
+	flex-shrink: 0;
+}
+
+.library-stats-medal-label {
+	flex: 1;
+	min-width: 0;
+}
+
+.library-stats-medal-name {
+	font-size: 0.85em;
+	font-weight: 600;
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.library-stats-medal-name:hover {
+	color: var(--interactive-accent);
+}
+
+.library-stats-medal-count {
+	font-size: 0.75em;
+	color: var(--text-muted);
+}
+
+.library-dup-modal {
+	padding: 16px;
+}
+
+.library-dup-group {
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.library-dup-group-title {
+	font-weight: 600;
+	margin-bottom: 6px;
+	font-size: 0.9em;
+}
+
+.library-dup-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 4px 0;
+	font-size: 0.85em;
+}
+
+.library-dup-item-label {
+	flex: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.library-dup-item input[type="checkbox"] {
+	flex-shrink: 0;
+}
+
+.library-dup-actions {
+	display: flex;
+	gap: 8px;
+	justify-content: flex-end;
+	margin-top: 14px;
+}
+
+.library-dup-actions button {
+	padding: 6px 14px;
+	border-radius: 4px;
+	cursor: pointer;
+}

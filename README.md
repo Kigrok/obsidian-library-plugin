@@ -5,7 +5,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.0.1-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.1.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -23,20 +23,18 @@
 
 ---
 
-> **Version 2** — full rewrite. Library is now a dedicated tab (ribbon icon), with in-app search across multiple sources (OMDb, Open Library), per-category folders, manual categories for anything, and graph links stored in frontmatter. See [Quick Start](#-quick-start).
-
----
-
 ## ✨ Key Features
 
 - 🖼️ **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- 🔎 **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books.
+- 🔎 **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books, RAWG for games, Deezer for music.
 - 📺 **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
 - 📊 **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
 - 📑 **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
-- 🛠️ **Custom Categories** — Create categories for Movies, Series, Books, or anything else via the manual source.
+- 🛠️ **Custom Categories** — Create categories for Movies, Series, Books, Games, Music, or anything else via the manual source.
 - 🕸️ **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
 - 🔀 **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
+- 📊 **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings (🥇🥈🥉).
+- 🔁 **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
 - 🌍 **Multilingual** — Native support for English, Russian, German, Spanish, French, Chinese, Arabic, and Hebrew.
 
 ---
@@ -45,7 +43,7 @@
 
 ### 1. Installation
 
-Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings → Community plugins → Browse → search “Library”), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
+Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings → Community plugins → Browse → search "Library"), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 
 ### 2. Basic Setup
 
@@ -65,6 +63,25 @@ No more filling in frontmatter by hand — add a movie, series, or book just by 
 The **🔍** button next to **＋** searches titles already in your library.
 
 For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
+
+---
+
+## 📊 Statistics
+
+The Library tab includes a collapsible **Statistics** section at the top:
+
+- **Top Genres** — 🥇🥈🥉 with correct grammatical forms per language (e.g. "3 картины", "12 картин").
+- **Top Creators** — ranked by number of movies & series they appear in (films and series only).
+- **Top per Category** — for each category (Movies, Series, Books, etc.), the top 3 items by rating with small cover thumbnails.
+
+---
+
+## 🔁 Duplicate Detection
+
+Library prevents duplicate entries by checking the `URL` field:
+
+- **On add** — if a note with the same URL already exists, it opens the existing note instead of creating a duplicate.
+- **Find & Remove Duplicates** — run this command from the palette to scan all notes, group by URL, and selectively remove duplicates via a modal.
 
 ---
 
@@ -205,6 +222,7 @@ These links connect your notes through shared categories, genres, and creators, 
 | `Search your library`                | Fuzzy-search and open any note already in your library.                 |
 | `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
 | `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
+| `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
 
 ---
 

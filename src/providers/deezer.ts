@@ -48,36 +48,46 @@ export class DeezerProvider implements ContentProvider {
 	}
 
 	async search(query: string): Promise<SearchResult[]> {
-		const params = new URLSearchParams({ q: query, limit: '20' })
-		const resp = await requestUrl({ url: `${DeezerProvider.SEARCH}?${params.toString()}`, throw: false })
-		if (resp.status !== 200) return []
-		const data = resp.json as DeezerSearchResponse
-		return (data.data ?? []).map((a) => ({
-			provider: this.id,
-			sourceId: String(a.id),
-			title: a.title,
-			year: null,
-			cover: this.cover(a),
-			subtitle: a.artist?.name ?? null,
-			raw: a
-		}))
+		try {
+			const params = new URLSearchParams({ q: query, limit: '20' })
+			const resp = await requestUrl({ url: `${DeezerProvider.SEARCH}?${params.toString()}`, throw: false })
+			if (resp.status !== 200) return []
+			const data = resp.json as DeezerSearchResponse
+			return (data.data ?? []).map((a) => ({
+				provider: this.id,
+				sourceId: String(a.id),
+				title: a.title,
+				year: null,
+				cover: this.cover(a),
+				subtitle: a.artist?.name ?? null,
+				raw: a
+			}))
+		} catch (e) {
+			console.error('Library: Deezer search error', e)
+			return []
+		}
 	}
 
 	async fetch(sourceId: string): Promise<NormalizedMetadata | null> {
-		const resp = await requestUrl({ url: `${DeezerProvider.ALBUM}${sourceId}`, throw: false })
-		if (resp.status !== 200) return null
-		const album = resp.json as DeezerAlbumFull
+		try {
+			const resp = await requestUrl({ url: `${DeezerProvider.ALBUM}${sourceId}`, throw: false })
+			if (resp.status !== 200) return null
+			const album = resp.json as DeezerAlbumFull
 
-		const genres = (album.genres?.data ?? []).map((g) => g.name).filter((n): n is string => Boolean(n))
-		const fields: Record<string, unknown> = {
-			Name: album.title,
-			Year: this.year(album.release_date),
-			Creator: album.artist?.name ? [album.artist.name] : [],
-			Genre: genres,
-			Cover: this.cover(album)
+			const genres = (album.genres?.data ?? []).map((g) => g.name).filter((n): n is string => Boolean(n))
+			const fields: Record<string, unknown> = {
+				Name: album.title,
+				Year: this.year(album.release_date),
+				Creator: album.artist?.name ? [album.artist.name] : [],
+				Genre: genres,
+				Cover: this.cover(album)
+			}
+			if (album.link) fields['URL'] = album.link
+
+			return { fields, progressTotal: album.nb_tracks && album.nb_tracks > 0 ? album.nb_tracks : 1, imdbId: null }
+		} catch (e) {
+			console.error('Library: Deezer fetch error', e)
+			return null
 		}
-		if (album.link) fields['URL'] = album.link
-
-		return { fields, progressTotal: album.nb_tracks && album.nb_tracks > 0 ? album.nb_tracks : 1, imdbId: null }
 	}
 }

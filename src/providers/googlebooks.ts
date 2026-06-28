@@ -55,45 +55,55 @@ export class GoogleBooksProvider implements ContentProvider {
 	}
 
 	async search(query: string): Promise<SearchResult[]> {
-		const params = this.withKey(new URLSearchParams({ q: query, maxResults: '20' }))
-		const resp = await requestUrl({ url: `${GoogleBooksProvider.BASE}?${params.toString()}`, throw: false })
-		if (resp.status !== 200) return []
-		const data = resp.json as GoogleResponse
-		return (data.items ?? []).map((item) => ({
-			provider: this.id,
-			sourceId: item.id,
-			title: item.volumeInfo.title,
-			year: this.year(item.volumeInfo.publishedDate),
-			cover: this.cover(item.volumeInfo),
-			subtitle: (item.volumeInfo.authors ?? []).join(', ') || null,
-			raw: item
-		}))
+		try {
+			const params = this.withKey(new URLSearchParams({ q: query, maxResults: '20' }))
+			const resp = await requestUrl({ url: `${GoogleBooksProvider.BASE}?${params.toString()}`, throw: false })
+			if (resp.status !== 200) return []
+			const data = resp.json as GoogleResponse
+			return (data.items ?? []).map((item) => ({
+				provider: this.id,
+				sourceId: item.id,
+				title: item.volumeInfo.title,
+				year: this.year(item.volumeInfo.publishedDate),
+				cover: this.cover(item.volumeInfo),
+				subtitle: (item.volumeInfo.authors ?? []).join(', ') || null,
+				raw: item
+			}))
+		} catch (e) {
+			console.error('Library: Google Books search error', e)
+			return []
+		}
 	}
 
 	async fetch(sourceId: string, _type: ContentType, raw?: unknown): Promise<NormalizedMetadata | null> {
-		let info: GoogleVolumeInfo | undefined = (raw as GoogleItem | undefined)?.volumeInfo
-		if (!info) {
-			const params = this.withKey(new URLSearchParams())
-			const query = params.toString()
-			const url = `${GoogleBooksProvider.BASE}/${sourceId}${query ? `?${query}` : ''}`
-			const resp = await requestUrl({ url, throw: false })
-			if (resp.status !== 200) return null
-			info = (resp.json as GoogleItem).volumeInfo
-		}
-		if (!info) return null
+		try {
+			let info: GoogleVolumeInfo | undefined = (raw as GoogleItem | undefined)?.volumeInfo
+			if (!info) {
+				const params = this.withKey(new URLSearchParams())
+				const query = params.toString()
+				const url = `${GoogleBooksProvider.BASE}/${sourceId}${query ? `?${query}` : ''}`
+				const resp = await requestUrl({ url, throw: false })
+				if (resp.status !== 200) return null
+				info = (resp.json as GoogleItem).volumeInfo
+			}
+			if (!info) return null
 
-		const fields: Record<string, unknown> = {
-			Name: info.title,
-			Year: this.year(info.publishedDate),
-			Creator: info.authors ?? [],
-			Genre: (info.categories ?? []).slice(0, 5),
-			Cover: this.cover(info)
-		}
-		const isbn =
-			info.industryIdentifiers?.find((i) => i.type === 'ISBN_13')?.identifier ??
-			info.industryIdentifiers?.find((i) => i.type === 'ISBN_10')?.identifier
-		if (isbn) fields['ISBN'] = isbn
+			const fields: Record<string, unknown> = {
+				Name: info.title,
+				Year: this.year(info.publishedDate),
+				Creator: info.authors ?? [],
+				Genre: (info.categories ?? []).slice(0, 5),
+				Cover: this.cover(info)
+			}
+			const isbn =
+				info.industryIdentifiers?.find((i) => i.type === 'ISBN_13')?.identifier ??
+				info.industryIdentifiers?.find((i) => i.type === 'ISBN_10')?.identifier
+			if (isbn) fields['ISBN'] = isbn
 
-		return { fields, progressTotal: info.pageCount && info.pageCount > 0 ? info.pageCount : null, imdbId: null }
+			return { fields, progressTotal: info.pageCount && info.pageCount > 0 ? info.pageCount : null, imdbId: null }
+		} catch (e) {
+			console.error('Library: Google Books fetch error', e)
+			return null
+		}
 	}
 }
