@@ -70,7 +70,7 @@ export class DuplicateRemovalModal extends Modal {
 		let removed = 0
 		for (const file of files) {
 			try {
-				await this.app.vault.delete(file)
+				await this.app.fileManager.trashFile(file)
 				removed++
 			} catch (e) {
 				console.error('Library: failed to delete duplicate', file.path, e)

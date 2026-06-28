@@ -94,7 +94,7 @@ export class LibraryView extends ItemView {
 			for (const g of toStrArray(fm.Genre)) {
 				genres.set(g, (genres.get(g) || 0) + 1)
 			}
-			if (fm.Type && mediaTypes.has(fm.Type)) {
+			if (typeof fm.Type === 'string' && mediaTypes.has(fm.Type)) {
 				for (const c of toStrArray(fm.Creator)) {
 					creators.set(c, (creators.get(c) || 0) + 1)
 				}

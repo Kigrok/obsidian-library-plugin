@@ -354,7 +354,7 @@ export default class LibraryPlugin extends Plugin {
 		for (const file of this.app.vault.getMarkdownFiles()) {
 			if (isTemplateFile(file.path)) continue
 			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
-			if (!fm || !types.has(fm.Type)) continue
+			if (!fm || typeof fm.Type !== 'string' || !types.has(fm.Type)) continue
 			if (toStr(fm.URL) === url) return file
 		}
 		return null
@@ -367,7 +367,7 @@ export default class LibraryPlugin extends Plugin {
 		for (const file of this.app.vault.getMarkdownFiles()) {
 			if (isTemplateFile(file.path)) continue
 			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
-			if (!fm || !types.has(fm.Type)) continue
+			if (!fm || typeof fm.Type !== 'string' || !types.has(fm.Type)) continue
 			const url = toStr(fm.URL).trim()
 			if (!url) continue
 			const list = urlMap.get(url) || []
