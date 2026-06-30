@@ -38,9 +38,9 @@ export function parseDate(val: unknown): number {
 
 export function todayDmy(): string {
 	const now = new Date()
-	const dd = String(now.getDate()).padStart(2, '0')
-	const mm = String(now.getMonth() + 1).padStart(2, '0')
-	return `${dd}.${mm}.${String(now.getFullYear())}`
+	const dd = ('0' + now.getDate()).slice(-2)
+	const mm = ('0' + (now.getMonth() + 1)).slice(-2)
+	return `${dd}.${mm}.${now.getFullYear()}`
 }
 
 export function sanitizeFilename(name: string): string {

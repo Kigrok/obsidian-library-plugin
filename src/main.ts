@@ -298,9 +298,10 @@ export default class LibraryPlugin extends Plugin {
 		this.syncingLinks.add(file.path)
 		try {
 			if (hasLegacy) {
-				await this.app.vault.process(file, (data: string) => {
-					const i = data.indexOf(marker)
-					return i >= 0 ? data.slice(0, i).trimEnd() + '\n' : data
+				await this.app.vault.process(file, (data) => {
+					const s: string = data
+					const i: number = s.indexOf(marker)
+					return i >= 0 ? s.slice(0, i).trimEnd() + '\n' : s
 				})
 			}
 			if (!sameLinks) {
@@ -405,7 +406,8 @@ export default class LibraryPlugin extends Plugin {
 	}
 
 	private applyMetaFields(fm: Record<string, unknown>, meta: NormalizedMetadata): void {
-		for (const [key, value] of Object.entries(meta.fields)) {
+		const fields: Record<string, unknown> = meta.fields
+		for (const [key, value] of Object.entries(fields)) {
 			if (isEmptyValue(value)) continue
 			fm[key] = value
 		}
@@ -466,7 +468,8 @@ export default class LibraryPlugin extends Plugin {
 			await this.app.fileManager.processFrontMatter(file, (current) => {
 				const patch: Record<string, unknown> = {}
 				const cur = current as Record<string, unknown>
-				for (const [key, value] of Object.entries(meta.fields)) {
+				const fields: Record<string, unknown> = meta.fields
+				for (const [key, value] of Object.entries(fields)) {
 					if (isEmptyValue(value)) continue
 					if (isEmptyValue(cur[key])) patch[key] = value
 				}
