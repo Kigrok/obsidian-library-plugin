@@ -301,7 +301,7 @@ export default class LibraryPlugin extends Plugin {
 				await this.app.vault.process(file, (data) => {
 					const s = String(data)
 					const i = s.indexOf(marker)
-					return i >= 0 ? s.slice(0, i).trimEnd() + '\n' : s
+					return i >= 0 ? s.slice(0, i).replace(/\s+$/, '') + '\n' : s
 				})
 			}
 			if (!sameLinks) {
