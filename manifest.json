@@ -1,9 +1,9 @@
 {
 	"id": "library",
 	"name": "Library",
-	"version": "2.1.1",
+	"version": "2.1.2",
 	"minAppVersion": "1.8.7",
-	"description": "Organize movies, series, and other media as visual cards with automatic metadata from OMDb.",
+	"description": "Organize movies, series, anime, comics, books, games, and music as visual cards with automatic metadata.",
 	"author": "Kigrok",
 	"authorUrl": "https://github.com/Kigrok",
 	"isDesktopOnly": false

@@ -74,6 +74,9 @@ export function inferContentType(typeValue: string): ContentType {
 	switch (typeValue) {
 		case 'Series': return 'series'
 		case 'Book': return 'book'
+		case 'Game': return 'game'
+		case 'Music': return 'music'
+		case 'Manual': return 'manual'
 		default: return 'movie'
 	}
 }

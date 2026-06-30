@@ -1,6 +1,6 @@
 import { App, PluginSettingTab, Setting } from "obsidian";
 import type LibraryPlugin from "./main";
-import { isContentType } from "./providers/types";
+import { isContentType, type ContentType } from "./providers/types";
 import { tr } from "./i18n";
 
 export class LibrarySettingTab extends PluginSettingTab {
@@ -57,6 +57,19 @@ export class LibrarySettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
+			.setName(tr("settings.comicvine.name"))
+			.setDesc(tr("settings.comicvine.desc"))
+			.addText((text) =>
+				text
+					.setPlaceholder(tr("settings.comicvine.placeholder"))
+					.setValue(this.plugin.settings.comicVineApiKey)
+					.onChange(async (v) => {
+						this.plugin.settings.comicVineApiKey = v.trim();
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl)
 			.setName(tr("settings.section.categories"))
 			.setHeading();
 		containerEl.createEl("p", { text: tr("settings.categories.desc") });
@@ -93,11 +106,13 @@ export class LibrarySettingTab extends PluginSettingTab {
 				)
 				.addDropdown((d) =>
 					d
-						.addOption("movie", "OMDb · movie")
-						.addOption("series", "OMDb · series")
-						.addOption("book", "Books · Google + Open Library")
-						.addOption("game", "RAWG · game")
-						.addOption("music", "Deezer · music")
+						.addOption("movie", "OMDb · " + tr('settings.default.movie'))
+						.addOption("series", "OMDb · " + tr('settings.default.series'))
+						.addOption("anime", "Jikan · " + tr('settings.default.anime') + " (free)")
+						.addOption("book", "Books · " + tr('settings.default.book'))
+						.addOption("comic", "Comic Vine · " + tr('settings.default.comic'))
+						.addOption("game", "RAWG · " + tr('settings.default.game'))
+						.addOption("music", "Deezer · " + tr('settings.default.music'))
 						.addOption("manual", tr("settings.category.manual"))
 						.setValue(cat.contentType)
 						.onChange(async (v) => {
@@ -131,21 +146,49 @@ export class LibrarySettingTab extends PluginSettingTab {
 				);
 		});
 
-		new Setting(containerEl).addButton((b) =>
-			b
-				.setButtonText(tr("settings.addCategory"))
-				.setCta()
-				.onClick(async () => {
-					this.plugin.settings.categories.push({
-						name: tr("settings.newCategory"),
-						typeValue: "Movie",
-						contentType: "movie",
-						folder: "",
-					});
-					await this.plugin.saveSettings();
-					this.display();
-				}),
-		);
+		const addDiv = containerEl.createDiv({ cls: 'library-settings-category' })
+		let addValue = 'movie'
+		new Setting(addDiv)
+			.setName(tr('settings.addCategory'))
+			.addDropdown((d) => {
+				d.addOption('movie', tr('settings.default.movie'))
+				d.addOption('series', tr('settings.default.series'))
+				d.addOption('book', tr('settings.default.book'))
+				d.addOption('comic', tr('settings.default.comic'))
+				d.addOption('game', tr('settings.default.game'))
+				d.addOption('music', tr('settings.default.music'))
+				d.addOption('anime', tr('settings.default.anime'))
+				d.addOption('manual', tr('settings.default.manual'))
+				d.setValue('movie')
+				d.onChange((v) => { addValue = v })
+			})
+			.addButton((b) =>
+				b
+					.setButtonText(tr('settings.addCategory'))
+					.setCta()
+					.onClick(async () => {
+						const typeMap: Record<string, { name: string; typeValue: string; contentType: ContentType }> = {
+							movie: { name: tr('settings.default.movie'), typeValue: 'Movie', contentType: 'movie' },
+							series: { name: tr('settings.default.series'), typeValue: 'Series', contentType: 'series' },
+							book: { name: tr('settings.default.book'), typeValue: 'Book', contentType: 'book' },
+							comic: { name: tr('settings.default.comic'), typeValue: 'Comic', contentType: 'comic' },
+							game: { name: tr('settings.default.game'), typeValue: 'Game', contentType: 'game' },
+							music: { name: tr('settings.default.music'), typeValue: 'Music', contentType: 'music' },
+							anime: { name: tr('settings.default.anime'), typeValue: 'Anime', contentType: 'anime' },
+							manual: { name: tr('settings.default.manual'), typeValue: 'Manual', contentType: 'manual' },
+						}
+						const def = typeMap[addValue]
+						if (!def) return
+						this.plugin.settings.categories.push({
+							name: def.name,
+							typeValue: def.typeValue,
+							contentType: def.contentType,
+							folder: '',
+						})
+						await this.plugin.saveSettings()
+						this.display()
+					})
+			)
 
 		new Setting(containerEl)
 			.setName(tr("settings.section.example"))

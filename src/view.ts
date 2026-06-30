@@ -65,7 +65,7 @@ export class LibraryView extends ItemView {
 				fm,
 				name: toStr(fm.Name) || file.basename,
 				year: Number(fm.Year) || 0,
-				rating: Number(fm['My Rating'] || fm.Rating) || 0,
+				rating: Number(fm['My Rating'] ?? fm.Rating) || 0,
 				date: parseDate(fm.Date)
 			})
 		}
@@ -103,7 +103,7 @@ export class LibraryView extends ItemView {
 			const cat = this.plugin.settings.categories.find(c => c.typeValue === fm.Type)
 			if (cat) {
 				const list = catCards.get(cat.name) || []
-				const rating = Number(fm['My Rating'] || fm['Rating IMDB'] || fm.Rating) || 0
+				const rating = Number(fm['My Rating'] ?? fm['Rating IMDB'] ?? fm.Rating) || 0
 				list.push({
 					file,
 					fm,
@@ -395,7 +395,15 @@ export class LibraryView extends ItemView {
 		if (cardCover) {
 			imgDiv.createEl('img', { attr: { src: cardCover, alt: card.name } })
 		} else {
-			imgDiv.createSpan({ text: '🎬' })
+			const type = toStr(fm.Type)
+			const emoji = type === 'anime' ? '🎌'
+				: type === 'comic' ? '📚'
+				: type === 'book' ? '📖'
+				: type === 'game' ? '🎮'
+				: type === 'music' ? '🎵'
+				: type === 'manual' ? '📝'
+				: '🎬'
+			imgDiv.createSpan({ text: emoji })
 		}
 
 		const info = cardEl.createDiv({ cls: 'card-info' })
@@ -405,12 +413,12 @@ export class LibraryView extends ItemView {
 		if (author) info.createDiv({ cls: 'card-author', text: toStr(author) })
 		if (fm.Year) info.createDiv({ cls: 'card-year', text: toStr(fm.Year) })
 
-		const myRating = fm['My Rating'] || fm.Rating
+		const myRating = fm['My Rating'] ?? fm.Rating
 		const imdb = fm['Rating IMDB']
 		if (imdb || myRating) {
 			const parts: string[] = []
 			if (imdb) parts.push('IMDb ' + toStr(imdb))
-			if (myRating) parts.push('My ' + toStr(myRating))
+			if (myRating) parts.push(toStr(myRating))
 			info.createDiv({ cls: 'card-rating', text: parts.join(' | ') })
 		}
 

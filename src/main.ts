@@ -15,6 +15,8 @@ import { GoogleBooksProvider } from './providers/googlebooks'
 import { BookAggregatorProvider } from './providers/bookAggregator'
 import { RawgProvider } from './providers/rawg'
 import { DeezerProvider } from './providers/deezer'
+import { AnimeProvider } from './providers/anime'
+import { ComicsProvider } from './providers/comics'
 import type { NormalizedMetadata, SearchResult } from './providers/types'
 import { PickTypeModal } from './ui/pickTypeModal'
 import { AddContentModal } from './ui/addContentModal'
@@ -53,6 +55,8 @@ export default class LibraryPlugin extends Plugin {
 		this.registry.register(new BookAggregatorProvider(googleBooks, openLibrary))
 		this.registry.register(new RawgProvider(() => this.settings.rawgApiKey))
 		this.registry.register(new DeezerProvider())
+		this.registry.register(new AnimeProvider())
+		this.registry.register(new ComicsProvider(() => this.settings.comicVineApiKey))
 		this.addSettingTab(new LibrarySettingTab(this.app, this))
 
 		this.registerView(LIBRARY_VIEW_TYPE, (leaf) => new LibraryView(leaf, this))
@@ -468,7 +472,7 @@ export default class LibraryPlugin extends Plugin {
 				}
 			})
 
-			if (force) new Notice(tr('notice.created', { name: toStr(meta.fields.Name) || file.basename }))
+			if (force) new Notice(tr('notice.refreshed', { name: toStr(meta.fields.Name) || file.basename }))
 		} catch (e) {
 			console.error('Library: refresh error', e)
 			if (force) {

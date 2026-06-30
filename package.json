@@ -1,6 +1,6 @@
 {
 	"name": "library",
-	"version": "2.1.1",
+	"version": "2.1.2",
 	"description": "Organize movies, series, and other media as visual cards with automatic metadata from OMDb.",
 	"main": "main.js",
 	"type": "module",
