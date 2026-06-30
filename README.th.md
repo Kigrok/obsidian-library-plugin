@@ -1,132 +1,132 @@
-> TH | [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="banner.png" alt="Obsidian Library แบนเนอร์" width="100%">
 </p>
 
-<h1 align="center">Library</h1>
+<h1 align="center">คลังสมบัติ</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
-  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
-  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
-  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
+  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="เวอร์ชัน">
+  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="การดาวน์โหลด">
+  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="เวอร์ชัน Obsidian">
+  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="ลิขสิทธิ์">
 </p>
 
 <p align="center">
-  <b>Organize your movies, series, books, and more into a visual gallery — right inside Obsidian.</b>
+  <b>จัดเรียงภาพยนตร์ ซีรีส์ หนังสือ และอื่นๆ เป็นแกลเลอรีภาพ — ตรงใน Obsidian</b>
   <br />
-  Search and add titles in-app, auto-fetch metadata, track progress, and wire everything into your graph.
+  ค้นหาและเพิ่มชื่อเรื่องในแอป ดึงข้อมูลเมตาอัตโนมัติ ติดตามความคืบหน้า และเชื่อมต่อทุกอย่างเข้ากับกราฟของคุณ
 </p>
 
 <p align="center">
-  <a href="https://community.obsidian.md/plugins/library">View on the Obsidian Community Plugins directory</a>
+  <a href="https://community.obsidian.md/plugins/library">ดูในไดเรกทอรีปลั๊กอินชุมชน Obsidian</a>
 </p>
 
 ---
 
-## Key Features
+## คุณสมบัติหลัก
 
-- **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books, RAWG for games, Deezer for music, Jikan for anime, Comic Vine for comics.
-- **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
-- **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
-- **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
-- **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
-- **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
-- **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
-- **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
-- **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
-- **Multilingual** — 31 languages: English, Ukrainian, Russian, Belarusian, Kazakh, Uzbek, German, Spanish, French, Italian, Dutch, Czech, Croatian, Polish, Romanian, Turkish, Azerbaijani, Persian, Hindi, Bengali, Urdu, Tagalog, Vietnamese, Thai, Javanese, Japanese, Korean, Chinese, Arabic, Sinhala, Hebrew.
-
----
-
-## Quick Start
-
-### 1. Installation
-
-Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings > Community plugins > Browse > search "Library"), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
-
-### 2. Basic Setup
-
-1. Go to **Settings** > **Library**.
-2. Add your **Categories** — select a predefined type (Movies, Series, Books, Comics, Games, Music, Anime, or Manual) from the dropdown and click **Add category**. Each category has a display name (translated to your language), a `Type` value (always English, e.g. `Movie`), a source, and an optional folder for storing notes.
-3. _(Optional)_ Enter API keys for the services you use: [OMDb](https://www.omdbapi.com/apikey.aspx) for movies/series, [RAWG](https://rawg.io/apidocs) for games, [Comic Vine](https://comicvine.gamespot.com/api/) for comics. Anime (Jikan) and music (Deezer) require no key.
-
-### 3. Add a Card by Title
-
-No more filling in frontmatter by hand — add a movie, series, book, anime, or comic just by searching its name:
-
-1. Open the **Library** tab from the ribbon icon (or run `Open Library`).
-2. Click the **+** button in the top-right of the Library page (or run `Add content`).
-3. Pick a category, type the **title** into the search box, and select a result.
-4. A card is created instantly, with poster, year, genre, creators, and rating filled in automatically.
-
-The **Search** button next to **+** searches titles already in your library.
-
-For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
+- **ตารางการ์ดภาพ** — แท็บคลังสมบัติเฉพาะจะแสดงคอลเลกชันของคุณเป็นแกลเลอรีการ์ดปกศิลปะ
+- **ค้นหาในตัว** — ค้นหาและเพิ่มชื่อเรื่องตรงในแอป: OMDb สำหรับภาพยนตร์และซีรีส์ Open Library หรือ Google Books สำหรับหนังสือ RAWG สำหรับเกม Deezer สำหรับเพลง Jikan สำหรับแอนิเมะ Comic Vine สำหรับการ์ตูน
+- **การติดตามซีรีส์อัจฉริยะ** — จำนวน_season และตอนถูกดึงโดยอัตโนมัติและรักษาการซิงค์
+- **ตัวบ่งชี้ความคืบหน้า** — แถบความคืบหน้าภาพบนการ์ดและส่วนหัวบันทึกแสดงว่าคุณดูหรืออ่านไปมากน้อยเพียงใด
+- **ส่วนหัวบันทึกที่หลากหลาย** — บันทึกเนื้อหาทุกรายการจะได้รับส่วนหัวที่สร้างโดยอัตโนมัติพร้อมข้อมูลเมตาหลักทั้งหมด
+- **หมวดหมู่ที่กำหนดเอง** — สร้างหมวดหมู่สำหรับภาพยนตร์ ซีรีส์ แอนิเมะ การ์ตูน หนังสือ เกม เพลง หรือสิ่งอื่นใดผ่านแหล่งข้อมูลด้วยตนเอง
+- **ลิงก์กราฟ** — คุณสมบัติ frontmatter `Related` เชื่อมต่อบันทึกทุกรายการกับหมวดหมู่ ประเภท และผู้สร้าง รักษาการซิงค์โดยอัตโนมัติเพื่อกราฟที่สวยงาม
+- **การจัดเรียงและการพับ** — เรียงลำดับการ์ดตามชื่อ ปี คะแนน หรือวันที่ พับหมวดหมู่ใดก็ได้
+- **สถิติ** — ประเภทยอดนิยม ผู้สร้างยอดนิยม (เฉพาะภาพยนตร์และซีรีส์เท่านั้น) และรายการยอดนิยมแต่ละหมวดหมู่พร้อมการจัดอันดับเหรียญ
+- **การตรวจจับซ้ำ** — ป้องกันการเพิ่มชื่อเรื่องเดียวกันสองครั้งโดย URL โดยอัตโนมัติ คำสั่งในตัวจะค้นหาและลบรายการที่ซ้ำกัน
+- **หลายภาษา** — 31 ภาษา: อังกฤษ ยูเครน รัสเซีย เบลารุส คาซัค อุซเบก เยอรมัน สเปน ฝรั่งเศส อิตาลี ดัตช์ เช็ก โครเอเชีย โปแลนด์ โรมาเนีย ตุรกี อาเซอร์ไบจาน เปอร์เซีย ฮินดี เบงกาลี อูรดู ทา垢лок เวียดนาม ไทย ชวา ญี่ปุ่น เกาหลี จีน อาหรับ สิงฮала ฮิบรู
 
 ---
 
-## Statistics
+## เริ่มต้นใช้งานอย่างรวดเร็ว
 
-The Library tab includes a collapsible **Statistics** section at the top:
+### 1. การติดตั้ง
 
-- **Top Genres** — ranked by frequency across your entire library.
-- **Top Creators** — ranked by number of movies and series they appear in.
-- **Top per Category** — for each category (Movies, Series, Books, etc.), the top 3 items by rating with small cover thumbnails.
+ติดตั้ง **คลังสมบัติ** จาก [ไดเรกทอรีปลั๊กอินชุมชน Obsidian](https://community.obsidian.md/plugins/library) (การตั้งค่า > ปลั๊กอินชุมชน > เรียกดู > ค้นหา "คลังสมบัติ") หรือติดตั้งด้วยตนเองผ่าน [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases)
+
+### 2. การตั้งค่าเบื้องต้น
+
+1. ไปที่ **การตั้งค่า** > **คลังสมบัติ**
+2. เพิ่ม **หมวดหมู่** ของคุณ — เลือกประเภทที่กำหนดไว้ล่วงหน้า (ภาพยนตร์ ซีรีส์ หนังสือ การ์ตูน เกม เพลง แอนิเมะ หรือด้วยตนเอง) จากเมนูแบบเลื่อนลงและคลิก **เพิ่มหมวดหมู่** แต่ละหมวดหมู่มีชื่อที่แสดง (แปลเป็นภาษาของคุณ) ค่า `Type` (始终เป็นภาษาอังกฤษ เช่น `Movie`) แหล่งข้อมูล และโฟลเดอร์สำหรับเก็บบันทึก (ไม่บังคับ)
+3. _（ไม่บังคับ）_ ป้อน API key สำหรับบริการที่คุณใช้: [OMDb](https://www.omdbapi.com/apikey.aspx) สำหรับภาพยนตร์/ซีรีส์ [RAWG](https://rawg.io/apidocs) สำหรับเกม [Comic Vine](https://comicvine.gamespot.com/api/) สำหรับการ์ตูน แอนิเมะ (Jikan) และเพลง (Deezer) ไม่ต้องใช้ key
+
+### 3. เพิ่มการ์ดด้วยชื่อเรื่อง
+
+ไม่ต้องกรอก frontmatter ด้วยตนเองอีกต่อไป — เพิ่มภาพยนตร์ ซีรีส์ หนังสือ แอนิเมะ หรือการ์ตูนเพียงแค่ค้นหาชื่อ:
+
+1. เปิดแท็บ **คลังสมบัติ** จากไอคอนริบบิ้น (หรือรัน `Open Library`)
+2. คลิกปุ่ม **+** ที่มุมบนขวาของหน้าคลังสมบัติ (หรือรัน `Add content`)
+3. เลือกหมวดหมู่ พิมพ์ **ชื่อเรื่อง** ในช่องค้นหา และเลือกผลลัพธ์
+4. การ์ดถูกสร้างทันที โดยมีโปสเตอร์ ปี ประเภท ผู้สร้าง และคะแนนถูกกรอกโดยอัตโนมัติ
+
+ปุ่ม **ค้นหา** ข้าง **+** จะค้นหาชื่อเรื่องที่มีอยู่ในคลังสมบัติของคุณแล้ว
+
+สำหรับหมวดหมู่ **ด้วยตนเอง** คุณเพียงแค่พิมพ์ชื่อเรื่องและกรอกปก ปี และฟิลด์อื่นๆ ด้วยตนเอง
 
 ---
 
-## Duplicate Detection
+## สถิติ
 
-Library prevents duplicate entries by checking the `URL` field:
+แท็บคลังสมบัติมีส่วน **สถิติ** แบบพับได้ที่ด้านบน:
 
-- **On add** — if a note with the same URL already exists, it opens the existing note instead of creating a duplicate.
-- **Find & Remove Duplicates** — run this command from the palette to scan all notes, group by URL, and selectively remove duplicates via a modal.
+- **ประเภทยอดนิยม** — จัดอันดับตามความถี่ทั่วทั้งคลังสมบัติ
+- **ผู้สร้างยอดนิยม** — จัดอันดับตามจำนวนภาพยนตร์และซีรีส์ที่ปรากฏ
+- **ยอดนิยมแต่ละหมวดหมู่** — สำหรับแต่ละหมวดหมู่ (ภาพยนตร์ ซีรีส์ หนังสือ ฯลฯ) รายการที่ดีที่สุด 3 อันดับตามคะแนนพร้อมรูปขนาดย่อปกเล็กๆ
 
 ---
 
-## Sources
+## การตรวจจับซ้ำ
 
-Each category is bound to a source that powers its search:
+คลังสมบัติป้องกันรายการที่ซ้ำกันโดยการตรวจสอบฟิลด์ `URL`:
 
-| Source           | Content types   | API key                                                      |
+- **เมื่อเพิ่ม** — 如果มีบันทึกที่มี URL เดียวกันอยู่แล้ว จะเปิดบันทึกที่มีอยู่แทนการสร้างซ้ำ
+- **ค้นหาและลบรายการที่ซ้ำกัน** — รันคำสั่งนี้จาก palette เพื่อสแกนบันทึกทั้งหมด จัดกลุ่มตาม URL และลบรายการที่ซ้ำกันอย่างเลือกผ่าน modal
+
+---
+
+## แหล่งข้อมูล
+
+แต่ละหมวดหมู่เชื่อมต่อกับแหล่งข้อมูลที่ขับเคลื่อนการค้นหา:
+
+| แหล่งข้อมูล     | ประเภทเนื้อหา   | API key                                                      |
 | ---------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**        | Books           | Open Library (no key) + Google Books (optional free key). Results are merged — Google Books first, Open Library below. |
-| **RAWG**         | Games           | Free key required — [rawg.io/apidocs](https://rawg.io/apidocs) |
-| **Deezer**       | Music (albums)  | None                                                        |
-| **Jikan**        | Anime           | None — free unofficial MyAnimeList API, no key needed       |
-| **Comic Vine**   | Comics          | Free key required — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
+| **OMDb**         | ภาพยนตร์ ซีรีส์  | ต้องใช้ key ฟรี — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
+| **Books**        | หนังสือ          | Open Library (ไม่ต้องใช้ key) + Google Books (key ฟรีทางเลือก) ผลลัพธ์รวมกัน — Google Books ก่อน Open Library ด้านล่าง |
+| **RAWG**         | เกม              | ต้องใช้ key ฟรี — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Deezer**       | เพลง (อัลบั้ม)   | ไม่ต้องใช้                                                    |
+| **Jikan**        | แอนิเมะ          | ไม่ต้องใช้ — API MyAnimeList นอกกรอบฟรี ไม่ต้องใช้ key       |
+| **Comic Vine**   | การ์ตูน          | ต้องใช้ key ฟรี — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
+| **ด้วยตนเอง**    | สิ่งอื่นใด       | ไม่ต้องใช้ — คุณพิมพ์ชื่อเรื่องและกรอกฟิลด์เอง          |
 
 ---
 
-## Privacy & Network Use
+## ความเป็นส่วนตัวและการใช้เครือข่าย
 
-Library is **offline-first**. The plugin only contacts the network when you actively search for a title to add, and only with the search terms you type:
+คลังสมบัติเป็น **แบบออฟไลน์ก่อน** จะเชื่อมต่อเครือข่ายเฉพาะเมื่อคุณค้นหาชื่อเรื่องที่จะเพิ่มเท่านั้น และส่งเฉพาะคำค้นหาที่คุณพิมพ์:
 
-| Service | When | What is sent | Why |
+| บริการ | เมื่อใด | ส่งอะไร | ทำไม |
 | --- | --- | --- | --- |
-| `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
-| `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
-| `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
-| `www.googleapis.com` | You search a Google Books category | The title you type and your Google Books key | Fetch book metadata (author, year, categories, page count, cover, ISBN) |
-| `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
-| `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
-| `api.jikan.moe` | You search an anime category | The title you type | Fetch anime metadata (title, year, genre, episodes, MAL score, synopsis, poster) |
-| `comicvine.gamespot.com` | You search a comics category | The title you type and your Comic Vine key | Fetch comic metadata (title, year, publisher, issue count, cover) |
+| `www.omdbapi.com` | ค้นหาหมวดหมู่ที่ใช้ OMDb | ชื่อเรื่องที่คุณพิมพ์และ OMDb API key ของคุณ | ดึงข้อมูลเมตาภาพยนตร์/ซีรีส์ (ปี ประเภท นักแสดง คะแนน โปสเตอร์ จำนวนตอน) |
+| `openlibrary.org` | ค้นหาหมวดหมู่ Open Library | ชื่อเรื่องที่คุณพิมพ์ | ดึงข้อมูลเมตาหนังสือ (ผู้เขียน ปี หัวข้อ cover id) |
+| `covers.openlibrary.org` | การ์ดหนังสือมีปก | cover id ของ Open Library | โหลดรูปปก |
+| `www.googleapis.com` | ค้นหาหมวดหมู่ Google Books | ชื่อเรื่องที่คุณพิมพ์และ Google Books key ของคุณ | ดึงข้อมูลเมตาหนังสือ (ผู้เขียน ปี ประเภท จำนวนหน้า ปก ISBN) |
+| `api.rawg.io` | ค้นหาหมวดหมู่เกม RAWG | ชื่อเรื่องที่คุณพิมพ์และ RAWG key ของคุณ | ดึงข้อมูลเมตาเกม (ปี ประเภท ผู้พัฒนา ปก) |
+| `api.deezer.com` | ค้นหาหมวดหมู่เพลง Deezer | อัลบั้มหรือศิลปินที่คุณพิมพ์ | ดึงข้อมูลเมตาอัลบั้ม (ศิลปิน ปี ประเภท จำนวนแทร็ค ปก) |
+| `api.jikan.moe` | ค้นหาหมวดหมู่แอนิเมะ | ชื่อเรื่องที่คุณพิมพ์ | ดึงข้อมูลเมตาแอนิเมะ (ชื่อเรื่อง ปี ประเภท ตอน คะแนน MAL เรื่องย่อ โปสเตอร์) |
+| `comicvine.gamespot.com` | ค้นหาหมวดหมู่การ์ตูน | ชื่อเรื่องที่คุณพิมพ์และ Comic Vine key ของคุณ | ดึงข้อมูลเมตาการ์ตูน (ชื่อเรื่อง ปี สำนักพิมพ์ จำนวน issues ปก) |
 
-No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. API keys (OMDb, Google Books, RAWG, Comic Vine) are stored only in your local plugin settings and are sent only to their respective services. Cover images load directly from the URLs returned by each source.
+ข้อมูลอื่นๆ จะไม่ออกจาก vault ของคุณเลย ปลั๊กอิน **ไม่มี遥测 ไม่มีการวิเคราะห์ และไม่มีกลไกอัปเดตอัตโนมัติ** API key (OMDb Google Books RAWG Comic Vine) ถูกเก็บไว้ในการตั้งค่าปลั๊กอินท้องถิ่นเท่านั้นและส่งไปยังบริการที่เกี่ยวข้องเท่านั้น รูปปกจะโหลดโดยตรงจาก URL ที่แหล่งข้อมูลแต่ละแห่งส่งกลับ
 
 ---
 
-## Frontmatter Schema
+## สคีมา Frontmatter
 
-The plugin reads and writes to standard YAML frontmatter. Notes are created for you, but every field is editable. `Source` and `Source ID` let the plugin refresh metadata later.
+ปลั๊กอินอ่านและเขียน frontmatter YAML มาตรฐาน บันทึกจะถูกสร้างโดยอัตโนมัติแต่ทุกฟิลด์สามารถแก้ไขได้ `Source` และ `Source ID` ช่วยให้ปลั๊กอินรีเฟรชข้อมูลเมตาในภายหลัง
 
-### Movie
+### ภาพยนตร์
 
 ```yaml
 ---
@@ -150,7 +150,7 @@ Source ID: tt1375666
 ---
 ```
 
-### Series
+### ซีรีส์
 
 ```yaml
 ---
@@ -177,9 +177,9 @@ Source ID: tt4574334
 ---
 ```
 
-> **Series auto-update:** Run `Refresh metadata for current note` (or just open the note) and the plugin updates the total episode count in `Progress` (e.g., `25/42` to `25/50`) and the `Season` count, while keeping your watched count intact.
+> **อัปเดตซีรีส์อัตโนมัติ:** รัน `Refresh metadata for current note` (หรือแค่เปิดบันทึก) และปลั๊กอินจะอัปเดตจำนวนตอนรวมใน `Progress` (เช่น `25/42` เป็น `25/50`) และจำนวน `Season` โดยยังคงจำนวนที่คุณดูไว้เหมือนเดิม
 
-### Book
+### หนังสือ
 
 ```yaml
 ---
@@ -201,7 +201,7 @@ Source ID: /works/OL893415W
 ---
 ```
 
-### Anime
+### แอนิเมะ
 
 ```yaml
 ---
@@ -226,7 +226,7 @@ Source ID: 9253
 ---
 ```
 
-### Comic
+### การ์ตูน
 
 ```yaml
 ---
@@ -249,9 +249,9 @@ Source ID: 33819
 
 ---
 
-## Graph Links
+## ลิงก์กราฟ
 
-Each content note gets a `Related` frontmatter property, kept up to date automatically — the note body is never touched:
+บันทึกเนื้อหาทุกรายการจะได้รับคุณสมบัติ frontmatter `Related` ที่ถูกอัปเดตโดยอัตโนมัติ — เนื้อหาบันทึกจะไม่ถูกแก้ไข:
 
 ```yaml
 Related:
@@ -261,27 +261,42 @@ Related:
     - "[[Christopher Nolan]]"
 ```
 
-These links connect your notes through shared categories, genres, and creators, so the Obsidian graph view forms clean clusters. A real hub note is created per category (e.g. `Movie`) so clusters show even with unresolved links hidden. The property is written when a note is created and refreshed whenever its metadata changes — run `Rebuild graph links` only if you want to force a full rebuild.
+ลิงก์เหล่านี้เชื่อมต่อบันทึกของคุณผ่านหมวดหมู่ ประเภท และผู้สร้างที่ใช้ร่วมกัน ทำให้กราฟวิวของ Obsidian ก่อตัวเป็นคลัสเตอร์ที่เรียบร้อย บันทึกศูนย์กลางจริงจะถูกสร้างสำหรับแต่ละหมวดหมู่ (เช่น `Movie`) ดังนั้นคลัสเตอร์จะแสดงแม้ลิงก์ที่ยังไม่ได้แก้ไขจะถูกซ่อน คุณสมบัติจะถูกเขียนเมื่อสร้างบันทึกและรีเฟรชทุกครั้งที่ข้อมูลเมตาเปลี่ยน — รัน `Rebuild graph links` เท่านั้นหากคุณต้องการบังคับสร้างใหม่ทั้งหมด
 
 ---
 
-## Commands
+## คำสั่ง
 
-| Command                              | Description                                                              |
+| คำสั่ง                              | คำอธิบาย                                                              |
 | ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Open the Library gallery tab.                                           |
-| `Add content`                        | Search a source and create a content note (or type a title for Manual). |
-| `Search your library`                | Fuzzy-search and open any note already in your library.                 |
-| `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
-| `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
-| `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
+| `Open Library`                       | เปิดแท็บแกลเลอรีคลังสมบัติ                                           |
+| `Add content`                        | ค้นหาแหล่งข้อมูลและสร้างบันทึกเนื้อหา (หรือพิมพ์ชื่อเรื่องสำหรับด้วยตนเอง) |
+| `Search your library`                | ค้นหาแบบคลุมเครือและเปิดบันทึกที่มีอยู่ในคลังสมบัติ                 |
+| `Refresh metadata for current note`  | ดึงข้อมูลเมตาอีกครั้งสำหรับบันทึกที่ใช้งาน อัปเดตจำนวนตอนรวมของซีรีส์   |
+| `Rebuild graph links`                | เชื่อมต่อบันทึกเนื้อหาทุกรายการกับหมวดหมู่ ประเภท และผู้สร้าง          |
+| `Find & remove duplicates`           | สแกนบันทึกทั้งหมดตาม URL แสดงรายการที่ซ้ำ และลบรายการที่เลือก       |
 
 ---
 
-## Contributing & Support
+## การมีส่วนร่วมและการสนับสนุน
 
-- **Found a bug?** Open an [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
-- **Have a feature idea?** Start a [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
-- **Love the plugin?** Consider starring the repository to show your support!
+- **พบข้อผิดพลาด?** เปิด [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues)
+- **มีไอเดียคุณสมบัติใหม่?** เริ่ม [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions)
+- **ชอบปลั๊กอิน?** ให้ดาวกับรีโพเพื่อแสดงการสนับสนุน!
+
+---
+
+## ขอบคุณ
+
+หากคุณพบว่าปลั๊กอินนี้มีประโยชน์ โปรดพิจารณาสนับสนุนการพัฒนา:
+
+| | เครือข่าย | ที่อยู่ |
+| --- | --- | --- |
+| <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat&logo=ethereum&logoColor=white" alt="EVM"> | **EVM** | `0xf9B4807E107f6f8Db79D86aCef6072A31d570201` |
+| <img src="https://img.shields.io/badge/Sui-4DA2FF?style=flat&logo=sui&logoColor=white" alt="Sui"> | **Sui** | `0x1d6989810ee7e55d43f65398253b02462b921e9ce8ad626b542929f02c3d3e9a` |
+| <img src="https://img.shields.io/badge/Solana-9945FF?style=flat&logo=solana&logoColor=white" alt="Sol"> | **Sol** | `2jmrmQrLVeUDFgHzSkHvHKBrmRJXes5X8h3GHXxrLaX6` |
+| <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
+| <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
+| <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
 
 ---

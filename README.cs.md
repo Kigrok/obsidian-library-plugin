@@ -1,4 +1,4 @@
-> CS | [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **[CS](README.cs.md)**
 
 <p align="center">
   <img src="banner.png" alt="Obsidian Library Banner" width="100%">
@@ -14,117 +14,117 @@
 </p>
 
 <p align="center">
-  <b>Organize your movies, series, books, and more into a visual gallery — right inside Obsidian.</b>
+  <b>Uspořádejte své filmy, seriály, knihy a další do vizuální galerie — přímo uvnitř Obsidian.</b>
   <br />
-  Search and add titles in-app, auto-fetch metadata, track progress, and wire everything into your graph.
+  Vyhledávejte a přidávejte tituly přímo v aplikaci, automaticky načítejte metadata, sledujte postup a propojte vše se svým grafem.
 </p>
 
 <p align="center">
-  <a href="https://community.obsidian.md/plugins/library">View on the Obsidian Community Plugins directory</a>
+  <a href="https://community.obsidian.md/plugins/library">Zobrazit v adresáři Obsidian Community Plugins</a>
 </p>
 
 ---
 
-## Key Features
+## Hlavní Funkce
 
-- **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books, RAWG for games, Deezer for music, Jikan for anime, Comic Vine for comics.
-- **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
-- **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
-- **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
-- **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
-- **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
-- **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
-- **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
-- **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
-- **Multilingual** — 31 languages: English, Ukrainian, Russian, Belarusian, Kazakh, Uzbek, German, Spanish, French, Italian, Dutch, Czech, Croatian, Polish, Romanian, Turkish, Azerbaijani, Persian, Hindi, Bengali, Urdu, Tagalog, Vietnamese, Thai, Javanese, Japanese, Korean, Chinese, Arabic, Sinhala, Hebrew.
-
----
-
-## Quick Start
-
-### 1. Installation
-
-Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings > Community plugins > Browse > search "Library"), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
-
-### 2. Basic Setup
-
-1. Go to **Settings** > **Library**.
-2. Add your **Categories** — select a predefined type (Movies, Series, Books, Comics, Games, Music, Anime, or Manual) from the dropdown and click **Add category**. Each category has a display name (translated to your language), a `Type` value (always English, e.g. `Movie`), a source, and an optional folder for storing notes.
-3. _(Optional)_ Enter API keys for the services you use: [OMDb](https://www.omdbapi.com/apikey.aspx) for movies/series, [RAWG](https://rawg.io/apidocs) for games, [Comic Vine](https://comicvine.gamespot.com/api/) for comics. Anime (Jikan) and music (Deezer) require no key.
-
-### 3. Add a Card by Title
-
-No more filling in frontmatter by hand — add a movie, series, book, anime, or comic just by searching its name:
-
-1. Open the **Library** tab from the ribbon icon (or run `Open Library`).
-2. Click the **+** button in the top-right of the Library page (or run `Add content`).
-3. Pick a category, type the **title** into the search box, and select a result.
-4. A card is created instantly, with poster, year, genre, creators, and rating filled in automatically.
-
-The **Search** button next to **+** searches titles already in your library.
-
-For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
+- **Vizuální Mřížka Karet** — Vyhrazená záložka Library zobrazuje vaši sbírku jako galerii karet s obaly.
+- **Vestavěné Vyhledávání** — Vyhledávejte a přidávejte tituly přímo v aplikaci: OMDb pro filmy a seriály, Open Library nebo Google Books pro knihy, RAWG pro hry, Deezer pro hudbu, Jikan pro anime, Comic Vine pro komiksy.
+- **Chytré Sledování Seriálů** — Řady a celkový počet epizod se automaticky načítají a udržují synchronizované.
+- **Indikátory Postupu** — Vizuální ukazatele průběhu na kartách a hlavičkách poznámek ukazují, kolik jste viděli nebo přečetli.
+- **Bohaté Hlavičky Poznámek** — Každá obsahová poznámka dostane automaticky generovanou hlavičku se všemi důležitými metadaty.
+- **Vlastní Kategorie** — Vytvářejte kategorie pro Filmy, Seriály, Anime, Komiksy, Knihy, Hry, Hudbu nebo cokoliv jiného přes manuální zdroj.
+- **Grafické Odkazy** — Vlastnost `Related` v frontmatteru propojuje každou poznámku s její kategorií, žánry a tvůrci, automaticky synchronizovaná pro krásný graf.
+- **Řazení a Skládání** — Řaďte karty podle názvu, roku, hodnocení nebo data; sbíjejte libovolné kategorie.
+- **Statistiky** — Nejlepší žánry, nejlepší tvůrci (pouze filmy a seriály) a nejlepší položky v každé kategorii s medailovým žebříčkem.
+- **Detekce Duplicit** — Automaticky zabraňuje přidání stejného titulu dvakrát podle URL. Vestavěný příkaz najde a odstraní existující duplicity.
+- **Vícejazyčnost** — 31 jazyků: angličtina, ukrajinština, ruština, běloruština, kazaština, uzbečtina, němština, španělština, francouzština, italština, nizozemština, čeština, chorvatština, polština, rumunština, turečtina, ázerbájdžánština, perština, hindština, bengálština, urdština, tagalština, vietnamština, thajština, javánština, japonština, korejština, čínština, arabština, sinhalština, hebrejština.
 
 ---
 
-## Statistics
+## Rychlý Start
 
-The Library tab includes a collapsible **Statistics** section at the top:
+### 1. Instalace
 
-- **Top Genres** — ranked by frequency across your entire library.
-- **Top Creators** — ranked by number of movies and series they appear in.
-- **Top per Category** — for each category (Movies, Series, Books, etc.), the top 3 items by rating with small cover thumbnails.
+Nainstalujte **Library** z [adresáře Obsidian Community Plugins](https://community.obsidian.md/plugins/library) (Nastavení > Komunitní pluginy > Procházet > hledat "Library"), nebo jej nainstalujte ručně přes [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 
----
+### 2. Základní Nastavení
 
-## Duplicate Detection
+1. Přejděte na **Nastavení** > **Library**.
+2. Přidejte své **Kategorie** — vyberte předdefinovaný typ (Movies, Series, Books, Comics, Games, Music, Anime nebo Manual) z rozbalovacího seznamu a klikněte na **Add category**. Každá kategorie má zobrazovaný název (přeložený do vašeho jazyka), hodnotu `Type` (vždy anglicky, např. `Movie`), zdroj a volitelnou složku pro ukládání poznámek.
+3. _(Volitelné)_ Zadejte API klíče pro služby, které používáte: [OMDb](https://www.omdbapi.com/apikey.aspx) pro filmy/seriály, [RAWG](https://rawg.io/apidocs) pro hry, [Comic Vine](https://comicvine.gamespot.com/api/) pro komiksy. Anime (Jikan) a hudba (Deezer) nepotřebují klíč.
 
-Library prevents duplicate entries by checking the `URL` field:
+### 3. Přidání Karty podle Názvu
 
-- **On add** — if a note with the same URL already exists, it opens the existing note instead of creating a duplicate.
-- **Find & Remove Duplicates** — run this command from the palette to scan all notes, group by URL, and selectively remove duplicates via a modal.
+Žádné ruční vyplňování frontmatteru — přidejte film, seriál, anime nebo komiks jednoduše vyhledáním jeho názvu:
 
----
+1. Otevřete záložku **Library** z ikony na panelu (nebo spusťte `Open Library`).
+2. Klikněte na tlačítko **+** v pravé horní části stránky Library (nebo spusťte `Add content`).
+3. Vyberte kategorii, zadejte **název** do vyhledávacího pole a vyberte výsledek.
+4. Karta se okamžitě vytvoří s automaticky vyplněným posterem, rokem, žánrem, tvůrci a hodnocením.
 
-## Sources
+Tlačítko **Search** vedle **+** vyhledává tituly, které již máte v knihovně.
 
-Each category is bound to a source that powers its search:
-
-| Source           | Content types   | API key                                                      |
-| ---------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**        | Books           | Open Library (no key) + Google Books (optional free key). Results are merged — Google Books first, Open Library below. |
-| **RAWG**         | Games           | Free key required — [rawg.io/apidocs](https://rawg.io/apidocs) |
-| **Deezer**       | Music (albums)  | None                                                        |
-| **Jikan**        | Anime           | None — free unofficial MyAnimeList API, no key needed       |
-| **Comic Vine**   | Comics          | Free key required — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
+Pro **Manuální** kategorie jednoduše zadáte název a sami vyplníte obal, rok a další pole.
 
 ---
 
-## Privacy & Network Use
+## Statistiky
 
-Library is **offline-first**. The plugin only contacts the network when you actively search for a title to add, and only with the search terms you type:
+Záložka Library obsahuje nahoře sbalitelnou sekci **Statistiky**:
 
-| Service | When | What is sent | Why |
+- **Nejlepší Žánry** — seřazeny podle frekvence v celé knihovně.
+- **Nejlepší Tvůrci** — seřazeni podle počtu filmů a seriálů, ve kterých se objevují.
+- **Nejlepší v Každé Kategorii** — pro každou kategorii (Filmy, Seriály, Knihy atd.) top 3 položky podle hodnocení s miniaturami obalů.
+
+---
+
+## Detekce Duplicit
+
+Library zabraňuje duplicitním záznamům kontrolou pole `URL`:
+
+- **Při přidání** — pokud již existuje poznámka se stejnou URL, otevře existující poznámku místo vytvoření duplikátu.
+- **Najít a Odstranit Duplicity** — spusťte tento příkaz z palety pro prohledání všech poznámek, seskupení podle URL a selektivní odstranění duplicit přes modální okno.
+
+---
+
+## Zdroje
+
+Každá kategorie je vázána na zdroj, který pohání její vyhledávání:
+
+| Zdroj              | Typy obsahu    | API klíč                                                     |
+| ------------------ | --------------- | ------------------------------------------------------------ |
+| **OMDb**           | Filmy, Seriály  | Vyžadován bezplatný klíč — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
+| **Books**          | Knihy           | Open Library (bez klíče) + Google Books (volitelný bezplatný klíč). Výsledky jsou sloučeny — Google Books první, Open Library pod. |
+| **RAWG**           | Hry             | Vyžadován bezplatný klíč — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Deezer**         | Hudba (alba)    | Žádný                                                       |
+| **Jikan**          | Anime           | Žádný — bezplatná neoficiální MyAnimeList API, klíč není potřeba |
+| **Comic Vine**     | Komiksy         | Vyžadován bezplatný klíč — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
+| **Manual**         | Cokoliv jiného  | Žádný — zadáte název a vyplníte pole sami                   |
+
+---
+
+## Soukromí a Využití Sítě
+
+Library je **offline-první**. Plugin kontaktuje síť pouze, když aktivně vyhledáváte titul pro přidání, a pouze s vyhledávacími termíny, které zadáte:
+
+| Služba | Kdy | Co se odesílá | Proč |
 | --- | --- | --- | --- |
-| `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
-| `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
-| `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
-| `www.googleapis.com` | You search a Google Books category | The title you type and your Google Books key | Fetch book metadata (author, year, categories, page count, cover, ISBN) |
-| `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
-| `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
-| `api.jikan.moe` | You search an anime category | The title you type | Fetch anime metadata (title, year, genre, episodes, MAL score, synopsis, poster) |
-| `comicvine.gamespot.com` | You search a comics category | The title you type and your Comic Vine key | Fetch comic metadata (title, year, publisher, issue count, cover) |
+| `www.omdbapi.com` | Vyhledáváte v kategorii podporované OMDb | Název, který zadáte, a váš OMDb API klíč | Načtení metadat filmů/seriálů (rok, žánre, obsazení, hodnocení, poster, počty epizod) |
+| `openlibrary.org` | Vyhledáváváte v kategorii Open Library | Název, který zadáte | Načtení metadat knih (autor, rok, předměty, ID obalu) |
+| `covers.openlibrary.org` | Karta knihy má obal | ID obalu Open Library | Načtení obrázku obalu |
+| `www.googleapis.com` | Vyhledáváváte v kategorii Google Books | Název, který zadáte, a váš Google Books klíč | Načtení metadat knih (autor, rok, kategorie, počet stránek, obal, ISBN) |
+| `api.rawg.io` | Vyhledáváváte v kategorii her RAWG | Název, který zadáte, a váš RAWG klíč | Načtení metadat her (rok, žánre, vývojář, obal) |
+| `api.deezer.com` | Vyhledáváváte v kategorii hudby Deezer | Album nebo umělec, který zadáte | Načtení metadat alba (umělec, rok, žánre, počet stop, obal) |
+| `api.jikan.moe` | Vyhledáváváte v kategorii anime | Název, který zadáte | Načtení metadat anime (název, rok, žánre, epizody, skóre MAL, synopse, poster) |
+| `comicvine.gamespot.com` | Vyhledáváváte v kategorii komiksů | Název, který zadáte, a váš Comic Vine klíč | Načtení metadat komiksů (název, rok, vydavatel, počet čísel, obal) |
 
-No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. API keys (OMDb, Google Books, RAWG, Comic Vine) are stored only in your local plugin settings and are sent only to their respective services. Cover images load directly from the URLs returned by each source.
+Žádná další data nikdy neopustí váš vault. Plugin **nemá telemetrii, analytiku ani mechanismus samoaktualizace**. API klíče (OMDb, Google Books, RAWG, Comic Vine) jsou uloženy pouze v místních nastaveních pluginu a odesílány pouze příslušným službám. Obrázky obalů se načítají přímo z URL vrácených jednotlivými zdroji.
 
 ---
 
-## Frontmatter Schema
+## Schéma Frontmatter
 
-The plugin reads and writes to standard YAML frontmatter. Notes are created for you, but every field is editable. `Source` and `Source ID` let the plugin refresh metadata later.
+Plugin čte a zapisuje do standardního YAML frontmatteru. Poznámky se pro vás vytvářejí, ale každé pole je editovatelné. `Source` a `Source ID` umožňují pluginu později aktualizovat metadata.
 
 ### Movie
 
@@ -177,7 +177,7 @@ Source ID: tt4574334
 ---
 ```
 
-> **Series auto-update:** Run `Refresh metadata for current note` (or just open the note) and the plugin updates the total episode count in `Progress` (e.g., `25/42` to `25/50`) and the `Season` count, while keeping your watched count intact.
+> **Automatická aktualizace seriálů:** Spusťte `Refresh metadata for current note` (nebo jednoduše otevřete poznámku) a plugin aktualizuje celkový počet epizod v `Progress` (např. z `25/42` na `25/50`) a počet `Season`, přičemž váš počet zhlédnutých zůstane nedotčený.
 
 ### Book
 
@@ -249,9 +249,9 @@ Source ID: 33819
 
 ---
 
-## Graph Links
+## Grafické Odkazy
 
-Each content note gets a `Related` frontmatter property, kept up to date automatically — the note body is never touched:
+Každá obsahová poznámka dostane vlastnost `Related` v frontmatteru, která se automaticky udržuje aktuální — tělo poznámky se nikdy nemění:
 
 ```yaml
 Related:
@@ -261,27 +261,42 @@ Related:
     - "[[Christopher Nolan]]"
 ```
 
-These links connect your notes through shared categories, genres, and creators, so the Obsidian graph view forms clean clusters. A real hub note is created per category (e.g. `Movie`) so clusters show even with unresolved links hidden. The property is written when a note is created and refreshed whenever its metadata changes — run `Rebuild graph links` only if you want to force a full rebuild.
+Tyto odkazy propojují vaše poznámky prostřednictvím sdílených kategorií, žánrů a tvůrců, takže zobrazení grafu Obsidian tvoří čisté klastery. Pro každou kategorii se vytvoří skutečný hub uzel (např. `Movie`), aby se klastry zobrazovaly i skrytými nerozlišenými odkazy. Vlastnost se zapíše při vytvoření poznámky a aktualizuje se při každé změně jejích metadat — spusťte `Rebuild graph links` pouze pokud chcete vynutit kompletní přestavbu.
 
 ---
 
-## Commands
+## Příkazy
 
-| Command                              | Description                                                              |
-| ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Open the Library gallery tab.                                           |
-| `Add content`                        | Search a source and create a content note (or type a title for Manual). |
-| `Search your library`                | Fuzzy-search and open any note already in your library.                 |
-| `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
-| `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
-| `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
+| Příkaz                               | Popis                                                                     |
+| ------------------------------------ | ------------------------------------------------------------------------- |
+| `Open Library`                       | Otevře záložku galerie Library.                                           |
+| `Add content`                        | Prohledá zdroj a vytvoří obsahovou poznámku (nebo zadejte název pro Manual). |
+| `Search your library`                | Fuzzy vyhledávání a otevření libovolné poznámky ve vaší knihovně.         |
+| `Refresh metadata for current note`  | Znovu načte metadata pro aktivní poznámku; aktualizuje celkové počty epizod seriálů. |
+| `Rebuild graph links`                | Propojí každou obsahovou poznámku s kategorií, žánry a tvůrci.            |
+| `Find & remove duplicates`           | Prohledá všechny poznámky podle URL, zobrazí duplicity a odstraní vybrané. |
 
 ---
 
-## Contributing & Support
+## Přispívání a Podpora
 
-- **Found a bug?** Open an [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
-- **Have a feature idea?** Start a [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
-- **Love the plugin?** Consider starring the repository to show your support!
+- **Našli jste bug?** Otevřete [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
+- **Máte nápad na funkci?** Spusťte [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
+- **Líbí se vám plugin?** Zvažte dát hvězdičku repozitáři, abyste ukázali svou podporu!
+
+---
+
+## Děkujeme
+
+Pokud považujete tento plugin za užitečný, zvažte podporu jeho vývoje:
+
+| | Síť | Adresa |
+| --- | --- | --- |
+| <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat&logo=ethereum&logoColor=white" alt="EVM"> | **EVM** | `0xf9B4807E107f6f8Db79D86aCef6072A31d570201` |
+| <img src="https://img.shields.io/badge/Sui-4DA2FF?style=flat&logo=sui&logoColor=white" alt="Sui"> | **Sui** | `0x1d6989810ee7e55d43f65398253b02462b921e9ce8ad626b542929f02c3d3e9a` |
+| <img src="https://img.shields.io/badge/Solana-9945FF?style=flat&logo=solana&logoColor=white" alt="Sol"> | **Sol** | `2jmrmQrLVeUDFgHzSkHvHKBrmRJXes5X8h3GHXxrLaX6` |
+| <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
+| <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
+| <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
 
 ---

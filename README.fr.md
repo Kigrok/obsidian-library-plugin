@@ -1,4 +1,4 @@
-> FR | [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | **[FR](README.fr.md)** | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
   <img src="banner.png" alt="Obsidian Library Banner" width="100%">
@@ -14,117 +14,117 @@
 </p>
 
 <p align="center">
-  <b>Organize your movies, series, books, and more into a visual gallery — right inside Obsidian.</b>
+  <b>Organisez vos films, séries, livres et plus encore dans une galerie visuelle — directement dans Obsidian.</b>
   <br />
-  Search and add titles in-app, auto-fetch metadata, track progress, and wire everything into your graph.
+  Recherchez et ajoutez des titres directement dans l'application, récupérez automatiquement les métadonnées, suivez la progression et connectez tout à votre graphe.
 </p>
 
 <p align="center">
-  <a href="https://community.obsidian.md/plugins/library">View on the Obsidian Community Plugins directory</a>
+  <a href="https://community.obsidian.md/plugins/library">Voir dans le répertoire Obsidian Community Plugins</a>
 </p>
 
 ---
 
-## Key Features
+## Fonctionnalités Principales
 
-- **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books, RAWG for games, Deezer for music, Jikan for anime, Comic Vine for comics.
-- **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
-- **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
-- **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
-- **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
-- **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
-- **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
-- **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
-- **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
-- **Multilingual** — 31 languages: English, Ukrainian, Russian, Belarusian, Kazakh, Uzbek, German, Spanish, French, Italian, Dutch, Czech, Croatian, Polish, Romanian, Turkish, Azerbaijani, Persian, Hindi, Bengali, Urdu, Tagalog, Vietnamese, Thai, Javanese, Japanese, Korean, Chinese, Arabic, Sinhala, Hebrew.
+- **Grille Visuelle de Cartes** — Un onglet dédié Library affiche votre collection sous forme de galerie de cartes avec illustrations.
+- **Recherche Intégrée** — Recherchez et ajoutez des titres directement dans l'application : OMDb pour les films et séries, Open Library ou Google Books pour les livres, RAWG pour les jeux, Deezer pour la musique, Jikan pour l'anime, Comic Vine pour les comics.
+- **Suivi Intelligente des Séries** — Les saisons et le nombre total d'épisodes sont récupérés automatiquement et maintenus synchronisés.
+- **Indicateurs de Progression** — Des barres de progression visuelles sur les cartes et les en-têtes de notes montrent ce que vous avez regardé ou lu.
+- **En-têtes de Notes Enrichis** — Chaque note de contenu reçoit un en-tête généré automatiquement avec toutes les métadonnées clés.
+- **Catégories Personnalisées** — Créez des catégories pour les Films, Séries, Anime, Comics, Livres, Jeux, Musique ou tout autre élément via la source manuelle.
+- **Liens dans le Graphe** — Une propriété `Related` dans le frontmatter relie chaque note à sa catégorie, ses genres et ses créateurs, synchronisée automatiquement pour un beau graphe.
+- **Tri et Réduction** — Triez les cartes par nom, année, note ou date ; réduisez n'importe quelle catégorie.
+- **Statistiques** — Genres principaux, créateurs principaux (films et séries uniquement) et éléments principaux par catégorie avec classements médailles.
+- **Détection de Doublons** — Empêche automatiquement l'ajout du même titre deux fois par URL. Une commande intégrée trouve et supprime les doublons existants.
+- **Multilingue** — 31 langues : anglais, ukrainien, russe, biélorusse, kazakh, ouzbek, allemand, espagnol, français, italien, néerlandais, tchèque, croate, polonais, roumain, turc, azerbaïdjanais, persan, hindi, bengali, ourdou, tagalog, vietnamien, thaï, javanais, japonais, coréen, chinois, arabe, singhalais, hébreu.
 
 ---
 
-## Quick Start
+## Démarrage Rapide
 
 ### 1. Installation
 
-Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings > Community plugins > Browse > search "Library"), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
+Installez **Library** depuis le [répertoire Obsidian Community Plugins](https://community.obsidian.md/plugins/library) (Paramètres > Plugins communautaires > Parcourir > rechercher "Library"), ou installez-le manuellement via les [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 
-### 2. Basic Setup
+### 2. Configuration de Base
 
-1. Go to **Settings** > **Library**.
-2. Add your **Categories** — select a predefined type (Movies, Series, Books, Comics, Games, Music, Anime, or Manual) from the dropdown and click **Add category**. Each category has a display name (translated to your language), a `Type` value (always English, e.g. `Movie`), a source, and an optional folder for storing notes.
-3. _(Optional)_ Enter API keys for the services you use: [OMDb](https://www.omdbapi.com/apikey.aspx) for movies/series, [RAWG](https://rawg.io/apidocs) for games, [Comic Vine](https://comicvine.gamespot.com/api/) for comics. Anime (Jikan) and music (Deezer) require no key.
+1. Allez dans **Paramètres** > **Library**.
+2. Ajoutez vos **Catégories** — sélectionnez un type prédéfini (Movies, Series, Books, Comics, Games, Music, Anime ou Manual) dans le menu déroulant et cliquez sur **Add category**. Chaque catégorie a un nom d'affichage (traduit dans votre langue), une valeur `Type` (toujours en anglais, par exemple `Movie`), une source et un dossier optionnel pour stocker les notes.
+3. _(Optionnel)_ Saisissez les clés API pour les services que vous utilisez : [OMDb](https://www.omdbapi.com/apikey.aspx) pour les films/séries, [RAWG](https://rawg.io/apidocs) pour les jeux, [Comic Vine](https://comicvine.gamespot.com/api/) pour les comics. L'anime (Jikan) et la musique (Deezer) ne nécessitent pas de clé.
 
-### 3. Add a Card by Title
+### 3. Ajouter une Carte par Titre
 
-No more filling in frontmatter by hand — add a movie, series, book, anime, or comic just by searching its name:
+Plus besoin de remplir le frontmatter à la main — ajoutez un film, une série, un anime ou un comic simplement en recherchant son nom :
 
-1. Open the **Library** tab from the ribbon icon (or run `Open Library`).
-2. Click the **+** button in the top-right of the Library page (or run `Add content`).
-3. Pick a category, type the **title** into the search box, and select a result.
-4. A card is created instantly, with poster, year, genre, creators, and rating filled in automatically.
+1. Ouvrez l'onglet **Library** depuis l'icône de la barre latérale (ou exécutez `Open Library`).
+2. Cliquez sur le bouton **+** en haut à droite de la page Library (ou exécutez `Add content`).
+3. Choisissez une catégorie, tapez le **titre** dans la boîte de recherche et sélectionnez un résultat.
+4. Une carte est créée instantanément, avec l'affiche, l'année, le genre, les créateurs et la note remplis automatiquement.
 
-The **Search** button next to **+** searches titles already in your library.
+Le bouton **Search** à côté de **+** recherche les titres déjà dans votre bibliothèque.
 
-For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
-
----
-
-## Statistics
-
-The Library tab includes a collapsible **Statistics** section at the top:
-
-- **Top Genres** — ranked by frequency across your entire library.
-- **Top Creators** — ranked by number of movies and series they appear in.
-- **Top per Category** — for each category (Movies, Series, Books, etc.), the top 3 items by rating with small cover thumbnails.
+Pour les catégories **Manuelles**, vous tapez simplement un titre et remplissez la couverture, l'année et les autres champs vous-même.
 
 ---
 
-## Duplicate Detection
+## Statistiques
 
-Library prevents duplicate entries by checking the `URL` field:
+L'onglet Library comprend une section **Statistiques** réductible en haut :
 
-- **On add** — if a note with the same URL already exists, it opens the existing note instead of creating a duplicate.
-- **Find & Remove Duplicates** — run this command from the palette to scan all notes, group by URL, and selectively remove duplicates via a modal.
+- **Genres Principaux** — classés par fréquence dans toute votre bibliothèque.
+- **Créateurs Principaux** — classés par nombre de films et séries dans lesquels ils apparaissent.
+- **Principaux par Catégorie** — pour chaque catégorie (Films, Séries, Livres, etc.), les 3 éléments principaux par note avec des miniatures de couverture.
+
+---
+
+## Détection de Doublons
+
+Library empêche les entrées en double en vérifiant le champ `URL` :
+
+- **À l'ajout** — si une note avec la même URL existe déjà, elle ouvre la note existante au lieu de créer un doublon.
+- **Trouver et Supprimer les Doublons** — exécutez cette commande depuis la palette pour scanner toutes les notes, les regrouper par URL et supprimer sélectivement les doublons via un modal.
 
 ---
 
 ## Sources
 
-Each category is bound to a source that powers its search:
+Chaque catégorie est liée à une source qui alimente sa recherche :
 
-| Source           | Content types   | API key                                                      |
-| ---------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**        | Books           | Open Library (no key) + Google Books (optional free key). Results are merged — Google Books first, Open Library below. |
-| **RAWG**         | Games           | Free key required — [rawg.io/apidocs](https://rawg.io/apidocs) |
-| **Deezer**       | Music (albums)  | None                                                        |
-| **Jikan**        | Anime           | None — free unofficial MyAnimeList API, no key needed       |
-| **Comic Vine**   | Comics          | Free key required — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
+| Source            | Types de contenu | Clé API                                                     |
+| ----------------- | ------------------ | ------------------------------------------------------------ |
+| **OMDb**          | Films, Séries      | Clé gratuite requise — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
+| **Books**         | Livres             | Open Library (pas de clé) + Google Books (clé gratuite optionnelle). Les résultats sont fusionnés — Google Books en premier, Open Library en dessous. |
+| **RAWG**          | Jeux               | Clé gratuite requise — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Deezer**        | Musique (albums)   | Aucune                                                      |
+| **Jikan**         | Anime              | Aucune — API non officielle gratuite de MyAnimeList, pas de clé requise |
+| **Comic Vine**    | Comics             | Clé gratuite requise — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
+| **Manual**        | Tout autre         | Aucune — vous tapez le titre et remplissez les champs vous-même |
 
 ---
 
-## Privacy & Network Use
+## Confidentialité et Utilisation Réseau
 
-Library is **offline-first**. The plugin only contacts the network when you actively search for a title to add, and only with the search terms you type:
+Library est **hors-ligne d'abord**. Le plugin ne contacte le réseau que lorsque vous recherchez activement un titre à ajouter, et uniquement avec les termes de recherche que vous saisissez :
 
-| Service | When | What is sent | Why |
+| Service | Quand | Ce qui est envoyé | Pourquoi |
 | --- | --- | --- | --- |
-| `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
-| `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
-| `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
-| `www.googleapis.com` | You search a Google Books category | The title you type and your Google Books key | Fetch book metadata (author, year, categories, page count, cover, ISBN) |
-| `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
-| `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
-| `api.jikan.moe` | You search an anime category | The title you type | Fetch anime metadata (title, year, genre, episodes, MAL score, synopsis, poster) |
-| `comicvine.gamespot.com` | You search a comics category | The title you type and your Comic Vine key | Fetch comic metadata (title, year, publisher, issue count, cover) |
+| `www.omdbapi.com` | Vous recherchez une catégorie basée sur OMDb | Le titre que vous tapez et votre clé API OMDb | Récupérer les métadonnées de films/séries (année, genre, distribution, note, affiche, nombre d'épisodes) |
+| `openlibrary.org` | Vous recherchez une catégorie Open Library | Le titre que vous tapez | Récupérer les métadonnées de livres (auteur, année, sujets, ID de couverture) |
+| `covers.openlibrary.org` | Une carte de livre a une couverture | L'ID de couverture Open Library | Charger l'image de couverture |
+| `www.googleapis.com` | Vous recherchez une catégorie Google Books | Le titre que vous tapez et votre clé Google Books | Récupérer les métadonnées de livres (auteur, année, catégories, nombre de pages, couverture, ISBN) |
+| `api.rawg.io` | Vous recherchez une catégorie de jeux RAWG | Le titre que vous tapez et votre clé RAWG | Récupérer les métadonnées de jeux (année, genre, développeur, couverture) |
+| `api.deezer.com` | Vous recherchez une catégorie musicale Deezer | L'album ou l'artiste que vous tapez | Récupérer les métadonnées d'album (artiste, année, genre, nombre de pistes, couverture) |
+| `api.jikan.moe` | Vous recherchez une catégorie anime | Le titre que vous tapez | Récupérer les métadonnées anime (titre, année, genre, épisodes, score MAL, synopsis, affiche) |
+| `comicvine.gamespot.com` | Vous recherchez une catégorie comics | Le titre que vous tapez et votre clé Comic Vine | Récupérer les métadonnées de comics (titre, année, éditeur, nombre de numéros, couverture) |
 
-No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. API keys (OMDb, Google Books, RAWG, Comic Vine) are stored only in your local plugin settings and are sent only to their respective services. Cover images load directly from the URLs returned by each source.
+Aucune autre donnée ne quitte jamais votre vault. Le plugin **n'a pas de télémétrie, pas d'analytique et pas de mécanisme de mise à jour automatique**. Les clés API (OMDb, Google Books, RAWG, Comic Vine) sont stockées uniquement dans les paramètres locaux du plugin et envoyées uniquement à leurs services respectifs. Les images de couverture sont chargées directement depuis les URLs retournées par chaque source.
 
 ---
 
-## Frontmatter Schema
+## Schéma Frontmatter
 
-The plugin reads and writes to standard YAML frontmatter. Notes are created for you, but every field is editable. `Source` and `Source ID` let the plugin refresh metadata later.
+Le plugin lit et écrit dans le YAML frontmatter standard. Les notes sont créées pour vous, mais chaque champ est modifiable. `Source` et `Source ID` permettent au plugin de rafraîchir les métadonnées ultérieurement.
 
 ### Movie
 
@@ -177,7 +177,7 @@ Source ID: tt4574334
 ---
 ```
 
-> **Series auto-update:** Run `Refresh metadata for current note` (or just open the note) and the plugin updates the total episode count in `Progress` (e.g., `25/42` to `25/50`) and the `Season` count, while keeping your watched count intact.
+> **Mise à jour automatique des séries :** Exécutez `Refresh metadata for current note` (ou ouvrez simplement la note) et le plugin met à jour le nombre total d'épisodes dans `Progress` (par exemple, de `25/42` à `25/50`) et le nombre de `Season`, tout en conservant votre nombre visionné intact.
 
 ### Book
 
@@ -249,9 +249,9 @@ Source ID: 33819
 
 ---
 
-## Graph Links
+## Liens dans le Graphe
 
-Each content note gets a `Related` frontmatter property, kept up to date automatically — the note body is never touched:
+Chaque note de contenu reçoit une propriété `Related` dans le frontmatter, maintenue à jour automatiquement — le corps de la note n'est jamais modifié :
 
 ```yaml
 Related:
@@ -261,27 +261,42 @@ Related:
     - "[[Christopher Nolan]]"
 ```
 
-These links connect your notes through shared categories, genres, and creators, so the Obsidian graph view forms clean clusters. A real hub note is created per category (e.g. `Movie`) so clusters show even with unresolved links hidden. The property is written when a note is created and refreshed whenever its metadata changes — run `Rebuild graph links` only if you want to force a full rebuild.
+Ces liens connectent vos notes via des catégories, genres et créateurs partagés, de sorte que la vue graphe d'Obsidian forme des clusters propres. Un vrai nœud hub est créé par catégorie (par exemple, `Movie`) pour que les clusters soient visibles même lorsque les liens non résolus sont masqués. La propriété est écrite lors de la création d'une note et mise à jour à chaque changement de ses métadonnées — exécutez `Rebuild graph links` uniquement si vous voulez forcer une reconstruction complète.
 
 ---
 
-## Commands
+## Commandes
 
-| Command                              | Description                                                              |
-| ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Open the Library gallery tab.                                           |
-| `Add content`                        | Search a source and create a content note (or type a title for Manual). |
-| `Search your library`                | Fuzzy-search and open any note already in your library.                 |
-| `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
-| `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
-| `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
+| Commande                             | Description                                                                |
+| ------------------------------------ | -------------------------------------------------------------------------- |
+| `Open Library`                       | Ouvre l'onglet galerie de Library.                                         |
+| `Add content`                        | Recherche une source et crée une note de contenu (ou tapez un titre pour Manual). |
+| `Search your library`                | Recherche floue et ouvre n'importe quelle note déjà dans votre bibliothèque. |
+| `Refresh metadata for current note`  | Récupère à nouveau les métadonnées pour la note active ; met à jour les totaux d'épisodes des séries. |
+| `Rebuild graph links`                | Connecte chaque note de contenu à sa catégorie, ses genres et ses créateurs. |
+| `Find & remove duplicates`           | Scanne toutes les notes par URL, affiche les doublons et supprime ceux sélectionnés. |
 
 ---
 
-## Contributing & Support
+## Contributions et Support
 
-- **Found a bug?** Open an [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
-- **Have a feature idea?** Start a [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
-- **Love the plugin?** Consider starring the repository to show your support!
+- **Vous avez trouvé un bug ?** Ouvrez un [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
+- **Vous avez une idée de fonctionnalité ?** Lancez une [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
+- **Vous aimez le plugin ?** Envisagez de donner une étoile au dépôt pour montrer votre soutien !
+
+---
+
+## Merci
+
+Si vous trouvez ce plugin utile, envisagez de soutenir son développement :
+
+| | Réseau | Adresse |
+| --- | --- | --- |
+| <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat&logo=ethereum&logoColor=white" alt="EVM"> | **EVM** | `0xf9B4807E107f6f8Db79D86aCef6072A31d570201` |
+| <img src="https://img.shields.io/badge/Sui-4DA2FF?style=flat&logo=sui&logoColor=white" alt="Sui"> | **Sui** | `0x1d6989810ee7e55d43f65398253b02462b921e9ce8ad626b542929f02c3d3e9a` |
+| <img src="https://img.shields.io/badge/Solana-9945FF?style=flat&logo=solana&logoColor=white" alt="Sol"> | **Sol** | `2jmrmQrLVeUDFgHzSkHvHKBrmRJXes5X8h3GHXxrLaX6` |
+| <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
+| <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
+| <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
 
 ---

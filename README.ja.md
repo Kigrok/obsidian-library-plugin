@@ -1,132 +1,132 @@
-> JA | [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | **[JA](README.ja.md)** | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="banner.png" alt="Obsidian Library バナー" width="100%">
 </p>
 
-<h1 align="center">Library</h1>
+<h1 align="center">ライブラリ</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
-  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
-  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
-  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
+  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="バージョン">
+  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="ダウンロード数">
+  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian バージョン">
+  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="ライセンス">
 </p>
 
 <p align="center">
-  <b>Organize your movies, series, books, and more into a visual gallery — right inside Obsidian.</b>
+  <b>映画、シリーズ、本などをビジュアルギャラリーに整理しましょう — Obsidian の中で。</b>
   <br />
-  Search and add titles in-app, auto-fetch metadata, track progress, and wire everything into your graph.
+  アプリ内でタイトルを検索して追加、メタデータを自動取得、進捗を追跡し、すべてをグラフに接続します。
 </p>
 
 <p align="center">
-  <a href="https://community.obsidian.md/plugins/library">View on the Obsidian Community Plugins directory</a>
+  <a href="https://community.obsidian.md/plugins/library">Obsidian コミュニティプラグインディレクトリで見る</a>
 </p>
 
 ---
 
-## Key Features
+## 主な機能
 
-- **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books, RAWG for games, Deezer for music, Jikan for anime, Comic Vine for comics.
-- **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
-- **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
-- **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
-- **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
-- **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
-- **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
-- **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
-- **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
-- **Multilingual** — 31 languages: English, Ukrainian, Russian, Belarusian, Kazakh, Uzbek, German, Spanish, French, Italian, Dutch, Czech, Croatian, Polish, Romanian, Turkish, Azerbaijani, Persian, Hindi, Bengali, Urdu, Tagalog, Vietnamese, Thai, Javanese, Japanese, Korean, Chinese, Arabic, Sinhala, Hebrew.
-
----
-
-## Quick Start
-
-### 1. Installation
-
-Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings > Community plugins > Browse > search "Library"), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
-
-### 2. Basic Setup
-
-1. Go to **Settings** > **Library**.
-2. Add your **Categories** — select a predefined type (Movies, Series, Books, Comics, Games, Music, Anime, or Manual) from the dropdown and click **Add category**. Each category has a display name (translated to your language), a `Type` value (always English, e.g. `Movie`), a source, and an optional folder for storing notes.
-3. _(Optional)_ Enter API keys for the services you use: [OMDb](https://www.omdbapi.com/apikey.aspx) for movies/series, [RAWG](https://rawg.io/apidocs) for games, [Comic Vine](https://comicvine.gamespot.com/api/) for comics. Anime (Jikan) and music (Deezer) require no key.
-
-### 3. Add a Card by Title
-
-No more filling in frontmatter by hand — add a movie, series, book, anime, or comic just by searching its name:
-
-1. Open the **Library** tab from the ribbon icon (or run `Open Library`).
-2. Click the **+** button in the top-right of the Library page (or run `Add content`).
-3. Pick a category, type the **title** into the search box, and select a result.
-4. A card is created instantly, with poster, year, genre, creators, and rating filled in automatically.
-
-The **Search** button next to **+** searches titles already in your library.
-
-For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
+- **ビジュアルカードグリッド** — 専用のライブラリタブで、コレクションをカバーアートのカードギャラリーとして表示します。
+- **内蔵検索** — アプリ内でタイトルを検索して追加できます：映画とシリーズは OMDb、本は Open Library または Google Books、ゲームは RAWG、音楽は Deezer、アニメは Jikan、漫画は Comic Vine。
+- **スマートなシリーズ追跡** — シーズン数とエピソード数は自動で取得され、同期が保たれます。
+- **進捗インジケーター** — カードとノートヘッダーに視覚的なプログレスバーが表示され、視聴・読了の進捗がわかります。
+- **リッチなノートヘッダー** — すべてのコンテンツノートに、主要なメタデータを含む自動生成ヘッダーが付きます。
+- **カスタムカテゴリ** — 映画、シリーズ、アニメ、漫画、本、ゲーム、音楽、またはマニュアルソースを使用してその他のカテゴリを作成できます。
+- **グラフリンク** — `Related` フロントマッタープロパティが各ノートをカテゴリ、ジャンル、クリエイターにリンクし、美しいグラフのために自動同期されます。
+- **ソートと折りたたみ** — 名前、年、評価、日付でカードをソート。任意のカテゴリを折りたたみできます。
+- **統計** — トップジャンル、トップクリエイター（映画＆シリーズのみ）、カテゴリごとのトップアイテム（メダル付きランキング）。
+- **重複検出** — URL による同一タイトルの重複追加を自動防止。内蔵コマンドで既存の重複を検索・削除できます。
+- **多言語対応** — 31言語：英語、ウクライナ語、ロシア語、ベラルーシ語、カザフ語、ウズベク語、ドイツ語、スペイン語、フランス語、イタリア語、オランダ語、チェコ語、クロアチア語、ポーランド語、ルーマニア語、トルコ語、アゼルバイジャン語、ペルシア語、ヒンディー語、ベンガル語、ウルドゥー語、タガログ語、ベトナム語、タイ語、ジャワ語、日本語、韓国語、中国語、アラビア語、シンハラ語、ヘブライ語。
 
 ---
 
-## Statistics
+## クイックスタート
 
-The Library tab includes a collapsible **Statistics** section at the top:
+### 1. インストール
 
-- **Top Genres** — ranked by frequency across your entire library.
-- **Top Creators** — ranked by number of movies and series they appear in.
-- **Top per Category** — for each category (Movies, Series, Books, etc.), the top 3 items by rating with small cover thumbnails.
+[Obsidian コミュニティプラグインディレクトリ](https://community.obsidian.md/plugins/library)から **ライブラリ** をインストールします（設定 > コミュニティプラグイン > 参照 > "ライブラリ" を検索）。または [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases) から手動でインストールできます。
+
+### 2. 基本設定
+
+1. **設定** > **ライブラリ** に移動します。
+2. **カテゴリ** を追加します — ドロップダウンから定義されたタイプ（映画、シリーズ、本、漫画、ゲーム、音楽、アニメ、またはマニュアル）を選し、**カテゴリを追加** をクリックします。各カテゴリには表示名（あなたの言語に翻訳されたもの）、`Type` 値（常に英語、例：`Movie`）、ソース、およびノート保存用のオプションフォルダがあります。
+3. _（オプション）_ 使用しているサービスの API キーを入力します：映画/シリーズ用の [OMDb](https://www.omdbapi.com/apikey.aspx)、ゲーム用の [RAWG](https://rawg.io/apidocs)、漫画用の [Comic Vine](https://comicvine.gamespot.com/api/)。アニメ（Jikan）と音楽（Deezer）はキー不要です。
+
+### 3. タイトルでカードを追加
+
+フロントマッタを手動で入力する必要はもうありません — 名前を検索するだけで映画、シリーズ、本、アニメ、または漫画を追加できます：
+
+1. リボンアイコンから **ライブラリ** タブを開きます（または `Open Library` を実行）。
+2. ライブラリページの右上にある **+** ボタンをクリックします（または `Add content` を実行）。
+3. カテゴリを選択し、検索ボックスに **タイトル** を入力し、結果を選択します。
+4. ポスター、年、ジャンル、クリエイター、評価が自動入力されたカードが即座に作成されます。
+
+**+** の横にある **検索** ボタンは、ライブラリに既に含まれるタイトルを検索します。
+
+**マニュアル** カテゴリでは、タイトルを入力し、カバー、年、その他のフィールドを自分で記入します。
 
 ---
 
-## Duplicate Detection
+## 統計
 
-Library prevents duplicate entries by checking the `URL` field:
+ライブラリタブの上部には折りたたみ可能な **統計** セクションがあります：
 
-- **On add** — if a note with the same URL already exists, it opens the existing note instead of creating a duplicate.
-- **Find & Remove Duplicates** — run this command from the palette to scan all notes, group by URL, and selectively remove duplicates via a modal.
+- **トップジャンル** — ライブラリ全体の頻度でランキング。
+- **トップクリエイター** — 出演した映画とシリーズの数でランキング。
+- **カテゴリごとのトップ** — 各カテゴリ（映画、シリーズ、本など）で、評価の高いトップ3アイテム（サムネイル付き）。
 
 ---
 
-## Sources
+## 重複検出
 
-Each category is bound to a source that powers its search:
+ライブラリは `URL` フィールドを確認して重複エントリを防止します：
 
-| Source           | Content types   | API key                                                      |
+- **追加時** — 同じ URL のノートが既に存在する場合、重複を作成する代わりに既存のノートを開きます。
+- **重複を検索して削除** — このコマンドをパレットから実行し、すべてのノートをスキャン、URL でグループ化し、モーダル経由で選択的に重複を削除します。
+
+---
+
+## ソース
+
+各カテゴリには検索を実行するソースが割り当てられています：
+
+| ソース             | コンテンツタイプ   | API キー                                                      |
 | ---------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**        | Books           | Open Library (no key) + Google Books (optional free key). Results are merged — Google Books first, Open Library below. |
-| **RAWG**         | Games           | Free key required — [rawg.io/apidocs](https://rawg.io/apidocs) |
-| **Deezer**       | Music (albums)  | None                                                        |
-| **Jikan**        | Anime           | None — free unofficial MyAnimeList API, no key needed       |
-| **Comic Vine**   | Comics          | Free key required — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
+| **OMDb**         | 映画、シリーズ  | 無料キーが必要 — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
+| **Books**        | 本              | Open Library（キー不要）+ Google Books（オプションの無料キー）。結果は統合 — Google Books が最初、Open Library がその下。 |
+| **RAWG**         | ゲーム          | 無料キーが必要 — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Deezer**       | 音楽（アルバム）  | 不要                                                        |
+| **Jikan**        | アニメ          | 不要 — 無料の非公式 MyAnimeList API、キー不要               |
+| **Comic Vine**   | 漫画            | 無料キーが必要 — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
+| **Manual**       | その他すべて    | 不要 — タイトルを入力し、フィールドを自分で記入              |
 
 ---
 
-## Privacy & Network Use
+## プライバシーとネットワーク使用
 
-Library is **offline-first**. The plugin only contacts the network when you actively search for a title to add, and only with the search terms you type:
+ライブラリは **オフラインファースト** です。プラグインはタイトルを追加するためにアクティブに検索する時のみネットワークに接続し、入力した検索語のみを送信します：
 
-| Service | When | What is sent | Why |
+| サービス | タイミング | 送信内容 | 理由 |
 | --- | --- | --- | --- |
-| `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
-| `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
-| `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
-| `www.googleapis.com` | You search a Google Books category | The title you type and your Google Books key | Fetch book metadata (author, year, categories, page count, cover, ISBN) |
-| `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
-| `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
-| `api.jikan.moe` | You search an anime category | The title you type | Fetch anime metadata (title, year, genre, episodes, MAL score, synopsis, poster) |
-| `comicvine.gamespot.com` | You search a comics category | The title you type and your Comic Vine key | Fetch comic metadata (title, year, publisher, issue count, cover) |
+| `www.omdbapi.com` | OMDb バックエンドのカテゴリを検索時 | 入力したタイトルと OMDb API キー | 映画/シリーズのメタデータ取得（年、ジャンル、キャスト、評価、ポスター、エピソード数） |
+| `openlibrary.org` | Open Library カテゴリを検索時 | 入力したタイトル | 本のメタデータ取得（著者、年、件名、カバーID） |
+| `covers.openlibrary.org` | 本のカードにカバーがある場合 | Open Library カバーID | カバー画像の読み込み |
+| `www.googleapis.com` | Google Books カテゴリを検索時 | 入力したタイトルと Google Books キー | 本のメタデータ取得（著者、年、カテゴリ、ページ数、カバー、ISBN） |
+| `api.rawg.io` | RAWG ゲームカテゴリを検索時 | 入力したタイトルと RAWG キー | ゲームのメタデータ取得（年、ジャンル、開発者、カバー） |
+| `api.deezer.com` | Deezer 音楽カテゴリを検索時 | 入力したアルバムまたはアーティスト | アルバムのメタデータ取得（アーティスト、年、ジャンル、トラック数、カバー） |
+| `api.jikan.moe` | アニメカテゴリを検索時 | 入力したタイトル | アニメのメタデータ取得（タイトル、年、ジャンル、エピソード、MAL スコア、あらすじ、ポスター） |
+| `comicvine.gamespot.com` | 漫画カテゴリを検索時 | 入力したタイトルと Comic Vine キー | 漫画のメタデータ取得（タイトル、年、出版社、号数、カバー） |
 
-No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. API keys (OMDb, Google Books, RAWG, Comic Vine) are stored only in your local plugin settings and are sent only to their respective services. Cover images load directly from the URLs returned by each source.
+これ以外のデータがビールトから外に出ることはありません。プラグインに **テレメトリ、分析、自動更新機能** はありません。API キー（OMDb、Google Books、RAWG、Comic Vine）はローカルのプラグイン設定にのみ保存され、それぞれのサービスにのみ送信されます。カバー画像は各ソースから返された URL から直接読み込まれます。
 
 ---
 
-## Frontmatter Schema
+## フロントマッタスキーマ
 
-The plugin reads and writes to standard YAML frontmatter. Notes are created for you, but every field is editable. `Source` and `Source ID` let the plugin refresh metadata later.
+プラグインは標準の YAML フロントマッタを読み書きします。ノートは自動作成されますが、すべてのフィールドは編集可能です。`Source` と `Source ID` により、プラグインは後でメタデータを更新できます。
 
-### Movie
+### 映画
 
 ```yaml
 ---
@@ -150,7 +150,7 @@ Source ID: tt1375666
 ---
 ```
 
-### Series
+### シリーズ
 
 ```yaml
 ---
@@ -177,9 +177,9 @@ Source ID: tt4574334
 ---
 ```
 
-> **Series auto-update:** Run `Refresh metadata for current note` (or just open the note) and the plugin updates the total episode count in `Progress` (e.g., `25/42` to `25/50`) and the `Season` count, while keeping your watched count intact.
+> **シリーズ自動更新：** `Refresh metadata for current note` を実行するか（またはノートを開くだけ）で、プラグインが `Progress` の合計エピソード数を更新し（例：`25/42` から `25/50` へ）、`Season` 数も更新します。視聴数はそのまま維持されます。
 
-### Book
+### 本
 
 ```yaml
 ---
@@ -201,7 +201,7 @@ Source ID: /works/OL893415W
 ---
 ```
 
-### Anime
+### アニメ
 
 ```yaml
 ---
@@ -226,7 +226,7 @@ Source ID: 9253
 ---
 ```
 
-### Comic
+### 漫画
 
 ```yaml
 ---
@@ -249,9 +249,9 @@ Source ID: 33819
 
 ---
 
-## Graph Links
+## グラフリンク
 
-Each content note gets a `Related` frontmatter property, kept up to date automatically — the note body is never touched:
+各コンテンツノートには `Related` フロントマッタープロパティが付与され、自動的に最新の状態に保たれます — ノート本文は変更されません：
 
 ```yaml
 Related:
@@ -261,27 +261,42 @@ Related:
     - "[[Christopher Nolan]]"
 ```
 
-These links connect your notes through shared categories, genres, and creators, so the Obsidian graph view forms clean clusters. A real hub note is created per category (e.g. `Movie`) so clusters show even with unresolved links hidden. The property is written when a note is created and refreshed whenever its metadata changes — run `Rebuild graph links` only if you want to force a full rebuild.
+これらのリンクは共有カテゴリ、ジャンル、クリエイターを通じてノートを接続し、Obsidian のグラフビューにきれいなクラスターを形成します。各カテゴリにハブノート（例：`Movie`）が作成されるため、未解決リンクが非表示でもクラスターが表示されます。このプロパティはノート作成時に書き込まれ、メタデータが変更されるたびに更新されます — 完全な再構築を強制したい場合のみ `Rebuild graph links` を実行してください。
 
 ---
 
-## Commands
+## コマンド
 
-| Command                              | Description                                                              |
+| コマンド                              | 説明                                                                      |
 | ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Open the Library gallery tab.                                           |
-| `Add content`                        | Search a source and create a content note (or type a title for Manual). |
-| `Search your library`                | Fuzzy-search and open any note already in your library.                 |
-| `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
-| `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
-| `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
+| `Open Library`                       | ライブラリギャラリータブを開きます。                                         |
+| `Add content`                        | ソースを検索してコンテンツノートを作成します（マニュアルの場合はタイトルを入力）。  |
+| `Search your library`                | ライブラリに既にあるノートをあいまい検索して開きます。                           |
+| `Refresh metadata for current note`  | アクティブなノートのメタデータを再取得します。シリーズのエピソード合計を更新します。 |
+| `Rebuild graph links`                | すべてのコンテンツノートをカテゴリ、ジャンル、クリエイターに接続します。          |
+| `Find & remove duplicates`           | URL ですべてのノートをスキャンし、重複を表示し、選択したものを削除します。       |
 
 ---
 
-## Contributing & Support
+## コントリビュートとサポート
 
-- **Found a bug?** Open an [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
-- **Have a feature idea?** Start a [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
-- **Love the plugin?** Consider starring the repository to show your support!
+- **バグを見つけましたか？** [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues) を開いてください。
+- **機能のアイデアがありますか？** [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions) を開始してください。
+- **プラグinが気に入りましたか？** リポジトリにスターを付けてサポートを示してください！
+
+---
+
+## ありがとうございます
+
+このプラグインが役に立った場合は、開発のサポートをご検討ください：
+
+| | ネットワーク | アドレス |
+| --- | --- | --- |
+| <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat&logo=ethereum&logoColor=white" alt="EVM"> | **EVM** | `0xf9B4807E107f6f8Db79D86aCef6072A31d570201` |
+| <img src="https://img.shields.io/badge/Sui-4DA2FF?style=flat&logo=sui&logoColor=white" alt="Sui"> | **Sui** | `0x1d6989810ee7e55d43f65398253b02462b921e9ce8ad626b542929f02c3d3e9a` |
+| <img src="https://img.shields.io/badge/Solana-9945FF?style=flat&logo=solana&logoColor=white" alt="Sol"> | **Sol** | `2jmrmQrLVeUDFgHzSkHvHKBrmRJXes5X8h3GHXxrLaX6` |
+| <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
+| <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
+| <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
 
 ---

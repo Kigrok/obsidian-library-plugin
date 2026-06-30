@@ -1,132 +1,130 @@
-> KK | [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
   <img src="banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
-<h1 align="center">Library</h1>
+<h1 align="center">Кітапхана</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
-  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
-  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
-  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
+  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Нұсқа">
+  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Жүктеулер">
+  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian нұсқасы">
+  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Лицензия">
 </p>
 
 <p align="center">
-  <b>Organize your movies, series, books, and more into a visual gallery — right inside Obsidian.</b>
+  <b>Фильмдеріңізді, сериалдарыңызды, кітаптарыңызды және тағы басқаларды визуалды галереяға реттеңіз — бірден Obsidian ішінде.</b>
   <br />
-  Search and add titles in-app, auto-fetch metadata, track progress, and wire everything into your graph.
+  Қолданба ішінде атауларды іздеңіз және қосыңыз, метадеректерді автоматты түрде жүктеңіз, прогресті қадағалаңыз және бәрін графигіңізге жалғаңыз.
 </p>
 
 <p align="center">
-  <a href="https://community.obsidian.md/plugins/library">View on the Obsidian Community Plugins directory</a>
+  <a href="https://community.obsidian.md/plugins/library">Obsidian Қоғамдық Плагиндер каталогында қараңыз</a>
 </p>
 
 ---
 
-## Key Features
+## Негізгі Мүмкіндіктер
 
-- **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books, RAWG for games, Deezer for music, Jikan for anime, Comic Vine for comics.
-- **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
-- **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
-- **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
-- **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
-- **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
-- **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
-- **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
-- **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
-- **Multilingual** — 31 languages: English, Ukrainian, Russian, Belarusian, Kazakh, Uzbek, German, Spanish, French, Italian, Dutch, Czech, Croatian, Polish, Romanian, Turkish, Azerbaijani, Persian, Hindi, Bengali, Urdu, Tagalog, Vietnamese, Thai, Javanese, Japanese, Korean, Chinese, Arabic, Sinhala, Hebrew.
-
----
-
-## Quick Start
-
-### 1. Installation
-
-Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings > Community plugins > Browse > search "Library"), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
-
-### 2. Basic Setup
-
-1. Go to **Settings** > **Library**.
-2. Add your **Categories** — select a predefined type (Movies, Series, Books, Comics, Games, Music, Anime, or Manual) from the dropdown and click **Add category**. Each category has a display name (translated to your language), a `Type` value (always English, e.g. `Movie`), a source, and an optional folder for storing notes.
-3. _(Optional)_ Enter API keys for the services you use: [OMDb](https://www.omdbapi.com/apikey.aspx) for movies/series, [RAWG](https://rawg.io/apidocs) for games, [Comic Vine](https://comicvine.gamespot.com/api/) for comics. Anime (Jikan) and music (Deezer) require no key.
-
-### 3. Add a Card by Title
-
-No more filling in frontmatter by hand — add a movie, series, book, anime, or comic just by searching its name:
-
-1. Open the **Library** tab from the ribbon icon (or run `Open Library`).
-2. Click the **+** button in the top-right of the Library page (or run `Add content`).
-3. Pick a category, type the **title** into the search box, and select a result.
-4. A card is created instantly, with poster, year, genre, creators, and rating filled in automatically.
-
-The **Search** button next to **+** searches titles already in your library.
-
-For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
+- **Визуалды Карта Желісі** — Арнайы Кітапхана қойындысы жинағыңызды мұқаба өнер карталары галереясы ретінде көрсетеді.
+- **Құрылғыдағы Іздеу** — Қолданба ішінде атауларды іздеңіз және қосыңыз: фильмдер мен сериалдар үшін OMDb, кітаптар үшін Open Library немесе Google Books, ойындар үшін RAWG, музыка үшін Deezer, аниме үшін Jikan, комикстер үшін Comic Vine.
+- **Ақылды Сериялды Қадағалау** — Маусымдар мен сериялар саны автоматты түрде жүктеліп, синхрондалады.
+- **Прогресс Индикаторлары** — Карталарда және ескертпе тақырыптарындағы визуалды прогресс жолақтары қанша көріп немесе оқығаныңызды көрсетеді.
+- **Бай Ескертпе Тақырыптары** — Әрбір мазмұн ескертпесі барлық негізгі метадеректермен автоматты түрде жасалған тақырып алады.
+- **Реттелмелі Санаттар** — Фильмдер, Сериялар, Аниме, Комикстер, Кітаптар, Ойындар, Музыка немесе қолмен көзі арқылы кез келген басқа нәрсе үшін санаттар жасаңыз.
+- **График Сілтемелері** — `Related` алдыңғы мәлімет қасиеті әрбір ескертпені оның санаты, жанрлары мен жасаушыларымен байланыстырады, көрікті графика үшін автоматты түрде синхрондалады.
+- **Сұрыптау & Жинау** — Карталарды атау, жыл, рейтинг немесе күні бойынша сұрыптаңыз; кез келген санатты жинаңыз.
+- **Статистика** — Үздік жанрлар, үздік жасаушылар (тек фильмдер мен сериалдар) және әр санат бойынша медаль сұрыптауымен үздік элементтер.
+- **Қайталануларды Анықтау** — URL бойынша бірдей атауды қосуды автоматты түрде тоқтатады. Ішкі команда бар қайталануларды тауып, жояды.
+- **Көп Тілді** — 31 тіл.
 
 ---
 
-## Statistics
+## Жылдам Бастау
 
-The Library tab includes a collapsible **Statistics** section at the top:
+### 1. Орнату
 
-- **Top Genres** — ranked by frequency across your entire library.
-- **Top Creators** — ranked by number of movies and series they appear in.
-- **Top per Category** — for each category (Movies, Series, Books, etc.), the top 3 items by rating with small cover thumbnails.
+**Кітапхана**ны [Obsidian Қоғамдық Плагиндер каталогынан](https://community.obsidian.md/plugins/library) орнатыңыз (Баптаулар > Қоғамдық плагиндер > Шолу > "Кітапхана" іздеңіз) немесе [GitHub Басылымдарынан](https://github.com/Kigrok/obsidian-library-plugin/releases) қолмен орнатыңыз.
+
+### 2. Негізгі Баптау
+
+1. **Баптаулар** > **Кітапхана**ға өтіңіз.
+2. **Санаттарыңызды** қосыңыз — ашылмалы мәзірден алдын ала анықталған түрді (Фильмдер, Сериялар, Кітаптар, Комикстер, Ойындар, Музыка, Аниме немесе Қолмен) таңдаңыз және **Санат қосу** батырмасын басыңыз. Әр санаттың тіліңізге аударылған көрсетілім атауы, `Type` мәні (әрдайым ағылшын тілінде, мыс. `Movie`), көзі және ескертпелерді сақтау үшін міндетті емес қалта бар.
+3. _(Міндетті емес)_ Қолданатын қызметтер үшін кілттерді енгізіңіз: фильмдер/сериалдар үшін [OMDb](https://www.omdbapi.com/apikey.aspx), ойындар үшін [RAWG](https://rawg.io/apidocs), комикстер үшін [Comic Vine](https://comicvine.gamespot.com/api/). Аниме (Jikan) және музыка (Deezer) кілт талап етпейді.
+
+### 3. Атау бойынша Карта Қосу
+
+Алдыңғы мәліметті қолмен толтыруға рұқсат жоқ — жай ғана атауын іздеп фильм, серия, кітап, аниме немесе комикс қосыңыз:
+
+1. Жолақ белгісінен **Кітапхана** қойындысын ашыңыз (немесе `Open Library` командасын жөнелтіңіз).
+2. Кітапхана бетінің жоғары оң жақ бұрышындағы **+** батырмасын басыңыз (немесе `Add content` командасын жөнелтіңіз).
+3. Санатты таңдаңыз, **атауды** іздеу жәшігіне теріңіз және нәтижені таңдаңыз.
+4. Карта бірден постер, жыл, жанр, жасаушылар мен рейтинг автоматты түрде толтырылған жағдайда жасалады.
+
+**+** жанындағы **Іздеу** батырмасы кітапханаңыздағы бар атауларды іздейді.
+
+**Қолмен** Санаттар үшін жай ғана атауды теріп, мұқабаны, жылды және басқа өрістерді өзіңіз толтырыңыз.
 
 ---
 
-## Duplicate Detection
+## Статистика
 
-Library prevents duplicate entries by checking the `URL` field:
+Кітапхана қойындысы жоғарыда жиналатын **Статистика** бөлімін қамтиды:
 
-- **On add** — if a note with the same URL already exists, it opens the existing note instead of creating a duplicate.
-- **Find & Remove Duplicates** — run this command from the palette to scan all notes, group by URL, and selectively remove duplicates via a modal.
+- **Үздік Жанрлар** — бүкіл кітапханаңыз бойынша жиілікке байланысты сұрыпталады.
+- **Үздік Жасаушылар** — олар пайда болған фильмдер мен сериалдар саны бойынша сұрыпталады.
+- **Санат бойынша Үздік** — әр санат үшін (Фильмдер, Сериялар, Кітаптар және т.б.), рейтинг бойынша үздік 3 элемент кіші мұқаба суреттерімен.
 
 ---
 
-## Sources
+## Қайталануларды Анықтау
 
-Each category is bound to a source that powers its search:
+Кітапхана `URL` өрісін тексеру арқылы қайталанған жазбаларды болдырмайды:
 
-| Source           | Content types   | API key                                                      |
+- **Қосу кезінде** — бірдей URL-і бар жазба бұрыннан бар болса, дубликат жасау орнына бар жазбаны ашады.
+- **Қайталануларды Тап & Жой** — бұл команданы палитрадан жөнелтіп, барлық жазбаларды сканерлеңіз, URL бойынша топтастырыңыз және модаль арқылы таңдалған дубликаттарды жойыңыз.
+
+---
+
+## Көздер
+
+Әр санат оның іздеуін қамтамасыз ететін көзбен байланысқан:
+
+| Көз           | Мазмұн түрлері   | API кілті                                                      |
 | ---------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**        | Books           | Open Library (no key) + Google Books (optional free key). Results are merged — Google Books first, Open Library below. |
-| **RAWG**         | Games           | Free key required — [rawg.io/apidocs](https://rawg.io/apidocs) |
-| **Deezer**       | Music (albums)  | None                                                        |
-| **Jikan**        | Anime           | None — free unofficial MyAnimeList API, no key needed       |
-| **Comic Vine**   | Comics          | Free key required — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
+| **OMDb**         | Фильмдер, Сериялар  | Тегін кілт қажет — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
+| **Books**        | Кітаптар           | Open Library (кілт жоқ) + Google Books (міндетті емес тегін кілт). Нәтижелер біріктірілген — Google Books бірінші, Open Library төменде. |
+| **RAWG**         | Ойындар           | Тегін кілт қажет — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Deezer**       | Музыка (альбомдар)  | Жоқ                                                        |
+| **Jikan**        | Аниме           | Жоқ — тегін ресми емес MyAnimeList API, кілт қажет емес       |
+| **Comic Vine**   | Комикстер          | Тегін кілт қажет — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
+| **Қолмен**       | Кез келген басқа   | Жоқ — сіз атауды тересіз және өрістерді өзіңіз толтырасыз          |
 
 ---
 
-## Privacy & Network Use
+## Құпиялық & Желі Пайдалануы
 
-Library is **offline-first**. The plugin only contacts the network when you actively search for a title to add, and only with the search terms you type:
+Кітапхана **офлайн-бірінші**. Плагин тек сіз қосу үшін атауды белсенді түрде іздегенде ғана желімен байланысады және тек сіз терген іздеу шарттарымен:
 
-| Service | When | What is sent | Why |
+| Қызмет | Қашан | Не жіберіледі | Неліктен |
 | --- | --- | --- | --- |
-| `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
-| `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
-| `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
-| `www.googleapis.com` | You search a Google Books category | The title you type and your Google Books key | Fetch book metadata (author, year, categories, page count, cover, ISBN) |
-| `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
-| `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
-| `api.jikan.moe` | You search an anime category | The title you type | Fetch anime metadata (title, year, genre, episodes, MAL score, synopsis, poster) |
-| `comicvine.gamespot.com` | You search a comics category | The title you type and your Comic Vine key | Fetch comic metadata (title, year, publisher, issue count, cover) |
+| `www.omdbapi.com` | OMDb негізіндегі санатты іздегенде | Сіз терген атау және OMDb API кілтіңіз | Фильм/сериал метадеректерін жүктеу (жыл, жанр, актерлер құрамы, рейтинг, постер, сериялар саны) |
+| `openlibrary.org` | Open Library санатын іздегенде | Сіз терген атау | Кітап метадеректерін жүктеу (автор, жыл, тақырыптар, мұқаба id) |
+| `covers.openlibrary.org` | Кітап картасының мұқабасы бар болса | Open Library мұқаба id-сі | Мұқаба суретін жүктеу |
+| `www.googleapis.com` | Google Books санатын іздегенде | Сіз терген атау және Google Books кілтіңіз | Кітап метадеректерін жүктеу (автор, жыл, санаттар, бет саны, мұқаба, ISBN) |
+| `api.rawg.io` | RAWG ойын санатын іздегенде | Сіз терген атау және RAWG кілтіңіз | Ойын метадеректерін жүктеу (жыл, жанр, әзірлеуші, мұқаба) |
+| `api.deezer.com` | Deezer музыка санатын іздегенде | Сіз терген альбом немесе әртіс | Альбом метадеректерін жүктеу (әртіс, жыл, жанр, тректер саны, мұқаба) |
+| `api.jikan.moe` | Аниме санатын іздегенде | Сіз терген атау | Аниме метадеректерін жүктеу (атау, жыл, жанр, сериялар, MAL ұпайы, синопсис, постер) |
+| `comicvine.gamespot.com` | Комикс санатын іздегенде | Сіз терген атау және Comic Vine кілтіңіз | Комикс метадеректерін жүктеу (атау, жыл, баспагер, шығарылым саны, мұқаба) |
 
-No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. API keys (OMDb, Google Books, RAWG, Comic Vine) are stored only in your local plugin settings and are sent only to their respective services. Cover images load directly from the URLs returned by each source.
+Басқа ешқандай деректер сіздің vault-тан шықпайды. Плагинде **телеметрия, аналитика және өздігінен жаңарту механизмі жоқ**. API кілттері (OMDb, Google Books, RAWG, Comic Vine) тек жергілікті плагин баптауларында сақталады және тек сәйкес қызметтерге жіберіледі. Мұқаба суреттері тікелей әр көз қайтарған URL-дерден жүктеледі.
 
 ---
 
-## Frontmatter Schema
+## Алдыңғы Мәлімет Схемасы
 
-The plugin reads and writes to standard YAML frontmatter. Notes are created for you, but every field is editable. `Source` and `Source ID` let the plugin refresh metadata later.
-
-### Movie
+### Фильм
 
 ```yaml
 ---
@@ -150,7 +148,7 @@ Source ID: tt1375666
 ---
 ```
 
-### Series
+### Серия
 
 ```yaml
 ---
@@ -177,9 +175,9 @@ Source ID: tt4574334
 ---
 ```
 
-> **Series auto-update:** Run `Refresh metadata for current note` (or just open the note) and the plugin updates the total episode count in `Progress` (e.g., `25/42` to `25/50`) and the `Season` count, while keeping your watched count intact.
+> **Серияның автоматты жаңартылуы:** `Refresh metadata for current note` командасын жөнелтіңіз (немесе жай ғана жазбаны ашыңыз) және плагин `Progress`-тегі жалпы сериялар санын (мыс. `25/42`-ден `25/50`-ге) және `Season` санын жаңартады, көрген саныңыз бұрынғы күйінде қалады.
 
-### Book
+### Кітап
 
 ```yaml
 ---
@@ -201,7 +199,7 @@ Source ID: /works/OL893415W
 ---
 ```
 
-### Anime
+### Аниме
 
 ```yaml
 ---
@@ -226,7 +224,7 @@ Source ID: 9253
 ---
 ```
 
-### Comic
+### Комикс
 
 ```yaml
 ---
@@ -249,9 +247,9 @@ Source ID: 33819
 
 ---
 
-## Graph Links
+## График Сілтемелері
 
-Each content note gets a `Related` frontmatter property, kept up to date automatically — the note body is never touched:
+Әрбір мазмұн жазбасы автоматты түрде жаңартылатын `Related` алдыңғы мәлімет қасиетін алады — жазба мәтініне ешқашан тигізілмейді:
 
 ```yaml
 Related:
@@ -261,27 +259,42 @@ Related:
     - "[[Christopher Nolan]]"
 ```
 
-These links connect your notes through shared categories, genres, and creators, so the Obsidian graph view forms clean clusters. A real hub note is created per category (e.g. `Movie`) so clusters show even with unresolved links hidden. The property is written when a note is created and refreshed whenever its metadata changes — run `Rebuild graph links` only if you want to force a full rebuild.
+Бұл сілтемелер жазбаларыңызды ортақ санаттар, жанрлар және жасаушылар арқылы байланыстырады, сондықтан Obsidian графикалық көрінісі таза кластерлер қалыптастырады. Әр санат үшін (мыс. `Movie`) нақты хаб жазбасы жасалады, сондықтан шешілмеген сілтемeler жасырын болса да кластерлер көрінеді. Қасиет жазба жасалғанда жазылады және оның метадеректері өзгергенде жаңартылады — толық қайта құруды мәжбүрлеу үшін `Rebuild graph links` командасын жөнелтіңіз.
 
 ---
 
-## Commands
+## Командалар
 
-| Command                              | Description                                                              |
+| Команда                              | Сипаттама                                                              |
 | ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Open the Library gallery tab.                                           |
-| `Add content`                        | Search a source and create a content note (or type a title for Manual). |
-| `Search your library`                | Fuzzy-search and open any note already in your library.                 |
-| `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
-| `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
-| `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
+| `Open Library`                       | Кітапхана галерея қойындысын ашу.                                           |
+| `Add content`                        | Көзді іздеу және мазмұн жазбасын жасау (немесе Қолмен үшін атау теру). |
+| `Search your library`                | Кітапханаңыздағы бар жазбаны бұлыңғыр іздеу және ашу.                 |
+| `Refresh metadata for current note`  | Белсенді жазба үшін метадеректерді қайта жүктеу; сериялар сериялар санын жаңартады.   |
+| `Rebuild graph links`                | Әрбір мазмұн жазбасын оның санаты, жанрлары мен жасаушыларымен байланыстыру.          |
+| `Find & remove duplicates`           | Барлық жазбаларды URL бойынша сканерлеу, қайталануларды көрсету және таңдалғандарды жою.       |
 
 ---
 
-## Contributing & Support
+## Қатысу және Қолдау
 
-- **Found a bug?** Open an [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
-- **Have a feature idea?** Start a [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
-- **Love the plugin?** Consider starring the repository to show your support!
+- **Қате таптыңыз ба?** [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues) ашыңыз.
+- **Мүмкіндік идеяңыз бар ма?** [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions) бастаңыз.
+- **Плагинді жақсы көрдіңіз бе?** Қолдауыңызды көрсету үшін репозиторийды жұлдыздауды ұсынамыз!
+
+---
+
+## Рахмет
+
+Бұл плагин пайдалы болса, оның дамуын қолдауды ұсынамыз:
+
+| | Желі | Мекенжай |
+| --- | --- | --- |
+| <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat&logo=ethereum&logoColor=white" alt="EVM"> | **EVM** | `0xf9B4807E107f6f8Db79D86aCef6072A31d570201` |
+| <img src="https://img.shields.io/badge/Sui-4DA2FF?style=flat&logo=sui&logoColor=white" alt="Sui"> | **Sui** | `0x1d6989810ee7e55d43f65398253b02462b921e9ce8ad626b542929f02c3d3e9a` |
+| <img src="https://img.shields.io/badge/Solana-9945FF?style=flat&logo=solana&logoColor=white" alt="Sol"> | **Sol** | `2jmrmQrLVeUDFgHzSkHvHKBrmRJXes5X8h3GHXxrLaX6` |
+| <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
+| <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
+| <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
 
 ---

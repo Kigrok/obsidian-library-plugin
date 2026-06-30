@@ -1,132 +1,130 @@
-> SI | [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | **සිංහල**
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="banner.png" alt="Obsidian පුස්තකාල බැනරය" width="100%">
 </p>
 
-<h1 align="center">Library</h1>
+<h1 align="center">පුස්තකාලය</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
-  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
-  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
-  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
+  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="සංස්කරණය">
+  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="බාගත">
+  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian සංස්කරණය">
+  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="බලපත්‍රය">
 </p>
 
 <p align="center">
-  <b>Organize your movies, series, books, and more into a visual gallery — right inside Obsidian.</b>
+  <b>ඔබේ චිත්‍රපට, මාලා, පොත් සහ තවත් බොහෝ දේ දෘශ්‍ය ගැලරියකට සංවිධානය කරන්න — සෘජුවම Obsidian තුළ.</b>
   <br />
-  Search and add titles in-app, auto-fetch metadata, track progress, and wire everything into your graph.
+  යෙදුම තුළම මාතෘකා සොයා එකතු කරන්න, මෙටාඩේටා ස්වයංක්‍රීයව ලබා ගන්න, ප්‍රගතිය නිරීක්ෂණය කරන්න, සහ සියල්ල ඔබේ ග්‍රාෆයට සම්බන්ධ කරන්න.
 </p>
 
 <p align="center">
-  <a href="https://community.obsidian.md/plugins/library">View on the Obsidian Community Plugins directory</a>
+  <a href="community.obsidian.md/plugins/library">Obsidian ප්‍රජා ප්ලගින නිර්දේශිකාවේ බලන්න</a>
 </p>
 
 ---
 
-## Key Features
+## ප්‍රධාන විශේෂාංග
 
-- **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books, RAWG for games, Deezer for music, Jikan for anime, Comic Vine for comics.
-- **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
-- **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
-- **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
-- **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
-- **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
-- **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
-- **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
-- **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
-- **Multilingual** — 31 languages: English, Ukrainian, Russian, Belarusian, Kazakh, Uzbek, German, Spanish, French, Italian, Dutch, Czech, Croatian, Polish, Romanian, Turkish, Azerbaijani, Persian, Hindi, Bengali, Urdu, Tagalog, Vietnamese, Thai, Javanese, Japanese, Korean, Chinese, Arabic, Sinhala, Hebrew.
-
----
-
-## Quick Start
-
-### 1. Installation
-
-Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings > Community plugins > Browse > search "Library"), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
-
-### 2. Basic Setup
-
-1. Go to **Settings** > **Library**.
-2. Add your **Categories** — select a predefined type (Movies, Series, Books, Comics, Games, Music, Anime, or Manual) from the dropdown and click **Add category**. Each category has a display name (translated to your language), a `Type` value (always English, e.g. `Movie`), a source, and an optional folder for storing notes.
-3. _(Optional)_ Enter API keys for the services you use: [OMDb](https://www.omdbapi.com/apikey.aspx) for movies/series, [RAWG](https://rawg.io/apidocs) for games, [Comic Vine](https://comicvine.gamespot.com/api/) for comics. Anime (Jikan) and music (Deezer) require no key.
-
-### 3. Add a Card by Title
-
-No more filling in frontmatter by hand — add a movie, series, book, anime, or comic just by searching its name:
-
-1. Open the **Library** tab from the ribbon icon (or run `Open Library`).
-2. Click the **+** button in the top-right of the Library page (or run `Add content`).
-3. Pick a category, type the **title** into the search box, and select a result.
-4. A card is created instantly, with poster, year, genre, creators, and rating filled in automatically.
-
-The **Search** button next to **+** searches titles already in your library.
-
-For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
+- **දෘශ්‍ය කාඩ් ජාලය** — කැපවූ පුස්තකාල ටැබ් එකක් ඔබේ එකතුව ආවරණ කලා කාඩ් ගැලරියක් ලෙස ඉදිරිපත් කරයි.
+- **අභ්‍යන්තර සෙවුම** — යෙදුම තුළම මාතෘකා සොයා එකතු කරන්න: චිත්‍රපට සහ මාලා සඳහා OMDb, පොත් සඳහා Open Library හෝ Google Books, ක්‍රීඩා සඳහා RAWG, සංගීතය සඳහා Deezer, ඇනිමේ සඳහා Jikan, කොමික් සඳහා Comic Vine.
+- **බුද්ධිමත් මාලා නිරීක්ෂණය** — කාල සීමා සහ කොටස් ගණන ස්වයංක්‍රීයව ලබාගෙන සමමුහුර්තව තබා ගනී.
+- **ප්‍රගති සංකේත** — කාඩ් සහ සටහන් ශීර්ෂවල දෘශ්‍ය ප්‍රගති තීරු ඔබ කොපමණ බැලුවාද හෝ කියවා ඇතිද පෙන්වයි.
+- **සමෘද්ධ සටහන් ශීර්ෂ** — සෑම අන්තර්ගත සටහනකටම සියලු ප්‍රධාන මෙටාඩේටා සහිත ස්වයංක්‍රීය ශීර්ෂයක් ලැබේ.
+- **අභිරුචි ප්‍රවර්ග** — චිත්‍රපට, මාලා, ඇනිමේ, කොමික්, පොත්, ක්‍රීඩා, සංගීත, හෝ අනෙකුත් ඕනෑම දෙයක් සඳහා අත්පොත් මූලාශ්‍රය හරහා ප්‍රවර්ග සාදන්න.
+- **ග්‍රාෆ සබඳතා** — `Related` ඉදිරිපෙළ ගුණාංගයක් සෑම සටහනක්ම එහි ප්‍රවර්ගයට, වර්ගවලට සහ නිර්මාතෘවරුන්ට සම්බන්ධ කරයි, ලස්සන ග්‍රාෆයක් සඳහා ස්වයංක්‍රීයව සමමුහුර්ත කෙරේ.
+- **වර්ගීකරණය සහ හකුළුම** — නම, වර්ෂය, ශ්‍රේණිගත කිරීම හෝ දිනය අනුව කාඩ් වර්ගීකරණය කරන්න; ඕනෑම ප්‍රවර්ගයක් හකුළන්න.
+- **සංඛ්‍යාලේඛන** — ඉහළම වර්ග, ඉහළම නිර්මාතෘවරුන් (චිත්‍රපට සහ මාලා පමණක්), සහ පදක්කම් ශ්‍රේණිගත කිරීම් සහිත ප්‍රවර්ගයක් සඳහා ඉහළම අයිතම.
+- **අනුපිටපත් හඳුනාගැනීම** — URL මගින් එකම මාතෘකාව දෙවරක් එකතු කිරීම ස්වයංක්‍රීයව වළක්වයි. අභ්‍යන්තර විධානයක් පවතින අනුපිටපත් සොයා ඉවත් කරයි.
+- **බහුභාෂා** — භාෂා 31.
 
 ---
 
-## Statistics
+## ඉක්මන් ආරම්භය
 
-The Library tab includes a collapsible **Statistics** section at the top:
+### 1. ස්ථාපනය
 
-- **Top Genres** — ranked by frequency across your entire library.
-- **Top Creators** — ranked by number of movies and series they appear in.
-- **Top per Category** — for each category (Movies, Series, Books, etc.), the top 3 items by rating with small cover thumbnails.
+[Obsidian ප්‍රජා ප්ලගින නිර්දේශිකාව](https://community.obsidian.md/plugins/library) වෙතින් **පුස්තකාලය** ස්ථාපනය කරන්න (සැකසුම් > ප්‍රජා ප්ලගින > සැරිසරන්න > "Library" සොයන්න), හෝ [GitHub නිකුතු](https://github.com/Kigrok/obsidian-library-plugin/releases) හරහා අත්පොත්ව ස්ථාපනය කරන්න.
 
----
+### 2. මූලික පිහිටුවීම
 
-## Duplicate Detection
+1. **සැකසුම්** > **පුස්තකාලය** වෙත යන්න.
+2. ඔබේ **ප්‍රවර්ග** එකතු කරන්න — ඩ්‍රොප්ඩවුන් වෙතින් පෙර නිර්වචිත වර්ගයක් (චිත්‍රපට, මාලා, පොත්, කොමික්, ක්‍රීඩා, සංගීත, ඇනිමේ, හෝ අත්පොත්) තෝරන්න සහ **ප්‍රවර්ගය එකතු කරන්න** ක්ලික් කරන්න. සෑම ප්‍රවර්ගයකටම ප්‍රදර්ශන නාමයක් (ඔබේ භාෂාවට පරිවර්තනය කළ), `Type` අගයක් (සෑම විටම ඉංග්‍රීසි, උදා: `Movie`), මූලාශ්‍රයක් සහ සටහන් ගබඩා කිරීම සඳහා විකල්ප ෆෝල්ඩරයක් ඇත.
+3. _(විකල්ප)_ ඔබ භාවිතා කරන සේවා සඳහා API යතුරු ඇතුලත් කරන්න: චිත්‍රපට/මාලා සඳහා [OMDb](https://www.omdbapi.com/apikey.aspx), ක්‍රීඩා සඳහා [RAWG](https://rawg.io/apidocs), කොමික් සඳහා [Comic Vine](https://comicvine.gamespot.com/api/)। ඇනිමේ (Jikan) සහ සංගීත (Deezer) සඳහා යතුරක් අවශ්‍ය නැත.
 
-Library prevents duplicate entries by checking the `URL` field:
+### 3. මාතෘකාවෙන් කාඩ් එකතු කරන්න
 
-- **On add** — if a note with the same URL already exists, it opens the existing note instead of creating a duplicate.
-- **Find & Remove Duplicates** — run this command from the palette to scan all notes, group by URL, and selectively remove duplicates via a modal.
+ඉදිරිපෙළ අත්පොත්ව පිරවීම දැන් අවශ්‍ය නැත — එහි නම සොයා චිත්‍රපටයක්, මාලාවක්, පොතක්, ඇනිමේ එකක් හෝ කොමික් එකක් එකතු කරන්න:
 
----
+1. රිබන් අයිකනයෙන් **පුස්තකාල** ටැබ් එක විවෘත කරන්න (හෝ `Open Library` ක්‍රියාත්මක කරන්න).
+2. පුස්තකාල පිටුවේ ඉහළ දකුණේ **+** බොත්තම ක්ලික් කරන්න (හෝ `Add content` ක්‍රියාත්මක කරන්න).
+3. ප්‍රවර්ගයක් තෝරන්න, සෙවුම් කොටුවේ **මාතෘකාව** ටයිප් කරන්න, සහ ප්‍රතිඵලයක් තෝරන්න.
+4. කාඩ් ක්ෂණිකව සෑදේ, පෝස්ටරය, වර්ෂය, වර්ගය, නිර්මාතෘවරුන් සහ ශ්‍රේණිගත කිරීම ස්වයංක්‍රීයව පිරවේ.
 
-## Sources
+**+** අසල **සෙවුම** බොත්තම ඔබේ පුස්තකාලයේ දැනටමත් ඇති මාතෘකා සොයයි.
 
-Each category is bound to a source that powers its search:
-
-| Source           | Content types   | API key                                                      |
-| ---------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**        | Books           | Open Library (no key) + Google Books (optional free key). Results are merged — Google Books first, Open Library below. |
-| **RAWG**         | Games           | Free key required — [rawg.io/apidocs](https://rawg.io/apidocs) |
-| **Deezer**       | Music (albums)  | None                                                        |
-| **Jikan**        | Anime           | None — free unofficial MyAnimeList API, no key needed       |
-| **Comic Vine**   | Comics          | Free key required — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
+**අත්පොත්** ප්‍රවර්ග සඳහා ඔබට මාතෘකාව ටයිප් කර ආවරණය, වර්ෂය සහ වෙනත් ක්ෂේත්‍ර ඔබම පිරවිය යුතුය.
 
 ---
 
-## Privacy & Network Use
+## සංඛ්‍යාලේඛන
 
-Library is **offline-first**. The plugin only contacts the network when you actively search for a title to add, and only with the search terms you type:
+පුස්තකාල ටැබ් එකේ ඉහළින් හැකිළිය හැකි **සංඛ්‍යාලේඛන** කොටසක් ඇත:
 
-| Service | When | What is sent | Why |
+- **ඉහළම වර්ග** — ඔබේ සම්පූර්ණ පුස්තකාලය පුරා සංඛ්‍යාතය අනුව ශ්‍රේණිගත කෙරේ.
+- **ඉහළම නිර්මාතෘවරුන්** — ඔවුන් පෙනී සිටින චිත්‍රපට සහ මාලා ගණන අනුව ශ්‍රේණිගත කෙරේ.
+- **ප්‍රවර්ගයක් සඳහා ඉහළම** — සෑම ප්‍රවර්ගයකට (චිත්‍රපට, මාලා, පොත් ආදිය), කුඩා ආවරණ කුඩා රූප සමඟ ශ්‍රේණිගත කිරීම අනුව ඉහළම අයිතම 3.
+
+---
+
+## අනුපිටපත් හඳුනාගැනීම
+
+පුස්තකාලය `URL` ක්ෂේත්‍රය පරීක්ෂා කරමින් අනුපිටපත් ඇතුළත් කිරීම් වළක්වයි:
+
+- **එකතු කරන විට** — එකම URL සහිත සටහනක් දැනටමත් පවතින්නේ නම්, එය අනුපිටපතක් නිර්මාණය කිරීම වෙනුවට පවතින සටහන විවෘත කරයි.
+- **අනුපිටපත් සොයා ඉවත් කරන්න** — සියලුම සටහන් පරිලෝකනය කිරීමට, URL මගින් සමූහගත කිරීමට සහ ආදර්ශ මගින් තෝරාගත් අනුපිටපත් ඉවත් කිරීමට පැලට් එකෙන් මෙම විධානය ක්‍රියාත්මක කරන්න.
+
+---
+
+## මූලාශ්‍ර
+
+| මූලාශ්‍රය | අන්තර්ගත වර්ග | API යතුර |
+| --- | --- | --- |
+| **OMDb** | චිත්‍රපට, මාලා | නොමිලේ යතුරක් අවශ්‍යයි — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
+| **Books** | පොත් | Open Library (යතුරක් නැත) + Google Books (විකල්ප නොමිලේ යතුරක්)। ප්‍රතිඵල ඒකාබද්ධ කෙරේ — Google Books පළමුව, Open Library පහත. |
+| **RAWG** | ක්‍රීඩා | නොමිලේ යතුරක් අවශ්‍යයි — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Deezer** | සංගීත (ඇල්බම) | නැත |
+| **Jikan** | ඇනිමේ | නැත — MyAnimeList හි නොමිලේ අනිවාර්ය නොවන API, යතුරක් අවශ්‍ය නැත |
+| **Comic Vine** | කොමික් | නොමිලේ යතුරක් අවශ්‍යයි — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
+| **අත්පොත්** | වෙනත් ඕනෑම දෙයක් | නැත — ඔබ මාතෘකාව ටයිප් කර ක්ෂේත්‍ර ඔබම පිරවේ |
+
+---
+
+## පෞද්ගලිකත්වය සහ ජාල භාවිතය
+
+පුස්තකාලය **අන්තර්ජාලයෙන් බැහැරව ප්‍රමුඛ** වේ. ප්ලගිනය ඔබ ක්‍රියාකාරීව එකතු කිරීමට මාතෘකාවක් සොයන විට පමණක් ජාලය සම්බන්ධ කරයි, සහ ඔබ ටයිප් කරන සෙවුම් පද සමඟ පමණි:
+
+| සේවාව | කවදාද | කුමක් යවනු ලැබේද | හේතුව |
 | --- | --- | --- | --- |
-| `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
-| `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
-| `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
-| `www.googleapis.com` | You search a Google Books category | The title you type and your Google Books key | Fetch book metadata (author, year, categories, page count, cover, ISBN) |
-| `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
-| `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
-| `api.jikan.moe` | You search an anime category | The title you type | Fetch anime metadata (title, year, genre, episodes, MAL score, synopsis, poster) |
-| `comicvine.gamespot.com` | You search a comics category | The title you type and your Comic Vine key | Fetch comic metadata (title, year, publisher, issue count, cover) |
+| `www.omdbapi.com` | ඔබ OMDb-සහාය දක්වන ප්‍රවර්ගයක් සොයන විට | ඔබ ටයිප් කරන මාතෘකාව සහ ඔබේ OMDb API යතුර | චිත්‍රපට/මාලා මෙටාඩේටා ලබා ගන්න (වර්ෂය, වර්ගය, රංගන ශිල්පීන්, ශ්‍රේණිගත කිරීම, පෝස්ටරය, කොටස් ගණන) |
+| `openlibrary.org` | ඔබ Open Library ප්‍රවර්ගයක් සොයන විට | ඔබ ටයිප් කරන මාතෘකාව | පොත් මෙටාඩේටා ලබා ගන්න (කතෘ, වර්ෂය, විෂය, ආවරණ හැඳුනුම්පත) |
+| `covers.openlibrary.org` | පොත් කාඩ් එකක ආවරණයක් ඇති විට | Open Library ආවරණ හැඳුනුම්පත | ආවරණ රූපය පූරණය කරන්න |
+| `www.googleapis.com` | ඔබ Google Books ප්‍රවර්ගයක් සොයන විට | ඔබ ටයිප් කරන මාතෘකාව සහ ඔබේ Google Books යතුර | පොත් මෙටාඩේටා ලබා ගන්න (කතෘ, වර්ෂය, ප්‍රවර්ග, පිටු ගණන, ආවරණය, ISBN) |
+| `api.rawg.io` | ඔබ RAWG ක්‍රීඩා ප්‍රවර්ගයක් සොයන විට | ඔබ ටයිප් කරන මාතෘකාව සහ ඔබේ RAWG යතුර | ක්‍රීඩා මෙටාඩේටා ලබා ගන්න (වර්ෂය, වර්ගය, සංවර්ධක, ආවරණය) |
+| `api.deezer.com` | ඔබ Deezer සංගීත ප්‍රවර්ගයක් සොයන විට | ඔබ ටයිප් කරන ඇල්බමය හෝ කලාකරුවා | ඇල්බම මෙටාඩේටා ලබා ගන්න (කලාකරුවා, වර්ෂය, වර්ගය, ගීත ගණන, ආවරණය) |
+| `api.jikan.moe` | ඔබ ඇනිමේ ප්‍රවර්ගයක් සොයන විට | ඔබ ටයිප් කරන මාතෘකාව | ඇනිමේ මෙටාඩේටා ලබා ගන්න (මාතෘකාව, වර්ෂය, වර්ගය, කොටස්, MAL ලකුණු, සාරාංශය, පෝස්ටරය) |
+| `comicvine.gamespot.com` | ඔබ කොමික් ප්‍රවර්ගයක් සොයන විට | ඔබ ටයිප් කරන මාතෘකාව සහ ඔබේ Comic Vine යතුර | කොමික් මෙටාඩේටා ලබා ගන්න (මාතෘකාව, වර්ෂය, ප්‍රකාශක, ඉදිරිපත් කිරීම් ගණන, ආවරණය) |
 
-No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. API keys (OMDb, Google Books, RAWG, Comic Vine) are stored only in your local plugin settings and are sent only to their respective services. Cover images load directly from the URLs returned by each source.
+වෙනත් කිසිදු දත්ත කවදාකවත් ඔබේ වෝල්ටයෙන් පිටත් නොවේ. ප්ලගිනයේ **කිසිදු ටෙලිමෙට්‍රික්ස්, කිසිදු විශ්ලේෂණ, සහ ස්වයං-යාවත්කාලීන කිරීමේ යාන්ත්‍රණයක් නැත**. API යතුරු (OMDb, Google Books, RAWG, Comic Vine) ඔබේ ප්‍රාදේශීය ප්ලගින සැකසුම් තුළ පමණක් ගබඩා කෙරේ සහ ඔවුන්ගේ අදාළ සේවා වෙත පමණක් යවනු ලැබේ. ආවරණ රූප සෘජුවම සෑම මූලාශ්‍රයකින්ම ලැබෙන URL වලින් පූරණය කෙරේ.
 
 ---
 
-## Frontmatter Schema
+## ඉදිරිපෙළ යාන්ත්‍රණය
 
-The plugin reads and writes to standard YAML frontmatter. Notes are created for you, but every field is editable. `Source` and `Source ID` let the plugin refresh metadata later.
+ප්ලගිනය ප්‍රමිතිගත YAML ඉදිරිපෙළ කියවයි සහ ලියයි. සටහන් ඔබ වෙනුවෙන් සාදනු ලැබේ, නමුත් සෑම ක්ෂේත්‍රයක්ම සංස්කරණය කළ හැකිය. `Source` සහ `Source ID` මගින් ප්ලගිනයට පසුව මෙටාඩේටා යාවත්කාලීන කිරීමට ඉඩ සලසයි.
 
-### Movie
+### චිත්‍රපටය
 
 ```yaml
 ---
@@ -150,7 +148,7 @@ Source ID: tt1375666
 ---
 ```
 
-### Series
+### මාලාව
 
 ```yaml
 ---
@@ -177,9 +175,9 @@ Source ID: tt4574334
 ---
 ```
 
-> **Series auto-update:** Run `Refresh metadata for current note` (or just open the note) and the plugin updates the total episode count in `Progress` (e.g., `25/42` to `25/50`) and the `Season` count, while keeping your watched count intact.
+> **මාලා ස්වයංක්‍රීය යාවත්කාලීනය:** `Refresh metadata for current note` ක්‍රියාත්මක කරන්න (හෝ සටහන විවෘත කරන්න) සහ ප්ලගිනය `Progress` හි මුළු කොටස් ගණන යාවත්කාලීන කරයි (උදා: `25/42` සිට `25/50` දක්වා) සහ `Season` ගණන, ඔබේ බැලූ ගණන ආරක්ෂිතව තබා ගනිමින්.
 
-### Book
+### පොත
 
 ```yaml
 ---
@@ -201,7 +199,7 @@ Source ID: /works/OL893415W
 ---
 ```
 
-### Anime
+### ඇනිමේ
 
 ```yaml
 ---
@@ -226,7 +224,7 @@ Source ID: 9253
 ---
 ```
 
-### Comic
+### කොමික්
 
 ```yaml
 ---
@@ -249,9 +247,9 @@ Source ID: 33819
 
 ---
 
-## Graph Links
+## ග්‍රාෆ සබඳතා
 
-Each content note gets a `Related` frontmatter property, kept up to date automatically — the note body is never touched:
+සෑම අන්තර්ගත සටහනකටම `Related` ඉදිරිපෙළ ගුණාංගයක් ලැබේ, එය ස්වයංක්‍රීයව යාවත්කාලීන තබා ගනු ලැබේ — සටහන් කඳ කිසිවිටෙක ස්පර්ශ නොකෙරේ:
 
 ```yaml
 Related:
@@ -261,27 +259,42 @@ Related:
     - "[[Christopher Nolan]]"
 ```
 
-These links connect your notes through shared categories, genres, and creators, so the Obsidian graph view forms clean clusters. A real hub note is created per category (e.g. `Movie`) so clusters show even with unresolved links hidden. The property is written when a note is created and refreshed whenever its metadata changes — run `Rebuild graph links` only if you want to force a full rebuild.
+මෙම සබඳතා බෙදාහැරුණු ප්‍රවර්ග, වර්ග සහ නිර්මාතෘවරුන් හරහා ඔබේ සටහන් සම්බන්ධ කරයි, එබැවින් Obsidian ග්‍රාෆ දැක්ම පිරිසිදු සමූහ සාදයි. සෑම ප්‍රවර්ගයකටම සැබෑ මධ්‍යස්ථ සටහනක් සාදනු ලැබේ (උදා: `Movie`) එවිට විසඳිය නොහැකි සබඳතා සැඟවුණු විට පවා සමූහ පෙන්වයි. ගුණාංගය සටහනක් සෑදෙන විට ලියනු ලැබේ සහ එහි මෙටාඩේටා වෙනස් වන සෑම විටම යාවත්කාලීන කෙරේ — ඔබ සම්පූර්ණ නැවත ගොඩනැගීමක් බල කිරීමට අවශ්‍ය නම් පමණක් `Rebuild graph links` ක්‍රියාත්මක කරන්න.
 
 ---
 
-## Commands
+## විධාන
 
-| Command                              | Description                                                              |
-| ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Open the Library gallery tab.                                           |
-| `Add content`                        | Search a source and create a content note (or type a title for Manual). |
-| `Search your library`                | Fuzzy-search and open any note already in your library.                 |
-| `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
-| `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
-| `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
+| විධානය | විස්තරය |
+| --- | --- |
+| `Open Library` | පුස්තකාල ගැලරි ටැබ් විවෘත කරන්න. |
+| `Add content` | මූලාශ්‍රයක් සොයා අන්තර්ගත සටහනක් සාදන්න (හෝ අත්පොත් සඳහා මාතෘකාවක් ටයිප් කරන්න). |
+| `Search your library` | සැරිසරා සොයා ඔබේ පුස්තකාලයේ දැනටමත් ඇති ඕනෑම සටහනක් විවෘත කරන්න. |
+| `Refresh metadata for current note` | ක්‍රියාකාරී සටහන සඳහා මෙටාඩේටා නැවත ලබා ගන්න; මාලා කොටස් ගණන යාවත්කාලීන කරයි. |
+| `Rebuild graph links` | සෑම අන්තර්ගත සටහනක්ම එහි ප්‍රවර්ගයට, වර්ගවලට සහ නිර්මාතෘවරුන්ට සම්බන්ධ කරන්න. |
+| `Find & remove duplicates` | URL මගින් සියලුම සටහන් පරිලෝකනය කරන්න, අනුපිටපත් පෙන්වන්න, සහ තෝරාගත් ඒවා ඉවත් කරන්න. |
 
 ---
 
-## Contributing & Support
+## දායක වීම සහ සහාය
 
-- **Found a bug?** Open an [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
-- **Have a feature idea?** Start a [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
-- **Love the plugin?** Consider starring the repository to show your support!
+- **බගයක් හමු වුවාද?** [අත්දැකීමක්](https://github.com/Kigrok/obsidian-library-plugin/issues) විවෘත කරන්න.
+- **විශේෂාංග අදහසක් තිබේද?** [සාකච්ඡාවක්](https://github.com/Kigrok/obsidian-library-plugin/discussions) ආරම්භ කරන්න.
+- **ප්ලගිනය ප්‍රියද?** ඔබේ සහාය පෙන්වීමට ගබඩාවට තරු ලබා ගැනීම ගැන සලකා බලන්න!
+
+---
+
+## ස්තූතිය
+
+ඔබට මෙම ප්ලගිනය ප්‍රයෝජනවත් නම්, එහි සංවර්ධනයට සහාය වීම ගැන සලකා බලන්න:
+
+| | ජාලය | ලිපිනය |
+| --- | --- | --- |
+| <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat&logo=ethereum&logoColor=white" alt="EVM"> | **EVM** | `0xf9B4807E107f6f8Db79D86aCef6072A31d570201` |
+| <img src="https://img.shields.io/badge/Sui-4DA2FF?style=flat&logo=sui&logoColor=white" alt="Sui"> | **Sui** | `0x1d6989810ee7e55d43f65398253b02462b921e9ce8ad626b542929f02c3d3e9a` |
+| <img src="https://img.shields.io/badge/Solana-9945FF?style=flat&logo=solana&logoColor=white" alt="Sol"> | **Sol** | `2jmrmQrLVeUDFgHzSkHvHKBrmRJXes5X8h3GHXxrLaX6` |
+| <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
+| <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
+| <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
 
 ---

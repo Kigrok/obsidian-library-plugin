@@ -1,4 +1,4 @@
-> HR | [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **HR**
 
 <p align="center">
   <img src="banner.png" alt="Obsidian Library Banner" width="100%">
@@ -14,117 +14,117 @@
 </p>
 
 <p align="center">
-  <b>Organize your movies, series, books, and more into a visual gallery — right inside Obsidian.</b>
+  <b>Organizirajte svoje filmove, serije, knjige i više u vizualnoj galeriji — izravno unutar Obsidiana.</b>
   <br />
-  Search and add titles in-app, auto-fetch metadata, track progress, and wire everything into your graph.
+  Pretražujte i dodajte naslove unutar aplikacije, automatski dohvaćajte metapodatke, pratite napredak i povežite sve sa svojim grafom.
 </p>
 
 <p align="center">
-  <a href="https://community.obsidian.md/plugins/library">View on the Obsidian Community Plugins directory</a>
+  <a href="https://community.obsidian.md/plugins/library">Pogledajte u direktoriju Obsidian Community Plugins</a>
 </p>
 
 ---
 
-## Key Features
+## Ključne značajke
 
-- **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books, RAWG for games, Deezer for music, Jikan for anime, Comic Vine for comics.
-- **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
-- **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
-- **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
-- **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
-- **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
-- **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
-- **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
-- **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
-- **Multilingual** — 31 languages: English, Ukrainian, Russian, Belarusian, Kazakh, Uzbek, German, Spanish, French, Italian, Dutch, Czech, Croatian, Polish, Romanian, Turkish, Azerbaijani, Persian, Hindi, Bengali, Urdu, Tagalog, Vietnamese, Thai, Javanese, Japanese, Korean, Chinese, Arabic, Sinhala, Hebrew.
-
----
-
-## Quick Start
-
-### 1. Installation
-
-Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings > Community plugins > Browse > search "Library"), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
-
-### 2. Basic Setup
-
-1. Go to **Settings** > **Library**.
-2. Add your **Categories** — select a predefined type (Movies, Series, Books, Comics, Games, Music, Anime, or Manual) from the dropdown and click **Add category**. Each category has a display name (translated to your language), a `Type` value (always English, e.g. `Movie`), a source, and an optional folder for storing notes.
-3. _(Optional)_ Enter API keys for the services you use: [OMDb](https://www.omdbapi.com/apikey.aspx) for movies/series, [RAWG](https://rawg.io/apidocs) for games, [Comic Vine](https://comicvine.gamespot.com/api/) for comics. Anime (Jikan) and music (Deezer) require no key.
-
-### 3. Add a Card by Title
-
-No more filling in frontmatter by hand — add a movie, series, book, anime, or comic just by searching its name:
-
-1. Open the **Library** tab from the ribbon icon (or run `Open Library`).
-2. Click the **+** button in the top-right of the Library page (or run `Add content`).
-3. Pick a category, type the **title** into the search box, and select a result.
-4. A card is created instantly, with poster, year, genre, creators, and rating filled in automatically.
-
-The **Search** button next to **+** searches titles already in your library.
-
-For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
+- **Vizualna mreža kartica** — Posvećena kartica Library prikazuje vašu kolekciju kao galeriju kartica s naslovnim slikama.
+- **Ugrađeno pretraživanje** — Pretražujte i dodajte naslove izravno u aplikaciji: OMDb za filmove i serije, Open Library ili Google Books za knjige, RAWG za igrice, Deezer za glazbu, Jikan za anime, Comic Vine za stripove.
+- **Pametno praćenje serija** — Sezone i ukupni brojevi epizoda automatski se dohvaćaju i održavaju sinkroniziranima.
+- **Pokazatelji napretka** — Vizualne trake napretka na karticama i zaglavlju bilješki pokazuju koliko ste pogledali ili pročitali.
+- **Bogata zaglavlja bilješki** — Svaka bilješka sadržaja dobiva automatski generirano zaglavlje sa svim ključnim metapodacima.
+- **Prilagođene kategorije** — Stvorite kategorije za filmove, serije, anime, stripove, knjige, igrice, glazbu ili bilo što drugo putem ručnog izvora.
+- **Veze grafana** — Svojstvo `Related` u frontmatteru povezuje svaku bilješku s njezinom kategorijom, žanrovima i stvarateljima, automatski održavano sinkroniziranim za prekrasan graf.
+- **Sortiranje i sažimanje** — Sortirajte kartice po nazivu, godini, ocjeni ili datumu; sažmite bilo koju kategoriju.
+- **Statistika** — Najbolji žanrovi, najbolji stvaratelji (samo filmovi i serije) i najbolje stavke po kategoriji s medaljama.
+- **Otkrivanje duplikata** — Automatski sprječava dodavanje istog naslova dva puta prema URL-u. Ugrađena naredba pronalazi i uklanja postojeće duplikate.
+- **Višejezičnost** — 31 jezik: engleski, ukrajinski, ruski, bjeloruski, kazaški, uzbekački, njemački, španjolski, francuski, talijanski, nizozemski, češki, hrvatski, poljski, rumunjski, turski, azerbajdžanski, perzijski, hindi, bengalski, urdski, tagalog, vijetnamski, tajlandski, javanski, japanski, korejski, kineski, arapski, sinhala, hebrejski.
 
 ---
 
-## Statistics
+## Brzi početak
 
-The Library tab includes a collapsible **Statistics** section at the top:
+### 1. Instalacija
 
-- **Top Genres** — ranked by frequency across your entire library.
-- **Top Creators** — ranked by number of movies and series they appear in.
-- **Top per Category** — for each category (Movies, Series, Books, etc.), the top 3 items by rating with small cover thumbnails.
+Instalirajte **Library** iz [direktorija Obsidian Community Plugins](https://community.obsidian.md/plugins/library) (Postavke > Community plugins > Pretraži > potražite "Library"), ili ga instalirajte ručno putem [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 
----
+### 2. Osnovna postavka
 
-## Duplicate Detection
+1. Idite na **Postavke** > **Library**.
+2. Dodajte svoje **Kategorije** — odaberite unaprijed definirani tip (Movies, Series, Books, Comics, Games, Music, Anime ili Manual) iz padajućeg izbornika i kliknite **Add category**. Svaka kategorija ima ime za prikaz (prevedeno na vaš jezik), vrijednost `Type` (uvijek engleski, npr. `Movie`), izvor i opcionalnu mapu za pohranu bilješki.
+3. _(Opcionalno)_ Unesite API ključeve za usluge koje koristite: [OMDb](https://www.omdbapi.com/apikey.aspx) za filmove/serije, [RAWG](https://rawg.io/apidocs) za igrice, [Comic Vine](https://comicvine.gamespot.com/api/) za stripove. Anime (Jikan) i glazba (Deezer) ne zahtijevaju ključ.
 
-Library prevents duplicate entries by checking the `URL` field:
+### 3. Dodajte karticu po naslovu
 
-- **On add** — if a note with the same URL already exists, it opens the existing note instead of creating a duplicate.
-- **Find & Remove Duplicates** — run this command from the palette to scan all notes, group by URL, and selectively remove duplicates via a modal.
+Više nema ručnog popunjavanja frontmattera — dodajte film, seriju, knjigu, anime ili strip samo pretraživanjem njegovog imena:
 
----
+1. Otvorite karticu **Library** iz ikone na traci (ili pokrenite `Open Library`).
+2. Kliknite gumb **+** u gornjem desnom kutu stranice Library (ili pokrenite `Add content`).
+3. Odaberite kategoriju, unesite **naslov** u okvir za pretraživanje i odaberite rezultat.
+4. Kartica se trenutno stvara s posterom, godinom, žanrom, stvarateljima i ocjenom automatski popunjenim.
 
-## Sources
+Gumb **Search** pored **+** pretražuje naslove koji su već u vašoj biblioteci.
 
-Each category is bound to a source that powers its search:
-
-| Source           | Content types   | API key                                                      |
-| ---------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**        | Books           | Open Library (no key) + Google Books (optional free key). Results are merged — Google Books first, Open Library below. |
-| **RAWG**         | Games           | Free key required — [rawg.io/apidocs](https://rawg.io/apidocs) |
-| **Deezer**       | Music (albums)  | None                                                        |
-| **Jikan**        | Anime           | None — free unofficial MyAnimeList API, no key needed       |
-| **Comic Vine**   | Comics          | Free key required — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
+Za **Manual** kategorije jednostavno unesite naslov i sami ispunite naslovnicu, godinu i ostala polja.
 
 ---
 
-## Privacy & Network Use
+## Statistika
 
-Library is **offline-first**. The plugin only contacts the network when you actively search for a title to add, and only with the search terms you type:
+Kartica Library uključuje saživi odjeljak **Statistics** na vrhu:
 
-| Service | When | What is sent | Why |
+- **Najbolji žanrovi** — rangirani po učestalosti u cijeloj vašoj biblioteci.
+- **Najbolji stvaratelji** — rangirani po broju filmova i serija u kojima se pojavljuju.
+- **Najbolje po kategoriji** — za svaku kategoriju (Movies, Series, Books, itd.), top 3 stavke po ocjeni s malim sličicama naslovnica.
+
+---
+
+## Otkrivanje duplikata
+
+Library sprječava duplicirane unose provjerom polja `URL`:
+
+- **Pri dodavanju** — ako bilješka s istim URL-om već postoji, otvara postojeću bilješku umjesto stvaranja duplikata.
+- **Pronađi i ukloni duplikate** — pokrenite ovu naredbu iz palete za skeniranje svih bilješki, grupiranje po URL-u i selektivno uklanjanje duplikata putem modalnog prozora.
+
+---
+
+## Izvori
+
+Svaka kategorija je vezana za izvor koji pokreće njezino pretraživanje:
+
+| Izvor             | Vrste sadržaja  | API ključ                                                    |
+| ----------------- | --------------- | ----------------------------------------------------------- |
+| **OMDb**          | Filmovi, Serije | Potreban besplatni ključ — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
+| **Books**         | Knjige          | Open Library (bez ključa) + Google Books (opcionalni besplatni ključ). Rezultati se spajaju — Google Books prvi, Open Library ispod. |
+| **RAWG**          | Igrice          | Potreban besplatni ključ — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Deezer**        | Glazba (albumi) | Nema                                                        |
+| **Jikan**         | Anime           | Nema — besplatna neslužbena MyAnimeList API, ključ nije potreban |
+| **Comic Vine**    | Stripovi        | Potreban besplatni ključ — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
+| **Manual**        | Sve ostalo      | Nema — sami unosite naslov i ispunjavate polja              |
+
+---
+
+## Privatnost i korištenje mreže
+
+Library je **offline-first**. Plugin kontaktira mrežu samo kada aktivno pretražujete naslov za dodavanje, i samo s pojmovima koje unosite:
+
+| Usluga | Kada | Što se šalje | Zašto |
 | --- | --- | --- | --- |
-| `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
-| `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
-| `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
-| `www.googleapis.com` | You search a Google Books category | The title you type and your Google Books key | Fetch book metadata (author, year, categories, page count, cover, ISBN) |
-| `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
-| `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
-| `api.jikan.moe` | You search an anime category | The title you type | Fetch anime metadata (title, year, genre, episodes, MAL score, synopsis, poster) |
-| `comicvine.gamespot.com` | You search a comics category | The title you type and your Comic Vine key | Fetch comic metadata (title, year, publisher, issue count, cover) |
+| `www.omdbapi.com` | Pretražujete kategoriju temeljenu na OMDb | Naslov koji unosite i vaš OMDb API ključ | Dohvaćanje metapodataka filma/serije (godina, žanrovi, glumačka postava, ocjena, poster, broj epizoda) |
+| `openlibrary.org` | Pretražujete kategoriju Open Library | Naslov koji unosite | Dohvaćanje metapodataka knjige (autor, godine, teme, ID naslovnice) |
+| `covers.openlibrary.org` | Kartica knjige ima naslovnicu | Open Library ID naslovnice | Učitavanje slike naslovnice |
+| `www.googleapis.com` | Pretražujete kategoriju Google Books | Naslov koji unosite i vaš Google Books ključ | Dohvaćanje metapodataka knjige (autor, godine, kategorije, broj stranica, naslovnica, ISBN) |
+| `api.rawg.io` | Pretražujete kategoriju RAWG igara | Naslov koji unosite i vaš RAWG ključ | Dohvaćanje metapodataka igre (godina, žanrovi, programer, naslovnica) |
+| `api.deezer.com` | Pretražujete kategoriju Deezer glazbe | Album ili izvođač koji unosite | Dohvaćanje metapodataka albuma (izvođač, godina, žanrovi, broj pjesama, naslovnica) |
+| `api.jikan.moe` | Pretražujete kategoriju animea | Naslov koji unosite | Dohvaćanje metapodataka animea (naslov, godina, žanrovi, epizode, MAL ocjena, sinopsis, poster) |
+| `comicvine.gamespot.com` | Pretražujete kategoriju stripova | Naslov koji unosite i vaš Comic Vine ključ | Dohvaćanje metapodataka stripa (naslov, godina, izdavač, broj izdanja, naslovnica) |
 
-No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. API keys (OMDb, Google Books, RAWG, Comic Vine) are stored only in your local plugin settings and are sent only to their respective services. Cover images load directly from the URLs returned by each source.
+Nikakvi drugi podaci ne napuštaju vaš vault. Plugin **nema telemetriju, nema analitiku i nema mehanizam samo-ažuriranja**. API ključevi (OMDb, Google Books, RAWG, Comic Vine) pohranjeni su samo u vašim lokalnim postavkama plugin-a i šalju se samo njihovim odgovarajućim uslugama. Slike naslovnica učitavaju se izravno s URL-ova koje vraća svaki izvor.
 
 ---
 
-## Frontmatter Schema
+## Frontmatter shema
 
-The plugin reads and writes to standard YAML frontmatter. Notes are created for you, but every field is editable. `Source` and `Source ID` let the plugin refresh metadata later.
+Plugin čita i piše u standardni YAML frontmatter. Bilješke se automatski stvaraju, ali je svako polje uredivo. `Source` i `Source ID` omogućuju pluginu naknadno osvježavanje metapodataka.
 
 ### Movie
 
@@ -177,7 +177,7 @@ Source ID: tt4574334
 ---
 ```
 
-> **Series auto-update:** Run `Refresh metadata for current note` (or just open the note) and the plugin updates the total episode count in `Progress` (e.g., `25/42` to `25/50`) and the `Season` count, while keeping your watched count intact.
+> **Automatsko ažuriranje serija:** Pokrenite `Refresh metadata for current note` (ili jednostavno otvorite bilješku) i plugin ažurira ukupni broj epizoda u `Progress` (npr., `25/42` u `25/50`) i broj `Season`, zadržavajući vaš broj pogledanih netaknutim.
 
 ### Book
 
@@ -249,9 +249,9 @@ Source ID: 33819
 
 ---
 
-## Graph Links
+## Veze grafana
 
-Each content note gets a `Related` frontmatter property, kept up to date automatically — the note body is never touched:
+Svaka bilješka sadržaja dobiva svojstvo `Related` u frontmatteru, koje se automatski održava ažurnim — tijelo bilješke se nikad ne dira:
 
 ```yaml
 Related:
@@ -261,27 +261,42 @@ Related:
     - "[[Christopher Nolan]]"
 ```
 
-These links connect your notes through shared categories, genres, and creators, so the Obsidian graph view forms clean clusters. A real hub note is created per category (e.g. `Movie`) so clusters show even with unresolved links hidden. The property is written when a note is created and refreshed whenever its metadata changes — run `Rebuild graph links` only if you want to force a full rebuild.
+Ove veze povezuju vaše bilješke kroz zajedničke kategorije, žanrove i stvaratelje, tako da grafni pogled Obsidiana čisti čiste skupine. Pravi bilješka čvorišta se stvaraju za svaku kategoriju (npr. `Movie`) tako da se skupine prikazuju čak i skrivenim neriješenim vezama. Svojstvo se zapisuje kada se bilješka stvara i osvježava kad god se njezini metapodaci promijene — pokrenite `Rebuild graph links` samo ako želite prisiliti potpunu obnovu.
 
 ---
 
-## Commands
+## Naredbe
 
-| Command                              | Description                                                              |
-| ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Open the Library gallery tab.                                           |
-| `Add content`                        | Search a source and create a content note (or type a title for Manual). |
-| `Search your library`                | Fuzzy-search and open any note already in your library.                 |
-| `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
-| `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
-| `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
+| Naredba                              | Opis                                                                     |
+| ------------------------------------ | ------------------------------------------------------------------------ |
+| `Open Library`                       | Otvorite karticu galerije Library.                                       |
+| `Add content`                        | Pretražite izvor i stvorite bilješku sadržaja (ili unesite naslov za Manual). |
+| `Search your library`                | Fuzzy-pretraživanje i otvaranje bilo koje bilješke koja je već u vašoj biblioteci. |
+| `Refresh metadata for current note`  | Ponovo dohvaća metapodatke za aktivnu bilješku; ažurira ukupne brojeve epizoda serija. |
+| `Rebuild graph links`                | Povezuje svaku bilješku sadržaja s njezinom kategorijom, žanrovima i stvarateljima. |
+| `Find & remove duplicates`           | Skenira sve bilješke po URL-u, prikazuje duplikate i uklanja odabrane.    |
 
 ---
 
-## Contributing & Support
+## Doprinos i podrška
 
-- **Found a bug?** Open an [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
-- **Have a feature idea?** Start a [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
-- **Love the plugin?** Consider starring the repository to show your support!
+- **Pronašli ste grešku?** Otvorite [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
+- **Imate ideju za značajku?** Pokrenite [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
+- **Sviđa vam se plugin?** Razmislite o zvjezdici repozitorija kako biste pokazali svoju podršku!
+
+---
+
+## Hvala vam
+
+Ako vam se ovaj plugin čini korisnim, razmislite o podršci njegovom razvoju:
+
+| | Mreža | Adresa |
+| --- | --- | --- |
+| <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat&logo=ethereum&logoColor=white" alt="EVM"> | **EVM** | `0xf9B4807E107f6f8Db79D86aCef6072A31d570201` |
+| <img src="https://img.shields.io/badge/Sui-4DA2FF?style=flat&logo=sui&logoColor=white" alt="Sui"> | **Sui** | `0x1d6989810ee7e55d43f65398253b02462b921e9ce8ad626b542929f02c3d3e9a` |
+| <img src="https://img.shields.io/badge/Solana-9945FF?style=flat&logo=solana&logoColor=white" alt="Sol"> | **Sol** | `2jmrmQrLVeUDFgHzSkHvHKBrmRJXes5X8h3GHXxrLaX6` |
+| <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
+| <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
+| <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
 
 ---

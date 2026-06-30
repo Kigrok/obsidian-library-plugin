@@ -1,4 +1,4 @@
-> BE | [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **BE**
 
 <p align="center">
   <img src="banner.png" alt="Obsidian Library Banner" width="100%">
@@ -14,117 +14,117 @@
 </p>
 
 <p align="center">
-  <b>Organize your movies, series, books, and more into a visual gallery — right inside Obsidian.</b>
+  <b>Арганізуйце свае фільмы, серыялы, кнігі і іншае ў візуальнай галерэі — прама ўнутры Obsidian.</b>
   <br />
-  Search and add titles in-app, auto-fetch metadata, track progress, and wire everything into your graph.
+  Шукайце і дадавайце назвы ў праграме, аўтаматычна атрымлівайце метаданыя, адсочвайце прагрэс і злучыце ўсе са сваім графам.
 </p>
 
 <p align="center">
-  <a href="https://community.obsidian.md/plugins/library">View on the Obsidian Community Plugins directory</a>
+  <a href="https://community.obsidian.md/plugins/library">Глядзіце ў дырэктарыі Obsidian Community Plugins</a>
 </p>
 
 ---
 
-## Key Features
+## Асноўныя магчымасці
 
-- **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books, RAWG for games, Deezer for music, Jikan for anime, Comic Vine for comics.
-- **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
-- **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
-- **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
-- **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
-- **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
-- **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
-- **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
-- **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
-- **Multilingual** — 31 languages: English, Ukrainian, Russian, Belarusian, Kazakh, Uzbek, German, Spanish, French, Italian, Dutch, Czech, Croatian, Polish, Romanian, Turkish, Azerbaijani, Persian, Hindi, Bengali, Urdu, Tagalog, Vietnamese, Thai, Javanese, Japanese, Korean, Chinese, Arabic, Sinhala, Hebrew.
-
----
-
-## Quick Start
-
-### 1. Installation
-
-Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings > Community plugins > Browse > search "Library"), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
-
-### 2. Basic Setup
-
-1. Go to **Settings** > **Library**.
-2. Add your **Categories** — select a predefined type (Movies, Series, Books, Comics, Games, Music, Anime, or Manual) from the dropdown and click **Add category**. Each category has a display name (translated to your language), a `Type` value (always English, e.g. `Movie`), a source, and an optional folder for storing notes.
-3. _(Optional)_ Enter API keys for the services you use: [OMDb](https://www.omdbapi.com/apikey.aspx) for movies/series, [RAWG](https://rawg.io/apidocs) for games, [Comic Vine](https://comicvine.gamespot.com/api/) for comics. Anime (Jikan) and music (Deezer) require no key.
-
-### 3. Add a Card by Title
-
-No more filling in frontmatter by hand — add a movie, series, book, anime, or comic just by searching its name:
-
-1. Open the **Library** tab from the ribbon icon (or run `Open Library`).
-2. Click the **+** button in the top-right of the Library page (or run `Add content`).
-3. Pick a category, type the **title** into the search box, and select a result.
-4. A card is created instantly, with poster, year, genre, creators, and rating filled in automatically.
-
-The **Search** button next to **+** searches titles already in your library.
-
-For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
+- **Візуальная сетка картак** — Адмысловая ўкладка Library адлюстроўвае вашу калекцыю як галерэю картак з вокладкамі.
+- **Убудаваны пошук** — Шукайце і дадавайце назвы прама ў праграме: OMDb для фільмаў і серыялаў, Open Library ці Google Books для кніг, RAWG для гульняў, Deezer для музыкі, Jikan для анімэ, Comic Vine для коміксаў.
+- **Разумовае адсочванне серыялаў** — Сезоны і агульная колькасць серый аўтаматычна атрымліваюцца і падтрымліваюцца ў сінхранізацыі.
+- **Індыкатары прагрэсу** — Візуальныя палосы прагрэсу на картках і загалоўках нататак паказваюць, колькі вы паглядzelі або прачыталі.
+- **Багатыя загалоўкі нататак** — Кожная нататка кантэнту атрымлівае аўтаматычна створаны загалоўак з усімі ключавымі метаданымі.
+- **Карыстальніцкія катэгорыі** — Ствайце катэгорыі для фільмаў, серыялаў, анімэ, коміксаў, кніг, гульняў, музыкі ці чаго заўгодна праз ручную крыніцу.
+- **Спасылкі графа** — Уласцівасць `Related` у frontmatter злучае кожную нататку з яе катэгорыяй, жанрамі і стваральнікамі, аўтаматычна падтрымліваемая ў сінхранізацыі для прыгожага графа.
+- **Сартаванне і згортванне** — Сартуйце карткі па назве, году, рэйтынгу ці даце; згортвайце любую катэгорыю.
+- **Статыстыка** — Лепшыя жанры, лепшыя стваральнікі (толькі фільмы і серыялы) і лепшыя элементы па катэгорыі з медальнымі рэйтынгамі.
+- **Выяўленне дублікатаў** — Аўтаматычна перашкаджае даданню адной і той жа назвы двойчы па URL. Убудаваная каманда знаходзіць і выдаляе існуючыя дублікі.
+- **Шматмоўнасць** — 31 мова: англійская, украінская, руская, беларуская, казахская, узбекская, нямецкая, іспанская, французская, італьянская, нідэрландская, чэшская, харвацкая, польская, румынская, турэцкая, азербайджанская, персідская, хіндзі, бенгальская, урду, тагальская, в'етнамская, тайская, яванская, японская, карэйская, кітайская, арабская, сінгальская, іўрыт.
 
 ---
 
-## Statistics
+## Хуткі старт
 
-The Library tab includes a collapsible **Statistics** section at the top:
+### 1. Усталёўка
 
-- **Top Genres** — ranked by frequency across your entire library.
-- **Top Creators** — ranked by number of movies and series they appear in.
-- **Top per Category** — for each category (Movies, Series, Books, etc.), the top 3 items by rating with small cover thumbnails.
+Усталюйце **Library** з [дырэктарыі Obsidian Community Plugins](https://community.obsidian.md/plugins/library) (Налады > Community plugins > Прагляд > шукайце "Library") або ўсталюйце ўручную праз [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 
----
+### 2. Асноўная налада
 
-## Duplicate Detection
+1. Перайдзіце ў **Налады** > **Library**.
+2. Дадайце свае **Катэгорыі** — выберыце загадзя вызначаны тып (Movies, Series, Books, Comics, Games, Music, Anime ці Manual) з выпадальнага меню і націсніце **Add category**. Кожная катэгорыя мае адлюстроўваемую назву (перакладзеную на вашу мову), значэнне `Type` (заўсёды англійская, напр. `Movie`), крыніцу і неабавязковую тэчку для захавання нататак.
+3. _(Неабавязкова)_ Увядзіце API-ключы для паслуг, якія вы выкарыстоўваеце: [OMDb](https://www.omdbapi.com/apikey.aspx) для фільмаў/серыялаў, [RAWG](https://rawg.io/apidocs) для гульняў, [Comic Vine](https://comicvine.gamespot.com/api/) для коміксаў. Анімэ (Jikan) і музыка (Deezer) не патрабуюць ключа.
 
-Library prevents duplicate entries by checking the `URL` field:
+### 3. Дадайце картку па назве
 
-- **On add** — if a note with the same URL already exists, it opens the existing note instead of creating a duplicate.
-- **Find & Remove Duplicates** — run this command from the palette to scan all notes, group by URL, and selectively remove duplicates via a modal.
+Больш не трэба ўручную запаўняць frontmatter — дадайце фільм, серыял, кнігу, анімэ ці комікс проста шукаючы яго назву:
 
----
+1. Адкрыйце ўкладку **Library** з іконкі на панэлі (ці выкайдце `Open Library`).
+2. Націсніце кнопку **+** у правым верхнім куце старонкі Library (ці выкайдце `Add content`).
+3. Выберыце катэгорыю, увядзіце **назву** ў поле пошуку і выберыце вынік.
+4. Картка ствараецца імгненна, з плакатам, годам, жанрам, стваральнікамі і рэйтынгам, аўтаматычна запоўненымі.
 
-## Sources
+Кнопка **Search** побач з **+** шукае назвы, якія ўжо ёсць у вашай бібліятэцы.
 
-Each category is bound to a source that powers its search:
-
-| Source           | Content types   | API key                                                      |
-| ---------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**        | Books           | Open Library (no key) + Google Books (optional free key). Results are merged — Google Books first, Open Library below. |
-| **RAWG**         | Games           | Free key required — [rawg.io/apidocs](https://rawg.io/apidocs) |
-| **Deezer**       | Music (albums)  | None                                                        |
-| **Jikan**        | Anime           | None — free unofficial MyAnimeList API, no key needed       |
-| **Comic Vine**   | Comics          | Free key required — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
+Для катэгорый **Manual** проста ўвядзіце назву і самі запоўніце вокладку, год і іншыя полі.
 
 ---
 
-## Privacy & Network Use
+## Статыстыка
 
-Library is **offline-first**. The plugin only contacts the network when you actively search for a title to add, and only with the search terms you type:
+Укладка Library утрымлівае згорваемы раздзел **Statistics** ўверсе:
 
-| Service | When | What is sent | Why |
+- **Лепшыя жанры** — ранжыраваны па частаце ва ўсёй вашай бібліятэцы.
+- **Лепшыя стваральнікі** — ранжыраваны па колькасці фільмаў і серыялаў, у якіх яны з'яўляюцца.
+- **Лепшыя па катэгорыі** — для кожнай катэгорыі (Movies, Series, Books і г.д.) топ-3 элементаў па рэйтынгу з маленькімі мініяцюрамі вокладак.
+
+---
+
+## Выяўленне дублікатаў
+
+Library перашкаджае дублікатам, правяраючы поле `URL`:
+
+- **Пры даданні** — калі нататка з такім самім URL ужо існуе, яна адкрывае існуючую нататку замест стварэння дубліката.
+- **Знайдзіце і выдаліце дублікаты** — выкайдце гэтую каманду з паліты для сканавання ўсіх нататак, групоўкі па URL і выбарачнага выдалення дублікатаў праз мадальнае акно.
+
+---
+
+## Крыніцы
+
+Кожная катэгорыя звязана з крыніцай, якая сілкуе яе пошук:
+
+| Крыніца           | Тыпы кантэнту | API-ключ                                                   |
+| ----------------- | ------------- | ---------------------------------------------------------- |
+| **OMDb**          | Фільмы, Серыялы | Патрабуецца бясплатны ключ — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
+| **Books**         | Кнігі         | Open Library (без ключа) + Google Books (неабавязковы бясплатны ключ). Вынікі аб'ядноўваюцца — Google Books першымі, Open Library знізу. |
+| **RAWG**          | Гульнявыя     | Патрабуецца бясплатны ключ — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Deezer**        | Музыка (альбомы) | Няма                                                    |
+| **Jikan**         | Анімэ         | Няма — бясплатны неафіцыйны API MyAnimeList, ключ не патрабуецца |
+| **Comic Vine**    | Коміксы       | Патрабуецца бясплатны ключ — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
+| **Manual**        | Усё астатняе  | Няма — вы самі ўводзіце назву і запаўняеце полі          |
+
+---
+
+## Прыватнасць і выкарыстанне сеткі
+
+Library з'яўляецца **offline-first**. Плагін звязваецца з сеткай толькі калі вы актыўна шукаеце назву для дадання, і толькі з тэрмінамі пошуку, якія вы ўводзіце:
+
+| Паслуга | Калі | Што адпраўляецца | Чаму |
 | --- | --- | --- | --- |
-| `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
-| `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
-| `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
-| `www.googleapis.com` | You search a Google Books category | The title you type and your Google Books key | Fetch book metadata (author, year, categories, page count, cover, ISBN) |
-| `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
-| `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
-| `api.jikan.moe` | You search an anime category | The title you type | Fetch anime metadata (title, year, genre, episodes, MAL score, synopsis, poster) |
-| `comicvine.gamespot.com` | You search a comics category | The title you type and your Comic Vine key | Fetch comic metadata (title, year, publisher, issue count, cover) |
+| `www.omdbapi.com` | Вы шукаеце катэгорыю на аснове OMDb | Назва, якую вы ўводзіце, і ваш API-ключ OMDb | Атрыманне метаданых фільма/серыяла (год, жанры, акцёрскі склад, рэйтынг, плакат, колькасць серый) |
+| `openlibrary.org` | Вы шукаеце катэгорыю Open Library | Назва, якую вы ўводзіце | Атрыманне метаданых кнігі (аўтар, год, тэмы, ID вокладкі) |
+| `covers.openlibrary.org` | Картка кнігі мае вокладку | ID вокладкі Open Library | Загрузка выявы вокладкі |
+| `www.googleapis.com` | Вы шукаеце катэгорыю Google Books | Назва, якую вы ўводзіце, і ваш ключ Google Books | Атрыманне метаданых кнігі (аўтар, год, катэгорыі, колькасць старонак, вокладка, ISBN) |
+| `api.rawg.io` | Вы шукаеце катэгорыю гульняў RAWG | Назва, якую вы ўводзіце, і ваш ключ RAWG | Атрыманне метаданых гульня (год, жанры, распрацоўшчык, вокладка) |
+| `api.deezer.com` | Вы шукаеце катэгорыю музыкі Deezer | Альбом ці выканаўца, якога вы ўводзіце | Атрыманне метаданых альбома (выканаўца, год, жанры, колькасць трэкаў, вокладка) |
+| `api.jikan.moe` | Вы шукаеце катэгорыю анімэ | Назва, якую вы ўводзіце | Атрыманне метаданых анімэ (назва, год, жанры, серыі, ацэнка MAL, сінопсіс, плакат) |
+| `comicvine.gamespot.com` | Вы шукаеце катэгорыю коміксаў | Назва, якую вы ўводзіце, і ваш ключ Comic Vine | Атрыманне метаданых комікса (назва, год, выдавец, колькасць выпускаў, вокладка) |
 
-No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. API keys (OMDb, Google Books, RAWG, Comic Vine) are stored only in your local plugin settings and are sent only to their respective services. Cover images load directly from the URLs returned by each source.
+Ніякія іншыя дадзеныя ніколі не пакідаюць ваш vault. Плагін **не мае тэлеметрыі, аналітыкі і механізму аўтаматычнага абнаўлення**. API-ключы (OMDb, Google Books, RAWG, Comic Vine) захоўваюцца толькі ў вашых мясцовых наладах плагіна і адпраўляюцца толькі адпаведным паслугам. Выявы вокладак загружаюцца прама з URL, якія вяртаюцца кожнай крыніцай.
 
 ---
 
-## Frontmatter Schema
+## Схема Frontmatter
 
-The plugin reads and writes to standard YAML frontmatter. Notes are created for you, but every field is editable. `Source` and `Source ID` let the plugin refresh metadata later.
+Плагін чытае і піша ў стандартны YAML frontmatter. Нататкі ствараюцца для вас, але кожнае поле можна рэдагаваць. `Source` і `Source ID` дазваляюць плагіну абнавіць метаданыя пазней.
 
 ### Movie
 
@@ -177,7 +177,7 @@ Source ID: tt4574334
 ---
 ```
 
-> **Series auto-update:** Run `Refresh metadata for current note` (or just open the note) and the plugin updates the total episode count in `Progress` (e.g., `25/42` to `25/50`) and the `Season` count, while keeping your watched count intact.
+> **Аўтаматычнае абнаўленне серыялаў:** Выкайдце `Refresh metadata for current note` (ці проста адкрыйце нататку), і плагін абновіць агульную колькасць серый у `Progress` (напр., `25/42` на `25/50`) і колькасць `Season`, захаваўшы вашу колькасць пагляджаных без змен.
 
 ### Book
 
@@ -249,9 +249,9 @@ Source ID: 33819
 
 ---
 
-## Graph Links
+## Спасылкі графа
 
-Each content note gets a `Related` frontmatter property, kept up to date automatically — the note body is never touched:
+Кожная нататка кантэнту атрымлівае ўласцівасць `Related` у frontmatter, аўтаматычна абнаўляемую — цела нататкі ніколі не чапаецца:
 
 ```yaml
 Related:
@@ -261,27 +261,42 @@ Related:
     - "[[Christopher Nolan]]"
 ```
 
-These links connect your notes through shared categories, genres, and creators, so the Obsidian graph view forms clean clusters. A real hub note is created per category (e.g. `Movie`) so clusters show even with unresolved links hidden. The property is written when a note is created and refreshed whenever its metadata changes — run `Rebuild graph links` only if you want to force a full rebuild.
+Гэтыя спасылкі злучаюць вашы нататкі праз агульныя катэгорыі, жанры і стваральнікаў, так што выгляд графа Obsidian стварае чыстыя кластеры. Сапраўдная нататка-хаб ствараецца для кожнай катэгорыі (напр. `Movie`), таму кластеры паказваюцца нават з схаванымі нявырашанымі спасылкамі. Уласцівасць запісваецца пры стварэнні нататкі і абнаўляецца пры кожнай змене яе метаданых — выкайдце `Rebuild graph links` толькі калі вы хочаце прымусіць поўнае аднаўленне.
 
 ---
 
-## Commands
+## Каманды
 
-| Command                              | Description                                                              |
-| ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Open the Library gallery tab.                                           |
-| `Add content`                        | Search a source and create a content note (or type a title for Manual). |
-| `Search your library`                | Fuzzy-search and open any note already in your library.                 |
-| `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
-| `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
-| `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
+ | Каманда                             | Апісанне                                                                 |
+| ----------------------------------- | ------------------------------------------------------------------------ |
+| `Open Library`                      | Адкрыйце ўкладку галерэі Library.                                       |
+| `Add content`                       | Шукайце крыніцу і стварыце нататку кантэнту (ці ўвядзіце назву для Manual). |
+| `Search your library`               | Размыты пошук і адкрыццё любой нататкі, якая ўжо ёсць у вашай бібліятэцы. |
+| `Refresh metadata for current note` | Паўторна атрымаць метаданыя для актыўнай нататкі; абнаўляе агульную колькасць серый серыялаў. |
+| `Rebuild graph links`               | Злучыце кожную нататку кантэнту з яе катэгорыяй, жанрамі і стваральнікамі. |
+| `Find & remove duplicates`          | Скануйце ўсе нататкі па URL, пакажыце дублікаты і выдаліце выбраныя.     |
 
 ---
 
-## Contributing & Support
+## Унёсак і падтрымка
 
-- **Found a bug?** Open an [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
-- **Have a feature idea?** Start a [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
-- **Love the plugin?** Consider starring the repository to show your support!
+- **Знайшлі памылку?** Адкрыйце [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
+- **Ёсць ідэя для функцыі?** Пачніце [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
+- **Падабаўся плагін?** Разгледзьце магчымасць даць зорку рэпазіторыю, каб паказаць сваю падтрымку!
+
+---
+
+## Дзякуй
+
+Калі вы лічыце гэты плагін карысным, разгледзьце магчымасць падтрымаць яго распрацоўку:
+
+| | Сетка | Адрас |
+| --- | --- | --- |
+| <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat&logo=ethereum&logoColor=white" alt="EVM"> | **EVM** | `0xf9B4807E107f6f8Db79D86aCef6072A31d570201` |
+| <img src="https://img.shields.io/badge/Sui-4DA2FF?style=flat&logo=sui&logoColor=white" alt="Sui"> | **Sui** | `0x1d6989810ee7e55d43f65398253b02462b921e9ce8ad626b542929f02c3d3e9a` |
+| <img src="https://img.shields.io/badge/Solana-9945FF?style=flat&logo=solana&logoColor=white" alt="Sol"> | **Sol** | `2jmrmQrLVeUDFgHzSkHvHKBrmRJXes5X8h3GHXxrLaX6` |
+| <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
+| <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
+| <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
 
 ---

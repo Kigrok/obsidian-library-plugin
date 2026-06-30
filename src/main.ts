@@ -194,13 +194,15 @@ export default class LibraryPlugin extends Plugin {
 	private async createManual(category: ICategory, title: string): Promise<void> {
 		const path = await this.uniqueNotePath(title, category.folder)
 		const file = await this.app.vault.create(path, '')
-		await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
-			fm.Type = category.typeValue
-			fm.Name = title
-			fm['My Rating'] = null
-			fm.Complete = false
-			fm.Progress = ''
-			fm.Date = todayDmy()
+		await this.app.fileManager.processFrontMatter(file, (fm) => {
+			Object.assign(fm, {
+				Type: category.typeValue,
+				Name: title,
+				'My Rating': null,
+				Complete: false,
+				Progress: '',
+				Date: todayDmy(),
+			})
 		})
 		await this.ensureHub(category)
 		await this.writeGraphLinks(file, category.typeValue, [], [])
@@ -231,15 +233,17 @@ export default class LibraryPlugin extends Plugin {
 		const path = await this.uniqueNotePath(result.title, category.folder)
 		const file = await this.app.vault.create(path, '')
 
-		await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
-			fm.Type = category.typeValue
-			this.applyMetaFields(fm, meta)
-			fm.Progress = meta.progressTotal ? `0/${String(meta.progressTotal)}` : ''
-			fm['My Rating'] = null
-			fm.Complete = false
-			fm.Date = todayDmy()
-			fm.Source = provider.id
-			fm['Source ID'] = result.sourceId
+		await this.app.fileManager.processFrontMatter(file, (fm) => {
+			Object.assign(fm, {
+				Type: category.typeValue,
+				Progress: meta.progressTotal ? `0/${String(meta.progressTotal)}` : '',
+				'My Rating': null,
+				Complete: false,
+				Date: todayDmy(),
+				Source: provider.id,
+				'Source ID': result.sourceId,
+			})
+			this.applyMetaFields(fm as Record<string, unknown>, meta)
 		})
 
 		await this.ensureHub(category)
@@ -294,14 +298,14 @@ export default class LibraryPlugin extends Plugin {
 		this.syncingLinks.add(file.path)
 		try {
 			if (hasLegacy) {
-				await this.app.vault.process(file, (data) => {
+				await this.app.vault.process(file, (data: string) => {
 					const i = data.indexOf(marker)
 					return i >= 0 ? data.slice(0, i).trimEnd() + '\n' : data
 				})
 			}
 			if (!sameLinks) {
-				await this.app.fileManager.processFrontMatter(file, (fm: Record<string, unknown>) => {
-					fm.Related = links
+				await this.app.fileManager.processFrontMatter(file, (fm) => {
+					Object.assign(fm, { Related: links })
 				})
 			}
 		} finally {
@@ -329,8 +333,8 @@ export default class LibraryPlugin extends Plugin {
 		if (this.syncingLinks.has(file.path)) return
 		this.syncingLinks.add(file.path)
 		try {
-			await this.app.fileManager.processFrontMatter(file, (current: Record<string, unknown>) => {
-				current.Progress = `${String(total)}/${String(total)}`
+			await this.app.fileManager.processFrontMatter(file, (current) => {
+				Object.assign(current, { Progress: `${String(total)}/${String(total)}` })
 			})
 		} finally {
 			this.syncingLinks.delete(file.path)
@@ -459,17 +463,20 @@ export default class LibraryPlugin extends Plugin {
 			}
 			const watched = parseWatched(fm.Progress)
 
-			await this.app.fileManager.processFrontMatter(file, (current: Record<string, unknown>) => {
+			await this.app.fileManager.processFrontMatter(file, (current) => {
+				const patch: Record<string, unknown> = {}
+				const cur = current as Record<string, unknown>
 				for (const [key, value] of Object.entries(meta.fields)) {
 					if (isEmptyValue(value)) continue
-					if (isEmptyValue(current[key])) current[key] = value
+					if (isEmptyValue(cur[key])) patch[key] = value
 				}
-				if (typeof meta.fields.Season === 'number' && meta.fields.Season > Number(current.Season || 0)) {
-					current.Season = meta.fields.Season
+				if (typeof meta.fields.Season === 'number' && meta.fields.Season > Number(cur.Season || 0)) {
+					patch.Season = meta.fields.Season
 				}
 				if (meta.progressTotal) {
-					current.Progress = `${String(watched)}/${String(meta.progressTotal)}`
+					patch.Progress = `${String(watched)}/${String(meta.progressTotal)}`
 				}
+				Object.assign(current, patch)
 			})
 
 			if (force) new Notice(tr('notice.refreshed', { name: toStr(meta.fields.Name) || file.basename }))

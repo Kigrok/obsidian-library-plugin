@@ -1,132 +1,132 @@
-> VI | [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="banner.png" alt="Biểu ngữ Obsidian Library" width="100%">
 </p>
 
-<h1 align="center">Library</h1>
+<h1 align="center">Thư viện</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
-  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
-  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
-  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
+  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Phiên bản">
+  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Lượt tải">
+  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Phiên bản Obsidian">
+  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Giấy phép">
 </p>
 
 <p align="center">
-  <b>Organize your movies, series, books, and more into a visual gallery — right inside Obsidian.</b>
+  <b>Tổ chức phim, series, sách và nhiều thứ khác vào thư viện hình ảnh — ngay trong Obsidian.</b>
   <br />
-  Search and add titles in-app, auto-fetch metadata, track progress, and wire everything into your graph.
+  Tìm kiếm và thêm tiêu đề trong ứng dụng, tự động lấy metadata, theo dõi tiến độ và kết nối mọi thứ vào biểu đồ của bạn.
 </p>
 
 <p align="center">
-  <a href="https://community.obsidian.md/plugins/library">View on the Obsidian Community Plugins directory</a>
+  <a href="https://community.obsidian.md/plugins/library">Xem trên thư mục Plugins Cộng Đồng Obsidian</a>
 </p>
 
 ---
 
-## Key Features
+## Tính Năng Chính
 
-- **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books, RAWG for games, Deezer for music, Jikan for anime, Comic Vine for comics.
-- **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
-- **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
-- **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
-- **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
-- **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
-- **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
-- **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
-- **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
-- **Multilingual** — 31 languages: English, Ukrainian, Russian, Belarusian, Kazakh, Uzbek, German, Spanish, French, Italian, Dutch, Czech, Croatian, Polish, Romanian, Turkish, Azerbaijani, Persian, Hindi, Bengali, Urdu, Tagalog, Vietnamese, Thai, Javanese, Japanese, Korean, Chinese, Arabic, Sinhala, Hebrew.
-
----
-
-## Quick Start
-
-### 1. Installation
-
-Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings > Community plugins > Browse > search "Library"), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
-
-### 2. Basic Setup
-
-1. Go to **Settings** > **Library**.
-2. Add your **Categories** — select a predefined type (Movies, Series, Books, Comics, Games, Music, Anime, or Manual) from the dropdown and click **Add category**. Each category has a display name (translated to your language), a `Type` value (always English, e.g. `Movie`), a source, and an optional folder for storing notes.
-3. _(Optional)_ Enter API keys for the services you use: [OMDb](https://www.omdbapi.com/apikey.aspx) for movies/series, [RAWG](https://rawg.io/apidocs) for games, [Comic Vine](https://comicvine.gamespot.com/api/) for comics. Anime (Jikan) and music (Deezer) require no key.
-
-### 3. Add a Card by Title
-
-No more filling in frontmatter by hand — add a movie, series, book, anime, or comic just by searching its name:
-
-1. Open the **Library** tab from the ribbon icon (or run `Open Library`).
-2. Click the **+** button in the top-right of the Library page (or run `Add content`).
-3. Pick a category, type the **title** into the search box, and select a result.
-4. A card is created instantly, with poster, year, genre, creators, and rating filled in automatically.
-
-The **Search** button next to **+** searches titles already in your library.
-
-For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
+- **Lưới Thẻ Trực Quan** — Tab Thư viện chuyên dụng hiển thị bộ sưu tập của bạn dưới dạng thư viện thẻ bìa artwork.
+- **Tìm Kiếm Built-in** — Tìm kiếm và thêm tiêu đề ngay trong ứng dụng: OMDb cho phim và series, Open Library hoặc Google Books cho sách, RAWG cho trò chơi, Deezer cho nhạc, Jikan cho anime, Comic Vine cho truyện tranh.
+- **Theo Dõi Series Thông Minh** — Số season và tổng tập được tự động lấy và đồng bộ.
+- **Chỉ Báo Tiến Độ** — Thanh tiến độ trực quan trên thẻ và tiêu đề ghi chú hiển thị bạn đã xem hoặc đọc được bao nhiêu.
+- **Tiêu Đề Ghi Chú Phong Phú** — Mỗi ghi chú nội dung đều có tiêu đề tự động tạo với tất cả metadata chính.
+- **Danh Mục Tùy Chỉnh** — Tạo danh mục cho Phim, Series, Anime, Truyện Tranh, Sách, Trò Chơi, Nhạc, hoặc bất kỳ thứ gì khác qua nguồn thủ công.
+- **Liên Kết Biểu Đồ** — Thuộc tính frontmatter `Related` liên kết mỗi ghi chú với danh mục, thể loại và nhà sáng tạo, được đồng bộ tự động cho biểu đồ đẹp.
+- **Sắp Xếp & Thu Gộp** — Sắp xếp thẻ theo tên, năm, đánh giá hoặc ngày; thu gộp bất kỳ danh mục nào.
+- **Thống Kê** — Thể loại hàng đầu, nhà sáng tạo hàng đầu (chỉ phim & series), và mục hàng đầu mỗi danh mục với xếp hạng huy chương.
+- **Phát Hiện Trùng Lặp** — Tự động ngăn chặn thêm cùng tiêu đề twice bằng URL. Lệnh built-in tìm và xóa các bản trùng lặp.
+- **Đa Ngôn Ngữ** — 31 ngôn ngữ: Tiếng Anh, Tiếng Ukraina, Tiếng Nga, Tiếng Belarus, Tiếng Kazakhstan, Tiếng Uzbek, Tiếng Đức, Tiếng Tây Ban Nha, Tiếng Pháp, Tiếng Ý, Tiếng Hà Lan, Tiếng Séc, Tiếng Croatia, Tiếng Ba Lan, Tiếng Romania, Tiếng Thổ Nhĩ Kỳ, Tiếng Azerbaijan, Tiếng Ba Tư, Tiếng Hindi, Tiếng Bengal, Tiếng Urdu, Tiếng Tagalog, Tiếng Việt, Tiếng Thái, Tiếng Java, Tiếng Nhật, Tiếng Hàn, Tiếng Trung, Tiếng Ả Rập, Tiếng Sinhala, Tiếng Do Thái.
 
 ---
 
-## Statistics
+## Bắt Đầu Nhanh
 
-The Library tab includes a collapsible **Statistics** section at the top:
+### 1. Cài Đặt
 
-- **Top Genres** — ranked by frequency across your entire library.
-- **Top Creators** — ranked by number of movies and series they appear in.
-- **Top per Category** — for each category (Movies, Series, Books, etc.), the top 3 items by rating with small cover thumbnails.
+Cài đặt **Thư viện** từ [thư mục Plugins Cộng Đồng Obsidian](https://community.obsidian.md/plugins/library) (Cài đặt > Plugins cộng đồng > Duyệt > tìm "Thư viện"), hoặc cài đặt thủ công qua [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
+
+### 2. Thiết Lập Cơ Bản
+
+1. Vào **Cài đặt** > **Thư viện**.
+2. Thêm **Danh mục** của bạn — chọn loại định nghĩa sẵn (Phim, Series, Sách, Truyện Tranh, Trò Chơi, Nhạc, Anime, hoặc Thủ công) từ danh sách thả xuống và nhấp **Thêm danh mục**. Mỗi danh mục có tên hiển thị (được dịch sang ngôn ngữ của bạn), giá trị `Type` (luôn bằng tiếng Anh, ví dụ `Movie`), nguồn và thư mục tùy chọn để lưu ghi chú.
+3. _（Tùy chọn）_ Nhập API key cho các dịch vụ bạn sử dụng: [OMDb](https://www.omdbapi.com/apikey.aspx) cho phim/series, [RAWG](https://rawg.io/apidocs) cho trò chơi, [Comic Vine](https://comicvine.gamespot.com/api/) cho truyện tranh. Anime (Jikan) và nhạc (Deezer) không cần key.
+
+### 3. Thêm Thẻ Bằng Tiêu Đề
+
+Không cần điền frontmatter thủ công nữa — thêm phim, series, sách, anime hoặc truyện tranh chỉ bằng cách tìm kiếm tên:
+
+1. Mở tab **Thư viện** từ biểu tượng ribbon (hoặc chạy `Open Library`).
+2. Nhấp nút **+** ở góc trên bên phải trang Thư viện (hoặc chạy `Add content`).
+3. Chọn danh mục, nhập **tiêu đề** vào ô tìm kiếm và chọn kết quả.
+4. Thẻ được tạo ngay lập tức, với poster, năm, thể loại, nhà sáng tạo và đánh giá được điền tự động.
+
+Nút **Tìm kiếm** bên cạnh **+** tìm kiếm các tiêu đề đã có trong thư viện của bạn.
+
+Với danh mục **Thủ công**, bạn chỉ cần nhập tiêu đề và tự điền bìa, năm và các trường khác.
 
 ---
 
-## Duplicate Detection
+## Thống Kê
 
-Library prevents duplicate entries by checking the `URL` field:
+Tab Thư viện bao gồm phần **Thống Kê** có thể thu gộp ở đầu:
 
-- **On add** — if a note with the same URL already exists, it opens the existing note instead of creating a duplicate.
-- **Find & Remove Duplicates** — run this command from the palette to scan all notes, group by URL, and selectively remove duplicates via a modal.
+- **Thể Loại Hàng Đầu** — xếp hạng theo tần suất trong toàn bộ thư viện.
+- **Nhà Sáng Tạo Hàng Đầu** — xếp hạng theo số lượng phim và series họ tham gia.
+- **Hàng Đầu Mỗi Danh Mục** — cho mỗi danh mục (Phim, Series, Sách, v.v.), top 3 mục theo đánh giá với thumbnail bìa nhỏ.
 
 ---
 
-## Sources
+## Phát Hiện Trùng Lặp
 
-Each category is bound to a source that powers its search:
+Thư viện ngăn chặn các mục trùng lặp bằng cách kiểm tra trường `URL`:
 
-| Source           | Content types   | API key                                                      |
+- **Khi thêm** — nếu ghi chú với URL giống đã tồn tại, nó mở ghi chú hiện có thay vì tạo bản trùng.
+- **Tìm & Xóa Trùng Lặp** — chạy lệnh này từ palette để quét tất cả ghi chú, nhóm theo URL và chọn lọc xóa trùng lặp qua modal.
+
+---
+
+## Nguồn
+
+Mỗi danh mục được liên kết với nguồn cung cấp tìm kiếm:
+
+| Nguồn            | Loại nội dung   | API key                                                      |
 | ---------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**        | Books           | Open Library (no key) + Google Books (optional free key). Results are merged — Google Books first, Open Library below. |
-| **RAWG**         | Games           | Free key required — [rawg.io/apidocs](https://rawg.io/apidocs) |
-| **Deezer**       | Music (albums)  | None                                                        |
-| **Jikan**        | Anime           | None — free unofficial MyAnimeList API, no key needed       |
-| **Comic Vine**   | Comics          | Free key required — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
+| **OMDb**         | Phim, Series   | Cần key miễn phí — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
+| **Books**        | Sách            | Open Library (không cần key) + Google Books (key miễn phí tùy chọn). Kết quả được hợp nhất — Google Books trước, Open Library phía dưới. |
+| **RAWG**         | Trò chơi        | Cần key miễn phí — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Deezer**       | Nhạc (album)    | Không cần                                                    |
+| **Jikan**        | Anime           | Không cần — API MyAnimeList không chính thức miễn phí, không cần key |
+| **Comic Vine**   | Truyện tranh    | Cần key miễn phí — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
+| **Thủ công**     | Bất kỳ thứ gì khác | Không cần — bạn tự nhập tiêu đề và điền các trường |
 
 ---
 
-## Privacy & Network Use
+## Bảo Mật & Sử Dụng Mạng
 
-Library is **offline-first**. The plugin only contacts the network when you actively search for a title to add, and only with the search terms you type:
+Thư viện là **ưu tiên ngoại tuyến**. Plugin chỉ liên lạc mạng khi bạn tích cực tìm kiếm tiêu đề để thêm, và chỉ với các từ khóa bạn nhập:
 
-| Service | When | What is sent | Why |
+| Dịch vụ | Khi nào | Gửi gì | Tại sao |
 | --- | --- | --- | --- |
-| `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
-| `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
-| `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
-| `www.googleapis.com` | You search a Google Books category | The title you type and your Google Books key | Fetch book metadata (author, year, categories, page count, cover, ISBN) |
-| `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
-| `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
-| `api.jikan.moe` | You search an anime category | The title you type | Fetch anime metadata (title, year, genre, episodes, MAL score, synopsis, poster) |
-| `comicvine.gamespot.com` | You search a comics category | The title you type and your Comic Vine key | Fetch comic metadata (title, year, publisher, issue count, cover) |
+| `www.omdbapi.com` | Bạn tìm kiếm danh mục dùng OMDb | Tiêu đề bạn nhập và OMDb API key của bạn | Lấy metadata phim/series (năm, thể loại, diễn viên, đánh giá, poster, số tập) |
+| `openlibrary.org` | Bạn tìm kiếm danh mục Open Library | Tiêu đề bạn nhập | Lấy metadata sách (tác giả, năm, chủ đề, cover id) |
+| `covers.openlibrary.org` | Thẻ sách có bìa | Cover id của Open Library | Tải hình ảnh bìa |
+| `www.googleapis.com` | Bạn tìm kiếm danh mục Google Books | Tiêu đề bạn nhập và Google Books key của bạn | Lấy metadata sách (tác giả, năm, danh mục, số trang, bìa, ISBN) |
+| `api.rawg.io` | Bạn tìm kiếm danh mục trò chơi RAWG | Tiêu đề bạn nhập và RAWG key của bạn | Lấy metadata trò chơi (năm, thể loại, nhà phát triển, bìa) |
+| `api.deezer.com` | Bạn tìm kiếm danh mục nhạc Deezer | Album hoặc nghệ sĩ bạn nhập | Lấy metadata album (nghệ sĩ, năm, thể loại, số tracks, bìa) |
+| `api.jikan.moe` | Bạn tìm kiếm danh mục anime | Tiêu đề bạn nhập | Lấy metadata anime (tiêu đề, năm, thể loại, tập phim, điểm MAL, tóm tắt, poster) |
+| `comicvine.gamespot.com` | Bạn tìm kiếm danh mục truyện tranh | Tiêu đề bạn nhập và Comic Vine key của bạn | Lấy metadata truyện tranh (tiêu đề, năm, nhà xuất bản, số issues, bìa) |
 
-No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. API keys (OMDb, Google Books, RAWG, Comic Vine) are stored only in your local plugin settings and are sent only to their respective services. Cover images load directly from the URLs returned by each source.
+Không có dữ liệu nào khác rời khỏi vault của bạn. Plugin **không có遥测, không phân tích, và không có cơ chế tự cập nhật**. API key (OMDb, Google Books, RAWG, Comic Vine) chỉ được lưu trong cài đặt plugin cục bộ và chỉ gửi đến dịch vụ tương ứng. Hình ảnh bìa tải trực tiếp từ URL được mỗi nguồn trả về.
 
 ---
 
-## Frontmatter Schema
+## Schema Frontmatter
 
-The plugin reads and writes to standard YAML frontmatter. Notes are created for you, but every field is editable. `Source` and `Source ID` let the plugin refresh metadata later.
+Plugin đọc và ghi vào frontmatter YAML tiêu chuẩn. Ghi chú được tạo tự động nhưng mọi trường đều có thể chỉnh sửa. `Source` và `Source ID` cho phép plugin làm mới metadata sau này.
 
-### Movie
+### Phim
 
 ```yaml
 ---
@@ -177,9 +177,9 @@ Source ID: tt4574334
 ---
 ```
 
-> **Series auto-update:** Run `Refresh metadata for current note` (or just open the note) and the plugin updates the total episode count in `Progress` (e.g., `25/42` to `25/50`) and the `Season` count, while keeping your watched count intact.
+> **Tự động cập nhật series:** Chạy `Refresh metadata for current note` (hoặc chỉ cần mở ghi chú) và plugin cập nhật tổng số tập trong `Progress` (ví dụ `25/42` thành `25/50`) và số `Season`, trong khi giữ nguyên số lượng bạn đã xem.
 
-### Book
+### Sách
 
 ```yaml
 ---
@@ -226,7 +226,7 @@ Source ID: 9253
 ---
 ```
 
-### Comic
+### Truyện Tranh
 
 ```yaml
 ---
@@ -249,9 +249,9 @@ Source ID: 33819
 
 ---
 
-## Graph Links
+## Liên Kết Biểu Đồ
 
-Each content note gets a `Related` frontmatter property, kept up to date automatically — the note body is never touched:
+Mỗi ghi chú nội dung đều có thuộc tính frontmatter `Related`, được tự động cập nhật — nội dung ghi chú không bao giờ bị thay đổi:
 
 ```yaml
 Related:
@@ -261,27 +261,42 @@ Related:
     - "[[Christopher Nolan]]"
 ```
 
-These links connect your notes through shared categories, genres, and creators, so the Obsidian graph view forms clean clusters. A real hub note is created per category (e.g. `Movie`) so clusters show even with unresolved links hidden. The property is written when a note is created and refreshed whenever its metadata changes — run `Rebuild graph links` only if you want to force a full rebuild.
+Các liên kết này kết nối các ghi chú của bạn qua danh mục, thể loại và nhà sáng tạo được chia sẻ, giúp chế độ xem biểu đồ Obsidian tạo thành các cụm gọn gàng. Một ghi chú trung tâm thực sự được tạo cho mỗi danh mục (ví dụ `Movie`) nên các cụm hiển thị ngay cả khi ẩn các liên kết chưa giải quyết. Thuộc tính được ghi khi tạo ghi chú và làm mới mỗi khi metadata thay đổi — chỉ chạy `Rebuild graph links` nếu bạn muốn buộc xây dựng lại toàn bộ.
 
 ---
 
-## Commands
+## Lệnh
 
-| Command                              | Description                                                              |
+| Lệnh                                | Mô tả                                                                  |
 | ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Open the Library gallery tab.                                           |
-| `Add content`                        | Search a source and create a content note (or type a title for Manual). |
-| `Search your library`                | Fuzzy-search and open any note already in your library.                 |
-| `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
-| `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
-| `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
+| `Open Library`                       | Mở tab thư viện.                                           |
+| `Add content`                        | Tìm kiếm nguồn và tạo ghi chú nội dung (hoặc nhập tiêu đề cho Thủ công). |
+| `Search your library`                | Tìm kiếm mờ và mở bất kỳ ghi chú nào đã có trong thư viện.                 |
+| `Refresh metadata for current note`  | Lấy lại metadata cho ghi chú đang hoạt động; cập nhật tổng tập series.   |
+| `Rebuild graph links`                | Kết nối mọi ghi chú nội dung với danh mục, thể loại và nhà sáng tạo.          |
+| `Find & remove duplicates`           | Quét tất cả ghi chú theo URL, hiển thị trùng lặp và xóa các mục được chọn.       |
 
 ---
 
-## Contributing & Support
+## Đóng Góp & Hỗ Trợ
 
-- **Found a bug?** Open an [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
-- **Have a feature idea?** Start a [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
-- **Love the plugin?** Consider starring the repository to show your support!
+- **Tìm thấy lỗi?** Mở [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
+- **Có ý tưởng tính năng?** Bắt đầu [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
+- **Thích plugin?** Hãy star repo để ủng hộ!
+
+---
+
+## Cảm Ơn
+
+Nếu bạn thấy plugin này hữu ích, hãy cân nhắc ủng hộ sự phát triển:
+
+| | Mạng | Địa chỉ |
+| --- | --- | --- |
+| <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat&logo=ethereum&logoColor=white" alt="EVM"> | **EVM** | `0xf9B4807E107f6f8Db79D86aCef6072A31d570201` |
+| <img src="https://img.shields.io/badge/Sui-4DA2FF?style=flat&logo=sui&logoColor=white" alt="Sui"> | **Sui** | `0x1d6989810ee7e55d43f65398253b02462b921e9ce8ad626b542929f02c3d3e9a` |
+| <img src="https://img.shields.io/badge/Solana-9945FF?style=flat&logo=solana&logoColor=white" alt="Sol"> | **Sol** | `2jmrmQrLVeUDFgHzSkHvHKBrmRJXes5X8h3GHXxrLaX6` |
+| <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
+| <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
+| <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
 
 ---

@@ -1,4 +1,4 @@
-> TR | [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **TR**
 
 <p align="center">
   <img src="banner.png" alt="Obsidian Library Banner" width="100%">
@@ -14,117 +14,117 @@
 </p>
 
 <p align="center">
-  <b>Organize your movies, series, books, and more into a visual gallery — right inside Obsidian.</b>
+  <b>Filmlerinizi, dizilerinizi, kitaplarınızı ve daha fazlasını görsel bir galeriye düzenleyin — doğrudan Obsidian içinde.</b>
   <br />
-  Search and add titles in-app, auto-fetch metadata, track progress, and wire everything into your graph.
+  Uygulama içinde başlık arayın ve ekleyin, meta verileri otomatik olarak alın, ilerlemeyi takip edin ve her şeyi grafinize bağlayın.
 </p>
 
 <p align="center">
-  <a href="https://community.obsidian.md/plugins/library">View on the Obsidian Community Plugins directory</a>
+  <a href="https://community.obsidian.md/plugins/library">Obsidian Community Plugins dizininde görüntüleyin</a>
 </p>
 
 ---
 
-## Key Features
+## Temel Özellikler
 
-- **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books, RAWG for games, Deezer for music, Jikan for anime, Comic Vine for comics.
-- **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
-- **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
-- **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
-- **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
-- **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
-- **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
-- **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
-- **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
-- **Multilingual** — 31 languages: English, Ukrainian, Russian, Belarusian, Kazakh, Uzbek, German, Spanish, French, Italian, Dutch, Czech, Croatian, Polish, Romanian, Turkish, Azerbaijani, Persian, Hindi, Bengali, Urdu, Tagalog, Vietnamese, Thai, Javanese, Japanese, Korean, Chinese, Arabic, Sinhala, Hebrew.
-
----
-
-## Quick Start
-
-### 1. Installation
-
-Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings > Community plugins > Browse > search "Library"), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
-
-### 2. Basic Setup
-
-1. Go to **Settings** > **Library**.
-2. Add your **Categories** — select a predefined type (Movies, Series, Books, Comics, Games, Music, Anime, or Manual) from the dropdown and click **Add category**. Each category has a display name (translated to your language), a `Type` value (always English, e.g. `Movie`), a source, and an optional folder for storing notes.
-3. _(Optional)_ Enter API keys for the services you use: [OMDb](https://www.omdbapi.com/apikey.aspx) for movies/series, [RAWG](https://rawg.io/apidocs) for games, [Comic Vine](https://comicvine.gamespot.com/api/) for comics. Anime (Jikan) and music (Deezer) require no key.
-
-### 3. Add a Card by Title
-
-No more filling in frontmatter by hand — add a movie, series, book, anime, or comic just by searching its name:
-
-1. Open the **Library** tab from the ribbon icon (or run `Open Library`).
-2. Click the **+** button in the top-right of the Library page (or run `Add content`).
-3. Pick a category, type the **title** into the search box, and select a result.
-4. A card is created instantly, with poster, year, genre, creators, and rating filled in automatically.
-
-The **Search** button next to **+** searches titles already in your library.
-
-For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
+- **Görsel Kart Izgarası** — Özel bir Library sekmesi koleksiyonunuzu kapak sanatı kartlarından oluşan bir galeri olarak görüntüler.
+- **Yerleşik Arama** — Uygulama içinde doğrudan başlık arayın ve ekleyin: film ve diziler için OMDb, kitaplar için Open Library veya Google Books, oyunlar için RAWG, müzik için Deezer, anime için Jikan, çizgi romanlar için Comic Vine.
+- **Akıllı Dizi Takibi** — Sezonlar ve toplam bölüm sayıları otomatik olarak alınır ve senkronize edilir.
+- **İlerleme Göstergeleri** — Kartlarda ve not başlıklarındaki görsel ilerleme çubukları ne kadar izlediğinizi veya okuduğunuzu gösterir.
+- **Zengin Not Başlıkları** — Her içerik notu, tüm ana meta verilerle otomatik olarak oluşturulmuş bir başlık alır.
+- **Özel Kategoriler** — Filmler, Diziler, Anime, Çizgi Romanlar, Kitaplar, Oyunlar, Müzik veya manuel kaynak aracılığıyla başka herhangi bir şey için kategoriler oluşturun.
+- **Graf Bağlantıları** — Frontmatter'daki bir `Related` özelliği her notu kategorisi, türleri ve yaratıcılarıyla bağlar, güzel bir graf için otomatik olarak senkronize edilir.
+- **Sıralama ve Daraltma** — Kartları ada, yıla, puana veya tarihe göre sıralayın; herhangi bir kategoriyi daraltın.
+- **İstatistikler** — Üst türler, üst yaratıcılar (yalnızca film ve diziler) ve madalya sıralamalarıyla kategori başına üst öğeler.
+- **Çoğaltma Algılama** — URL'ye göre aynı başlığın iki kez eklenmesini otomatik olarak önler. Yerleşik bir komut mevcut çoğaltmaları bulur ve kaldırır.
+- **Çok Dilli** — 31 dil: İngilizce, Ukraynaca, Rusça, Beyaz Rusça, Kazakça, Özbekçe, Almanca, İspanyolca, Fransızca, İtalyanca, Felemenkçe, Çekçe, Hırvatça, Lehçe, Rumence, Türkçe, Azerice, Farsça, Hintçe, Bengalce, Urduca, Tagalogca, Vietnamca, Tayca, Cavaca, Japonca, Korece, Çince, Arapça, Sinhalaca, İbranice.
 
 ---
 
-## Statistics
+## Hızlı Başlangıç
 
-The Library tab includes a collapsible **Statistics** section at the top:
+### 1. Kurulum
 
-- **Top Genres** — ranked by frequency across your entire library.
-- **Top Creators** — ranked by number of movies and series they appear in.
-- **Top per Category** — for each category (Movies, Series, Books, etc.), the top 3 items by rating with small cover thumbnails.
+**Library**'yi [Obsidian Community Plugins dizininden](https://community.obsidian.md/plugins/library) kurun (Ayarlar > Community plugins > Göz at > "Library" arayın) veya [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases) üzerinden manuel olarak kurun.
 
----
+### 2. Temel Kurulum
 
-## Duplicate Detection
+1. **Ayarlar** > **Library**'ye gidin.
+2. **Kategorilerinizi** ekleyin — açılır menüden önceden tanımlanmış bir tür (Movies, Series, Books, Comics, Games, Music, Anime veya Manual) seçin ve **Add category**'ye tıklayın. Her kategorinin bir görüntü adı (sizin dilinize çevrilmiş), bir `Type` değeri (her zaman İngilizce, ör. `Movie`), bir kaynak ve notları depolamak için isteğe bir klasörü vardır.
+3. _(İsteğe bağlı)_ Kullandığınız hizmetler için API anahtarlarını girin: film/diziler için [OMDb](https://www.omdbapi.com/apikey.aspx), oyunlar için [RAWG](https://rawg.io/apidocs), çizgi romanlar için [Comic Vine](https://comicvine.gamespot.com/api/). Anime (Jikan) ve müzik (Deezer) anahtar gerektirmez.
 
-Library prevents duplicate entries by checking the `URL` field:
+### 3. Başlığa Göre Kart Ekleme
 
-- **On add** — if a note with the same URL already exists, it opens the existing note instead of creating a duplicate.
-- **Find & Remove Duplicates** — run this command from the palette to scan all notes, group by URL, and selectively remove duplicates via a modal.
+Artık frontmatter'ı manuel olarak doldurmanıza gerek yok — bir film, dizi, kitap, anime veya çizgi romanı adını arayarak ekleyin:
 
----
+1. Şerit simgesinden **Library** sekmesini açın (veya `Open Library` komutunu çalıştırın).
+2. Library sayfasının sağ üst köşesindeki **+** düğmesine tıklayın (veya `Add content` komutunu çalıştırın).
+3. Bir kategori seçin, arama kutusuna **başlığı** yazın ve bir sonuç seçin.
+4. Bir kart anında oluşturulur; poster, yıl, tür, yaratıcılar ve puan otomatik olarak doldurulur.
 
-## Sources
+**+**'nın yanındaki **Search** düğmesi, kitaplığınızdaki zaten mevcut başlıkları arar.
 
-Each category is bound to a source that powers its search:
-
-| Source           | Content types   | API key                                                      |
-| ---------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**        | Books           | Open Library (no key) + Google Books (optional free key). Results are merged — Google Books first, Open Library below. |
-| **RAWG**         | Games           | Free key required — [rawg.io/apidocs](https://rawg.io/apidocs) |
-| **Deezer**       | Music (albums)  | None                                                        |
-| **Jikan**        | Anime           | None — free unofficial MyAnimeList API, no key needed       |
-| **Comic Vine**   | Comics          | Free key required — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
+**Manual** kategoriler için sadece bir başlık yazın ve kapak, yıl ve diğer alanları kendiniz doldurun.
 
 ---
 
-## Privacy & Network Use
+## İstatistikler
 
-Library is **offline-first**. The plugin only contacts the network when you actively search for a title to add, and only with the search terms you type:
+Library sekmesinin üstünde katlanabilir bir **Statistics** bölümü bulunur:
 
-| Service | When | What is sent | Why |
+- **Üst Türler** — Tüm kitaplığınızdaki frekansa göre sıralanır.
+- **Üst Yaratıcılar** — Bulundukları film ve dizi sayısına göre sıralanır.
+- **Kategoriye Göre Üst** — Her kategori için (Movies, Series, Books vb.), küçük kapak küçük resimleriyle puana göre en iyi 3 öğe.
+
+---
+
+## Çoğaltma Algılama
+
+Library, `URL` alanını kontrol ederek çoğaltma girişimlerini önler:
+
+- **Eklerken** — Aynı URL'ye sahip bir not zaten varsa, çoğaltma oluşturmak yerine mevcut notu açar.
+- **Çoğaltmaları Bul ve Kaldır** — Bu komutu paletten çalıştırarak tüm notları tarayın, URL'ye göre gruplayın ve bir modal aracılığıyla seçili çoğaltmaları kaldırın.
+
+---
+
+## Kaynaklar
+
+Her kategori, aramasını güçlendiren bir kaynağa bağlıdır:
+
+| Kaynak            | İçerik türleri  | API anahtarı                                                |
+| ----------------- | --------------- | ---------------------------------------------------------- |
+| **OMDb**          | Filmler, Diziler| Ücretsiz anahtar gerekli — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
+| **Books**         | Kitaplar        | Open Library (anahtarsız) + Google Books (isteğe bağlı ücretsiz anahtar). Sonuçlar birleştirilir — Google Books önce, Open Library altında. |
+| **RAWG**          | Oyunlar         | Ücretsiz anahtar gerekli — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Deezer**        | Müzik (albümler)| Yok                                                        |
+| **Jikan**         | Anime           | Yok — ücretsiz resmi olmayan MyAnimeList API, anahtar gerekmez |
+| **Comic Vine**    | Çizgi romanlar  | Ücretsiz anahtar gerekli — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
+| **Manual**        | Diğer her şey   | Yok — başlığı kendiniz yazarsınız ve alanları kendiniz doldurursunuz |
+
+---
+
+## Gizlilik ve Ağ Kullanımı
+
+Library **çevrimdışı önceliklidir**. Eklenti, yalnızca eklemek için bir başlık aradığınızda ve yalnızca yazdığınız arama terimleriyle ağa bağlanır:
+
+| Hizmet | Ne zaman | Ne gönderilir | Neden |
 | --- | --- | --- | --- |
-| `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
-| `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
-| `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
-| `www.googleapis.com` | You search a Google Books category | The title you type and your Google Books key | Fetch book metadata (author, year, categories, page count, cover, ISBN) |
-| `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
-| `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
-| `api.jikan.moe` | You search an anime category | The title you type | Fetch anime metadata (title, year, genre, episodes, MAL score, synopsis, poster) |
-| `comicvine.gamespot.com` | You search a comics category | The title you type and your Comic Vine key | Fetch comic metadata (title, year, publisher, issue count, cover) |
+| `www.omdbapi.com` | OMDb destekli bir kategoriyi aradığınızda | Yazdığınız başlık ve OMDb API anahtarınız | Film/dizi meta verilerini alın (yıl, tür, oyuncu kadrosu, puan, poster, bölüm sayıları) |
+| `openlibrary.org` | Bir Open Library kategorisi aradığınızda | Yazdığınız başlık | Kitap meta verilerini alın (yazar, yıl, konular, kapak ID) |
+| `covers.openlibrary.org` | Bir kitap kartının kapağı varsa | Open Library kapak ID | Kapak resmini yükleyin |
+| `www.googleapis.com` | Bir Google Books kategorisi aradığınızda | Yazdığınız başlık ve Google Books anahtarınız | Kitap meta verilerini alın (yazar, yıl, kategoriler, sayfa sayısı, kapak, ISBN) |
+| `api.rawg.io` | Bir RAWG oyun kategorisi aradığınızda | Yazdığınız başlık ve RAWG anahtarınız | Oyun meta verilerini alın (yıl, tür, geliştirici, kapak) |
+| `api.deezer.com` | Bir Deezer müzik kategorisi aradığınızda | Yazdığınız albüm veya sanatçı | Albüm meta verilerini alın (sanatçı, yıl, tür, parça sayısı, kapak) |
+| `api.jikan.moe` | Bir anime kategorisi aradığınızda | Yazdığınız başlık | Anime meta verilerini alın (başlık, yıl, tür, bölümler, MAL puanı, konu özeti, poster) |
+| `comicvine.gamespot.com` | Bir çizgi roman kategorisi aradığınızda | Yazdığınız başlık ve Comic Vine anahtarınız | Çizgi roman meta verilerini alın (başlık, yıl, yayıncı, sorun sayısı, kapak) |
 
-No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. API keys (OMDb, Google Books, RAWG, Comic Vine) are stored only in your local plugin settings and are sent only to their respective services. Cover images load directly from the URLs returned by each source.
+Başka hiçbir veri asla kasinizdan dışarı çıkmaz. Eklenti **telemetri, analiz veya otomatik güncelleme mekanizması içermez**. API anahtarları (OMDb, Google Books, RAWG, Comic Vine) yalnızca yerel eklenti ayarlarınızda saklanır ve yalnızca ilgili hizmetlere gönderilir. Kapak resimleri doğrudan her kaynaktan dönen URL'lerden yüklenir.
 
 ---
 
-## Frontmatter Schema
+## Frontmatter Şeması
 
-The plugin reads and writes to standard YAML frontmatter. Notes are created for you, but every field is editable. `Source` and `Source ID` let the plugin refresh metadata later.
+Eklenti standart YAML frontmatter'ı okur ve yazar. Notlar sizin için oluşturulur, ancak her alan düzenlenebilir. `Source` ve `Source ID`, eklentinin meta verileri daha sonra yenilemesine olanak tanır.
 
 ### Movie
 
@@ -177,7 +177,7 @@ Source ID: tt4574334
 ---
 ```
 
-> **Series auto-update:** Run `Refresh metadata for current note` (or just open the note) and the plugin updates the total episode count in `Progress` (e.g., `25/42` to `25/50`) and the `Season` count, while keeping your watched count intact.
+> **Dizi otomatik güncelleme:** `Refresh metadata for current note` komutunu çalıştırın (veya sadece notu açın) ve eklenti `Progress` içindeki toplam bölüm sayısını (ör. `25/42`'den `25/50`'ye) ve `Season` sayısını günceller; izleme sayınızı bozulmamış olarak korur.
 
 ### Book
 
@@ -249,9 +249,9 @@ Source ID: 33819
 
 ---
 
-## Graph Links
+## Graf Bağlantıları
 
-Each content note gets a `Related` frontmatter property, kept up to date automatically — the note body is never touched:
+Her içerik notu, otomatik olarak güncel tutulan bir `Related` frontmatter özelliği alır — not gövdesine asla dokunulmaz:
 
 ```yaml
 Related:
@@ -261,27 +261,42 @@ Related:
     - "[[Christopher Nolan]]"
 ```
 
-These links connect your notes through shared categories, genres, and creators, so the Obsidian graph view forms clean clusters. A real hub note is created per category (e.g. `Movie`) so clusters show even with unresolved links hidden. The property is written when a note is created and refreshed whenever its metadata changes — run `Rebuild graph links` only if you want to force a full rebuild.
+Bu bağlantılar, notlarınızı paylaşılan kategoriler, türler ve yaratıcılar aracılığıyla bağlar, böylece Obsidian graf görünümü temiz kümelemeler oluşturur. Her kategori için gerçek bir hub notu oluşturulur (ör. `Movie`), böylece çözülmemiş bağlantılar gizliyken bile kümeler gösterilir. Özellik bir not oluşturulduğunda yazılır ve meta verileri her değiştiğinde yenilenir — yalnızca tam bir yeniden oluşturma zorlamak istiyorsanız `Rebuild graph links` komutunu çalıştırın.
 
 ---
 
-## Commands
+## Komutlar
 
-| Command                              | Description                                                              |
-| ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Open the Library gallery tab.                                           |
-| `Add content`                        | Search a source and create a content note (or type a title for Manual). |
-| `Search your library`                | Fuzzy-search and open any note already in your library.                 |
-| `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
-| `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
-| `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
+| Komut                                | Açıklama                                                                 |
+| ------------------------------------ | ------------------------------------------------------------------------ |
+| `Open Library`                       | Library galeri sekmesini açın.                                           |
+| `Add content`                        | Bir kaynak arayın ve bir içerik notu oluşturun (veya Manual için bir başlık yazın). |
+| `Search your library`                | Kitaplığınızdaki herhangi bir notu bulanık arayın ve açın.               |
+| `Refresh metadata for current note`  | Etkin not için meta verileri yeniden alın; dizi toplam bölüm sayılarını günceller. |
+| `Rebuild graph links`                | Her içerik notunu kategorisine, türlerine ve yaratıcılarına bağlayın.    |
+| `Find & remove duplicates`           | URL'ye göre tüm notları tarayın, çoğaltmaları gösterin ve seçilenleri kaldırın. |
 
 ---
 
-## Contributing & Support
+## Katkı ve Destek
 
-- **Found a bug?** Open an [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
-- **Have a feature idea?** Start a [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
-- **Love the plugin?** Consider starring the repository to show your support!
+- **Hata mı buldunuz?** Bir [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues) açın.
+- **Özellik fikri mi var?** Bir [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions) başlatın.
+- **Eklentiyi seviyor musunuz?** Destek göstermek için depoyu yıldızlamayı düşünün!
+
+---
+
+## Teşekkürler
+
+Bu eklentiyi faydalı bulursanız, gelişimini desteklemeyi düşünün:
+
+| | Ağ | Adres |
+| --- | --- | --- |
+| <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat&logo=ethereum&logoColor=white" alt="EVM"> | **EVM** | `0xf9B4807E107f6f8Db79D86aCef6072A31d570201` |
+| <img src="https://img.shields.io/badge/Sui-4DA2FF?style=flat&logo=sui&logoColor=white" alt="Sui"> | **Sui** | `0x1d6989810ee7e55d43f65398253b02462b921e9ce8ad626b542929f02c3d3e9a` |
+| <img src="https://img.shields.io/badge/Solana-9945FF?style=flat&logo=solana&logoColor=white" alt="Sol"> | **Sol** | `2jmrmQrLVeUDFgHzSkHvHKBrmRJXes5X8h3GHXxrLaX6` |
+| <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
+| <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
+| <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
 
 ---

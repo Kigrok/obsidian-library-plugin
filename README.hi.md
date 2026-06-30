@@ -1,132 +1,130 @@
-> HI | [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | **हिन्दी**
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="banner.png" alt="Obsidian लाइब्रेरी बैनर" width="100%">
 </p>
 
-<h1 align="center">Library</h1>
+<h1 align="center">लाइब्रेरी</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
-  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
-  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
-  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
+  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="संस्करण" />
+  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="डाउनलोड" />
+  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian संस्करण" />
+  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="लाइसेंस" />
 </p>
 
 <p align="center">
-  <b>Organize your movies, series, books, and more into a visual gallery — right inside Obsidian.</b>
+  <b>अपनी फिल्में, सीरीज़, किताबें और बहुत कुछ एक दृश्य गैलरी में व्यवस्थित करें — सीधे Obsidian के अंदर।</b>
   <br />
-  Search and add titles in-app, auto-fetch metadata, track progress, and wire everything into your graph.
+  ऐप के अंदर शीर्षक खोजें और जोड़ें, मेटाडेटा स्वचालित रूप से प्राप्त करें, प्रगति ट्रैक करें, और सब कुछ अपने ग्राफ से जोड़ें।
 </p>
 
 <p align="center">
-  <a href="https://community.obsidian.md/plugins/library">View on the Obsidian Community Plugins directory</a>
+  <a href="community.obsidian.md/plugins/library">Obsidian सामुदायिक प्लगइन निर्देशिका पर देखें</a>
 </p>
 
 ---
 
-## Key Features
+## प्रमुख विशेषताएँ
 
-- **Visual Card Grid** — A dedicated Library tab renders your collection as a gallery of cover-art cards.
-- **Built-in Search** — Search and add titles right inside the app: OMDb for movies and series, Open Library or Google Books for books, RAWG for games, Deezer for music, Jikan for anime, Comic Vine for comics.
-- **Smart Series Tracking** — Seasons and episode totals are fetched automatically and kept in sync.
-- **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
-- **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
-- **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
-- **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
-- **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
-- **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
-- **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
-- **Multilingual** — 31 languages: English, Ukrainian, Russian, Belarusian, Kazakh, Uzbek, German, Spanish, French, Italian, Dutch, Czech, Croatian, Polish, Romanian, Turkish, Azerbaijani, Persian, Hindi, Bengali, Urdu, Tagalog, Vietnamese, Thai, Javanese, Japanese, Korean, Chinese, Arabic, Sinhala, Hebrew.
-
----
-
-## Quick Start
-
-### 1. Installation
-
-Install **Library** from the [Obsidian Community Plugins directory](https://community.obsidian.md/plugins/library) (Settings > Community plugins > Browse > search "Library"), or install it manually via the [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
-
-### 2. Basic Setup
-
-1. Go to **Settings** > **Library**.
-2. Add your **Categories** — select a predefined type (Movies, Series, Books, Comics, Games, Music, Anime, or Manual) from the dropdown and click **Add category**. Each category has a display name (translated to your language), a `Type` value (always English, e.g. `Movie`), a source, and an optional folder for storing notes.
-3. _(Optional)_ Enter API keys for the services you use: [OMDb](https://www.omdbapi.com/apikey.aspx) for movies/series, [RAWG](https://rawg.io/apidocs) for games, [Comic Vine](https://comicvine.gamespot.com/api/) for comics. Anime (Jikan) and music (Deezer) require no key.
-
-### 3. Add a Card by Title
-
-No more filling in frontmatter by hand — add a movie, series, book, anime, or comic just by searching its name:
-
-1. Open the **Library** tab from the ribbon icon (or run `Open Library`).
-2. Click the **+** button in the top-right of the Library page (or run `Add content`).
-3. Pick a category, type the **title** into the search box, and select a result.
-4. A card is created instantly, with poster, year, genre, creators, and rating filled in automatically.
-
-The **Search** button next to **+** searches titles already in your library.
-
-For **Manual** categories you just type a title and fill in the cover, year, and other fields yourself.
+- **दृश्य कार्ड ग्रिड** — एक समर्पित लाइब्रेरी टैब आपके संग्रह को कवर आर्ट कार्ड्स की गैलरी के रूप में प्रदर्शित करता है।
+- **अंतर्निहित खोज** — ऐप के अंदर ही शीर्षक खोजें और जोड़ें: फिल्मों और सीरीज़ के लिए OMDb, किताबों के लिए Open Library या Google Books, गेम्स के लिए RAWG, संगीत के लिए Deezer, एनीमे के लिए Jikan, कॉमिक्स के लिए Comic Vine।
+- **स्मार्ट सीरीज़ ट्रैकिंग** — सीज़न और एपिसोड कुल स्वचालित रूप से प्राप्त किए जाते हैं और सिंक रखे जाते हैं।
+- **प्रगति संकेतक** — कार्ड्स और नोट हेडर पर दृश्य प्रगति बार दिखाते हैं कि आपने कितना देखा या पढ़ा है।
+- **समृद्ध नोट हेडर** — हर कंटेंट नोट को सभ� प्रमुख मेटाडेटा के साथ एक स्वचालित हेडर मिलता है।
+- **कस्टम श्रेणियाँ** — मैनुअल स्रोत के माध्यम से फिल्मों, सीरीज़, एनीमे, कॉमिक्स, किताबों, गेम्स, संगीत, या किसी भी चीज़ के लिए श्रेणियाँ बनाएं।
+- **ग्राफ लिंक** — एक `Related` फ्रंटमेटर प्रॉपर्टी हर नोट को उसकी श्रेणी, जॉनर्स और निर्माताओं से जोड़ती है, जो सुंदर ग्राफ के लिए स्वचालित रूप से सिंक रखी जाती है।
+- **क्रमबद्ध और संक्षिप्त** — कार्ड्स को नाम, वर्ष, रेटिंग या तिथि के अनुसार क्रमबद्ध करें; किसी भी श्रेणी को संक्षिप्त करें।
+- **आंकड़े** — शीर्ष जॉनर्स, शीर्ष निर्माता (केवल फिल्म और सीरीज़), और मेडल रैंकिंग के साथ प्रत्येक श्रेणी में शीर्ष आइटम।
+- **डुप्लिकेट पहचान** — URL द्वारा एक ही शीर्षक को दो बार जोड़ने से स्वचालित रूप से रोकता है। एक अंतर्निहित कमांड मौजूदा डुप्लिकेट ढूंढता है और हटाता है।
+- **बहुभाषी** — 31 भाषाएँ।
 
 ---
 
-## Statistics
+## त्वरित आरंभ
 
-The Library tab includes a collapsible **Statistics** section at the top:
+### 1. स्थापना
 
-- **Top Genres** — ranked by frequency across your entire library.
-- **Top Creators** — ranked by number of movies and series they appear in.
-- **Top per Category** — for each category (Movies, Series, Books, etc.), the top 3 items by rating with small cover thumbnails.
+**लाइब्रेरी** को [Obsidian सामुदायिक प्लगइन निर्देशिका](https://community.obsidian.md/plugins/library) से स्थापित करें (सेटिंग्स > सामुदायिक प्लगइन > ब्राउज़ > "Library" खोजें), या [GitHub रिलीज़](https://github.com/Kigrok/obsidian-library-plugin/releases) के माध्यम से मैनुअल रूप से स्थापित करें।
 
----
+### 2. बुनियादी सेटअप
 
-## Duplicate Detection
+1. **सेटिंग्स** > **लाइब्रेरी** पर जाएं।
+2. अपनी **श्रेणियाँ** जोड़ें — ड्रॉपडाउन से एक पूर्व-परिभाषित प्रकार (फिल्में, सीरीज़, किताबें, कॉमिक्स, गेम्स, संगीत, एनीमे, या मैनुअल) चुनें और **श्रेणी जोड़ें** पर क्लिक करें। प्रत्येक श्रेणी में एक प्रदर्शन नाम (आपकी भाषा में अनुवादित), एक `Type` मान (हमेशा अंग्रेज़ी में, जैसे `Movie`), एक स्रोत, और नोट्स संग्रहीत करने के लिए एक वैकल्पिक फ़ोल्डर है।
+3. _(वैकल्पिक)_ आपके द्वारा उपयोग की जाने वाली सेवाओं के लिए API कुंजियाँ दर्ज करें: फिल्मों/सीरीज़ के लिए [OMDb](https://www.omdbapi.com/apikey.aspx), गेम्स के लिए [RAWG](https://rawg.io/apidocs), कॉमिक्स के लिए [Comic Vine](https://comicvine.gamespot.com/api/)। एनीमे (Jikan) और संगीत (Deezer) को कोई कुंजी की आवश्यकता नहीं है।
 
-Library prevents duplicate entries by checking the `URL` field:
+### 3. शीर्षक द्वारा कार्ड जोड़ें
 
-- **On add** — if a note with the same URL already exists, it opens the existing note instead of creating a duplicate.
-- **Find & Remove Duplicates** — run this command from the palette to scan all notes, group by URL, and selectively remove duplicates via a modal.
+अब फ्रंटमेटर मैनुअल रूप से भरने की आवश्यकता नहीं है — बस उसका नाम खोजकर एक फिल्म, सीरीज़, किताब, एनीमे या कॉमिक जोड़ें:
 
----
+1. रिबन आइकन से **लाइब्रेरी** टैब खोलें (या `Open Library` चलाएं)।
+2. लाइब्रेरी पेज के ऊपरी दाएं कोने में **+** बटन पर क्लिक करें (या `Add content` चलाएं)।
+3. एक श्रेणी चुनें, खोज बॉक्स में **शीर्षक** टाइप करें, और एक परिणाम चुनें।
+4. एक कार्ड तुरंत बन जाता है, जिसमें पोस्टर, वर्ष, जॉनर, निर्माता और रेटिंग स्वचालित रूप से भरे होते हैं।
 
-## Sources
+**+** के बगल में **खोज** बटन आपकी लाइब्रेरी में पहले से मौजूद शीर्षकों को खोजता है।
 
-Each category is bound to a source that powers its search:
-
-| Source           | Content types   | API key                                                      |
-| ---------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**         | Movies, Series  | Free key required — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**        | Books           | Open Library (no key) + Google Books (optional free key). Results are merged — Google Books first, Open Library below. |
-| **RAWG**         | Games           | Free key required — [rawg.io/apidocs](https://rawg.io/apidocs) |
-| **Deezer**       | Music (albums)  | None                                                        |
-| **Jikan**        | Anime           | None — free unofficial MyAnimeList API, no key needed       |
-| **Comic Vine**   | Comics          | Free key required — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Manual**       | Anything else   | None — you type the title and fill fields yourself          |
+**मैनुअल** श्रेणियों के लिए आपको बस शीर्षक टाइप करना है और कवर, वर्ष और अन्य फ़ील्ड स्वयं भरने हैं।
 
 ---
 
-## Privacy & Network Use
+## आंकड़े
 
-Library is **offline-first**. The plugin only contacts the network when you actively search for a title to add, and only with the search terms you type:
+लाइब्रेरी टैब के शीर्ष पर एक संक्षिप्त **आंकड़े** अनुभाग शामिल है:
 
-| Service | When | What is sent | Why |
+- **शीर्ष जॉनर्स** — आपकी पूरी लाइब्रेरी में आवृत्ति के अनुसार क्रमबद्ध।
+- **शीर्ष निर्माता** — उन फिल्मों और सीरीज़ की संख्या के अनुसार क्रमबद्ध जिनमें वे दिखाई देते हैं।
+- **प्रत्येक श्रेणी में शीर्ष** — प्रत्येक श्रेणी (फिल्में, सीरीज़, किताबें, आदि) में, छोटे कवर थंबनेल के साथ रेटिंग के अनुसार शीर्ष 3 आइटम।
+
+---
+
+## डुप्लिकेट पहचान
+
+लाइब्रेरी `URL` फ़ील्ड की जांच करके डुप्लिकेट प्रविष्टियों को रोकती है:
+
+- **जोड़ते समय** — यदि समान URL वाला एक नोट पहले से मौजूद है, तो यह डुप्लिकेट बनाने के बजाय मौजूदा नोट खोलता है।
+- **डुप्लिकेट खोजें और हटाएं** — सभी नोट्स को स्कैन करने, URL द्वारा समूहित करने, और मॉडल के माध्यम से चयनित डुप्लिकेट हटाने के लिए पैलेट से यह कमांड चलाएं।
+
+---
+
+## स्रोत
+
+| स्रोत | सामग्री प्रकार | API कुंजी |
+| --- | --- | --- |
+| **OMDb** | फिल्में, सीरीज़ | मुफ्त कुंजी आवश्यक — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
+| **Books** | किताबें | Open Library (कुंजी नहीं) + Google Books (वैकल्पिक मुफ्त कुंजी)। परिणाम मर्ज किए गए — Google Books पहले, Open Library नीचे। |
+| **RAWG** | गेम्स | मुफ्त कुंजी आवश्यक — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Deezer** | संगीत (एल्बम) | कोई नहीं |
+| **Jikan** | एनीमे | कोई नहीं — MyAnimeList का मुफ्त अनौपचारिक API, कुंजी की आवश्यकता नहीं |
+| **Comic Vine** | कॉमिक्स | मुफ्त कुंजी आवश्यक — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
+| **मैनुअल** | कोई अन्य चीज़ | कोई नहीं — आप शीर्षक टाइप करते हैं और फ़ील्ड स्वयं भरते हैं |
+
+---
+
+## गोपनीयता और नेटवर्क उपयोग
+
+लाइब्रेरी **ऑफलाइन-पहले** है। प्लगइन केवल तभी नेटवर्क से संपर्क करता है जब आप सक्रिय रूप से जोड़ने के लिए शीर्षक खोजते हैं, और केवल आपके द्वारा टाइप किए गए खोज शब्दों के साथ:
+
+| सेवा | कब | क्या भेजा जाता है | क्यों |
 | --- | --- | --- | --- |
-| `www.omdbapi.com` | You search an OMDb-backed category | The title you type and your OMDb API key | Fetch movie/series metadata (year, genre, cast, rating, poster, episode counts) |
-| `openlibrary.org` | You search an Open Library category | The title you type | Fetch book metadata (author, year, subjects, cover id) |
-| `covers.openlibrary.org` | A book card has a cover | The Open Library cover id | Load the cover image |
-| `www.googleapis.com` | You search a Google Books category | The title you type and your Google Books key | Fetch book metadata (author, year, categories, page count, cover, ISBN) |
-| `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
-| `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
-| `api.jikan.moe` | You search an anime category | The title you type | Fetch anime metadata (title, year, genre, episodes, MAL score, synopsis, poster) |
-| `comicvine.gamespot.com` | You search a comics category | The title you type and your Comic Vine key | Fetch comic metadata (title, year, publisher, issue count, cover) |
+| `www.omdbapi.com` | आप OMDb-समर्थित श्रेणी खोजते हैं | आपके द्वारा टाइप किया गया शीर्षक और आपकी OMDb API कुंजी | फिल्म/सीरीज़ मेटाडेटा प्राप्त करें (वर्ष, जॉनर, कलाकार, रेटिंग, पोस्टर, एपिसोड गणना) |
+| `openlibrary.org` | आप Open Library श्रेणी खोजते हैं | आपके द्वारा टाइप किया गया शीर्षक | पुस्तक मेटाडेटा प्राप्त करें (लेखक, वर्ष, विषय, कवर आईडी) |
+| `covers.openlibrary.org` | पुस्तक कार्ड में कवर है | Open Library कवर आईडी | कवर छवि लोड करें |
+| `www.googleapis.com` | आप Google Books श्रेणी खोजते हैं | आपके द्वारा टाइप किया गया शीर्षक और आपकी Google Books कुंजी | पुस्तक मेटाडेटा प्राप्त करें (लेखक, वर्ष, श्रेणियाँ, पृष्ठ संख्या, कवर, ISBN) |
+| `api.rawg.io` | आप RAWG गेम श्रेणी खोजते हैं | आपके द्वारा टाइप किया गया शीर्षक और आपकी RAWG कुंजी | गेम मेटाडेटा प्राप्त करें (वर्ष, जॉनर, डेवलपर, कवर) |
+| `api.deezer.com` | आप Deezer संगीत श्रेणी खोजते हैं | आपके द्वारा टाइप किया गया एल्बम या कलाकार | एल्बम मेटाडेटा प्राप्त करें (कलाकार, वर्ष, जॉनर, ट्रैक गणना, कवर) |
+| `api.jikan.moe` | आप एनीमे श्रेणी खोजते हैं | आपके द्वारा टाइप किया गया शीर्षक | एनीमे मेटाडेटा प्राप्त करें (शीर्षक, वर्ष, जॉनर, एपिसोड, MAL स्कोर, सारांश, पोस्टर) |
+| `comicvine.gamespot.com` | आप कॉमिक्स श्रेणी खोजते हैं | आपके द्वारा टाइप किया गया शीर्षक और आपकी Comic Vine कुंजी | कॉमिक मेटाडेटा प्राप्त करें (शीर्षक, वर्ष, प्रकाशक, इश्यू गणना, कवर) |
 
-No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. API keys (OMDb, Google Books, RAWG, Comic Vine) are stored only in your local plugin settings and are sent only to their respective services. Cover images load directly from the URLs returned by each source.
+कोई अन्य डेटा कभी आपके वॉल्ट से बाहर नहीं जाता। प्लगइन में **कोई टेलीमेट्री, कोई एनालिटिक्स, और कोई स्व-अपडेट मैकेनिज्म नहीं है**। API कुंजियाँ (OMDb, Google Books, RAWG, Comic Vine) केवल आपकी स्थानीय प्लगइन सेटिंग्स में संग्रहीत होती हैं और केवल उनके संबंधित सेवाओं को भेजी जाती हैं। कवर छवियाँ प्रत्येक स्रोत द्वारा लौटाए गए URL से सीधे लोड होती हैं।
 
 ---
 
-## Frontmatter Schema
+## फ्रंटमेटर स्कीमा
 
-The plugin reads and writes to standard YAML frontmatter. Notes are created for you, but every field is editable. `Source` and `Source ID` let the plugin refresh metadata later.
+प्लगइन मानक YAML फ्रंटमेटर से पढ़ता और लिखता है। नोट्स आपके लिए बनाए जाते हैं, लेकिन हर फ़ील्ड संपादन योग्य है। `Source` और `Source ID` प्लगइन को बाद में मेटाडेटा रीफ्रेश करने देते हैं।
 
-### Movie
+### फिल्म
 
 ```yaml
 ---
@@ -150,7 +148,7 @@ Source ID: tt1375666
 ---
 ```
 
-### Series
+### सीरीज़
 
 ```yaml
 ---
@@ -177,9 +175,9 @@ Source ID: tt4574334
 ---
 ```
 
-> **Series auto-update:** Run `Refresh metadata for current note` (or just open the note) and the plugin updates the total episode count in `Progress` (e.g., `25/42` to `25/50`) and the `Season` count, while keeping your watched count intact.
+> **सीरीज़ स्वतः अपडेट:** `Refresh metadata for current note` चलाएं (या बस नोट खोलें) और प्लगइन `Progress` में कुल एपिसोड गणना अपडेट करता है (जैसे `25/42` से `25/50` तक) और `Season` गणना, जबकि आपकी देखी गई गणना सुरक्षित रहती है।
 
-### Book
+### किताब
 
 ```yaml
 ---
@@ -201,7 +199,7 @@ Source ID: /works/OL893415W
 ---
 ```
 
-### Anime
+### एनीमे
 
 ```yaml
 ---
@@ -226,7 +224,7 @@ Source ID: 9253
 ---
 ```
 
-### Comic
+### कॉमिक
 
 ```yaml
 ---
@@ -249,9 +247,9 @@ Source ID: 33819
 
 ---
 
-## Graph Links
+## ग्राफ लिंक
 
-Each content note gets a `Related` frontmatter property, kept up to date automatically — the note body is never touched:
+हर कंटेंट नोट को एक `Related` फ्रंटमेटर प्रॉपर्टी मिलती है, जो स्वचालित रूप से अपडेट रखी जाती है — नोट बॉडी को कभी नहीं छुआ जाता:
 
 ```yaml
 Related:
@@ -261,27 +259,42 @@ Related:
     - "[[Christopher Nolan]]"
 ```
 
-These links connect your notes through shared categories, genres, and creators, so the Obsidian graph view forms clean clusters. A real hub note is created per category (e.g. `Movie`) so clusters show even with unresolved links hidden. The property is written when a note is created and refreshed whenever its metadata changes — run `Rebuild graph links` only if you want to force a full rebuild.
+ये लिंक साझा श्रेणियों, जॉनर्स और निर्माताओं के माध्यम से आपके नोट्स को जोड़ते हैं, ताकि Obsidian ग्राफ व्यू स्वच्छ क्लस्टर बनाए। प्रत्येक श्रेणी के लिए एक वास्तविक हब नोट बनाया जाता है (जैसे `Movie`) ताकि अनरिज़ॉल्व्ड लिंक छिपे होने पर भी क्लस्टर दिखाई दें। प्रॉपर्टी नोट बनाते समय लिखी जाती है और जब भी इसका मेटाडेटा बदलता है तब अपडेट होती है — केवल जब आप पूर्ण पुनर्निर्माण मजबूर करना चाहें तभी `Rebuild graph links` चलाएं।
 
 ---
 
-## Commands
+## कमांड
 
-| Command                              | Description                                                              |
-| ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Open the Library gallery tab.                                           |
-| `Add content`                        | Search a source and create a content note (or type a title for Manual). |
-| `Search your library`                | Fuzzy-search and open any note already in your library.                 |
-| `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
-| `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
-| `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
+| कमांड | विवरण |
+| --- | --- |
+| `Open Library` | लाइब्रेरी गैलरी टैब खोलें। |
+| `Add content` | एक स्रोत खोजें और कंटेंट नोट बनाएं (या मैनुअल के लिए शीर्षक टाइप करें)। |
+| `Search your library` | फ़ज़ी-खोजें और अपनी लाइब्रेरी में पहले से मौजूद कोई भी नोट खोलें। |
+| `Refresh metadata for current note` | सक्रिय नोट के लिए मेटाडेटा रीफ्रेश करें; सीरीज़ एपिसोड कुल अपडेट करता है। |
+| `Rebuild graph links` | हर कंटेंट नोट को उसकी श्रेणी, जॉनर्स और निर्माताओं से जोड़ें। |
+| `Find & remove duplicates` | URL द्वारा सभी नोट्स स्कैन करें, डुप्लिकेट दिखाएं, और चयनित को हटाएं। |
 
 ---
 
-## Contributing & Support
+## योगदान और सहायता
 
-- **Found a bug?** Open an [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
-- **Have a feature idea?** Start a [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
-- **Love the plugin?** Consider starring the repository to show your support!
+- **बग मिला?** एक [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues) खोलें।
+- **फ़ीचर विचार है?** एक [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions) शुरू करें।
+- **प्लगइन पसंद है?** अपना समर्थन दिखाने के लिए रिपॉज़िटरी को स्टार करने पर विचार करें!
+
+---
+
+## धन्यवाद
+
+यदि आपको यह प्लगइन उपयोगी लगता है, तो इसके विकास का समर्थन करने पर विचार करें:
+
+| | नेटवर्क | पता |
+| --- | --- | --- |
+| <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat&logo=ethereum&logoColor=white" alt="EVM"> | **EVM** | `0xf9B4807E107f6f8Db79D86aCef6072A31d570201` |
+| <img src="https://img.shields.io/badge/Sui-4DA2FF?style=flat&logo=sui&logoColor=white" alt="Sui"> | **Sui** | `0x1d6989810ee7e55d43f65398253b02462b921e9ce8ad626b542929f02c3d3e9a` |
+| <img src="https://img.shields.io/badge/Solana-9945FF?style=flat&logo=solana&logoColor=white" alt="Sol"> | **Sol** | `2jmrmQrLVeUDFgHzSkHvHKBrmRJXes5X8h3GHXxrLaX6` |
+| <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
+| <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
+| <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
 
 ---
