@@ -299,8 +299,8 @@ export default class LibraryPlugin extends Plugin {
 		try {
 			if (hasLegacy) {
 				await this.app.vault.process(file, (data) => {
-					const s: string = data
-					const i: number = s.indexOf(marker)
+					const s = String(data)
+					const i = s.indexOf(marker)
 					return i >= 0 ? s.slice(0, i).trimEnd() + '\n' : s
 				})
 			}

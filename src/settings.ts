@@ -123,7 +123,7 @@ export class LibrarySettingTab extends PluginSettingTab {
 				.addButton((b) =>
 					b
 						.setIcon("trash")
-						.setDestructive()
+						.setWarning()
 						.onClick(async () => {
 							this.plugin.settings.categories.splice(i, 1);
 							await this.plugin.saveSettings();
