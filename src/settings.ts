@@ -194,8 +194,8 @@ export class LibrarySettingTab extends PluginSettingTab {
 			.setName(tr("settings.section.example"))
 			.setHeading();
 		containerEl.createEl("p", { text: tr("settings.example.desc") });
-		containerEl.createEl("pre", {
-			text: "---\nType: Movie\nURL: https://www.imdb.com/title/tt.....\n---",
-		});
+		containerEl.createEl("pre").setText(
+			"---\nType: Movie\nURL: https://www.imdb.com/title/tt.....\n---"
+		);
 	}
 }

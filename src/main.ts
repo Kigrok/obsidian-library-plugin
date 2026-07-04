@@ -17,6 +17,7 @@ import { RawgProvider } from './providers/rawg'
 import { DeezerProvider } from './providers/deezer'
 import { AnimeProvider } from './providers/anime'
 import { ComicsProvider } from './providers/comics'
+import { isContentType } from './providers/types'
 import type { NormalizedMetadata, SearchResult } from './providers/types'
 import { PickTypeModal } from './ui/pickTypeModal'
 import { AddContentModal } from './ui/addContentModal'
@@ -42,6 +43,7 @@ export default class LibraryPlugin extends Plugin {
 	settings!: ILibrarySettings
 	private registry = new ProviderRegistry()
 	private refreshTimer: number | null = null
+	private bannerTimer: number | null = null
 	private isRefreshing = false
 	private refreshCooldowns = new Map<string, number>()
 	private syncingLinks = new Set<string>()
@@ -62,10 +64,20 @@ export default class LibraryPlugin extends Plugin {
 		this.registerView(LIBRARY_VIEW_TYPE, (leaf) => new LibraryView(leaf, this))
 		this.addRibbonIcon('library', tr('view.title'), () => { void this.activateView() })
 
-		const banner = (): number => window.setTimeout(() => this.refreshBanner(), 50)
+		const banner = (): void => {
+			if (this.bannerTimer) window.clearTimeout(this.bannerTimer)
+			this.bannerTimer = window.setTimeout(() => this.refreshBanner(), 50)
+		}
 		this.registerEvent(this.app.workspace.on('file-open', (file) => {
 			banner()
-			if (file instanceof TFile) window.setTimeout(() => { void this.syncNote(file) }, 400)
+			if (file instanceof TFile) {
+				const existing = this.linkTimers.get(file.path)
+				if (existing) window.clearTimeout(existing)
+				this.linkTimers.set(file.path, window.setTimeout(() => {
+					this.linkTimers.delete(file.path)
+					void this.syncNote(file)
+				}, 400))
+			}
 		}))
 		this.registerEvent(this.app.workspace.on('layout-change', () => { banner() }))
 		this.app.workspace.onLayoutReady(() => { this.refreshBanner() })
@@ -131,6 +143,7 @@ export default class LibraryPlugin extends Plugin {
 
 	onunload(): void {
 		if (this.refreshTimer) window.clearTimeout(this.refreshTimer)
+		if (this.bannerTimer) window.clearTimeout(this.bannerTimer)
 		for (const timer of this.linkTimers.values()) window.clearTimeout(timer)
 		this.linkTimers.clear()
 		this.refreshCooldowns.clear()
@@ -531,26 +544,26 @@ export default class LibraryPlugin extends Plugin {
 			progressPercent = parseProgress(fm.Progress)
 		}
 
-		const header = activeDocument.createElement('div')
+		const header = createDiv()
 		header.classList.add('note-header')
 
-		const imgSide = activeDocument.createElement('div')
+		const imgSide = createDiv()
 		imgSide.classList.add('note-header-cover')
 		const headerCover = coverSrc(this.app, cover)
 		if (headerCover) {
-			const img = activeDocument.createElement('img')
+			const img = createEl('img')
 			img.src = headerCover
 			imgSide.appendChild(img)
 		}
 		header.appendChild(imgSide)
 
-		const infoSide = activeDocument.createElement('div')
+		const infoSide = createDiv()
 		infoSide.classList.add('note-header-info')
 
-		const titleEl = activeDocument.createElement('div')
+		const titleEl = createDiv()
 		titleEl.classList.add('note-header-title')
 		if (url) {
-			const a = activeDocument.createElement('a')
+			const a = createEl('a')
 			a.href = url
 			a.setAttribute('target', '_blank')
 			a.setAttribute('rel', 'noopener noreferrer')
@@ -564,9 +577,9 @@ export default class LibraryPlugin extends Plugin {
 
 		const addRow = (label: string, value: string): void => {
 			if (!value) return
-			const row = activeDocument.createElement('div')
+			const row = createDiv()
 			row.classList.add('note-header-row')
-			const b = activeDocument.createElement('b')
+			const b = createEl('b')
 			b.setText(label + ': ')
 			row.appendChild(b)
 			row.appendText(value)
@@ -587,15 +600,15 @@ export default class LibraryPlugin extends Plugin {
 		if (myRating) addRow(tr('header.myRating'), myRating)
 
 		if (!complete && progressPercent > 0) {
-			const progRow = activeDocument.createElement('div')
+			const progRow = createDiv()
 			progRow.classList.add('note-header-row')
-			const b = activeDocument.createElement('b')
+			const b = createEl('b')
 			b.setText(tr('header.progress') + ': ')
 			progRow.appendChild(b)
 			progRow.appendText(String(progressPercent) + '%')
-			const bar = activeDocument.createElement('div')
+			const bar = createDiv()
 			bar.classList.add('note-header-progress-bar')
-			const fill = activeDocument.createElement('div')
+			const fill = createDiv()
 			fill.classList.add('note-header-progress-fill')
 			fill.setCssStyles({ width: String(progressPercent) + '%' })
 			bar.appendChild(fill)
@@ -604,7 +617,7 @@ export default class LibraryPlugin extends Plugin {
 		}
 
 		if (complete) {
-			const doneRow = activeDocument.createElement('div')
+			const doneRow = createDiv()
 			doneRow.classList.add('note-header-row', 'note-header-complete')
 			doneRow.setText(tr('header.complete'))
 			infoSide.appendChild(doneRow)
@@ -622,6 +635,7 @@ export default class LibraryPlugin extends Plugin {
 		for (const cat of this.settings.categories) {
 			if (!cat.contentType) cat.contentType = inferContentType(cat.typeValue)
 			if (cat.contentType === 'googlebook') cat.contentType = 'book'
+			if (!isContentType(cat.contentType)) cat.contentType = inferContentType(cat.typeValue)
 			if (cat.folder === undefined) cat.folder = ''
 		}
 	}

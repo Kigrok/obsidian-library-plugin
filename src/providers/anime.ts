@@ -8,6 +8,7 @@ interface JikanAnime {
 	images?: { jpg?: { image_url?: string; large_image_url?: string } }
 	score?: number | null
 	genres?: { name: string }[]
+	studios?: { name: string }[]
 	episodes?: number | null
 	status?: string
 	aired?: { string?: string; prop?: { from?: { year?: number } } }
@@ -75,7 +76,7 @@ export class AnimeProvider implements ContentProvider {
 				Name: anime.title,
 				Year: this.year(anime),
 				Genre: genres,
-				Creator: anime.title_japanese ? [anime.title_japanese] : [],
+				Creator: (anime.studios ?? []).map((s) => s.name),
 				Cover: this.cover(anime),
 				URL: anime.url || `https://myanimelist.net/anime/${anime.mal_id}`
 			}
