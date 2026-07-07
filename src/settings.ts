@@ -108,7 +108,7 @@ export class LibrarySettingTab extends PluginSettingTab {
 					d
 						.addOption("movie", "OMDb · " + tr('settings.default.movie'))
 						.addOption("series", "OMDb · " + tr('settings.default.series'))
-						.addOption("anime", "Jikan · " + tr('settings.default.anime') + " (free)")
+						.addOption("anime", "AniList · " + tr('settings.default.anime') + " (free)")
 						.addOption("book", "Books · " + tr('settings.default.book'))
 						.addOption("comic", "Comic Vine · " + tr('settings.default.comic'))
 						.addOption("game", "RAWG · " + tr('settings.default.game'))
