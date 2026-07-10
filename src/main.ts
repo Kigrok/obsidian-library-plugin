@@ -3,7 +3,8 @@ import {
 	TFile,
 	MarkdownView,
 	Notice,
-	normalizePath
+	normalizePath,
+	setIcon
 } from 'obsidian'
 import { progressPattern, type ICategory, type ILibrarySettings, DEFAULT_SETTINGS } from './constants'
 import { tr } from './i18n'
@@ -24,6 +25,7 @@ import { AddContentModal } from './ui/addContentModal'
 import { LibrarySearchModal } from './ui/librarySearchModal'
 import { PromptModal } from './ui/promptModal'
 import { DuplicateRemovalModal, type DuplicateGroup } from './ui/duplicateModal'
+import { ShareModal, shareTargetFromFile } from './ui/shareModal'
 import { LibraryView, LIBRARY_VIEW_TYPE } from './view'
 import {
 	toStr,
@@ -138,6 +140,21 @@ export default class LibraryPlugin extends Plugin {
 			id: 'find-duplicates',
 			name: tr('cmd.findDuplicates'),
 			callback: () => this.openDuplicates()
+		})
+
+		this.addCommand({
+			id: 'share-current',
+			name: tr('cmd.share'),
+			checkCallback: (checking: boolean) => {
+				const file = this.app.workspace.getActiveFile()
+				const target = shareTargetFromFile(this.app, file)
+				const isLibrary = !!target && this.settings.categories.some(
+					c => c.typeValue === toStr(target.fm.Type)
+				)
+				if (!isLibrary) return false
+				if (!checking && target) new ShareModal(this.app, target.fm, target.name).open()
+				return true
+			}
 		})
 	}
 
@@ -573,6 +590,16 @@ export default class LibraryPlugin extends Plugin {
 		} else {
 			titleEl.setText(name)
 		}
+
+		const shareBtn = createEl('button')
+		shareBtn.classList.add('note-header-share')
+		shareBtn.setAttribute('aria-label', tr('share.title'))
+		setIcon(shareBtn, 'share-2')
+		shareBtn.addEventListener('click', (e) => {
+			e.preventDefault()
+			new ShareModal(this.app, fm, name).open()
+		})
+		titleEl.appendChild(shareBtn)
 		infoSide.appendChild(titleEl)
 
 		const addRow = (label: string, value: string): void => {

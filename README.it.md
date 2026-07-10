@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -28,12 +28,13 @@
 ## Funzionalità Principali
 
 - **Griglia Visuale di Schede** — Un tab dedicato Library visualizza la tua collezione come una galleria di schede con copertine.
-- **Ricerca Integrata** — Cerca e aggiungi titoli direttamente nell'app: OMDb per film e serie, Open Library o Google Books per i libri, RAWG per i giochi, Deezer per la musica, Jikan per l'anime, Comic Vine per i fumetti.
+- **Ricerca Integrata** — Cerca e aggiungi titoli direttamente nell'app: OMDb per film e serie, Open Library o Google Books per i libri, RAWG per i giochi, Deezer per la musica, AniList per l'anime, Comic Vine per i fumetti.
 - **Monitoraggio Intelligente delle Serie** — Le stagioni e il numero totale degli episodi vengono recuperati automaticamente e mantenuti sincronizzati.
 - **Indicatori di Progresso** — Barre di progresso visive sulle schede e negli header delle note mostrano quanto hai guardato o letto.
 - **Header delle Note Ricchi** — Ogni nota di contenuto riceve un header generato automaticamente con tutti i metadati chiave.
 - **Categorie Personalizzate** — Crea categorie per Film, Serie, Anime, Fumetti, Libri, Giochi, Musica o qualsiasi altra cosa tramite la fonte manuale.
 - **Collegamenti nel Grafo** — Una proprietà `Related` nel frontmatter collega ogni nota alla sua categoria, generi e creatori, mantenuta sincronizzata automaticamente per un bel grafo.
+- **Schede Condivisibili** — Trasforma qualsiasi nota di contenuto in un'immagine-scheda condivisibile (poster, titolo, anno, genere, punteggio IMDb e la tua valutazione) e pubblicala su X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky o Pinterest — condividila direttamente nelle app del tuo dispositivo, oppure copia/salva l'immagine per usarla ovunque.
 - **Ordinamento e Compressione** — Ordina le schede per nome, anno, valutazione o data; comprimi qualsiasi categoria.
 - **Statistiche** — Generi principali, creatori principali (solo film e serie) e elementi principali per categoria con classifiche a medaglia.
 - **Rilevamento Duplicati** — Impedisce automaticamente l'aggiunta dello stesso titolo due volte per URL. Un comando integrato trova e rimuove i duplicati esistenti.
@@ -51,7 +52,7 @@ Installa **Library** dalla [directory Obsidian Community Plugins](https://commun
 
 1. Vai su **Impostazioni** > **Library**.
 2. Aggiungi le tue **Categorie** — seleziona un tipo predefinito (Movies, Series, Books, Comics, Games, Music, Anime o Manual) dal menu a tendina e clicca su **Add category**. Ogni categoria ha un nome visualizzato (tradotto nella tua lingua), un valore `Type` (sempre in inglese, ad esempio `Movie`), una fonte e una cartella opzionale per memorizzare le note.
-3. _(Opzionale)_ Inserisci le chiavi API per i servizi che utilizzi: [OMDb](https://www.omdbapi.com/apikey.aspx) per film/serie, [RAWG](https://rawg.io/apidocs) per i giochi, [Comic Vine](https://comicvine.gamespot.com/api/) per i fumetti. Anime (Jikan) e musica (Deezer) non richiedono chiave.
+3. _(Opzionale)_ Inserisci le chiavi API per i servizi che utilizzi: [OMDb](https://www.omdbapi.com/apikey.aspx) per film/serie, [RAWG](https://rawg.io/apidocs) per i giochi, [Comic Vine](https://comicvine.gamespot.com/api/) per i fumetti. Anime (AniList) e musica (Deezer) non richiedono chiave.
 
 ### 3. Aggiungere una Scheda per Titolo
 
@@ -97,7 +98,7 @@ Ogni categoria è legata a una fonte che alimenta la sua ricerca:
 | **Books**         | Libri               | Open Library (nessuna chiave) + Google Books (chiave gratuita opzionale). I risultati vengono uniti — Google Books per primo, Open Library sotto. |
 | **RAWG**          | Giochi              | Chiave gratuita richiesta — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**        | Musica (album)      | Nessuna                                                     |
-| **Jikan**         | Anime               | Nessuna — API non ufficiale gratuita di MyAnimeList, nessuna chiave necessaria |
+| **AniList**         | Anime               | Nessuna — API GraphQL gratuita di AniList, nessuna chiave necessaria |
 | **Comic Vine**    | Fumetti             | Chiave gratuita richiesta — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**        | Qualsiasi altro     | Nessuna — digiti il titolo e compili i campi tu stesso      |
 
@@ -115,7 +116,7 @@ Library è **offline-first**. Il plugin contatta la rete solo quando cerchi atti
 | `www.googleapis.com` | Cerchi in una categoria Google Books | Il titolo che digiti e la tua chiave Google Books | Recuperare i metadati dei libri (autore, anno, categorie, numero pagine, copertina, ISBN) |
 | `api.rawg.io` | Cerchi in una categoria giochi RAWG | Il titolo che digiti e la tua chiave RAWG | Recuperare i metadati dei giochi (anno, genere, sviluppatore, copertina) |
 | `api.deezer.com` | Cerchi in una categoria musicale Deezer | L'album o l'artista che digiti | Recuperare i metadati dell'album (artista, anno, genere, conteggio tracce, copertina) |
-| `api.jikan.moe` | Cerchi in una categoria anime | Il titolo che digiti | Recuperare i metadati anime (titolo, anno, genere, episodi, punteggio MAL, sinossi, poster) |
+| `graphql.anilist.co` | Cerchi in una categoria anime | Il titolo che digiti | Recuperare i metadati anime (titolo, anno, genere, episodi, punteggio AniList, studio, poster) |
 | `comicvine.gamespot.com` | Cerchi in una categoria fumetti | Il titolo che digiti e la tua chiave Comic Vine | Recuperare i metadati dei fumetti (titolo, anno, editore, conteggio numeri, copertina) |
 
 Nessun altro dato lascia mai il tuo vault. Il plugin **non ha telemetria, nessuna analisi e nessun meccanismo di auto-aggiornamento**. Le chiavi API (OMDb, Google Books, RAWG, Comic Vine) sono memorizzate solo nelle impostazioni locali del plugin e inviate solo ai rispettivi servizi. Le immagini delle copertine vengono caricate direttamente dagli URL restituiti da ciascuna fonte.
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Questi collegamenti collegano le tue note tramite categorie, generi e creatori c
 
 ---
 
+## Condivisione
+
+Ogni nota di contenuto riceve un pulsante **Share** nel suo header (o esegui `Share current note`). Genera un'immagine-scheda — poster, titolo, anno, genere, punteggio IMDb/AniList e la tua valutazione — che puoi pubblicare ovunque:
+
+- **Su dispositivi mobili** — il pulsante **Share…** apre il foglio di condivisione nativo del tuo dispositivo con l'immagine-scheda già allegata, così puoi inviarla direttamente a qualsiasi app.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — apre il compositore della rete con una didascalia precompilata (titolo, la tua valutazione, il link alla fonte e un link a questo plugin). L'immagine-scheda viene copiata contemporaneamente negli appunti, così basta incollarla (Ctrl/Cmd+V) nel post.
+- **Copy image / Copy text / Save image** — copia la scheda generata o la didascalia negli appunti, oppure salva l'immagine nella cartella degli allegati del tuo vault per allegarla manualmente.
+
+La condivisione è completamente locale: la scheda viene disegnata nell'app a partire dai metadati e dalla copertina della nota stessa. Nulla viene caricato — il plugin apre soltanto nel browser l'URL del compositore che scegli.
+
+---
+
 ## Comandi
 
 | Comando                              | Descrizione                                                                  |
@@ -275,6 +287,7 @@ Questi collegamenti collegano le tue note tramite categorie, generi e creatori c
 | `Refresh metadata for current note`  | Recupera nuovamente i metadati per la nota attiva; aggiorna i totali episodi delle serie. |
 | `Rebuild graph links`                | Collega ogni nota di contenuto alla sua categoria, generi e creatori.         |
 | `Find & remove duplicates`           | Scansiona tutte le note per URL, mostra i duplicati e rimuovi quelli selezionati. |
+| `Share current note`                 | Genera la nota come immagine-scheda e condividila su X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky o Pinterest. |
 
 ---
 

@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -28,13 +28,14 @@
 ## Características Principales
 
 - **Cuadrícula Visual de Tarjetas** — Una pestaña dedicada de Library renderiza tu colección como una galería de tarjetas con arte de portada.
-- **Búsqueda Integrada** — Busca y añade títulos directamente en la app: OMDb para películas y series, Open Library o Google Books para libros, RAWG para juegos, Deezer para música, Jikan para anime, Comic Vine para cómics.
+- **Búsqueda Integrada** — Busca y añade títulos directamente en la app: OMDb para películas y series, Open Library o Google Books para libros, RAWG para juegos, Deezer para música, AniList para anime, Comic Vine para cómics.
 - **Seguimiento Inteligente de Series** — Las temporadas y el total de episodios se obtienen automáticamente y se mantienen sincronizados.
 - **Indicadores de Progreso** — Barras de progreso visuales en tarjetas y encabezados de notas muestran cuánto has visto o leído.
 - **Encabezados de Notas Ricos** — Cada nota de contenido recibe un encabezado generado automáticamente con todos los metadatos clave.
 - **Categorías Personalizadas** — Crea categorías para Películas, Series, Anime, Cómics, Libros, Juegos, Música o cualquier otra cosa a través de la fuente manual.
 - **Enlaces en el Grafo** — Una propiedad `Related` en el frontmatter enlaza cada nota con su categoría, géneros y creadores, sincronizados automáticamente para un grafo hermoso.
-- **Ordenación y Contraimiento** — Ordena tarjetas por nombre, año, valoración o fecha; contrae cualquier categoría.
+- **Tarjetas para Compartir** — Convierte cualquier nota de contenido en una imagen de tarjeta lista para compartir (póster, título, año, género, puntuación de IMDb y tu valoración) y publícala en X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky o Pinterest — compártela directamente con las apps de tu dispositivo, o copia/guarda la imagen para usarla donde quieras.
+- **Ordenación y Contracción** — Ordena tarjetas por nombre, año, valoración o fecha; contrae cualquier categoría.
 - **Estadísticas** — Géneros principales, creadores principales (solo películas y series) y elementos principales por categoría con clasificaciones de medalla.
 - **Detección de Duplicados** — Previene automáticamente añadir el mismo título dos veces por URL. Un comando integrado encuentra y elimina duplicados existentes.
 - **Multilingüe** — 31 idiomas: inglés, ucraniano, ruso, bielorruso, kazajo, uzbeko, alemán, español, francés, italiano, neerlandés, checo, croata, polaco, rumano, turco, azerbaiyano, persa, hindi, bengalí, urdu, tagalo, vietnamita, tailandés, javanés, japonés, coreano, chino, árabe, cingalés, hebreo.
@@ -51,7 +52,7 @@ Instala **Library** desde el [directorio de Obsidian Community Plugins](https://
 
 1. Ve a **Ajustes** > **Library**.
 2. Añade tus **Categorías** — selecciona un tipo predefinido (Movies, Series, Books, Comics, Games, Music, Anime o Manual) del menú desplegable y haz clic en **Add category**. Cada categoría tiene un nombre para mostrar (traducido a tu idioma), un valor `Type` (siempre en inglés, por ejemplo `Movie`), una fuente y una carpeta opcional para almacenar notas.
-3. _(Opcional)_ Introduce claves API para los servicios que uses: [OMDb](https://www.omdbapi.com/apikey.aspx) para películas/series, [RAWG](https://rawg.io/apidocs) para juegos, [Comic Vine](https://comicvine.gamespot.com/api/) para cómics. Anime (Jikan) y música (Deezer) no requieren clave.
+3. _(Opcional)_ Introduce claves API para los servicios que uses: [OMDb](https://www.omdbapi.com/apikey.aspx) para películas/series, [RAWG](https://rawg.io/apidocs) para juegos, [Comic Vine](https://comicvine.gamespot.com/api/) para cómics. Anime (AniList) y música (Deezer) no requieren clave.
 
 ### 3. Añadir una Tarjeta por Título
 
@@ -60,7 +61,7 @@ Instala **Library** desde el [directorio de Obsidian Community Plugins](https://
 1. Abre la pestaña **Library** desde el icono de la barra lateral (o ejecuta `Open Library`).
 2. Haz clic en el botón **+** en la parte superior derecha de la página de Library (o ejecuta `Add content`).
 3. Elige una categoría, escribe el **título** en el cuadro de búsqueda y selecciona un resultado.
-4. Se crea una tarjeta al instátano, con póster, año, género, creadores y valoración rellenados automáticamente.
+4. Se crea una tarjeta al instante, con póster, año, género, creadores y valoración rellenados automáticamente.
 
 El botón **Search** junto a **+** busca títulos que ya están en tu biblioteca.
 
@@ -97,7 +98,7 @@ Cada categoría está vinculada a una fuente que potencia su búsqueda:
 | **Books**         | Libros              | Open Library (sin clave) + Google Books (clave gratuita opcional). Los resultados se combinan — Google Books primero, Open Library debajo. |
 | **RAWG**          | Juegos              | Clave gratuita requerida — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**        | Música (álbumes)    | Ninguna                                                    |
-| **Jikan**         | Anime               | Ninguna — API no oficial gratuita de MyAnimeList, no se necesita clave |
+| **AniList**       | Anime               | Ninguna — API GraphQL gratuita de AniList, no se necesita clave |
 | **Comic Vine**    | Cómics              | Clave gratuita requerida — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**        | Cualquier otra cosa | Ninguna — escribes el título y rellenas los campos tú mismo |
 
@@ -115,7 +116,7 @@ Library es **offline-first**. El complemento solo contacta la red cuando buscas 
 | `www.googleapis.com` | Buscas en una categoría de Google Books | El título que escribes y tu clave de Google Books | Obtener metadatos de libros (autor, año, categorías, número de páginas, portada, ISBN) |
 | `api.rawg.io` | Buscas en una categoría de juegos RAWG | El título que escribes y tu clave RAWG | Obtener metadatos de juegos (año, género, desarrollador, portada) |
 | `api.deezer.com` | Buscas en una categoría de música Deezer | El álbum o artista que escribes | Obtener metadatos de álbum (artista, año, género, conteo de pistas, portada) |
-| `api.jikan.moe` | Buscas en una categoría de anime | El título que escribes | Obtener metadatos de anime (título, año, género, episodios, puntuación MAL, sinopsis, póster) |
+| `graphql.anilist.co` | Buscas en una categoría de anime | El título que escribes | Obtener metadatos de anime (título, año, género, episodios, puntuación de AniList, estudio, póster) |
 | `comicvine.gamespot.com` | Buscas en una categoría de cómics | El título que escribes y tu clave de Comic Vine | Obtener metadatos de cómics (título, año, editorial, conteo de números, portada) |
 
 Ningún otro dato sale nunca de tu vault. El complemento **no tiene telemetría, ni análisis, ni mecanismo de actualización automática**. Las claves API (OMDb, Google Books, RAWG, Comic Vine) se almacenan solo en la configuración local del complemento y se envían solo a sus respectivos servicios. Las imágenes de portada se cargan directamente desde las URLs devueltas por cada fuente.
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Estos enlaces conectan tus notas a través de categorías compartidas, géneros 
 
 ---
 
+## Compartir
+
+Cada nota de contenido tiene un botón **Compartir** en su encabezado (o ejecuta `Share current note`). Renderiza una imagen de tarjeta —póster, título, año, género, puntuación de IMDb/AniList y tu valoración— que puedes publicar donde quieras:
+
+- **En el móvil** — el botón **Compartir…** abre la hoja de compartir nativa de tu dispositivo con la imagen de la tarjeta adjunta directamente, para que puedas enviarla directo a cualquier app.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — abre el editor de la red con un texto prerellenado (título, tu valoración, el enlace de origen y un enlace a este complemento). La imagen de la tarjeta se copia a tu portapapeles al mismo tiempo, así que solo tienes que pegarla (Ctrl/Cmd+V) en la publicación.
+- **Copiar imagen / Copiar texto / Guardar imagen** — copia la tarjeta renderizada o el texto al portapapeles, o guarda la imagen en la carpeta de adjuntos de tu vault para adjuntarla manualmente.
+
+Compartir es totalmente local: la tarjeta se dibuja dentro de la app a partir de los propios metadatos y la portada de la nota. No se sube nada — el complemento solo abre en tu navegador la URL del editor que elijas.
+
+---
+
 ## Comandos
 
 | Comando                              | Descripción                                                                |
@@ -275,6 +287,7 @@ Estos enlaces conectan tus notas a través de categorías compartidas, géneros 
 | `Refresh metadata for current note`  | Vuelve a obtener metadatos para la nota activa; actualiza conteos de episodios de series. |
 | `Rebuild graph links`                | Conecta cada nota de contenido con su categoría, géneros y creadores.       |
 | `Find & remove duplicates`           | Escanea todas las notas por URL, muestra duplicados y elimina los seleccionados. |
+| `Share current note`                 | Renderiza la nota como una imagen de tarjeta y compártela en X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky o Pinterest. |
 
 ---
 

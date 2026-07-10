@@ -7,7 +7,7 @@
 <h1 align="center">Kitabxana</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Versiya">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Versiya">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Yükləmələr">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Versiyası">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Lisenziya">
@@ -28,12 +28,13 @@
 ## Əsas Xüsusiyyətlər
 
 - **Vizual Kart Şəbəkəsi** — Xüsusi Kitabxana nişanı kolleksiyanızı örtük sənəti kartlarından ibarət qalereya şəklində göstərir.
-- **Daxili Axtarış** — Tətbiq içində adları axtarın və əlavə edin: filmlər və seriallar üçün OMDb, kitablar üçün Open Library və ya Google Books, oyunlar üçün RAWG, musiqi üçün Deezer, anime üçün Jikan, komikslər üçün Comic Vine.
+- **Daxili Axtarış** — Tətbiq içində adları axtarın və əlavə edin: filmlər və seriallar üçün OMDb, kitablar üçün Open Library və ya Google Books, oyunlar üçün RAWG, musiqi üçün Deezer, anime üçün AniList, komikslər üçün Comic Vine.
 - **Ağıllı Serial İzləmə** — Mövsümlər və epizod sayı avtomatik olaraq yüklənir və sinxronlaşdırılır.
 - **İrəliləyiş Göstəriciləri** — Kartlarda və qeyd başlıqlarında vizual irəliləyiş zolaqları nə qədər baxdığınızı və ya oxuduğunuzu göstərir.
 - **Zəngin Qeyd Başlıqları** — Hər məzmun qeydi bütün açar metadataları olan avtomatik başlıq alır.
 - **Xüsusi Kateqoriyalar** — Filmlər, Seriallar, Anime, Komikslər, Kitablar, Oyunlar, Musiqi və ya əl ilə mənbə vasitəsilə hər hansı digər şeylər üçün kateqoriyalar yaradın.
 - **Qrafik Bağlantıları** — `Related` ön məlumat xüsusiyyəti hər qeydi onun kateqoriyası, janrları və yaradıcıları ilə bağlayır, gözəl qrafik üçün avtomatik olaraq sinxronlaşdırılır.
+- **Paylaşım Kartları** — Hər hansı məzmun qeydini paylaşıla bilən kart şəklinə (poster, ad, il, janr, IMDb xalı və sizin reytinqiniz) çevirin və onu X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky və ya Pinterest-də paylaşın — birbaşa cihazınızın tətbiqlərinə göndərin, və ya istənilən yerdə istifadə etmək üçün şəkli kopyalayın/saxlayın.
 - **Sıralama & Yığılma** — Kartları ad, il, reytinq və ya tarixə görə sıralayın; istənilən kateqoriyanı yığın.
 - **Statistika** — Ən yaxşı janrlar, yalnız yaradıcılar (filmlər & seriallar), və hər kateqoriya üzrə medal sıralaması ilə ən yaxşı elementlər.
 - **Dublikat Aşkarlanması** — URL eyni adı iki dəfə əlavə etməyi avtomatik olaraq dayandırır. Daxili əmr mövcud dublikatları tapır və silir.
@@ -51,7 +52,7 @@
 
 1. **Ayarlar** > **Kitabxana**ya keçin.
 2. **Kateqoriyalar**ınızı əlavə edin — açılır menyudan qabaqcadan təyin olunmuş tipi (Filmlər, Seriallar, Kitablar, Komikslər, Oyunlar, Musiqi, Anime və ya Əl ilə) seçin və **Kateqoriya əlavə et** düyməsinə basın. Hər kateqoriyanın dilinizə tərcümə olunmuş göstərilən adı, `Type` dəyəri (həmişə ingiliscə, məs. `Movie`), mənbə və qeydləri saxlamaq üçün istəyə görə qovluq var.
-3. _(İstəyə görə)_ İstifadə etdiyiniz xidmətlər üçün API açarlarını daxil edin: filmlər/seriallar üçün [OMDb](https://www.omdbapi.com/apikey.aspx), oyunlar üçün [RAWG](https://rawg.io/apidocs), komikslər üçün [Comic Vine](https://comicvine.gamespot.com/api/). Anime (Jikan) və musiqi (Deezer) açar tələb etmir.
+3. _(İstəyə görə)_ İstifadə etdiyiniz xidmətlər üçün API açarlarını daxil edin: filmlər/seriallar üçün [OMDb](https://www.omdbapi.com/apikey.aspx), oyunlar üçün [RAWG](https://rawg.io/apidocs), komikslər üçün [Comic Vine](https://comicvine.gamespot.com/api/). Anime (AniList) və musiqi (Deezer) açar tələb etmir.
 
 ### 3. Ad ilə Kart Əlavə Edin
 
@@ -97,7 +98,7 @@ Hər kateqoriya onun axtarışını təmin edən mənbəyə bağlıdır:
 | **Books**        | Kitablar           | Open Library (açar yox) + Google Books (istəyə görə pulsuz açar). Nəticələr birləşdirilir — Google Books birinci, Open Library aşağıdakı. |
 | **RAWG**         | Oyunlar           | Pulsuz açar tələb olunur — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**       | Musiqi (albomlar)  | Yoxdur                                                        |
-| **Jikan**        | Anime           | Yoxdur — pulsuz qeyri-rəsmi MyAnimeList API, açar lazım deyil       |
+| **AniList**        | Anime           | Yoxdur — pulsuz AniList GraphQL API, açar lazım deyil       |
 | **Comic Vine**   | Komikslər          | Pulsuz açar tələb olunur — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Əl ilə**       | Hər hansı digər   | Yoxdur — siz adı yazır və sahələri özünüz doldurursunuz          |
 
@@ -115,7 +116,7 @@ Kitabxana **offlayn-ilk**dir. Plugin yalnız əlavə etmək üçün bir adı akt
 | `www.googleapis.com` | Google Books kateqoriyası axtaranda | Yazdığınız ad və Google Books açarınız | Kitab metadatasını yüklə (müəllif, il, kateqoriyalar, səhifə sayı, örtük, ISBN) |
 | `api.rawg.io` | RAWG oyun kateqoriyası axtaranda | Yazdığınız ad və RAWG açarınız | Oyun metadatasını yüklə (il, janr, inkişaf etdirici, örtük) |
 | `api.deezer.com` | Deezer musiqi kateqoriyası axtaranda | Yazdığınız albom və ya sənətçi | Albom metadatasını yüklə (sənətçi, il, janr, treklər sayı, örtük) |
-| `api.jikan.moe` | Anime kateqoriyası axtaranda | Yazdığınız ad | Anime metadatasını yüklə (ad, il, janr, epizodlar, MAL xalı, qısa məzmun, poster) |
+| `graphql.anilist.co` | Anime kateqoriyası axtaranda | Yazdığınız ad | Anime metadatasını yüklə (ad, il, janr, epizodlar, AniList xalı, studiya, poster) |
 | `comicvine.gamespot.com` | Komiks kateqoriyası axtaranda | Yazdığınız ad və Comic Vine açarınız | Komiks metadatasını yüklə (ad, il, nəşriyyat, nüsxə sayı, örtük) |
 
 Digər məlumat heç vaxt vaultunuzu tərk etmir. Pluginda **telemetriya, analitika və özünü yeniləmə mexanizmi yoxdur**. API açarları (OMDb, Google Books, RAWG, Comic Vine) yalnız yerli plugin ayarlarında saxlanılır və yalnız müvafiq xidmətlərə göndərilir. Örtük şəkilləri birbaşa hər mənbənin qaytardığı URL-lərdən yüklənir.
@@ -210,16 +211,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -263,6 +263,18 @@ Bu bağlantılar qeydlərinizi paylaşılan kateqoriyalar, janrlar və yaradıc�
 
 ---
 
+## Paylaşım
+
+Hər məzmun qeydi başlığında bir **Paylaş** düyməsi alır (və ya `Share current note` əmrini işə salın). O, istənilən yerdə yerləşdirə biləcəyiniz kart şəkli — poster, ad, il, janr, IMDb/AniList xalı və sizin reytinqiniz — yaradır:
+
+- **Mobil cihazda** — **Paylaş…** düyməsi kart şəkli birbaşa əlavə olunmuş halda cihazınızın doğma paylaşım vərəqəsini açır, beləliklə onu istənilən tətbiqə birbaşa göndərə bilərsiniz.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — şəbəkənin yazı redaktorunu qabaqcadan doldurulmuş izahat (ad, sizin reytinqiniz, mənbə linki və bu pluginə link) ilə açır. Kart şəkli eyni anda mübadilə buferinizə kopyalanır, beləliklə onu sadəcə yazıya yapışdırırsınız (Ctrl/Cmd+V).
+- **Şəkli kopyala / Mətni kopyala / Şəkli saxla** — yaradılmış kartı və ya izahatı mübadilə buferinə kopyalayın, və ya əl ilə əlavə etmək üçün şəkli vaultunuzun qoşma qovluğuna saxlayın.
+
+Paylaşım tamamilə yerlidir: kart tətbiq içində qeydin öz metadatası və örtüyündən çəkilir. Heç nə yüklənmir — plugin yalnız seçdiyiniz redaktor URL-ini brauzerinizdə açır.
+
+---
+
 ## Əmrlər
 
 | Əmr                              | Təsvir                                                              |
@@ -273,6 +285,7 @@ Bu bağlantılar qeydlərinizi paylaşılan kateqoriyalar, janrlar və yaradıc�
 | `Refresh metadata for current note`  | Aktiv qeyd üçün metadataları yenidən yükləyin; serial epizod ümumi saylarını yeniləyir.   |
 | `Rebuild graph links`                | Hər məzmun qeydini onun kateqoriyası, janrları və yaradıcıları ilə birləşdirin.          |
 | `Find & remove duplicates`           | Bütün qeydləri URL üzrə tarayın, dublikatları göstərin və seçilmişləri silin.       |
+| `Share current note`                 | Qeydi kart şəkli kimi yaradın və onu X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky və ya Pinterest-də paylaşın. |
 
 ---
 

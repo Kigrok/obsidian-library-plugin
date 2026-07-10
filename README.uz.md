@@ -7,7 +7,7 @@
 <h1 align="center">Kutubxona</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Versiya">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Versiya">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Yuklamalar">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian versiyasi">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Litsenziya">
@@ -28,12 +28,13 @@
 ## Asosiy Xususiyatlar
 
 - **Vizual Karta Tarmog'i** — Maxsus Kutubxona yorlig'i yig'mingizni muqova san'at kartalari galeriyasi sifatida ko'rsatadi.
-- **Ichki Qidiruv** — Ilova ichida nomlarni qidiring va qo'shing: filmlar va seriallar uchun OMDb, kitoblar uchun Open Library yoki Google Books, o'yinlar uchun RAWG, musiqi uchun Deezer, anime uchun Jikan, komikslar uchun Comic Vine.
+- **Ichki Qidiruv** — Ilova ichida nomlarni qidiring va qo'shing: filmlar va seriallar uchun OMDb, kitoblar uchun Open Library yoki Google Books, o'yinlar uchun RAWG, musiqi uchun Deezer, anime uchun AniList, komikslar uchun Comic Vine.
 - **Aqlli Serial Kuzatuvi** — Mavsumlar va epizodlar soni avtomatik yuklanadi va sinxronlanadi.
 - **Taraqqiyot Ko'rsatkichlari** — Kartalarda va eslatma sarlavhalarida vizual taraqqiyot paneli qancha ko'rgan yoki o'qiganingizni ko'rsatadi.
 - **Boy Eslatma Sarlavhalari** — Har bir kontent eslatmasi barcha asosiy metadatalar bilan avtomatik yaratilgan sarlavha oladi.
 - **Maxsus Kategoriyalar** — Filmlar, Seriallar, Anime, Komikslar, Kitoblar, O'yinlar, Musiqi yoki qo'lda manba orqali boshqa narsalar uchun kategoriyalar yarating.
 - **Grafik Bog'lanishlari** — `Related` oldingi ma'lumot xususiyati har bir eslatmani uning kategoriyasi, janrlari va yaratuvchilari bilan bog'laydi, chiroyli grafik uchun avtomatik sinxronlanadi.
+- **Ulashish Kartalari** — Istalgan kontent eslatmasini ulashsa bo'ladigan karta surati (poster, sarlavha, yil, janr, IMDb bahosi va sizning reytingingiz)ga aylantiring va uni X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky yoki Pinterest ga joylang — uni to'g'ridan-to'g'ri qurilmangiz ilovalariga ulashing yoki rasmni istalgan joyda ishlatish uchun nusxalang/saqlang.
 - **Saralash & Yig'ilish** — Kartalarni nom, yil, reyting yoki sana bo'yicha saralang; istalgan kategoriyani yig'ing.
 - **Statistika** — Eng yaxshi janrlar, eng yaxshi yaratuvchilar (faqat filmlar va seriallar) va medal reytinglari bilan har bir kategoriya uchun eng yaxshi elementlar.
 - **Takroriy Topish** — URL bo'yicha bir xil nomni qo'shishni avtomatik to'xtatadi. Ichki buyruq mavjud takroriy topadi va o'chiradi.
@@ -51,7 +52,7 @@
 
 1. **Sozlamalar** > **Kutubxona**ga o'ting.
 2. **Kategoriyalaringizni** qo'shing — ochiladigan menyudan oldindan belgilangan turini (Filmlar, Seriallar, Kitoblar, Komikslar, O'yinlar, Musiqi, Anime yoki Qo'lda) tanlang va **Kategoriya qo'shing** tugmasini bosing. Har bir kategoriyada tilingizga tarjima qilingan ko'rsatilgan nom, `Type` qiymati (har doim inglizcha, masalan `Movie`), manba va eslatmalarni saqlash uchun ixtiyoriy papka mavjud.
-3. _(Ixtiyoriy)_ Ishlatgan xizmatlaringiz uchun API kalitlarini kiriting: filmlar/seriallar uchun [OMDb](https://www.omdbapi.com/apikey.aspx), o'yinlar uchun [RAWG](https://rawg.io/apidocs), komikslar uchun [Comic Vine](https://comicvine.gamespot.com/api/). Anime (Jikan) va musiqi (Deezer) kalit talab qilmaydi.
+3. _(Ixtiyoriy)_ Ishlatgan xizmatlaringiz uchun API kalitlarini kiriting: filmlar/seriallar uchun [OMDb](https://www.omdbapi.com/apikey.aspx), o'yinlar uchun [RAWG](https://rawg.io/apidocs), komikslar uchun [Comic Vine](https://comicvine.gamespot.com/api/). Anime (AniList) va musiqi (Deezer) kalit talab qilmaydi.
 
 ### 3. Nom Bilan Qo'shish
 
@@ -97,7 +98,7 @@ Har bir kategoriya uning qidiruvini ta'minlaydigan manbaga bog'langan:
 | **Books**        | Kitoblar           | Open Library (kalit yo'q) + Google Books (ixtiyoriy bepul kalit). Natijalar birlashtirilgan — Google Books birinchi, Open Library pastda. |
 | **RAWG**         | O'yinlar           | Bepul kalit talab qilinadi — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**       | Musiqi (albomlar)  | Yo'q                                                        |
-| **Jikan**        | Anime           | Yo'q — bepul rasmiy bo'lmagan MyAnimeList API, kalit kerak emas       |
+| **AniList**        | Anime           | Yo'q — bepul AniList GraphQL API, kalit kerak emas       |
 | **Comic Vine**   | Komikslar          | Bepul kalit talab qilinadi — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Qo'lda**       | Boshqa narsalar   | Yo'q — siz nom kiritsangiz va maydonlarni o'zingiz to'ldirasiz          |
 
@@ -115,7 +116,7 @@ Kutubxona **offline-birinchi**. Plagin faqat qo'shish uchun nomni faol qidirgani
 | `www.googleapis.com` | Google Books kategoriyasini qidirganingizda | Siz kiritgan nom va Google Books kalitingiz | Kitab metadatasini yuklash (muallif, yil, kategoriyalar, sahifalar soni, muqova, ISBN) |
 | `api.rawg.io` | RAWG o'yin kategoriyasini qidirganingizda | Siz kiritgan nom va RAWG kalitingiz | O'yin metadatasini yuklash (yil, janr, ishlab chiqaruvchi, muqova) |
 | `api.deezer.com` | Deezer musiqi kategoriyasini qidirganingizda | Siz kiritgan albom yoki ijrochi | Albom metadatasini yuklash (ijrochi, yil, janr, treklar soni, muqova) |
-| `api.jikan.moe` | Anime kategoriyasini qidirganingizda | Siz kiritgan nom | Anime metadatasini yuklash (nom, yil, janr, epizodlar, MAL bali, syujet, poster) |
+| `graphql.anilist.co` | Anime kategoriyasini qidirganingizda | Siz kiritgan nom | Anime metadatasini yuklash (nom, yil, janr, epizodlar, AniList bali, studiya, poster) |
 | `comicvine.gamespot.com` | Komiks kategoriyasini qidirganingizda | Siz kiritgan nom va Comic Vine kalitingiz | Komiks metadatasini yuklash (nom, yil, nashriyot, sonlar soni, muqova) |
 
 Boshqa hech qanday ma'lumot sizning vaultingizdan chiqmaydi. Plaginda **telemetriya, analitika va o'zini yangilash mexanizmi yo'q**. API kalitlari (OMDb, Google Books, RAWG, Comic Vine) faqat mahalliy plagin sozlamalarida saqlanadi va faqat tegishli xizmatlarga yuboriladi. Muqova rasmlari to'g'ridan-to'g'ri har bir manbaning qaytargan URL laridan yuklanadi.
@@ -210,16 +211,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -263,6 +263,18 @@ Ushbu bog'lanishlar eslatmalaringizni umumiy kategoriyalar, janrlar va yaratuvch
 
 ---
 
+## Ulashish
+
+Har bir kontent eslatmasi sarlavhasida **Ulashish** tugmasini oladi (yoki `Share current note` buyrug'ini ishga tushiring). U karta suratini chizadi — poster, sarlavha, yil, janr, IMDb/AniList bahosi va sizning reytingingiz — uni istalgan joyda joylashingiz mumkin:
+
+- **Mobil qurilmada** — **Ulashish…** tugmasi qurilmangizning tizim ulashish oynasini karta surati to'g'ridan-to'g'ri biriktirilgan holda ochadi, shunda uni istalgan ilovaga bevosita yuborishingiz mumkin.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — tarmoq muharririni oldindan to'ldirilgan izoh bilan ochadi (sarlavha, sizning reytingingiz, manba havolasi va ushbu plaginga havola). Karta surati ayni vaqtda vaqtinchalik xotiraga nusxalanadi, shuning uchun uni postga joylashingiz (Ctrl/Cmd+V) kifoya.
+- **Rasmni nusxalash / Matnni nusxalash / Rasmni saqlash** — tayyor kartani yoki izohni vaqtinchalik xotiraga nusxalang, yoki qo'lda biriktirish uchun rasmni xazinangizning ilova papkasiga saqlang.
+
+Ulashish to'liq mahalliy: karta ilova ichida eslatmaning o'z metadatalari va muqovasidan chiziladi. Hech narsa yuklanmaydi — plagin faqat siz tanlagan muharrir URL manzilini brauzeringizda ochadi.
+
+---
+
 ## Buyruqlar
 
 | Buyruq                              | Tavsif                                                              |
@@ -273,6 +285,7 @@ Ushbu bog'lanishlar eslatmalaringizni umumiy kategoriyalar, janrlar va yaratuvch
 | `Refresh metadata for current note`  | Faol eslatma uchun metadatalarni qayta yuklang; serial epizodlar sonini yangilaydi.   |
 | `Rebuild graph links`                | Har bir kontent eslatmasini uning kategoriyasi, janrlari va yaratuvchilari bilan bog'lang.          |
 | `Find & remove duplicates`           | Barcha eslatmalarni URL bo'yicha skanerlang, takroriy ko'rsating va tanlanganlarni o'chiring.       |
+| `Share current note`                 | Eslatmani karta surati sifatida chizib, uni X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky yoki Pinterest da ulashing. |
 
 ---
 

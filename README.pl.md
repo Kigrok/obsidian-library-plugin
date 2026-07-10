@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -28,12 +28,13 @@
 ## Kluczowe funkcje
 
 - **Wizualna siatka kart** — Dedykowana karta Library wyświetla Twoją kolekcję jako galerię kart ze sztukami okładek.
-- **Wbudowane wyszukiwanie** — Przeszukuj i dodawaj tytuły bezpośrednio w aplikacji: OMDb dla filmów i seriali, Open Library lub Google Books dla książek, RAWG dla gier, Deezer dla muzyki, Jikan dla anime, Comic Vine dla komiksów.
+- **Wbudowane wyszukiwanie** — Przeszukuj i dodawaj tytuły bezpośrednio w aplikacji: OMDb dla filmów i seriali, Open Library lub Google Books dla książek, RAWG dla gier, Deezer dla muzyki, AniList dla anime, Comic Vine dla komiksów.
 - **Inteligentne śledzenie seriali** — Sezon i łączna liczba odcinków są automatycznie pobierane i utrzymywane w synchronizacji.
 - **Wskaźniki postępu** — Wizualne paski postępu na kartach i nagłówkach notatek pokazują, ile obejrzałeś lub przeczytałeś.
 - **Bogate nagłówki notatek** — Każda notatka treści otrzymuje automatycznie wygenerowany nagłówek ze wszystkimi kluczowymi metadanymi.
 - **Własne kategorie** — Twórz kategorie dla filmów, seriali, anime, komiksów, książek, gier, muzyki lub czegokolwiek innego za pomocą ręcznego źródła.
 - **Linki grafu** — Właściwość `Related` w frontmatterze łączy każdą notatkę z jej kategorią, gatunkami i twórcami, automatycznie utrzymywana w synchronizacji dla pięknego grafu.
+- **Karty do udostępniania** — Zamień dowolną notatkę treści w obraz karty do udostępnienia (plakat, tytuł, rok, gatunek, ocena IMDb i Twoja ocena) i opublikuj go na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky lub Pinterest — udostępnij go bezpośrednio aplikacjom na Twoim urządzeniu lub skopiuj/zapisz obraz, aby użyć go gdziekolwiek.
 - **Sortowanie i zwijanie** — Sortuj karty według nazwy, roku, oceny lub daty; zwijaj dowolną kategorię.
 - **Statystyki** — Najlepsze gatunki, najlepsi twórcy (tylko filmy i seriale) i najlepsze pozycje w każdej kategorii z rankingami medalowymi.
 - **Wykrywanie duplikatów** — Automatycznie zapobiega dodawaniu tego samego tytułu dwukrotnie według URL. Wbudowane polecenie znajduje i usuwa istniejące duplikaty.
@@ -51,7 +52,7 @@ Zainstaluj **Library** z [katalogu Obsidian Community Plugins](https://community
 
 1. Przejdź do **Ustawienia** > **Library**.
 2. Dodaj swoje **Kategorie** — wybierz predefiniowany typ (Movies, Series, Books, Comics, Games, Music, Anime lub Manual) z menu rozwijanego i kliknij **Add category**. Każda kategoria ma nazwę wyświetlaną (przetłumaczoną na Twój język), wartość `Type` (zawsze angielską, np. `Movie`), źródło i opcjonalny folder do przechowywania notatek.
-3. _(Opcjonalnie)_ Wprowadź klucze API dla używanych usług: [OMDb](https://www.omdbapi.com/apikey.aspx) dla filmów/seriali, [RAWG](https://rawg.io/apidocs) dla gier, [Comic Vine](https://comicvine.gamespot.com/api/) dla komiksów. Anime (Jikan) i muzyka (Deezer) nie wymagają klucza.
+3. _(Opcjonalnie)_ Wprowadź klucze API dla używanych usług: [OMDb](https://www.omdbapi.com/apikey.aspx) dla filmów/seriali, [RAWG](https://rawg.io/apidocs) dla gier, [Comic Vine](https://comicvine.gamespot.com/api/) dla komiksów. Anime (AniList) i muzyka (Deezer) nie wymagają klucza.
 
 ### 3. Dodaj kartę po tytule
 
@@ -97,7 +98,7 @@ Każda kategoria jest powiązana ze źródłem, które zasila jej wyszukiwanie:
 | **Books**         | Książki        | Open Library (bez klucza) + Google Books (opcjonalny darmowy klucz). Wyniki są łączone — Google Books pierwsze, Open Library poniżej. |
 | **RAWG**          | Gry            | Wymagany darmowy klucz — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**        | Muzyka (albumy)| Brak                                                       |
-| **Jikan**         | Anime          | Brak — darmowe nieoficjalne API MyAnimeList, klucz nie jest wymagany |
+| **AniList**         | Anime          | Brak — darmowe API GraphQL AniList, klucz nie jest wymagany |
 | **Comic Vine**    | Komiksy        | Wymagany darmowy klucz — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**        | Wszystko inne  | Brak — sam wpisujesz tytuł i wypełniasz pola              |
 
@@ -115,7 +116,7 @@ Library jest **offline-first**. Plugin kontaktuje się z siecią tylko wtedy, gd
 | `www.googleapis.com` | Przeszukujesz kategorię Google Books | Tytuł, który wpisujesz, i Twój klucz Google Books | Pobieranie metadanych książki (autor, rok, kategorie, liczba stron, okładka, ISBN) |
 | `api.rawg.io` | Przeszukujesz kategorię gier RAWG | Tytuł, który wpisujesz, i Twój klucz RAWG | Pobieranie metadanych gry (rok, gatunki, deweloper, okładka) |
 | `api.deezer.com` | Przeszukujesz kategorię muzyki Deezer | Album lub artysta, którego wpisujesz | Pobieranie metadanych albumu (artysta, rok, gatunki, liczba utworów, okładka) |
-| `api.jikan.moe` | Przeszukujesz kategorię anime | Tytuł, który wpisujesz | Pobieranie metadanych anime (tytuł, rok, gatunki, odcinki, ocena MAL, synopsis, plakat) |
+| `graphql.anilist.co` | Przeszukujesz kategorię anime | Tytuł, który wpisujesz | Pobieranie metadanych anime (tytuł, rok, gatunek, odcinki, ocena AniList, studio, plakat) |
 | `comicvine.gamespot.com` | Przeszukujesz kategorię komiksów | Tytuł, który wpisujesz, i Twój klucz Comic Vine | Pobieranie metadanych komiksu (tytuł, rok, wydawca, liczba numerów, okładka) |
 
 Żadne inne dane nigdy nie opuszczają Twojego vaultu. Plugin **nie ma telemetrii, nie ma analityki i nie ma mechanizmu automatycznej aktualizacji**. Klucze API (OMDb, Google Books, RAWG, Comic Vine) są przechowywane tylko w lokalnych ustawieniach pluginu i wysyłane tylko do odpowiednich usług. Obrazy okładek są ładowane bezpośrednio z adresów URL zwracanych przez każde źródło.
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Te linki łączą Twoje notatki przez wspólne kategorie, gatunki i twórców, d
 
 ---
 
+## Udostępnianie
+
+Każda notatka treści otrzymuje przycisk **Share** w swoim nagłówku (lub uruchom `Share current note`). Renderuje obraz karty — plakat, tytuł, rok, gatunek, ocenę IMDb/AniList i Twoją ocenę — który możesz opublikować gdziekolwiek:
+
+- **Na urządzeniu mobilnym** — przycisk **Share…** otwiera natywny arkusz udostępniania Twojego urządzenia z bezpośrednio dołączonym obrazem karty, dzięki czemu możesz wysłać go prosto do dowolnej aplikacji.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — otwiera edytor danej sieci z wstępnie wypełnionym podpisem (tytuł, Twoja ocena, link źródłowy i link do tego pluginu). Obraz karty jest jednocześnie kopiowany do schowka, więc wystarczy, że wkleisz go (Ctrl/Cmd+V) do posta.
+- **Copy image / Copy text / Save image** — skopiuj wyrenderowaną kartę lub podpis do schowka albo zapisz obraz w folderze załączników Twojego vaultu, aby dołączyć go ręcznie.
+
+Udostępnianie odbywa się całkowicie lokalnie: karta jest rysowana w aplikacji na podstawie własnych metadanych i okładki notatki. Nic nie jest przesyłane — plugin otwiera tylko wybrany przez Ciebie adres URL edytora w Twojej przeglądarce.
+
+---
+
 ## Polecenia
 
 | Polecenie                            | Opis                                                                     |
@@ -275,6 +287,7 @@ Te linki łączą Twoje notatki przez wspólne kategorie, gatunki i twórców, d
 | `Refresh metadata for current note`  | Ponowne pobranie metadanych dla aktywnej notatki; aktualizuje łączne liczby odcinków seriali. |
 | `Rebuild graph links`                | Połącz każdą notatkę treści z jej kategorią, gatunkami i twórcami.        |
 | `Find & remove duplicates`           | Przeskanuj wszystkie notatki według URL, wyświetl duplikaty i usuń wybrane. |
+| `Share current note`                 | Wyrenderuj notatkę jako obraz karty i udostępnij ją na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky lub Pinterest. |
 
 ---
 

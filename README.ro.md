@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -28,12 +28,13 @@
 ## Funcționalități cheie
 
 - **Grila vizuală de cărți** — O fila dedicată Library afișează colecția dvs. ca o galerie de cărți cu artă de copertă.
-- **Căutare integrată** — Căutați și adăugați titluri direct în aplicație: OMDb pentru filme și seriale, Open Library sau Google Books pentru cărți, RAWG pentru jocuri, Deezer pentru muzică, Jikan pentru anime, Comic Vine pentru benzi desenate.
+- **Căutare integrată** — Căutați și adăugați titluri direct în aplicație: OMDb pentru filme și seriale, Open Library sau Google Books pentru cărți, RAWG pentru jocuri, Deezer pentru muzică, AniList pentru anime, Comic Vine pentru benzi desenate.
 - **Urmărire inteligentă a serialelor** — Sezoanele și totalurile episoadelor sunt preluate automat și menținute sincronizate.
 - **Indicatori de progres** — Barele de progres vizuale pe cărți și antetele notelor arată cât ați văzut sau citit.
 - **Antete bogate pentru note** — Fiecare notă de conținut primește un antet generat automat cu toate metadatele cheie.
 - **Categorii personalizate** — Creați categorii pentru Filme, Seriale, Anime, Benzi desenate, Cărți, Jocuri, Muzică sau orice altceva prin sursa manuală.
 - **Linkuri în graf** — O proprietate `Related` în frontmatter leagă fiecare notă de categoria, genurile și creatorii săi, menținută automat sincronizată pentru un graf frumos.
+- **Carduri de partajat** — Transformați orice notă de conținut într-o imagine de card care poate fi partajată (poster, titlu, an, gen, scor IMDb și ratingul dvs.) și publicați-o pe X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky sau Pinterest — partajați-o direct în aplicațiile dispozitivului dvs. sau copiați/salvați imaginea pentru a o folosi oriunde.
 - **Sortare și pliere** — Sortați cărțile după nume, an, rating sau dată; pliați orice categorie.
 - **Statistici** — Genuri de top, creatori de top (doar filme și seriale) și elemente de top per categorie cu clasamente cu medalii.
 - **Detectarea duplicatelor** — Previne automat adăugarea aceluiași titlu de două ori după URL. O comandă integrată găsește și elimină duplicatele existente.
@@ -51,7 +52,7 @@ Instalați **Library** din [directorul Obsidian Community Plugins](https://commu
 
 1. Mergeți la **Setări** > **Library**.
 2. Adăugați **Categoriile** dvs. — selectați un tip predefinit (Movies, Series, Books, Comics, Games, Music, Anime sau Manual) din meniul derulant și faceți clic pe **Add category**. Fiecare categorie are un nume de afișare (tradus în limba dvs.), o valoare `Type` (întotdeauna în engleză, de ex. `Movie`), o sursă și un folder opțional pentru stocarea notelor.
-3. _(Opțional)_ Introduceți cheile API pentru serviciile pe care le utilizați: [OMDb](https://www.omdbapi.com/apikey.aspx) pentru filme/seriale, [RAWG](https://rawg.io/apidocs) pentru jocuri, [Comic Vine](https://comicvine.gamespot.com/api/) pentru benzi desenate. Anime (Jikan) și muzica (Deezer) nu necesită cheie.
+3. _(Opțional)_ Introduceți cheile API pentru serviciile pe care le utilizați: [OMDb](https://www.omdbapi.com/apikey.aspx) pentru filme/seriale, [RAWG](https://rawg.io/apidocs) pentru jocuri, [Comic Vine](https://comicvine.gamespot.com/api/) pentru benzi desenate. Anime (AniList) și muzica (Deezer) nu necesită cheie.
 
 ### 3. Adăugați o carte după titlu
 
@@ -97,7 +98,7 @@ Fiecare categorie este legată de o sursă care îi alimentează căutarea:
 | **Books**         | Cărți             | Open Library (fără cheie) + Google Books (cheie gratuită opțională). Rezultatele sunt îmbinate — Google Books primele, Open Library dedesubt. |
 | **RAWG**          | Jocuri            | Cheie gratuită necesară — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**        | Muzică (albume)   | Niciuna                                                     |
-| **Jikan**         | Anime             | Niciuna — API neoficial gratuit MyAnimeList, nu este necesară cheie |
+| **AniList**         | Anime             | Niciuna — API GraphQL AniList gratuit, nu este necesară cheie |
 | **Comic Vine**    | Benzi desenate    | Cheie gratuită necesară — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**        | Orice altceva     | Niciuna — tastați singur titlul și completați câmpurile    |
 
@@ -115,7 +116,7 @@ Library este **offline-first**. Pluginul contactează rețeaua doar atunci când
 | `www.googleapis.com` | Căutați o categorie Google Books | Titlul pe care îl tastați și cheia dvs. Google Books | Preluarea metadatelor cărții (autor, an, categorii, numărul de pagini, copertă, ISBN) |
 | `api.rawg.io` | Căutați o categorie de jocuri RAWG | Titlul pe care îl tastați și cheia dvs. RAWG | Preluarea metadatelor jocului (an, genuri, dezvoltator, copertă) |
 | `api.deezer.com` | Căutați o categorie de muzică Deezer | Albumul sau artistul pe care îl tastați | Preluarea metadatelor albumului (artist, an, genuri, numărul de piese, copertă) |
-| `api.jikan.moe` | Căutați o categorie anime | Titlul pe care îl tastați | Preluarea metadatelor anime (titlu, an, genuri, episoade, scor MAL, sinopsis, poster) |
+| `graphql.anilist.co` | Căutați o categorie anime | Titlul pe care îl tastați | Preluarea metadatelor anime (titlu, an, genuri, episoade, scor AniList, studio, poster) |
 | `comicvine.gamespot.com` | Căutați o categorie de benzi desenate | Titlul pe care îl tastați și cheia dvs. Comic Vine | Preluarea metadatelor benzii desenate (titlu, an, editor, numărul de issue-uri, copertă) |
 
 Nicio altă dată nu părăsește vreodată vaultul dvs. Pluginul **nu are telemetrie, nu are analitică și nu are mecanism de auto-actualizare**. Cheile API (OMDb, Google Books, RAWG, Comic Vine) sunt stocate doar în setările locale ale pluginului și sunt trimise doar serviciilor respective. Imaginile de copertă se încarcă direct de la URL-urile returnate de fiecare sursă.
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Aceste linkuri conectează notele dvs. prin categorii, genuri și creatori comun
 
 ---
 
+## Partajare
+
+Fiecare notă de conținut primește un buton **Share** în antetul său (sau rulați `Share current note`). Acesta randează o imagine de card — poster, titlu, an, gen, scor IMDb/AniList și ratingul dvs. — pe care o puteți publica oriunde:
+
+- **Pe mobil** — butonul **Share…** deschide foaia de partajare nativă a dispozitivului dvs. cu imaginea cardului atașată direct, astfel încât să o puteți trimite imediat către orice aplicație.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — deschide fereastra de compunere a rețelei cu o legendă precompletată (titlu, ratingul dvs., linkul sursă și un link către acest plugin). Imaginea cardului este copiată în clipboard în același timp, astfel încât să o lipiți pur și simplu (Ctrl/Cmd+V) în postare.
+- **Copy image / Copy text / Save image** — copiați cardul randat sau legenda în clipboard, sau salvați imaginea în folderul de atașamente al vaultului dvs. pentru a o atașa manual.
+
+Partajarea este complet locală: cardul este desenat în aplicație din metadatele și coperta proprii ale notei. Nimic nu este încărcat — pluginul deschide doar URL-ul ferestrei de compunere pe care îl alegeți în browserul dvs.
+
+---
+
 ## Comenzi
 
 | Comandă                              | Descriere                                                                 |
@@ -275,6 +287,7 @@ Aceste linkuri conectează notele dvs. prin categorii, genuri și creatori comun
 | `Refresh metadata for current note`  | Recuperați metadatele pentru nota activă; actualizați totalurile de episoade ale serialelor. |
 | `Rebuild graph links`                | Conectați fiecare notă de conținut la categoria, genurile și creatorii săi. |
 | `Find & remove duplicates`           | Scanați toate notele după URL, afișați duplicatele și eliminați-le pe cele selectate. |
+| `Share current note`                 | Randați nota ca imagine de card și partajați-o pe X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky sau Pinterest. |
 
 ---
 

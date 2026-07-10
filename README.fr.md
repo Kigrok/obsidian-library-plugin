@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -28,12 +28,13 @@
 ## Fonctionnalités Principales
 
 - **Grille Visuelle de Cartes** — Un onglet dédié Library affiche votre collection sous forme de galerie de cartes avec illustrations.
-- **Recherche Intégrée** — Recherchez et ajoutez des titres directement dans l'application : OMDb pour les films et séries, Open Library ou Google Books pour les livres, RAWG pour les jeux, Deezer pour la musique, Jikan pour l'anime, Comic Vine pour les comics.
-- **Suivi Intelligente des Séries** — Les saisons et le nombre total d'épisodes sont récupérés automatiquement et maintenus synchronisés.
+- **Recherche Intégrée** — Recherchez et ajoutez des titres directement dans l'application : OMDb pour les films et séries, Open Library ou Google Books pour les livres, RAWG pour les jeux, Deezer pour la musique, AniList pour l'anime, Comic Vine pour les comics.
+- **Suivi Intelligent des Séries** — Les saisons et le nombre total d'épisodes sont récupérés automatiquement et maintenus synchronisés.
 - **Indicateurs de Progression** — Des barres de progression visuelles sur les cartes et les en-têtes de notes montrent ce que vous avez regardé ou lu.
 - **En-têtes de Notes Enrichis** — Chaque note de contenu reçoit un en-tête généré automatiquement avec toutes les métadonnées clés.
 - **Catégories Personnalisées** — Créez des catégories pour les Films, Séries, Anime, Comics, Livres, Jeux, Musique ou tout autre élément via la source manuelle.
 - **Liens dans le Graphe** — Une propriété `Related` dans le frontmatter relie chaque note à sa catégorie, ses genres et ses créateurs, synchronisée automatiquement pour un beau graphe.
+- **Cartes de Partage** — Transformez n'importe quelle note de contenu en une image de carte partageable (affiche, titre, année, genre, note IMDb et votre note) et publiez-la sur X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky ou Pinterest — partagez-la directement vers les applications de votre appareil, ou copiez/enregistrez l'image pour l'utiliser où vous voulez.
 - **Tri et Réduction** — Triez les cartes par nom, année, note ou date ; réduisez n'importe quelle catégorie.
 - **Statistiques** — Genres principaux, créateurs principaux (films et séries uniquement) et éléments principaux par catégorie avec classements médailles.
 - **Détection de Doublons** — Empêche automatiquement l'ajout du même titre deux fois par URL. Une commande intégrée trouve et supprime les doublons existants.
@@ -51,7 +52,7 @@ Installez **Library** depuis le [répertoire Obsidian Community Plugins](https:/
 
 1. Allez dans **Paramètres** > **Library**.
 2. Ajoutez vos **Catégories** — sélectionnez un type prédéfini (Movies, Series, Books, Comics, Games, Music, Anime ou Manual) dans le menu déroulant et cliquez sur **Add category**. Chaque catégorie a un nom d'affichage (traduit dans votre langue), une valeur `Type` (toujours en anglais, par exemple `Movie`), une source et un dossier optionnel pour stocker les notes.
-3. _(Optionnel)_ Saisissez les clés API pour les services que vous utilisez : [OMDb](https://www.omdbapi.com/apikey.aspx) pour les films/séries, [RAWG](https://rawg.io/apidocs) pour les jeux, [Comic Vine](https://comicvine.gamespot.com/api/) pour les comics. L'anime (Jikan) et la musique (Deezer) ne nécessitent pas de clé.
+3. _(Optionnel)_ Saisissez les clés API pour les services que vous utilisez : [OMDb](https://www.omdbapi.com/apikey.aspx) pour les films/séries, [RAWG](https://rawg.io/apidocs) pour les jeux, [Comic Vine](https://comicvine.gamespot.com/api/) pour les comics. L'anime (AniList) et la musique (Deezer) ne nécessitent pas de clé.
 
 ### 3. Ajouter une Carte par Titre
 
@@ -97,7 +98,7 @@ Chaque catégorie est liée à une source qui alimente sa recherche :
 | **Books**         | Livres             | Open Library (pas de clé) + Google Books (clé gratuite optionnelle). Les résultats sont fusionnés — Google Books en premier, Open Library en dessous. |
 | **RAWG**          | Jeux               | Clé gratuite requise — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**        | Musique (albums)   | Aucune                                                      |
-| **Jikan**         | Anime              | Aucune — API non officielle gratuite de MyAnimeList, pas de clé requise |
+| **AniList**       | Anime              | Aucune — API GraphQL AniList gratuite, aucune clé requise |
 | **Comic Vine**    | Comics             | Clé gratuite requise — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**        | Tout autre         | Aucune — vous tapez le titre et remplissez les champs vous-même |
 
@@ -115,7 +116,7 @@ Library est **hors-ligne d'abord**. Le plugin ne contacte le réseau que lorsque
 | `www.googleapis.com` | Vous recherchez une catégorie Google Books | Le titre que vous tapez et votre clé Google Books | Récupérer les métadonnées de livres (auteur, année, catégories, nombre de pages, couverture, ISBN) |
 | `api.rawg.io` | Vous recherchez une catégorie de jeux RAWG | Le titre que vous tapez et votre clé RAWG | Récupérer les métadonnées de jeux (année, genre, développeur, couverture) |
 | `api.deezer.com` | Vous recherchez une catégorie musicale Deezer | L'album ou l'artiste que vous tapez | Récupérer les métadonnées d'album (artiste, année, genre, nombre de pistes, couverture) |
-| `api.jikan.moe` | Vous recherchez une catégorie anime | Le titre que vous tapez | Récupérer les métadonnées anime (titre, année, genre, épisodes, score MAL, synopsis, affiche) |
+| `graphql.anilist.co` | Vous recherchez une catégorie anime | Le titre que vous tapez | Récupérer les métadonnées anime (titre, année, genre, épisodes, score AniList, studio, affiche) |
 | `comicvine.gamespot.com` | Vous recherchez une catégorie comics | Le titre que vous tapez et votre clé Comic Vine | Récupérer les métadonnées de comics (titre, année, éditeur, nombre de numéros, couverture) |
 
 Aucune autre donnée ne quitte jamais votre vault. Le plugin **n'a pas de télémétrie, pas d'analytique et pas de mécanisme de mise à jour automatique**. Les clés API (OMDb, Google Books, RAWG, Comic Vine) sont stockées uniquement dans les paramètres locaux du plugin et envoyées uniquement à leurs services respectifs. Les images de couverture sont chargées directement depuis les URLs retournées par chaque source.
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Ces liens connectent vos notes via des catégories, genres et créateurs partag�
 
 ---
 
+## Partage
+
+Chaque note de contenu obtient un bouton **Partager** dans son en-tête (ou exécutez `Share current note`). Il génère une image de carte — affiche, titre, année, genre, note IMDb/AniList et votre note — que vous pouvez publier n'importe où :
+
+- **Sur mobile** — le bouton **Partager…** ouvre la feuille de partage native de votre appareil avec l'image de la carte directement jointe, pour que vous puissiez l'envoyer vers n'importe quelle application.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — ouvre le compositeur du réseau avec une légende pré-remplie (titre, votre note, le lien source et un lien vers ce plugin). L'image de la carte est copiée dans votre presse-papiers en même temps, il vous suffit donc de la coller (Ctrl/Cmd+V) dans la publication.
+- **Copier l'image / Copier le texte / Enregistrer l'image** — copiez la carte générée ou la légende dans le presse-papiers, ou enregistrez l'image dans le dossier de pièces jointes de votre vault pour la joindre manuellement.
+
+Le partage est entièrement local : la carte est dessinée dans l'application à partir des métadonnées et de la couverture de la note elle-même. Rien n'est téléchargé — le plugin ouvre uniquement l'URL du compositeur que vous choisissez dans votre navigateur.
+
+---
+
 ## Commandes
 
 | Commande                             | Description                                                                |
@@ -275,6 +287,7 @@ Ces liens connectent vos notes via des catégories, genres et créateurs partag�
 | `Refresh metadata for current note`  | Récupère à nouveau les métadonnées pour la note active ; met à jour les totaux d'épisodes des séries. |
 | `Rebuild graph links`                | Connecte chaque note de contenu à sa catégorie, ses genres et ses créateurs. |
 | `Find & remove duplicates`           | Scanne toutes les notes par URL, affiche les doublons et supprime ceux sélectionnés. |
+| `Share current note`                 | Génère la note sous forme d'image de carte et la partage sur X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky ou Pinterest. |
 
 ---
 

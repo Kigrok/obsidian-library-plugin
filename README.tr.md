@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -28,12 +28,13 @@
 ## Temel Özellikler
 
 - **Görsel Kart Izgarası** — Özel bir Library sekmesi koleksiyonunuzu kapak sanatı kartlarından oluşan bir galeri olarak görüntüler.
-- **Yerleşik Arama** — Uygulama içinde doğrudan başlık arayın ve ekleyin: film ve diziler için OMDb, kitaplar için Open Library veya Google Books, oyunlar için RAWG, müzik için Deezer, anime için Jikan, çizgi romanlar için Comic Vine.
+- **Yerleşik Arama** — Uygulama içinde doğrudan başlık arayın ve ekleyin: film ve diziler için OMDb, kitaplar için Open Library veya Google Books, oyunlar için RAWG, müzik için Deezer, anime için AniList, çizgi romanlar için Comic Vine.
 - **Akıllı Dizi Takibi** — Sezonlar ve toplam bölüm sayıları otomatik olarak alınır ve senkronize edilir.
 - **İlerleme Göstergeleri** — Kartlarda ve not başlıklarındaki görsel ilerleme çubukları ne kadar izlediğinizi veya okuduğunuzu gösterir.
 - **Zengin Not Başlıkları** — Her içerik notu, tüm ana meta verilerle otomatik olarak oluşturulmuş bir başlık alır.
 - **Özel Kategoriler** — Filmler, Diziler, Anime, Çizgi Romanlar, Kitaplar, Oyunlar, Müzik veya manuel kaynak aracılığıyla başka herhangi bir şey için kategoriler oluşturun.
 - **Graf Bağlantıları** — Frontmatter'daki bir `Related` özelliği her notu kategorisi, türleri ve yaratıcılarıyla bağlar, güzel bir graf için otomatik olarak senkronize edilir.
+- **Paylaşım Kartları** — Herhangi bir içerik notunu paylaşılabilir bir kart görseline (poster, başlık, yıl, tür, IMDb puanı ve kendi puanınız) dönüştürün ve X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky veya Pinterest'te paylaşın — doğrudan cihazınızın uygulamalarına gönderin ya da görseli kopyalayıp/kaydederek her yerde kullanın.
 - **Sıralama ve Daraltma** — Kartları ada, yıla, puana veya tarihe göre sıralayın; herhangi bir kategoriyi daraltın.
 - **İstatistikler** — Üst türler, üst yaratıcılar (yalnızca film ve diziler) ve madalya sıralamalarıyla kategori başına üst öğeler.
 - **Çoğaltma Algılama** — URL'ye göre aynı başlığın iki kez eklenmesini otomatik olarak önler. Yerleşik bir komut mevcut çoğaltmaları bulur ve kaldırır.
@@ -51,7 +52,7 @@
 
 1. **Ayarlar** > **Library**'ye gidin.
 2. **Kategorilerinizi** ekleyin — açılır menüden önceden tanımlanmış bir tür (Movies, Series, Books, Comics, Games, Music, Anime veya Manual) seçin ve **Add category**'ye tıklayın. Her kategorinin bir görüntü adı (sizin dilinize çevrilmiş), bir `Type` değeri (her zaman İngilizce, ör. `Movie`), bir kaynak ve notları depolamak için isteğe bir klasörü vardır.
-3. _(İsteğe bağlı)_ Kullandığınız hizmetler için API anahtarlarını girin: film/diziler için [OMDb](https://www.omdbapi.com/apikey.aspx), oyunlar için [RAWG](https://rawg.io/apidocs), çizgi romanlar için [Comic Vine](https://comicvine.gamespot.com/api/). Anime (Jikan) ve müzik (Deezer) anahtar gerektirmez.
+3. _(İsteğe bağlı)_ Kullandığınız hizmetler için API anahtarlarını girin: film/diziler için [OMDb](https://www.omdbapi.com/apikey.aspx), oyunlar için [RAWG](https://rawg.io/apidocs), çizgi romanlar için [Comic Vine](https://comicvine.gamespot.com/api/). Anime (AniList) ve müzik (Deezer) anahtar gerektirmez.
 
 ### 3. Başlığa Göre Kart Ekleme
 
@@ -97,7 +98,7 @@ Her kategori, aramasını güçlendiren bir kaynağa bağlıdır:
 | **Books**         | Kitaplar        | Open Library (anahtarsız) + Google Books (isteğe bağlı ücretsiz anahtar). Sonuçlar birleştirilir — Google Books önce, Open Library altında. |
 | **RAWG**          | Oyunlar         | Ücretsiz anahtar gerekli — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**        | Müzik (albümler)| Yok                                                        |
-| **Jikan**         | Anime           | Yok — ücretsiz resmi olmayan MyAnimeList API, anahtar gerekmez |
+| **AniList**         | Anime           | Yok — ücretsiz AniList GraphQL API, anahtar gerekmez |
 | **Comic Vine**    | Çizgi romanlar  | Ücretsiz anahtar gerekli — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**        | Diğer her şey   | Yok — başlığı kendiniz yazarsınız ve alanları kendiniz doldurursunuz |
 
@@ -115,7 +116,7 @@ Library **çevrimdışı önceliklidir**. Eklenti, yalnızca eklemek için bir b
 | `www.googleapis.com` | Bir Google Books kategorisi aradığınızda | Yazdığınız başlık ve Google Books anahtarınız | Kitap meta verilerini alın (yazar, yıl, kategoriler, sayfa sayısı, kapak, ISBN) |
 | `api.rawg.io` | Bir RAWG oyun kategorisi aradığınızda | Yazdığınız başlık ve RAWG anahtarınız | Oyun meta verilerini alın (yıl, tür, geliştirici, kapak) |
 | `api.deezer.com` | Bir Deezer müzik kategorisi aradığınızda | Yazdığınız albüm veya sanatçı | Albüm meta verilerini alın (sanatçı, yıl, tür, parça sayısı, kapak) |
-| `api.jikan.moe` | Bir anime kategorisi aradığınızda | Yazdığınız başlık | Anime meta verilerini alın (başlık, yıl, tür, bölümler, MAL puanı, konu özeti, poster) |
+| `graphql.anilist.co` | Bir anime kategorisi aradığınızda | Yazdığınız başlık | Anime meta verilerini alın (başlık, yıl, tür, bölümler, AniList puanı, stüdyo, poster) |
 | `comicvine.gamespot.com` | Bir çizgi roman kategorisi aradığınızda | Yazdığınız başlık ve Comic Vine anahtarınız | Çizgi roman meta verilerini alın (başlık, yıl, yayıncı, sorun sayısı, kapak) |
 
 Başka hiçbir veri asla kasinizdan dışarı çıkmaz. Eklenti **telemetri, analiz veya otomatik güncelleme mekanizması içermez**. API anahtarları (OMDb, Google Books, RAWG, Comic Vine) yalnızca yerel eklenti ayarlarınızda saklanır ve yalnızca ilgili hizmetlere gönderilir. Kapak resimleri doğrudan her kaynaktan dönen URL'lerden yüklenir.
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Bu bağlantılar, notlarınızı paylaşılan kategoriler, türler ve yaratıcı
 
 ---
 
+## Paylaşım
+
+Her içerik notu, başlığında bir **Share** düğmesi alır (veya `Share current note` komutunu çalıştırın). Poster, başlık, yıl, tür, IMDb/AniList puanı ve kendi puanınızı içeren bir kart görseli oluşturur — bunu her yerde paylaşabilirsiniz:
+
+- **Mobilde** — **Share…** düğmesi, kart görseli doğrudan ekli olarak cihazınızın yerel paylaşım sayfasını açar, böylece görseli herhangi bir uygulamaya doğrudan gönderebilirsiniz.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — ağın oluşturma penceresini önceden doldurulmuş bir açıklamayla (başlık, kendi puanınız, kaynak bağlantısı ve bu eklentiye bir bağlantı) açar. Kart görseli aynı anda panonuza kopyalanır, böylece gönderiye yapıştırmanız (Ctrl/Cmd+V) yeterlidir.
+- **Copy image / Copy text / Save image** — oluşturulan kartı veya açıklamayı panoya kopyalayın ya da manuel olarak eklemek için görseli kasınızın ek klasörüne kaydedin.
+
+Paylaşım tamamen yereldir: kart, notun kendi meta verilerinden ve kapağından uygulama içinde çizilir. Hiçbir şey yüklenmez — eklenti yalnızca seçtiğiniz oluşturma penceresi URL'sini tarayıcınızda açar.
+
+---
+
 ## Komutlar
 
 | Komut                                | Açıklama                                                                 |
@@ -275,6 +287,7 @@ Bu bağlantılar, notlarınızı paylaşılan kategoriler, türler ve yaratıcı
 | `Refresh metadata for current note`  | Etkin not için meta verileri yeniden alın; dizi toplam bölüm sayılarını günceller. |
 | `Rebuild graph links`                | Her içerik notunu kategorisine, türlerine ve yaratıcılarına bağlayın.    |
 | `Find & remove duplicates`           | URL'ye göre tüm notları tarayın, çoğaltmaları gösterin ve seçilenleri kaldırın. |
+| `Share current note`                 | Notu bir kart görseli olarak oluşturun ve X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky veya Pinterest'te paylaşın. |
 
 ---
 

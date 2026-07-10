@@ -581,3 +581,103 @@
 	border-radius: 4px;
 	cursor: pointer;
 }
+
+.note-header-share {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 8px;
+	padding: 4px;
+	vertical-align: middle;
+	background: transparent;
+	border: none;
+	border-radius: 6px;
+	color: var(--text-muted);
+	cursor: pointer;
+	box-shadow: none;
+}
+
+.note-header-share:hover {
+	color: var(--interactive-accent);
+	background: var(--background-modifier-hover);
+}
+
+.note-header-share .svg-icon {
+	width: 18px;
+	height: 18px;
+}
+
+.library-share-preview {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 180px;
+	margin-bottom: 14px;
+	background: var(--background-secondary);
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.library-share-image {
+	width: 100%;
+	height: auto;
+	border-radius: 10px;
+	display: block;
+}
+
+.library-share-loading {
+	color: var(--text-muted);
+	padding: 60px 0;
+}
+
+.library-share-hint {
+	font-size: 0.85em;
+	color: var(--text-muted);
+	margin-bottom: 12px;
+	line-height: 1.4;
+}
+
+.library-share-native {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 12px;
+	cursor: pointer;
+}
+
+.library-share-networks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 14px;
+}
+
+.library-share-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 14px;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+.library-share-btn-icon {
+	display: inline-flex;
+}
+
+.library-share-btn-icon .svg-icon {
+	width: 16px;
+	height: 16px;
+}
+
+.library-share-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	justify-content: flex-end;
+}
+
+.library-share-actions button {
+	padding: 6px 14px;
+	border-radius: 6px;
+	cursor: pointer;
+}

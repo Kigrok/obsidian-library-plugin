@@ -7,7 +7,7 @@
 <h1 align="center">ライブラリ</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="バージョン">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="バージョン">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="ダウンロード数">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian バージョン">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="ライセンス">
@@ -28,12 +28,13 @@
 ## 主な機能
 
 - **ビジュアルカードグリッド** — 専用のライブラリタブで、コレクションをカバーアートのカードギャラリーとして表示します。
-- **内蔵検索** — アプリ内でタイトルを検索して追加できます：映画とシリーズは OMDb、本は Open Library または Google Books、ゲームは RAWG、音楽は Deezer、アニメは Jikan、漫画は Comic Vine。
+- **内蔵検索** — アプリ内でタイトルを検索して追加できます：映画とシリーズは OMDb、本は Open Library または Google Books、ゲームは RAWG、音楽は Deezer、アニメは AniList、漫画は Comic Vine。
 - **スマートなシリーズ追跡** — シーズン数とエピソード数は自動で取得され、同期が保たれます。
 - **進捗インジケーター** — カードとノートヘッダーに視覚的なプログレスバーが表示され、視聴・読了の進捗がわかります。
 - **リッチなノートヘッダー** — すべてのコンテンツノートに、主要なメタデータを含む自動生成ヘッダーが付きます。
 - **カスタムカテゴリ** — 映画、シリーズ、アニメ、漫画、本、ゲーム、音楽、またはマニュアルソースを使用してその他のカテゴリを作成できます。
 - **グラフリンク** — `Related` フロントマッタープロパティが各ノートをカテゴリ、ジャンル、クリエイターにリンクし、美しいグラフのために自動同期されます。
+- **共有カード** — 任意のコンテンツノートを共有可能なカード画像（ポスター、タイトル、年、ジャンル、IMDb スコア、あなたの評価）に変換し、X、Telegram、Reddit、WhatsApp、Facebook、LinkedIn、VK、Bluesky、Pinterest に投稿できます — デバイスのアプリに直接共有したり、画像をコピー／保存してどこでも使えます。
 - **ソートと折りたたみ** — 名前、年、評価、日付でカードをソート。任意のカテゴリを折りたたみできます。
 - **統計** — トップジャンル、トップクリエイター（映画＆シリーズのみ）、カテゴリごとのトップアイテム（メダル付きランキング）。
 - **重複検出** — URL による同一タイトルの重複追加を自動防止。内蔵コマンドで既存の重複を検索・削除できます。
@@ -50,8 +51,8 @@
 ### 2. 基本設定
 
 1. **設定** > **ライブラリ** に移動します。
-2. **カテゴリ** を追加します — ドロップダウンから定義されたタイプ（映画、シリーズ、本、漫画、ゲーム、音楽、アニメ、またはマニュアル）を選し、**カテゴリを追加** をクリックします。各カテゴリには表示名（あなたの言語に翻訳されたもの）、`Type` 値（常に英語、例：`Movie`）、ソース、およびノート保存用のオプションフォルダがあります。
-3. _（オプション）_ 使用しているサービスの API キーを入力します：映画/シリーズ用の [OMDb](https://www.omdbapi.com/apikey.aspx)、ゲーム用の [RAWG](https://rawg.io/apidocs)、漫画用の [Comic Vine](https://comicvine.gamespot.com/api/)。アニメ（Jikan）と音楽（Deezer）はキー不要です。
+2. **カテゴリ** を追加します — ドロップダウンから定義されたタイプ（映画、シリーズ、本、漫画、ゲーム、音楽、アニメ、またはマニュアル）を選択し、**カテゴリを追加** をクリックします。各カテゴリには表示名（あなたの言語に翻訳されたもの）、`Type` 値（常に英語、例：`Movie`）、ソース、およびノート保存用のオプションフォルダがあります。
+3. _（オプション）_ 使用しているサービスの API キーを入力します：映画/シリーズ用の [OMDb](https://www.omdbapi.com/apikey.aspx)、ゲーム用の [RAWG](https://rawg.io/apidocs)、漫画用の [Comic Vine](https://comicvine.gamespot.com/api/)。アニメ（AniList）と音楽（Deezer）はキー不要です。
 
 ### 3. タイトルでカードを追加
 
@@ -97,7 +98,7 @@
 | **Books**        | 本              | Open Library（キー不要）+ Google Books（オプションの無料キー）。結果は統合 — Google Books が最初、Open Library がその下。 |
 | **RAWG**         | ゲーム          | 無料キーが必要 — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**       | 音楽（アルバム）  | 不要                                                        |
-| **Jikan**        | アニメ          | 不要 — 無料の非公式 MyAnimeList API、キー不要               |
+| **AniList**      | アニメ          | 不要 — 無料の AniList GraphQL API、キー不要               |
 | **Comic Vine**   | 漫画            | 無料キーが必要 — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**       | その他すべて    | 不要 — タイトルを入力し、フィールドを自分で記入              |
 
@@ -115,10 +116,10 @@
 | `www.googleapis.com` | Google Books カテゴリを検索時 | 入力したタイトルと Google Books キー | 本のメタデータ取得（著者、年、カテゴリ、ページ数、カバー、ISBN） |
 | `api.rawg.io` | RAWG ゲームカテゴリを検索時 | 入力したタイトルと RAWG キー | ゲームのメタデータ取得（年、ジャンル、開発者、カバー） |
 | `api.deezer.com` | Deezer 音楽カテゴリを検索時 | 入力したアルバムまたはアーティスト | アルバムのメタデータ取得（アーティスト、年、ジャンル、トラック数、カバー） |
-| `api.jikan.moe` | アニメカテゴリを検索時 | 入力したタイトル | アニメのメタデータ取得（タイトル、年、ジャンル、エピソード、MAL スコア、あらすじ、ポスター） |
+| `graphql.anilist.co` | アニメカテゴリを検索時 | 入力したタイトル | アニメのメタデータ取得（タイトル、年、ジャンル、エピソード数、AniList スコア、スタジオ、ポスター） |
 | `comicvine.gamespot.com` | 漫画カテゴリを検索時 | 入力したタイトルと Comic Vine キー | 漫画のメタデータ取得（タイトル、年、出版社、号数、カバー） |
 
-これ以外のデータがビールトから外に出ることはありません。プラグインに **テレメトリ、分析、自動更新機能** はありません。API キー（OMDb、Google Books、RAWG、Comic Vine）はローカルのプラグイン設定にのみ保存され、それぞれのサービスにのみ送信されます。カバー画像は各ソースから返された URL から直接読み込まれます。
+これ以外のデータがボールトから外に出ることはありません。プラグインに **テレメトリ、分析、自動更新機能** はありません。API キー（OMDb、Google Books、RAWG、Comic Vine）はローカルのプラグイン設定にのみ保存され、それぞれのサービスにのみ送信されます。カバー画像は各ソースから返された URL から直接読み込まれます。
 
 ---
 
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Related:
 
 ---
 
+## 共有
+
+すべてのコンテンツノートには、ヘッダーに **共有** ボタンが付きます（または `Share current note` を実行）。ポスター、タイトル、年、ジャンル、IMDb/AniList スコア、あなたの評価を含むカード画像がレンダリングされ、どこにでも投稿できます：
+
+- **モバイルでは** — **共有…** ボタンがデバイスのネイティブ共有シートを開き、カード画像が直接添付されるため、任意のアプリにそのまま送信できます。
+- **X、Telegram、Reddit、WhatsApp、Facebook、LinkedIn、VK、Bluesky、Pinterest** — キャプション（タイトル、あなたの評価、ソースリンク、およびこのプラグインへのリンク）が事前入力された状態で、そのネットワークの投稿画面を開きます。同時にカード画像がクリップボードにコピーされるため、投稿に貼り付ける（Ctrl/Cmd+V）だけで済みます。
+- **画像をコピー／テキストをコピー／画像を保存** — レンダリングされたカードまたはキャプションをクリップボードにコピーするか、ボールトの添付ファイルフォルダに画像を保存して手動で添付できます。
+
+共有は完全にローカルで動作します：カードはノート自身のメタデータとカバーからアプリ内で描画されます。アップロードは一切行われません — プラグインはあなたが選んだ投稿画面の URL をブラウザで開くだけです。
+
+---
+
 ## コマンド
 
 | コマンド                              | 説明                                                                      |
@@ -275,6 +287,7 @@ Related:
 | `Refresh metadata for current note`  | アクティブなノートのメタデータを再取得します。シリーズのエピソード合計を更新します。 |
 | `Rebuild graph links`                | すべてのコンテンツノートをカテゴリ、ジャンル、クリエイターに接続します。          |
 | `Find & remove duplicates`           | URL ですべてのノートをスキャンし、重複を表示し、選択したものを削除します。       |
+| `Share current note`                 | ノートをカード画像としてレンダリングし、X、Telegram、Reddit、WhatsApp、Facebook、LinkedIn、VK、Bluesky、Pinterest に共有します。 |
 
 ---
 
@@ -282,7 +295,7 @@ Related:
 
 - **バグを見つけましたか？** [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues) を開いてください。
 - **機能のアイデアがありますか？** [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions) を開始してください。
-- **プラグinが気に入りましたか？** リポジトリにスターを付けてサポートを示してください！
+- **プラグインが気に入りましたか？** リポジトリにスターを付けてサポートを示してください！
 
 ---
 

@@ -7,7 +7,7 @@
 <h1 align="center">Pustaka</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Versi">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Versi">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Unduhan">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Versi Obsidian">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Lisensi">
@@ -28,12 +28,13 @@
 ## Fitur Utama
 
 - **Grid Kartu Visual** — Tab Pustaka khusus menampilkan koleksi Anda sebagai galeri kartu cover art.
-- **Pencarian Bawaan** — Cari dan tambahkan judul langsung di dalam aplikasi: OMDb untuk film dan serial, Open Library atau Google Books untuk buku, RAWG untuk game, Deezer untuk musik, Jikan untuk anime, Comic Vine untuk komik.
+- **Pencarian Bawaan** — Cari dan tambahkan judul langsung di dalam aplikasi: OMDb untuk film dan serial, Open Library atau Google Books untuk buku, RAWG untuk game, Deezer untuk musik, AniList untuk anime, Comic Vine untuk komik.
 - **Pelacakan Serial Pintar** — Jumlah season dan episode diambil secara otomatis dan disinkronkan.
 - **Indikator Kemajuan** — Bar kemajuan visual pada kartu dan header catatan menunjukkan seberapa banyak Anda telah menonton atau membaca.
 - **Header Catatan Kaya** — Setiap catatan konten mendapat header yang dibuat otomatis dengan semua metadata penting.
 - **Kategori Kustom** — Buat kategori untuk Film, Serial, Anime, Komik, Buku, Game, Musik, atau hal lain melalui sumber manual.
 - **Tautan Grafik** — Properti frontmatter `Related` menghubungkan setiap catatan dengan kategorinya, genre, dan kreator, disinkronkan secara otomatis untuk grafik yang indah.
+- **Kartu Berbagi** — Ubah catatan konten apa pun menjadi gambar kartu yang dapat dibagikan (poster, judul, tahun, genre, peringkat IMDb, dan peringkat Anda) dan posting ke X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, atau Pinterest — bagikan langsung ke aplikasi di perangkat Anda, atau salin/simpan gambar untuk digunakan di mana saja.
 - **Pengurutan & Pelipatan** — Urutkan kartu berdasarkan nama, tahun, peringkat, atau tanggal; lipat kategori apa pun.
 - **Statistik** — Genre teratas, kreator teratas (hanya film & serial), dan item teratas per kategori dengan peringkat medali.
 - **Deteksi Duplikat** — Secara otomatis mencegah penambahan judul yang sama dua kali berdasarkan URL. Perintah bawaan menemukan dan menghapus duplikat yang ada.
@@ -51,7 +52,7 @@ Instal **Pustaka** dari [direktori Plugin Komunitas Obsidian](https://community.
 
 1. Buka **Pengaturan** > **Pustaka**.
 2. Tambahkan **Kategori** Anda — pilih jenis yang sudah ditentukan (Film, Serial, Buku, Komik, Game, Musik, Anime, atau Manual) dari dropdown dan klik **Tambah kategori**. Setiap kategori memiliki nama tampilan (diterjemahkan ke bahasa Anda), nilai `Type` (selalu bahasa Inggris, contoh `Movie`), sumber, dan folder opsional untuk menyimpan catatan.
-3. _（Opsional）_ Masukkan API key untuk layanan yang Anda gunakan: [OMDb](https://www.omdbapi.com/apikey.aspx) untuk film/serial, [RAWG](https://rawg.io/apidocs) untuk game, [Comic Vine](https://comicvine.gamespot.com/api/) untuk komik. Anime (Jikan) dan musik (Deezer) tidak memerlukan key.
+3. _（Opsional）_ Masukkan API key untuk layanan yang Anda gunakan: [OMDb](https://www.omdbapi.com/apikey.aspx) untuk film/serial, [RAWG](https://rawg.io/apidocs) untuk game, [Comic Vine](https://comicvine.gamespot.com/api/) untuk komik. Anime (AniList) dan musik (Deezer) tidak memerlukan key.
 
 ### 3. Menambahkan Kartu dengan Judul
 
@@ -97,7 +98,7 @@ Setiap kategori terikat dengan sumber yang menjalankan pencariannya:
 | **Books**        | Buku            | Open Library (tanpa key) + Google Books (key gratis opsional). Hasil digabung — Google Books di atas, Open Library di bawah. |
 | **RAWG**         | Game            | Key gratis diperlukan — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**       | Musik (album)   | Tidak perlu                                                    |
-| **Jikan**        | Anime           | Tidak perlu — API MyAnimeList tidak resmi gratis, tidak perlu key |
+| **AniList**        | Anime           | Tidak perlu — API GraphQL AniList gratis, ora perlu key |
 | **Comic Vine**   | Komik           | Key gratis diperlukan — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**       | Apa pun lainnya | Tidak perlu — Anda mengetik judul dan mengisi field sendiri          |
 
@@ -115,7 +116,7 @@ Pustaka adalah **offline-first**. Plugin hanya menghubungi jaringan ketika Anda 
 | `www.googleapis.com` | Anda mencari kategori Google Books | Judul yang Anda ketik dan Google Books key Anda | Mengambil metadata buku (pengarang, tahun, kategori, jumlah halaman, cover, ISBN) |
 | `api.rawg.io` | Anda mencari kategori game RAWG | Judul yang Anda ketik dan RAWG key Anda | Mengambil metadata game (tahun, genre, pengembang, cover) |
 | `api.deezer.com` | Anda mencari kategori musik Deezer | Album atau artis yang Anda ketik | Mengambil metadata album (artis, tahun, genre, jumlah trek, cover) |
-| `api.jikan.moe` | Anda mencari kategori anime | Judul yang Anda ketik | Mengambil metadata anime (judul, tahun, genre, episode, nilai MAL, sinopsis, poster) |
+| `graphql.anilist.co` | Anda mencari kategori anime | Judul yang Anda ketik | Mengambil metadata anime (judul, tahun, genre, episode, nilai AniList, studio, poster) |
 | `comicvine.gamespot.com` | Anda mencari kategori komik | Judul yang Anda ketik dan Comic Vine key Anda | Mengambil metadata komik (judul, tahun, penerbit, jumlah issue, cover) |
 
 Data lainnya tidak pernah keluar dari vault Anda. Plugin **tidak memiliki遥测, tidak memiliki analitik, dan tidak memiliki mekanisme pembaruan otomatis**. API key (OMDb, Google Books, RAWG, Comic Vine) hanya disimpan di pengaturan plugin lokal Anda dan hanya dikirim ke layanan masing-masing. Gambar cover dimuat langsung dari URL yang dikembalikan oleh setiap sumber.
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Tautan ini menghubungkan catatan Anda melalui kategori, genre, dan kreator yang 
 
 ---
 
+## Berbagi
+
+Setiap catatan konten mendapat tombol **Bagikan** di header-nya (atau jalankan `Share current note`). Ia merender gambar kartu — poster, judul, tahun, genre, nilai IMDb/AniList, dan peringkat Anda — yang dapat Anda posting di mana saja:
+
+- **Di perangkat seluler** — tombol **Bagikan…** membuka lembar berbagi bawaan perangkat Anda dengan gambar kartu terlampir langsung, sehingga Anda dapat mengirimnya langsung ke aplikasi apa pun.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — membuka komposer jaringan tersebut dengan keterangan yang sudah terisi (judul, peringkat Anda, tautan sumber, dan tautan ke plugin ini). Gambar kartu disalin ke clipboard Anda pada saat yang sama, jadi Anda cukup menempelkannya (Ctrl/Cmd+V) ke dalam postingan.
+- **Salin gambar / Salin teks / Simpan gambar** — salin kartu yang dirender atau keterangannya ke clipboard, atau simpan gambar ke folder lampiran vault Anda untuk dilampirkan secara manual.
+
+Berbagi sepenuhnya lokal: kartu digambar di dalam aplikasi dari metadata dan cover catatan itu sendiri. Tidak ada yang diunggah — plugin hanya membuka URL komposer yang Anda pilih di browser Anda.
+
+---
+
 ## Perintah
 
 | Perintah                            | Deskripsi                                                              |
@@ -275,6 +287,7 @@ Tautan ini menghubungkan catatan Anda melalui kategori, genre, dan kreator yang 
 | `Refresh metadata for current note`  | Ambil ulang metadata untuk catatan aktif; perbarui total episode serial.   |
 | `Rebuild graph links`                | Hubungkan setiap catatan konten ke kategorinya, genre, dan kreator.          |
 | `Find & remove duplicates`           | Pindai semua catatan berdasarkan URL, tampilkan duplikat, dan hapus yang dipilih.       |
+| `Share current note`                 | Render catatan sebagai gambar kartu dan bagikan ke X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, atau Pinterest. |
 
 ---
 

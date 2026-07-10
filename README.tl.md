@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Bersyon">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Bersyon">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Mga Download">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Bersyon ng Obsidian">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Lisensya">
@@ -28,12 +28,13 @@
 ## Mga Pangunahing Tampok
 
 - **Visual Card Grid** — Isang nakalaang Library tab na nag-render ng iyong collection bilang isang gallery ng mga cover-art card.
-- **Built-in na Paghahanap** — Maghanap at magdagdag ng mga pamagat mismo sa loob ng app: OMDb para sa mga pelikula at serye, Open Library o Google Books para sa mga libro, RAWG para sa mga laro, Deezer para sa musika, Jikan para sa anime, Comic Vine para sa mga komiks.
+- **Built-in na Paghahanap** — Maghanap at magdagdag ng mga pamagat mismo sa loob ng app: OMDb para sa mga pelikula at serye, Open Library o Google Books para sa mga libro, RAWG para sa mga laro, Deezer para sa musika, AniList para sa anime, Comic Vine para sa mga komiks.
 - **Matalinong Pagsubaybay sa Serye** — Awtomatikong kinukuha ang bilang ng mga season at episode at pinapanatili ang sync.
 - **Mga Tagapagpahiwatig ng Progreso** — Ang mga visual na progress bar sa mga card at header ng note ay nagpapakita kung gaano ka na karami ang napanood o nabasa.
 - **Mamahaling mga Header ng Note** — Bawat note ng content ay nakakakuha ng auto-generated header na may lahat ng pangunahing metadata.
 - **Mga Custom na Kategorya** — Lumikha ng mga kategorya para sa mga Pelikula, Serye, Anime, Komiks, Libro, Laro, Musika, o anumang iba pa sa pamamagitan ng manual na source.
 - **Mga Link sa Graph** — Ang `Related` na frontmatter property ay nag-uugnay sa bawat note sa kanyang kategorya, mga genre, at mga creator, na awtomatikong pinapanatili ang sync para sa isang magandang graph.
+- **Share Cards** — Gawing naibabahaging card image ang anumang content note (poster, pamagat, taon, genre, IMDb score, at ang iyong rating) at i-post ito sa X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, o Pinterest — ibahagi ito nang diretso sa mga app ng iyong device, o kopyahin/i-save ang larawan upang gamitin kahit saan.
 - **Pag-sort at Pag-fold** — I-sort ang mga card ayon sa pangalan, taon, rating, o petsa; i-fold ang anumang kategorya.
 - **Mga Estadistika** — Mga nangungunang genre, nangungunang mga creator (mga pelikula at serye lamang), at mga nangungunang item bawat kategorya na may medal rankings.
 - **Pag-detect ng Duplicate** — Awtomatikong pinipigilan ang pagdaragdag ng parehong pamagat dalawang beses sa pamamagitan ng URL. Ang isang built-in na command ay naghahanap at nag-aalis ng mga umiiral na duplicate.
@@ -51,7 +52,7 @@ I-install ang **Library** mula sa [Obsidian Community Plugins directory](https:/
 
 1. Pumunta sa **Mga Setting** > **Library**.
 2. Idagdag ang iyong mga **Kategorya** — pumili ng isang pre-defined na uri (Pelikula, Serye, Libro, Komiks, Laro, Musika, Anime, o Manual) mula sa dropdown at i-click ang **Add category**. Bawat kategorya ay may display name (naisalin sa iyong wika), isang `Type` na halaga (laging Ingles, hal. `Movie`), isang source, at isang opsyonal na folder para sa pag-iimbak ng mga note.
-3. _(Opsyonal)_ Ilagay ang mga API key para sa mga serbisyo na iyong ginagamit: [OMDb](https://www.omdbapi.com/apikey.aspx) para sa mga pelikula/serye, [RAWG](https://rawg.io/apidocs) para sa mga laro, [Comic Vine](https://comicvine.gamespot.com/api/) para sa mga komiks. Ang Anime (Jikan) at Musika (Deezer) ay hindi nangangailangan ng key.
+3. _(Opsyonal)_ Ilagay ang mga API key para sa mga serbisyo na iyong ginagamit: [OMDb](https://www.omdbapi.com/apikey.aspx) para sa mga pelikula/serye, [RAWG](https://rawg.io/apidocs) para sa mga laro, [Comic Vine](https://comicvine.gamespot.com/api/) para sa mga komiks. Ang Anime (AniList) at Musika (Deezer) ay hindi nangangailangan ng key.
 
 ### 3. Magdagdag ng Card sa Pamamagitan ng Pamagat
 
@@ -97,7 +98,7 @@ Bawat kategorya ay naka-link sa isang source na nagbibigay ng kanyang paghahanap
 | **Books**        | Libro           | Open Library (walang key) + Google Books (opsyonal na libreng key). Pinagsasama ang mga resulta — Google Books muna, Open Library sa ibaba. |
 | **RAWG**         | Laro           | Kailangan ng libreng key — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**       | Musika (mga album)  | Wala                                                        |
-| **Jikan**        | Anime           | Wala — libreng hindi opisyal na MyAnimeList API, walang kailangang key       |
+| **AniList**        | Anime           | Wala — libreng AniList GraphQL API, walang kailangang key       |
 | **Comic Vine**   | Komiks          | Kailangan ng libreng key — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**       | Anumang iba pa   | Wala — i-type mo ang pamagat at punan mo ang mga field          |
 
@@ -115,7 +116,7 @@ Ang Library ay **offline-muna**. Ang plugin ay nakikipag-ugnayan lamang sa netwo
 | `www.googleapis.com` | Naghahanap ka ng isang Google Books na kategorya | Ang pamagat na iyong tina-type at ang iyong Google Books key | Kunin ang metadata ng libro (may-akda, taon, mga kategorya, bilang ng pahina, cover, ISBN) |
 | `api.rawg.io` | Naghahanap ka ng isang RAWG game na kategorya | Ang pamagat na iyong tina-type at ang iyong RAWG key | Kunin ang metadata ng laro (taon, genre, developer, cover) |
 | `api.deezer.com` | Naghahanap ka ng isang Deezer music na kategorya | Ang album o artist na iyong tina-type | Kunin ang metadata ng album (artist, taon, genre, bilang ng track, cover) |
-| `api.jikan.moe` | Naghahanap ka ng isang anime na kategorya | Ang pamagat na iyong tina-type | Kunin ang metadata ng anime (pamagat, taon, genre, mga episode, MAL score, synopsis, poster) |
+| `graphql.anilist.co` | Naghahanap ka ng isang anime na kategorya | Ang pamagat na iyong tina-type | Kunin ang metadata ng anime (pamagat, taon, genre, mga episode, AniList score, studio, poster) |
 | `comicvine.gamespot.com` | Naghahanap ka ng isang komiks na kategorya | Ang pamagat na iyong tina-type at ang iyong Comic Vine key | Kunin ang metadata ng komiks (pamagat, taon, publisher, bilang ng issue, cover) |
 
 Walang ibang datos na lumalabas sa iyong vault kailanman. Ang plugin ay **walang telemetry, walang analytics, at walang mekanismo ng self-update**. Ang mga API key (OMDb, Google Books, RAWG, Comic Vine) ay naka-imbak lamang sa iyong lokal na plugin settings at ipinapadala lamang sa kanilang kaukulang mga serbisyo. Ang mga larawan ng cover ay naglo-load nang direkta mula sa mga URL na ibinabalik ng bawat source.
@@ -173,6 +174,76 @@ Date: 01.03.2026
 Source: omdb
 Source ID: tt4574334
 ---
+```
+
+> **Awtomatikong pag-update ng serye:** Patakbuhin ang `Refresh metadata for current note` (o buksan lang ang note) at ia-update ng plugin ang kabuuang bilang ng episode sa `Progress` (hal., `25/42` patungong `25/50`) at ang bilang ng `Season`, habang pinapanatili ang iyong napanood na bilang.
+
+### Aklat
+
+```yaml
+---
+Type: Book
+Name: Dune
+Year: 1965
+Genre:
+    - Science Fiction
+Creator:
+    - Frank Herbert
+Cover: https://covers.openlibrary.org/b/id/...-L.jpg
+ISBN: 9780441013593
+My Rating: 9
+Progress: 412/688
+Complete: false
+Date: 01.03.2026
+Source: openlibrary
+Source ID: /works/OL893415W
+---
+```
+
+### Anime
+
+```yaml
+---
+Type: Anime
+Name: Steins;Gate
+Year: 2011
+Genre:
+    - Sci-Fi
+    - Thriller
+Creator:
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
+Progress: 0/24
+Complete: false
+Date: 01.03.2026
+Source: anilist
+Source ID: 9253
+---
+```
+
+### Komiks
+
+```yaml
+---
+Type: Comic
+Name: Watchmen
+Year: 1986
+Genre:
+    - Comics
+Creator:
+    - DC Comics
+Cover: https://comicvine.gamespot.com/a/uploads/...
+URL: https://comicvine.gamespot.com/watchmen/4050-33819/
+Progress: 0/12
+Complete: false
+Date: 01.03.2026
+Source: comicvine
+Source ID: 33819
+---
+```
 
 ---
 
@@ -192,6 +263,18 @@ Ang mga link na ito ay nag-uugnay sa iyong mga note sa pamamagitan ng mga ibinah
 
 ---
 
+## Pagbabahagi
+
+Bawat content note ay nakakakuha ng **Share** button sa header nito (o patakbuhin ang `Share current note`). Nagre-render ito ng card image — poster, pamagat, taon, genre, IMDb/AniList score, at ang iyong rating — na maaari mong i-post kahit saan:
+
+- **Sa mobile** — binubuksan ng **Share…** button ang native share sheet ng iyong device na nakakabit nang direkta ang card image, kaya maaari mo itong ipadala nang diretso sa anumang app.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — binubuksan ang composer ng network na may prefilled na caption (pamagat, ang iyong rating, ang source link, at isang link sa plugin na ito). Kinokopya nang sabay ang card image sa iyong clipboard, kaya i-paste mo na lang ito (Ctrl/Cmd+V) sa post.
+- **Copy image / Copy text / Save image** — kopyahin ang na-render na card o ang caption sa clipboard, o i-save ang larawan sa attachment folder ng iyong vault upang i-attach nang mano-mano.
+
+Ang pagbabahagi ay ganap na lokal: ang card ay iginuguhit sa loob ng app mula sa sariling metadata at cover ng note. Walang ini-upload — binubuksan lamang ng plugin ang composer URL na iyong pinili sa iyong browser.
+
+---
+
 ## Mga Command
 
 | Command                              | Paglalarawan                                                              |
@@ -202,6 +285,7 @@ Ang mga link na ito ay nag-uugnay sa iyong mga note sa pamamagitan ng mga ibinah
 | `Refresh metadata for current note`  | Muling kunin ang metadata para sa aktibong note; ina-update ang bilang ng mga episode ng serye.   |
 | `Rebuild graph links`                | Ikonekta ang bawat content note sa kanyang kategorya, genre, at mga creator.          |
 | `Find & remove duplicates`           | I-scan ang lahat ng note ayon sa URL, ipakita ang mga duplicate, at alisin ang mga napili.       |
+| `Share current note`                 | I-render ang note bilang card image at ibahagi ito sa X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, o Pinterest. |
 
 ---
 

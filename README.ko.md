@@ -7,7 +7,7 @@
 <h1 align="center">라이브러리</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="버전">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="버전">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="다운로드 수">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian 버전">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="라이선스">
@@ -28,12 +28,13 @@
 ## 주요 기능
 
 - **비주얼 카드 그리드** — 전용 라이브러리 탭에서 컬렉션을 커버 아트 카드 갤러리로 렌더링합니다.
-- **내장 검색** — 앱 내에서 제목을 검색하고 추가합니다: 영화와 시리즈는 OMDb, 도서는 Open Library 또는 Google Books, 게임은 RAWG, 음악은 Deezer, 애니메이션은 Jikan, 만화는 Comic Vine.
+- **내장 검색** — 앱 내에서 제목을 검색하고 추가합니다: 영화와 시리즈는 OMDb, 도서는 Open Library 또는 Google Books, 게임은 RAWG, 음악은 Deezer, 애니메이션은 AniList, 만화는 Comic Vine.
 - **스마트 시리즈 추적** — 시즌과 에피소드 수가 자동으로 가져와져 동기화됩니다.
 - **진행 표시기** — 카드와 노트 헤더의 시각적 프로그레스 바로 시청/독서 진행률을 보여줍니다.
 - **풍부한 노트 헤더** — 모든 콘텐츠 노트에 주요 메타데이터가 포함된 자동 생성 헤더가 부여됩니다.
 - **사용자 정의 카테고리** — 영화, 시리즈, 애니메이션, 만화, 도서, 게임, 음악 또는 수동 소스를 사용하여 기타 카테고리를 생성할 수 있습니다.
 - **그래프 링크** — `Related` 프론트매터 속성이 각 노트를 카테고리, 장르, 크리에이터에 연결하고, 아름다운 그래프를 위해 자동으로 동기화됩니다.
+- **공유 카드** — 모든 콘텐츠 노트를 공유 가능한 카드 이미지(포스터, 제목, 연도, 장르, IMDb 점수, 내 평점)로 변환하여 X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky 또는 Pinterest에 게시합니다 — 기기의 앱으로 바로 공유하거나, 이미지를 복사/저장하여 어디서나 사용하세요.
 - **정렬 및 접기** — 이름, 연도, 평점, 날짜별로 카드를 정렬할 수 있고, 모든 카테고리를 접을 수 있습니다.
 - **통계** — 상위 장르, 상위 크리에이터(영화 및 시리즈만), 카테고리별 상위 항목(메달 랭킹 포함).
 - **중복 감지** — URL로 동일한 제목의 중복 추가를 자동으로 방지합니다. 내장 명령으로 기존 중복을 찾아 제거합니다.
@@ -51,13 +52,13 @@
 
 1. **설정** > **라이브러리**로 이동합니다.
 2. **카테고리**를 추가합니다 — 드롭다운에서 사전 정의된 유형(영화, 시리즈, 도서, 만화, 게임, 음악, 애니메이션 또는 수동)을 선택하고 **카테고리 추가**를 클릭합니다. 각 카테고리에는 표시 이름(귀하의 언어로 번역됨), `Type` 값(항상 영어, 예: `Movie`), 소스, 그리고 노트 저장을 위한 선택적 폴더가 있습니다.
-3. _(선택사항)_ 사용하는 서비스의 API 키를 입력합니다: 영화/시리즈용 [OMDb](https://www.omdbapi.com/apikey.aspx), 게임용 [RAWG](https://rawg.io/apidocs), 만화용 [Comic Vine](https://comicvine.gamespot.com/api/). 애니메이션(Jikan)과 음악(Deezer)은 키가 필요하지 않습니다.
+3. _(선택사항)_ 사용하는 서비스의 API 키를 입력합니다: 영화/시리즈용 [OMDb](https://www.omdbapi.com/apikey.aspx), 게임용 [RAWG](https://rawg.io/apidocs), 만화용 [Comic Vine](https://comicvine.gamespot.com/api/). 애니메이션(AniList)과 음악(Deezer)은 키가 필요하지 않습니다.
 
 ### 3. 제목으로 카드 추가
 
 프론트매터를 수동으로 입력할 필요가 없습니다 — 이름을 검색하여 영화, 시리즈, 도서, 애니메이션 또는 만화를 추가하세요:
 
-1. 리ibbon 아이콘에서 **라이브러리** 탭을 엽니다 (또는 `Open Library` 실행).
+1. 리본 아이콘에서 **라이브러리** 탭을 엽니다 (또는 `Open Library` 실행).
 2. 라이브러리 페이지 오른쪽 상단의 **+** 버튼을 클릭합니다 (또는 `Add content` 실행).
 3. 카테고리를 선택하고, 검색 상자에 **제목**을 입력한 후 결과를 선택합니다.
 4. 포스터, 연도, 장르, 크리에이터, 평점이 자동으로 입력된 카드가 즉시 생성됩니다.
@@ -97,7 +98,7 @@
 | **Books**        | 도서           | Open Library(키 불필요) + Google Books(선택적 무료 키). 결과 병합 — Google Books 우선, Open Library 아래. |
 | **RAWG**         | 게임           | 무료 키 필요 — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**       | 음악(앨범)  | 불필요                                                        |
-| **Jikan**        | 애니메이션           | 불필요 — 무료 비공식 MyAnimeList API, 키 불필요       |
+| **AniList**      | 애니메이션           | 불필요 — 무료 AniList GraphQL API, 키 불필요       |
 | **Comic Vine**   | 만화          | 무료 키 필요 — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**       | 기타 모든 것   | 불필요 — 제목을 입력하고 필드를 직접 작성          |
 
@@ -115,10 +116,10 @@
 | `www.googleapis.com` | Google Books 카테고리를 검색할 때 | 입력한 제목과 Google Books 키 | 도서 메타데이터 가져오기(저자, 연도, 카테고리, 페이지 수, 커버, ISBN) |
 | `api.rawg.io` | RAWG 게임 카테고리를 검색할 때 | 입력한 제목과 RAWG 키 | 게임 메타데이터 가져오기(연도, 장르, 개발자, 커버) |
 | `api.deezer.com` | Deezer 음악 카테고리를 검색할 때 | 입력한 앨범 또는 아티스트 | 앨범 메타데이터 가져오기(아티스트, 연도, 장르, 트랙 수, 커버) |
-| `api.jikan.moe` | 애니메이션 카테고리를 검색할 때 | 입력한 제목 | 애니메이션 메타데이터 가져오기(제목, 연도, 장르, 에피소드, MAL 점수, 시놉시스, 포스터) |
+| `graphql.anilist.co` | 애니메이션 카테고리를 검색할 때 | 입력한 제목 | 애니메이션 메타데이터 가져오기(제목, 연도, 장르, 에피소드, AniList 점수, 스튜디오, 포스터) |
 | `comicvine.gamespot.com` | 만화 카테고리를 검색할 때 | 입력한 제목과 Comic Vine 키 | 만화 메타데이터 가져오기(제목, 연도, 출판사, 호수, 커버) |
 
-그 외의 데이터는 비ール트를 떠나지 않습니다. 플러그인에 **텔레메트리, 분석, 자동 업데이트 메커니즘이 없습니다**. API 키(OMDb, Google Books, RAWG, Comic Vine)는 로컬 플러그인 설정에만 저장되며 해당 서비스에만 전송됩니다. 커버 이미지는 각 소스에서 반환된 URL에서 직접 로드됩니다.
+그 외의 데이터는 볼트를 떠나지 않습니다. 플러그인에 **텔레메트리, 분석, 자동 업데이트 메커니즘이 없습니다**. API 키(OMDb, Google Books, RAWG, Comic Vine)는 로컬 플러그인 설정에만 저장되며 해당 서비스에만 전송됩니다. 커버 이미지는 각 소스에서 반환된 URL에서 직접 로드됩니다.
 
 ---
 
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Related:
 
 ---
 
+## 공유
+
+모든 콘텐츠 노트에는 헤더에 **공유** 버튼이 있습니다(또는 `Share current note` 실행). 이는 카드 이미지 — 포스터, 제목, 연도, 장르, IMDb/AniList 점수, 내 평점 — 를 렌더링하여 어디에나 게시할 수 있게 합니다:
+
+- **모바일에서** — **공유…** 버튼이 카드 이미지가 바로 첨부된 기기의 네이티브 공유 시트를 열어, 어떤 앱으로든 곧바로 보낼 수 있습니다.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — 캡션(제목, 내 평점, 소스 링크, 이 플러그인 링크)이 미리 채워진 네트워크의 작성 화면을 엽니다. 동시에 카드 이미지가 클립보드에 복사되므로, 게시물에 붙여넣기(Ctrl/Cmd+V)만 하면 됩니다.
+- **이미지 복사 / 텍스트 복사 / 이미지 저장** — 렌더링된 카드나 캡션을 클립보드에 복사하거나, 이미지를 볼트의 첨부 폴더에 저장하여 직접 첨부합니다.
+
+공유는 완전히 로컬입니다: 카드는 노트 자체의 메타데이터와 커버로부터 앱 내에서 그려집니다. 아무것도 업로드되지 않으며 — 플러그인은 선택한 작성 URL을 브라우저에서 열 뿐입니다.
+
+---
+
 ## 명령어
 
 | 명령어                              | 설명                                                              |
@@ -275,6 +287,7 @@ Related:
 | `Refresh metadata for current note`  | 활성 노트의 메타데이터를 다시 가져옵니다. 시리즈 에피소드 합계를 업데이트합니다.   |
 | `Rebuild graph links`                | 모든 콘텐츠 노트를 카테고리, 장르, 크리에이터에 연결합니다.          |
 | `Find & remove duplicates`           | URL로 모든 노트를 스캔하고, 중복을 표시하며, 선택한 것을 제거합니다.       |
+| `Share current note`                 | 노트를 카드 이미지로 렌더링하여 X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky 또는 Pinterest에 공유합니다. |
 
 ---
 

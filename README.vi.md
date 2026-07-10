@@ -7,7 +7,7 @@
 <h1 align="center">Thư viện</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Phiên bản">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Phiên bản">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Lượt tải">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Phiên bản Obsidian">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Giấy phép">
@@ -28,12 +28,13 @@
 ## Tính Năng Chính
 
 - **Lưới Thẻ Trực Quan** — Tab Thư viện chuyên dụng hiển thị bộ sưu tập của bạn dưới dạng thư viện thẻ bìa artwork.
-- **Tìm Kiếm Built-in** — Tìm kiếm và thêm tiêu đề ngay trong ứng dụng: OMDb cho phim và series, Open Library hoặc Google Books cho sách, RAWG cho trò chơi, Deezer cho nhạc, Jikan cho anime, Comic Vine cho truyện tranh.
+- **Tìm Kiếm Built-in** — Tìm kiếm và thêm tiêu đề ngay trong ứng dụng: OMDb cho phim và series, Open Library hoặc Google Books cho sách, RAWG cho trò chơi, Deezer cho nhạc, AniList cho anime, Comic Vine cho truyện tranh.
 - **Theo Dõi Series Thông Minh** — Số season và tổng tập được tự động lấy và đồng bộ.
 - **Chỉ Báo Tiến Độ** — Thanh tiến độ trực quan trên thẻ và tiêu đề ghi chú hiển thị bạn đã xem hoặc đọc được bao nhiêu.
 - **Tiêu Đề Ghi Chú Phong Phú** — Mỗi ghi chú nội dung đều có tiêu đề tự động tạo với tất cả metadata chính.
 - **Danh Mục Tùy Chỉnh** — Tạo danh mục cho Phim, Series, Anime, Truyện Tranh, Sách, Trò Chơi, Nhạc, hoặc bất kỳ thứ gì khác qua nguồn thủ công.
 - **Liên Kết Biểu Đồ** — Thuộc tính frontmatter `Related` liên kết mỗi ghi chú với danh mục, thể loại và nhà sáng tạo, được đồng bộ tự động cho biểu đồ đẹp.
+- **Thẻ Chia Sẻ** — Biến bất kỳ ghi chú nội dung nào thành hình ảnh thẻ có thể chia sẻ (poster, tiêu đề, năm, thể loại, điểm IMDb và đánh giá của bạn) và đăng lên X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, hoặc Pinterest — chia sẻ thẳng đến các ứng dụng trên thiết bị của bạn, hoặc sao chép/lưu hình ảnh để dùng ở bất cứ đâu.
 - **Sắp Xếp & Thu Gộp** — Sắp xếp thẻ theo tên, năm, đánh giá hoặc ngày; thu gộp bất kỳ danh mục nào.
 - **Thống Kê** — Thể loại hàng đầu, nhà sáng tạo hàng đầu (chỉ phim & series), và mục hàng đầu mỗi danh mục với xếp hạng huy chương.
 - **Phát Hiện Trùng Lặp** — Tự động ngăn chặn thêm cùng tiêu đề twice bằng URL. Lệnh built-in tìm và xóa các bản trùng lặp.
@@ -51,7 +52,7 @@ Cài đặt **Thư viện** từ [thư mục Plugins Cộng Đồng Obsidian](ht
 
 1. Vào **Cài đặt** > **Thư viện**.
 2. Thêm **Danh mục** của bạn — chọn loại định nghĩa sẵn (Phim, Series, Sách, Truyện Tranh, Trò Chơi, Nhạc, Anime, hoặc Thủ công) từ danh sách thả xuống và nhấp **Thêm danh mục**. Mỗi danh mục có tên hiển thị (được dịch sang ngôn ngữ của bạn), giá trị `Type` (luôn bằng tiếng Anh, ví dụ `Movie`), nguồn và thư mục tùy chọn để lưu ghi chú.
-3. _（Tùy chọn）_ Nhập API key cho các dịch vụ bạn sử dụng: [OMDb](https://www.omdbapi.com/apikey.aspx) cho phim/series, [RAWG](https://rawg.io/apidocs) cho trò chơi, [Comic Vine](https://comicvine.gamespot.com/api/) cho truyện tranh. Anime (Jikan) và nhạc (Deezer) không cần key.
+3. _（Tùy chọn）_ Nhập API key cho các dịch vụ bạn sử dụng: [OMDb](https://www.omdbapi.com/apikey.aspx) cho phim/series, [RAWG](https://rawg.io/apidocs) cho trò chơi, [Comic Vine](https://comicvine.gamespot.com/api/) cho truyện tranh. Anime (AniList) và nhạc (Deezer) không cần key.
 
 ### 3. Thêm Thẻ Bằng Tiêu Đề
 
@@ -97,7 +98,7 @@ Mỗi danh mục được liên kết với nguồn cung cấp tìm kiếm:
 | **Books**        | Sách            | Open Library (không cần key) + Google Books (key miễn phí tùy chọn). Kết quả được hợp nhất — Google Books trước, Open Library phía dưới. |
 | **RAWG**         | Trò chơi        | Cần key miễn phí — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**       | Nhạc (album)    | Không cần                                                    |
-| **Jikan**        | Anime           | Không cần — API MyAnimeList không chính thức miễn phí, không cần key |
+| **AniList**        | Anime           | Không cần — API GraphQL AniList miễn phí, không cần key |
 | **Comic Vine**   | Truyện tranh    | Cần key miễn phí — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Thủ công**     | Bất kỳ thứ gì khác | Không cần — bạn tự nhập tiêu đề và điền các trường |
 
@@ -115,7 +116,7 @@ Thư viện là **ưu tiên ngoại tuyến**. Plugin chỉ liên lạc mạng k
 | `www.googleapis.com` | Bạn tìm kiếm danh mục Google Books | Tiêu đề bạn nhập và Google Books key của bạn | Lấy metadata sách (tác giả, năm, danh mục, số trang, bìa, ISBN) |
 | `api.rawg.io` | Bạn tìm kiếm danh mục trò chơi RAWG | Tiêu đề bạn nhập và RAWG key của bạn | Lấy metadata trò chơi (năm, thể loại, nhà phát triển, bìa) |
 | `api.deezer.com` | Bạn tìm kiếm danh mục nhạc Deezer | Album hoặc nghệ sĩ bạn nhập | Lấy metadata album (nghệ sĩ, năm, thể loại, số tracks, bìa) |
-| `api.jikan.moe` | Bạn tìm kiếm danh mục anime | Tiêu đề bạn nhập | Lấy metadata anime (tiêu đề, năm, thể loại, tập phim, điểm MAL, tóm tắt, poster) |
+| `graphql.anilist.co` | Bạn tìm kiếm danh mục anime | Tiêu đề bạn nhập | Lấy metadata anime (tiêu đề, năm, thể loại, tập phim, điểm AniList, studio, poster) |
 | `comicvine.gamespot.com` | Bạn tìm kiếm danh mục truyện tranh | Tiêu đề bạn nhập và Comic Vine key của bạn | Lấy metadata truyện tranh (tiêu đề, năm, nhà xuất bản, số issues, bìa) |
 
 Không có dữ liệu nào khác rời khỏi vault của bạn. Plugin **không có遥测, không phân tích, và không có cơ chế tự cập nhật**. API key (OMDb, Google Books, RAWG, Comic Vine) chỉ được lưu trong cài đặt plugin cục bộ và chỉ gửi đến dịch vụ tương ứng. Hình ảnh bìa tải trực tiếp từ URL được mỗi nguồn trả về.
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Các liên kết này kết nối các ghi chú của bạn qua danh mục, th�
 
 ---
 
+## Chia Sẻ
+
+Mỗi ghi chú nội dung đều có nút **Chia sẻ** trong tiêu đề (hoặc chạy `Share current note`). Nó tạo một hình ảnh thẻ — poster, tiêu đề, năm, thể loại, điểm IMDb/AniList và đánh giá của bạn — mà bạn có thể đăng ở bất cứ đâu:
+
+- **Trên di động** — nút **Chia sẻ…** mở bảng chia sẻ gốc của thiết bị với hình ảnh thẻ được đính kèm trực tiếp, để bạn có thể gửi thẳng đến bất kỳ ứng dụng nào.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — mở trình soạn thảo của mạng với chú thích được điền sẵn (tiêu đề, đánh giá của bạn, liên kết nguồn và liên kết đến plugin này). Hình ảnh thẻ được sao chép vào clipboard cùng lúc, nên bạn chỉ cần dán (Ctrl/Cmd+V) vào bài đăng.
+- **Sao chép hình ảnh / Sao chép văn bản / Lưu hình ảnh** — sao chép thẻ đã tạo hoặc chú thích vào clipboard, hoặc lưu hình ảnh vào thư mục đính kèm của vault để đính kèm thủ công.
+
+Chia sẻ hoàn toàn cục bộ: thẻ được vẽ trong ứng dụng từ chính metadata và bìa của ghi chú. Không có gì được tải lên — plugin chỉ mở URL trình soạn thảo bạn chọn trong trình duyệt.
+
+---
+
 ## Lệnh
 
 | Lệnh                                | Mô tả                                                                  |
@@ -275,6 +287,7 @@ Các liên kết này kết nối các ghi chú của bạn qua danh mục, th�
 | `Refresh metadata for current note`  | Lấy lại metadata cho ghi chú đang hoạt động; cập nhật tổng tập series.   |
 | `Rebuild graph links`                | Kết nối mọi ghi chú nội dung với danh mục, thể loại và nhà sáng tạo.          |
 | `Find & remove duplicates`           | Quét tất cả ghi chú theo URL, hiển thị trùng lặp và xóa các mục được chọn.       |
+| `Share current note`                 | Tạo hình ảnh thẻ từ ghi chú và chia sẻ lên X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, hoặc Pinterest. |
 
 ---
 

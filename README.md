@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -33,6 +33,7 @@
 - **Progress Indicators** — Visual progress bars on cards and note headers show how much you've watched or read.
 - **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
 - **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
+- **Share Cards** — Turn any content note into a shareable card image (poster, title, year, genre, IMDb score, and your rating) and post it to X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, or Pinterest — share it straight to your device's apps, or copy/save the image to use anywhere.
 - **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
 - **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
 - **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
@@ -264,6 +265,18 @@ These links connect your notes through shared categories, genres, and creators, 
 
 ---
 
+## Sharing
+
+Every content note gets a **Share** button in its header (or run `Share current note`). It renders a card image — poster, title, year, genre, IMDb/AniList score, and your rating — that you can post anywhere:
+
+- **On mobile** — the **Share…** button opens your device's native share sheet with the card image attached directly, so you can send it straight to any app.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — opens the network's composer with a prefilled caption (title, your rating, the source link, and a link to this plugin). The card image is copied to your clipboard at the same time, so you just paste it (Ctrl/Cmd+V) into the post.
+- **Copy image / Copy text / Save image** — copy the rendered card or the caption to the clipboard, or save the image into your vault's attachment folder to attach manually.
+
+Sharing is fully local: the card is drawn in-app from the note's own metadata and cover. Nothing is uploaded — the plugin only opens the composer URL you choose in your browser.
+
+---
+
 ## Commands
 
 | Command                              | Description                                                              |
@@ -274,6 +287,7 @@ These links connect your notes through shared categories, genres, and creators, 
 | `Refresh metadata for current note`  | Re-fetch metadata for the active note; updates series episode totals.   |
 | `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
 | `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
+| `Share current note`                 | Render the note as a card image and share it to X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, or Pinterest. |
 
 ---
 

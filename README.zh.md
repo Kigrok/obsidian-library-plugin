@@ -7,7 +7,7 @@
 <h1 align="center">图书馆</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="版本">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="版本">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="下载量">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian 版本">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="许可证">
@@ -28,12 +28,13 @@
 ## 主要功能
 
 - **可视化卡片网格** — 专用的图书馆标签页将您的收藏渲染为封面艺术卡片图库。
-- **内置搜索** — 直接在应用内搜索并添加标题：电影和剧集使用 OMDb，图书使用 Open Library 或 Google Books，游戏使用 RAWG，音乐使用 Deezer，动画使用 Jikan，漫画使用 Comic Vine。
+- **内置搜索** — 直接在应用内搜索并添加标题：电影和剧集使用 OMDb，图书使用 Open Library 或 Google Books，游戏使用 RAWG，音乐使用 Deezer，动画使用 AniList，漫画使用 Comic Vine。
 - **智能剧集追踪** — 季数和集数自动获取并保持同步。
 - **进度指示器** — 卡片和笔记标题上的可视化进度条显示您的观看或阅读进度。
 - **丰富的笔记标题** — 每个内容笔记都获得包含所有关键元数据的自动生成标题。
 - **自定义分类** — 为电影、剧集、动画、漫画、图书、游戏、音乐或其他任何内容创建分类，通过手动源。
 - **图谱链接** — `Related` 前置属性将每个笔记链接到其分类、类型和创作者，自动保持同步以形成美丽的图谱。
+- **分享卡片** — 将任意内容笔记转换为可分享的卡片图片（海报、标题、年份、类型、IMDb 评分和您的评分），并发布到 X、Telegram、Reddit、WhatsApp、Facebook、LinkedIn、VK、Bluesky 或 Pinterest — 直接分享到您设备的应用，或复制/保存图片以便随处使用。
 - **排序与折叠** — 按名称、年份、评分或日期排序卡片；折叠任意分类。
 - **统计** — 热门类型、热门创作者（仅电影和剧集）、各分类热门项目（带奖牌排名）。
 - **重复检测** — 通过 URL 自动防止添加相同标题两次。内置命令可查找并移除现有重复项。
@@ -51,7 +52,7 @@
 
 1. 前往 **设置** > **图书馆**。
 2. 添加您的 **分类** — 从下拉菜单中选择预定义类型（电影、剧集、图书、漫画、游戏、音乐、动画或手动），然后点击 **添加分类**。每个分类都有显示名称（翻译为您的语言）、`Type` 值（始终为英文，例如 `Movie`）、数据源以及用于存储笔记的可选文件夹。
-3. _（可选）_ 输入您使用的服务的 API 密钥：电影/剧集使用 [OMDb](https://www.omdbapi.com/apikey.aspx)，游戏使用 [RAWG](https://rawg.io/apidocs)，漫画使用 [Comic Vine](https://comicvine.gamespot.com/api/)。动画（Jikan）和音乐（Deezer）无需密钥。
+3. _（可选）_ 输入您使用的服务的 API 密钥：电影/剧集使用 [OMDb](https://www.omdbapi.com/apikey.aspx)，游戏使用 [RAWG](https://rawg.io/apidocs)，漫画使用 [Comic Vine](https://comicvine.gamespot.com/api/)。动画（AniList）和音乐（Deezer）无需密钥。
 
 ### 3. 通过标题添加卡片
 
@@ -97,7 +98,7 @@
 | **Books**        | 图书           | Open Library（无需密钥）+ Google Books（可选免费密钥）。结果合并 — Google Books 在前，Open Library 在后。 |
 | **RAWG**         | 游戏           | 需要免费密钥 — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**       | 音乐（专辑）  | 无需                                                        |
-| **Jikan**        | 动画           | 无需 — 免费的非官方 MyAnimeList API，无需密钥       |
+| **AniList**      | 动画           | 无需 — 免费的 AniList GraphQL API，无需密钥          |
 | **Comic Vine**   | 漫画          | 需要免费密钥 — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**       | 其他所有内容   | 无需 — 您自行输入标题并填写字段          |
 
@@ -115,7 +116,7 @@
 | `www.googleapis.com` | 搜索 Google Books 分类时 | 您输入的标题和 Google Books 密钥 | 获取图书元数据（作者、年份、分类、页数、封面、ISBN） |
 | `api.rawg.io` | 搜索 RAWG 游戏分类时 | 您输入的标题和 RAWG 密钥 | 获取游戏元数据（年份、类型、开发者、封面） |
 | `api.deezer.com` | 搜索 Deezer 音乐分类时 | 您输入的专辑或艺术家 | 获取专辑元数据（艺术家、年份、类型、曲目数、封面） |
-| `api.jikan.moe` | 搜索动画分类时 | 您输入的标题 | 获取动画元数据（标题、年份、类型、集数、MAL评分、剧情简介、海报） |
+| `graphql.anilist.co` | 搜索动画分类时 | 您输入的标题 | 获取动画元数据（标题、年份、类型、集数、AniList评分、制作公司、海报） |
 | `comicvine.gamespot.com` | 搜索漫画分类时 | 您输入的标题和 Comic Vine 密钥 | 获取漫画元数据（标题、年份、出版商、期数、封面） |
 
 没有其他数据会离开您的保险库。插件 **没有遥测、没有分析、没有自动更新机制**。API 密钥（OMDb、Google Books、RAWG、Comic Vine）仅存储在您的本地插件设置中，仅发送到各自的服务。封面图片直接从各数据源返回的 URL 加载。
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Related:
 
 ---
 
+## 分享
+
+每个内容笔记的标题栏都有一个 **分享** 按钮（或运行 `Share current note`）。它会渲染一张卡片图片 — 海报、标题、年份、类型、IMDb/AniList 评分和您的评分 — 您可以将其发布到任何地方：
+
+- **在移动端** — **分享…** 按钮会打开您设备的原生分享面板，并直接附上卡片图片，因此您可以将其直接发送到任何应用。
+- **X、Telegram、Reddit、WhatsApp、Facebook、LinkedIn、VK、Bluesky、Pinterest** — 打开该网络的编辑器，并预填说明文字（标题、您的评分、来源链接以及本插件的链接）。卡片图片会同时被复制到您的剪贴板，因此您只需将其粘贴（Ctrl/Cmd+V）到帖子中。
+- **复制图片 / 复制文本 / 保存图片** — 将渲染的卡片或说明文字复制到剪贴板，或将图片保存到您保险库的附件文件夹以便手动附加。
+
+分享完全在本地进行：卡片由应用根据笔记自身的元数据和封面绘制。不会上传任何内容 — 插件仅在您的浏览器中打开您选择的编辑器 URL。
+
+---
+
 ## 命令
 
 | 命令                              | 描述                                                              |
@@ -275,6 +287,7 @@ Related:
 | `Refresh metadata for current note`  | 重新获取活动笔记的元数据；更新剧集集数总计。   |
 | `Rebuild graph links`                | 将每个内容笔记连接到其分类、类型和创作者。          |
 | `Find & remove duplicates`           | 按 URL 扫描所有笔记，显示重复项并移除选中的项。       |
+| `Share current note`                 | 将笔记渲染为卡片图片并分享到 X、Telegram、Reddit、WhatsApp、Facebook、LinkedIn、VK、Bluesky 或 Pinterest。 |
 
 ---
 

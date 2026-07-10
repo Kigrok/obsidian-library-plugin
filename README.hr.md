@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -28,12 +28,13 @@
 ## Ključne značajke
 
 - **Vizualna mreža kartica** — Posvećena kartica Library prikazuje vašu kolekciju kao galeriju kartica s naslovnim slikama.
-- **Ugrađeno pretraživanje** — Pretražujte i dodajte naslove izravno u aplikaciji: OMDb za filmove i serije, Open Library ili Google Books za knjige, RAWG za igrice, Deezer za glazbu, Jikan za anime, Comic Vine za stripove.
+- **Ugrađeno pretraživanje** — Pretražujte i dodajte naslove izravno u aplikaciji: OMDb za filmove i serije, Open Library ili Google Books za knjige, RAWG za igrice, Deezer za glazbu, AniList za anime, Comic Vine za stripove.
 - **Pametno praćenje serija** — Sezone i ukupni brojevi epizoda automatski se dohvaćaju i održavaju sinkroniziranima.
 - **Pokazatelji napretka** — Vizualne trake napretka na karticama i zaglavlju bilješki pokazuju koliko ste pogledali ili pročitali.
 - **Bogata zaglavlja bilješki** — Svaka bilješka sadržaja dobiva automatski generirano zaglavlje sa svim ključnim metapodacima.
 - **Prilagođene kategorije** — Stvorite kategorije za filmove, serije, anime, stripove, knjige, igrice, glazbu ili bilo što drugo putem ručnog izvora.
 - **Veze grafana** — Svojstvo `Related` u frontmatteru povezuje svaku bilješku s njezinom kategorijom, žanrovima i stvarateljima, automatski održavano sinkroniziranim za prekrasan graf.
+- **Kartice za dijeljenje** — Pretvorite bilo koju bilješku sadržaja u sliku kartice za dijeljenje (poster, naslov, godina, žanr, IMDb ocjena i vaša ocjena) i objavite je na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky ili Pinterest — podijelite je izravno u aplikacije svog uređaja ili kopirajte/spremite sliku za korištenje bilo gdje.
 - **Sortiranje i sažimanje** — Sortirajte kartice po nazivu, godini, ocjeni ili datumu; sažmite bilo koju kategoriju.
 - **Statistika** — Najbolji žanrovi, najbolji stvaratelji (samo filmovi i serije) i najbolje stavke po kategoriji s medaljama.
 - **Otkrivanje duplikata** — Automatski sprječava dodavanje istog naslova dva puta prema URL-u. Ugrađena naredba pronalazi i uklanja postojeće duplikate.
@@ -51,7 +52,7 @@ Instalirajte **Library** iz [direktorija Obsidian Community Plugins](https://com
 
 1. Idite na **Postavke** > **Library**.
 2. Dodajte svoje **Kategorije** — odaberite unaprijed definirani tip (Movies, Series, Books, Comics, Games, Music, Anime ili Manual) iz padajućeg izbornika i kliknite **Add category**. Svaka kategorija ima ime za prikaz (prevedeno na vaš jezik), vrijednost `Type` (uvijek engleski, npr. `Movie`), izvor i opcionalnu mapu za pohranu bilješki.
-3. _(Opcionalno)_ Unesite API ključeve za usluge koje koristite: [OMDb](https://www.omdbapi.com/apikey.aspx) za filmove/serije, [RAWG](https://rawg.io/apidocs) za igrice, [Comic Vine](https://comicvine.gamespot.com/api/) za stripove. Anime (Jikan) i glazba (Deezer) ne zahtijevaju ključ.
+3. _(Opcionalno)_ Unesite API ključeve za usluge koje koristite: [OMDb](https://www.omdbapi.com/apikey.aspx) za filmove/serije, [RAWG](https://rawg.io/apidocs) za igrice, [Comic Vine](https://comicvine.gamespot.com/api/) za stripove. Anime (AniList) i glazba (Deezer) ne zahtijevaju ključ.
 
 ### 3. Dodajte karticu po naslovu
 
@@ -97,7 +98,7 @@ Svaka kategorija je vezana za izvor koji pokreće njezino pretraživanje:
 | **Books**         | Knjige          | Open Library (bez ključa) + Google Books (opcionalni besplatni ključ). Rezultati se spajaju — Google Books prvi, Open Library ispod. |
 | **RAWG**          | Igrice          | Potreban besplatni ključ — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**        | Glazba (albumi) | Nema                                                        |
-| **Jikan**         | Anime           | Nema — besplatna neslužbena MyAnimeList API, ključ nije potreban |
+| **AniList**         | Anime           | Nema — besplatna AniList GraphQL API, ključ nije potreban |
 | **Comic Vine**    | Stripovi        | Potreban besplatni ključ — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**        | Sve ostalo      | Nema — sami unosite naslov i ispunjavate polja              |
 
@@ -115,7 +116,7 @@ Library je **offline-first**. Plugin kontaktira mrežu samo kada aktivno pretra�
 | `www.googleapis.com` | Pretražujete kategoriju Google Books | Naslov koji unosite i vaš Google Books ključ | Dohvaćanje metapodataka knjige (autor, godine, kategorije, broj stranica, naslovnica, ISBN) |
 | `api.rawg.io` | Pretražujete kategoriju RAWG igara | Naslov koji unosite i vaš RAWG ključ | Dohvaćanje metapodataka igre (godina, žanrovi, programer, naslovnica) |
 | `api.deezer.com` | Pretražujete kategoriju Deezer glazbe | Album ili izvođač koji unosite | Dohvaćanje metapodataka albuma (izvođač, godina, žanrovi, broj pjesama, naslovnica) |
-| `api.jikan.moe` | Pretražujete kategoriju animea | Naslov koji unosite | Dohvaćanje metapodataka animea (naslov, godina, žanrovi, epizode, MAL ocjena, sinopsis, poster) |
+| `graphql.anilist.co` | Pretražujete kategoriju animea | Naslov koji unosite | Dohvaćanje metapodataka animea (naslov, godina, žanrovi, epizode, AniList ocjena, studio, poster) |
 | `comicvine.gamespot.com` | Pretražujete kategoriju stripova | Naslov koji unosite i vaš Comic Vine ključ | Dohvaćanje metapodataka stripa (naslov, godina, izdavač, broj izdanja, naslovnica) |
 
 Nikakvi drugi podaci ne napuštaju vaš vault. Plugin **nema telemetriju, nema analitiku i nema mehanizam samo-ažuriranja**. API ključevi (OMDb, Google Books, RAWG, Comic Vine) pohranjeni su samo u vašim lokalnim postavkama plugin-a i šalju se samo njihovim odgovarajućim uslugama. Slike naslovnica učitavaju se izravno s URL-ova koje vraća svaki izvor.
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Ove veze povezuju vaše bilješke kroz zajedničke kategorije, žanrove i stvara
 
 ---
 
+## Dijeljenje
+
+Svaka bilješka sadržaja dobiva gumb **Share** u svom zaglavlju (ili pokrenite `Share current note`). Prikazuje sliku kartice — poster, naslov, godina, žanr, IMDb/AniList ocjena i vaša ocjena — koju možete objaviti bilo gdje:
+
+- **Na mobitelu** — gumb **Share…** otvara nativni izbornik za dijeljenje vašeg uređaja s izravno priloženom slikom kartice, tako da je možete poslati ravno u bilo koju aplikaciju.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — otvara sastavljač mreže s unaprijed ispunjenim opisom (naslov, vaša ocjena, izvorna poveznica i poveznica na ovaj plugin). Slika kartice se istovremeno kopira u vaš međuspremnik, tako da je samo zalijepite (Ctrl/Cmd+V) u objavu.
+- **Copy image / Copy text / Save image** — kopirajte prikazanu karticu ili opis u međuspremnik, ili spremite sliku u mapu s privicima vašeg vaulta kako biste je ručno priložili.
+
+Dijeljenje je potpuno lokalno: kartica se crta unutar aplikacije iz vlastitih metapodataka i naslovnice bilješke. Ništa se ne učitava na mrežu — plugin samo otvara URL sastavljača koji odaberete u vašem pregledniku.
+
+---
+
 ## Naredbe
 
 | Naredba                              | Opis                                                                     |
@@ -275,6 +287,7 @@ Ove veze povezuju vaše bilješke kroz zajedničke kategorije, žanrove i stvara
 | `Refresh metadata for current note`  | Ponovo dohvaća metapodatke za aktivnu bilješku; ažurira ukupne brojeve epizoda serija. |
 | `Rebuild graph links`                | Povezuje svaku bilješku sadržaja s njezinom kategorijom, žanrovima i stvarateljima. |
 | `Find & remove duplicates`           | Skenira sve bilješke po URL-u, prikazuje duplikate i uklanja odabrane.    |
+| `Share current note`                 | Prikazuje bilješku kao sliku kartice i dijeli je na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky ili Pinterest. |
 
 ---
 

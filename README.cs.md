@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -28,12 +28,13 @@
 ## Hlavní Funkce
 
 - **Vizuální Mřížka Karet** — Vyhrazená záložka Library zobrazuje vaši sbírku jako galerii karet s obaly.
-- **Vestavěné Vyhledávání** — Vyhledávejte a přidávejte tituly přímo v aplikaci: OMDb pro filmy a seriály, Open Library nebo Google Books pro knihy, RAWG pro hry, Deezer pro hudbu, Jikan pro anime, Comic Vine pro komiksy.
+- **Vestavěné Vyhledávání** — Vyhledávejte a přidávejte tituly přímo v aplikaci: OMDb pro filmy a seriály, Open Library nebo Google Books pro knihy, RAWG pro hry, Deezer pro hudbu, AniList pro anime, Comic Vine pro komiksy.
 - **Chytré Sledování Seriálů** — Řady a celkový počet epizod se automaticky načítají a udržují synchronizované.
 - **Indikátory Postupu** — Vizuální ukazatele průběhu na kartách a hlavičkách poznámek ukazují, kolik jste viděli nebo přečetli.
 - **Bohaté Hlavičky Poznámek** — Každá obsahová poznámka dostane automaticky generovanou hlavičku se všemi důležitými metadaty.
 - **Vlastní Kategorie** — Vytvářejte kategorie pro Filmy, Seriály, Anime, Komiksy, Knihy, Hry, Hudbu nebo cokoliv jiného přes manuální zdroj.
 - **Grafické Odkazy** — Vlastnost `Related` v frontmatteru propojuje každou poznámku s její kategorií, žánry a tvůrci, automaticky synchronizovaná pro krásný graf.
+- **Sdílitelné Karty** — Proměňte libovolnou obsahovou poznámku ve sdílitelný obrázek karty (poster, název, rok, žánr, hodnocení IMDb a vaše hodnocení) a zveřejněte ji na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky nebo Pinterest — sdílejte ji přímo do aplikací ve vašem zařízení, nebo obrázek zkopírujte či uložte a použijte kdekoliv.
 - **Řazení a Skládání** — Řaďte karty podle názvu, roku, hodnocení nebo data; sbíjejte libovolné kategorie.
 - **Statistiky** — Nejlepší žánry, nejlepší tvůrci (pouze filmy a seriály) a nejlepší položky v každé kategorii s medailovým žebříčkem.
 - **Detekce Duplicit** — Automaticky zabraňuje přidání stejného titulu dvakrát podle URL. Vestavěný příkaz najde a odstraní existující duplicity.
@@ -51,7 +52,7 @@ Nainstalujte **Library** z [adresáře Obsidian Community Plugins](https://commu
 
 1. Přejděte na **Nastavení** > **Library**.
 2. Přidejte své **Kategorie** — vyberte předdefinovaný typ (Movies, Series, Books, Comics, Games, Music, Anime nebo Manual) z rozbalovacího seznamu a klikněte na **Add category**. Každá kategorie má zobrazovaný název (přeložený do vašeho jazyka), hodnotu `Type` (vždy anglicky, např. `Movie`), zdroj a volitelnou složku pro ukládání poznámek.
-3. _(Volitelné)_ Zadejte API klíče pro služby, které používáte: [OMDb](https://www.omdbapi.com/apikey.aspx) pro filmy/seriály, [RAWG](https://rawg.io/apidocs) pro hry, [Comic Vine](https://comicvine.gamespot.com/api/) pro komiksy. Anime (Jikan) a hudba (Deezer) nepotřebují klíč.
+3. _(Volitelné)_ Zadejte API klíče pro služby, které používáte: [OMDb](https://www.omdbapi.com/apikey.aspx) pro filmy/seriály, [RAWG](https://rawg.io/apidocs) pro hry, [Comic Vine](https://comicvine.gamespot.com/api/) pro komiksy. Anime (AniList) a hudba (Deezer) nepotřebují klíč.
 
 ### 3. Přidání Karty podle Názvu
 
@@ -97,7 +98,7 @@ Každá kategorie je vázána na zdroj, který pohání její vyhledávání:
 | **Books**          | Knihy           | Open Library (bez klíče) + Google Books (volitelný bezplatný klíč). Výsledky jsou sloučeny — Google Books první, Open Library pod. |
 | **RAWG**           | Hry             | Vyžadován bezplatný klíč — [rawg.io/apidocs](https://rawg.io/apidocs) |
 | **Deezer**         | Hudba (alba)    | Žádný                                                       |
-| **Jikan**          | Anime           | Žádný — bezplatná neoficiální MyAnimeList API, klíč není potřeba |
+| **AniList**        | Anime           | Žádný — bezplatná AniList GraphQL API, klíč není potřeba |
 | **Comic Vine**     | Komiksy         | Vyžadován bezplatný klíč — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**         | Cokoliv jiného  | Žádný — zadáte název a vyplníte pole sami                   |
 
@@ -115,7 +116,7 @@ Library je **offline-první**. Plugin kontaktuje síť pouze, když aktivně vyh
 | `www.googleapis.com` | Vyhledáváváte v kategorii Google Books | Název, který zadáte, a váš Google Books klíč | Načtení metadat knih (autor, rok, kategorie, počet stránek, obal, ISBN) |
 | `api.rawg.io` | Vyhledáváváte v kategorii her RAWG | Název, který zadáte, a váš RAWG klíč | Načtení metadat her (rok, žánre, vývojář, obal) |
 | `api.deezer.com` | Vyhledáváváte v kategorii hudby Deezer | Album nebo umělec, který zadáte | Načtení metadat alba (umělec, rok, žánre, počet stop, obal) |
-| `api.jikan.moe` | Vyhledáváváte v kategorii anime | Název, který zadáte | Načtení metadat anime (název, rok, žánre, epizody, skóre MAL, synopse, poster) |
+| `graphql.anilist.co` | Vyhledáváte v kategorii anime | Název, který zadáte | Načtení metadat anime (název, rok, žánr, epizody, skóre AniList, studio, poster) |
 | `comicvine.gamespot.com` | Vyhledáváváte v kategorii komiksů | Název, který zadáte, a váš Comic Vine klíč | Načtení metadat komiksů (název, rok, vydavatel, počet čísel, obal) |
 
 Žádná další data nikdy neopustí váš vault. Plugin **nemá telemetrii, analytiku ani mechanismus samoaktualizace**. API klíče (OMDb, Google Books, RAWG, Comic Vine) jsou uloženy pouze v místních nastaveních pluginu a odesílány pouze příslušným službám. Obrázky obalů se načítají přímo z URL vrácených jednotlivými zdroji.
@@ -212,16 +213,15 @@ Genre:
     - Sci-Fi
     - Thriller
 Creator:
-    - シュタインズ・ゲート
-Rating MAL: 9.07
-Total Episodes: 24
-Status: Finished Airing
-Cover: https://cdn.myanimelist.net/images/anime/...
-URL: https://myanimelist.net/anime/9253/Steins_Gate
+    - White Fox
+Rating AniList: 9.1
+Status: FINISHED
+Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
+URL: https://anilist.co/anime/9253
 Progress: 0/24
 Complete: false
 Date: 01.03.2026
-Source: jikan
+Source: anilist
 Source ID: 9253
 ---
 ```
@@ -265,6 +265,18 @@ Tyto odkazy propojují vaše poznámky prostřednictvím sdílených kategorií,
 
 ---
 
+## Sdílení
+
+Každá obsahová poznámka má ve své hlavičce tlačítko **Share** (nebo spusťte `Share current note`). Vykreslí obrázek karty — poster, název, rok, žánr, hodnocení IMDb/AniList a vaše hodnocení — který můžete zveřejnit kdekoliv:
+
+- **Na mobilu** — tlačítko **Share…** otevře nativní panel sdílení vašeho zařízení s přímo přiloženým obrázkem karty, takže jej můžete poslat rovnou do libovolné aplikace.
+- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — otevře editor příspěvku dané sítě s předvyplněným popiskem (název, vaše hodnocení, odkaz na zdroj a odkaz na tento plugin). Obrázek karty se zároveň zkopíruje do schránky, takže jej stačí vložit (Ctrl/Cmd+V) do příspěvku.
+- **Copy image / Copy text / Save image** — zkopírujte vykreslenou kartu nebo popisek do schránky, nebo obrázek uložte do složky příloh vašeho vaultu a přiložte jej ručně.
+
+Sdílení je zcela lokální: karta se vykresluje přímo v aplikaci z vlastních metadat a obalu poznámky. Nic se nenahrává — plugin pouze otevře ve vašem prohlížeči adresu URL editoru, který zvolíte.
+
+---
+
 ## Příkazy
 
 | Příkaz                               | Popis                                                                     |
@@ -275,6 +287,7 @@ Tyto odkazy propojují vaše poznámky prostřednictvím sdílených kategorií,
 | `Refresh metadata for current note`  | Znovu načte metadata pro aktivní poznámku; aktualizuje celkové počty epizod seriálů. |
 | `Rebuild graph links`                | Propojí každou obsahovou poznámku s kategorií, žánry a tvůrci.            |
 | `Find & remove duplicates`           | Prohledá všechny poznámky podle URL, zobrazí duplicity a odstraní vybrané. |
+| `Share current note`                 | Vykreslí poznámku jako obrázek karty a sdílí ji na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky nebo Pinterest. |
 
 ---
 
