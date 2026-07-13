@@ -1,4 +1,4 @@
-> **English** | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> **English** | [RU](readme/README.ru.md) | [UK](readme/README.uk.md) | [DE](readme/README.de.md) | [ES](readme/README.es.md) | [FR](readme/README.fr.md) | [ZH](readme/README.zh.md) | [JA](readme/README.ja.md) | [KO](readme/README.ko.md) | [AR](readme/README.ar.md)
 
 <p align="center">
   <img src="banner.png" alt="Obsidian Library Banner" width="100%">
@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -34,11 +34,12 @@
 - **Rich Note Headers** — Every content note gets an auto-generated header with all key metadata.
 - **Custom Categories** — Create categories for Movies, Series, Anime, Comics, Books, Games, Music, or anything else via the manual source.
 - **Share Cards** — Turn any content note into a shareable card image (poster, title, year, genre, IMDb score, and your rating) and post it to X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, or Pinterest — share it straight to your device's apps, or copy/save the image to use anywhere.
+- **AniList Sync** — Push your anime progress, status, and rating straight to your AniList account, or pull your list back into your notes.
 - **Graph Links** — A `Related` frontmatter property links every note to its category, genres, and creators, kept in sync automatically for a beautiful graph.
 - **Sorting & Collapsing** — Sort cards by name, year, rating, or date; collapse any category.
 - **Statistics** — Top genres, top creators (movies & series only), and top items per category with medal rankings.
 - **Duplicate Detection** — Automatically prevents adding the same title twice by URL. A built-in command finds and removes existing duplicates.
-- **Multilingual** — 31 languages: English, Ukrainian, Russian, Belarusian, Kazakh, Uzbek, German, Spanish, French, Italian, Dutch, Czech, Croatian, Polish, Romanian, Turkish, Azerbaijani, Persian, Hindi, Bengali, Urdu, Tagalog, Vietnamese, Thai, Javanese, Japanese, Korean, Chinese, Arabic, Sinhala, Hebrew.
+- **Multilingual** — the plugin interface is translated into **every language Obsidian supports** (70+), so it always matches your Obsidian language. Full README translations are available for 30 of them (see the language bar at the top).
 
 ---
 
@@ -117,6 +118,7 @@ Library is **offline-first**. The plugin only contacts the network when you acti
 | `api.rawg.io` | You search a RAWG game category | The title you type and your RAWG key | Fetch game metadata (year, genre, developer, cover) |
 | `api.deezer.com` | You search a Deezer music category | The album or artist you type | Fetch album metadata (artist, year, genre, track count, cover) |
 | `graphql.anilist.co` | You search an anime category | The title you type | Fetch anime metadata (title, year, genre, episodes, AniList score, studio, poster) |
+| `graphql.anilist.co` | You run an AniList sync command | Your AniList access token and the note's progress, status, and rating | Read or update your AniList anime list |
 | `comicvine.gamespot.com` | You search a comics category | The title you type and your Comic Vine key | Fetch comic metadata (title, year, publisher, issue count, cover) |
 
 No other data ever leaves your vault. The plugin has **no telemetry, no analytics, and no self-update mechanism**. API keys (OMDb, Google Books, RAWG, Comic Vine) are stored only in your local plugin settings and are sent only to their respective services. Cover images load directly from the URLs returned by each source.
@@ -277,6 +279,25 @@ Sharing is fully local: the card is drawn in-app from the note's own metadata an
 
 ---
 
+## AniList Sync
+
+Keep your anime progress in sync with your [AniList](https://anilist.co) account.
+
+**Setup** — in **Settings → Library → AniList sync**:
+
+1. Register a free API client at [anilist.co/settings/developer](https://anilist.co/settings/developer), with the redirect URL set to `https://anilist.co/api/v2/oauth/pin`.
+2. Paste the **Client ID**, click **Connect**, and authorize.
+3. AniList shows you an access token — paste it into the plugin. Click **Test connection** to confirm.
+
+Then use the commands:
+
+- **Push current note to AniList** — sends the active anime note's progress (watched episodes), status (watching / completed / planning), and your rating to your AniList list.
+- **Pull progress from AniList** — fetches your AniList anime list and updates matching notes. Pull is **forward-only**: it never regresses a note that's locally further along or already complete, and it leaves your personal `My Rating` untouched.
+
+Only notes with `Source: anilist` (added via the AniList anime source) are synced. Your token is stored locally in the plugin settings and is sent only to AniList.
+
+---
+
 ## Commands
 
 | Command                              | Description                                                              |
@@ -288,6 +309,8 @@ Sharing is fully local: the card is drawn in-app from the note's own metadata an
 | `Rebuild graph links`                | Wire every content note to its category, genres, and creators.          |
 | `Find & remove duplicates`           | Scan all notes by URL, show duplicates, and remove selected ones.       |
 | `Share current note`                 | Render the note as a card image and share it to X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, or Pinterest. |
+| `Push current note to AniList`        | Send the active anime note's progress, status, and rating to your AniList account. |
+| `Pull progress from AniList`          | Fetch your AniList list and update matching notes (forward-only). |
 
 ---
 

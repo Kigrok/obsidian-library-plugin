@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **RO**
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **RO**
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -35,6 +35,7 @@
 - **Categorii personalizate** — Creați categorii pentru Filme, Seriale, Anime, Benzi desenate, Cărți, Jocuri, Muzică sau orice altceva prin sursa manuală.
 - **Linkuri în graf** — O proprietate `Related` în frontmatter leagă fiecare notă de categoria, genurile și creatorii săi, menținută automat sincronizată pentru un graf frumos.
 - **Carduri de partajat** — Transformați orice notă de conținut într-o imagine de card care poate fi partajată (poster, titlu, an, gen, scor IMDb și ratingul dvs.) și publicați-o pe X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky sau Pinterest — partajați-o direct în aplicațiile dispozitivului dvs. sau copiați/salvați imaginea pentru a o folosi oriunde.
+- **Sincronizare AniList** — Trimiteți progresul, statusul și ratingul anime direct în contul dvs. AniList sau readuceți lista înapoi în notele dvs.
 - **Sortare și pliere** — Sortați cărțile după nume, an, rating sau dată; pliați orice categorie.
 - **Statistici** — Genuri de top, creatori de top (doar filme și seriale) și elemente de top per categorie cu clasamente cu medalii.
 - **Detectarea duplicatelor** — Previne automat adăugarea aceluiași titlu de două ori după URL. O comandă integrată găsește și elimină duplicatele existente.
@@ -117,6 +118,7 @@ Library este **offline-first**. Pluginul contactează rețeaua doar atunci când
 | `api.rawg.io` | Căutați o categorie de jocuri RAWG | Titlul pe care îl tastați și cheia dvs. RAWG | Preluarea metadatelor jocului (an, genuri, dezvoltator, copertă) |
 | `api.deezer.com` | Căutați o categorie de muzică Deezer | Albumul sau artistul pe care îl tastați | Preluarea metadatelor albumului (artist, an, genuri, numărul de piese, copertă) |
 | `graphql.anilist.co` | Căutați o categorie anime | Titlul pe care îl tastați | Preluarea metadatelor anime (titlu, an, genuri, episoade, scor AniList, studio, poster) |
+| `graphql.anilist.co` | Rulați o comandă de sincronizare AniList | Token-ul dvs. de acces AniList și progresul, statusul și ratingul notei | Citirea sau actualizarea listei dvs. de anime AniList |
 | `comicvine.gamespot.com` | Căutați o categorie de benzi desenate | Titlul pe care îl tastați și cheia dvs. Comic Vine | Preluarea metadatelor benzii desenate (titlu, an, editor, numărul de issue-uri, copertă) |
 
 Nicio altă dată nu părăsește vreodată vaultul dvs. Pluginul **nu are telemetrie, nu are analitică și nu are mecanism de auto-actualizare**. Cheile API (OMDb, Google Books, RAWG, Comic Vine) sunt stocate doar în setările locale ale pluginului și sunt trimise doar serviciilor respective. Imaginile de copertă se încarcă direct de la URL-urile returnate de fiecare sursă.
@@ -277,6 +279,25 @@ Partajarea este complet locală: cardul este desenat în aplicație din metadate
 
 ---
 
+## Sincronizare AniList
+
+Mențineți progresul anime sincronizat cu contul dvs. [AniList](https://anilist.co).
+
+**Configurare** — în **Setări → Library → AniList sync**:
+
+1. Înregistrați un client API gratuit la [anilist.co/settings/developer](https://anilist.co/settings/developer), cu URL-ul de redirecționare setat la `https://anilist.co/api/v2/oauth/pin`.
+2. Lipiți **Client ID**, faceți clic pe **Connect** și autorizați.
+3. AniList vă afișează un token de acces — lipiți-l în plugin. Faceți clic pe **Test connection** pentru a confirma.
+
+Apoi folosiți comenzile:
+
+- **Push current note to AniList** — trimite progresul notei anime active (episoade vizionate), statusul (watching / completed / planning) și ratingul dvs. în lista dvs. AniList.
+- **Pull progress from AniList** — preia lista dvs. de anime AniList și actualizează notele corespunzătoare. Pull este **doar înainte**: nu retrogradează niciodată o notă care este local mai avansată sau deja completă și lasă `My Rating`-ul dvs. personal neatins.
+
+Doar notele cu `Source: anilist` (adăugate prin sursa anime AniList) sunt sincronizate. Token-ul dvs. este stocat local în setările pluginului și este trimis doar către AniList.
+
+---
+
 ## Comenzi
 
 | Comandă                              | Descriere                                                                 |
@@ -288,6 +309,8 @@ Partajarea este complet locală: cardul este desenat în aplicație din metadate
 | `Rebuild graph links`                | Conectați fiecare notă de conținut la categoria, genurile și creatorii săi. |
 | `Find & remove duplicates`           | Scanați toate notele după URL, afișați duplicatele și eliminați-le pe cele selectate. |
 | `Share current note`                 | Randați nota ca imagine de card și partajați-o pe X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky sau Pinterest. |
+| `Push current note to AniList`       | Trimiteți progresul, statusul și ratingul notei anime active în contul dvs. AniList. |
+| `Pull progress from AniList`         | Preluați lista dvs. AniList și actualizați notele corespunzătoare (doar înainte). |
 
 ---
 

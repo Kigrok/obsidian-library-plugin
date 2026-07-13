@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | **[FR](README.fr.md)** | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | **[FR](README.fr.md)** | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -35,6 +35,7 @@
 - **Catégories Personnalisées** — Créez des catégories pour les Films, Séries, Anime, Comics, Livres, Jeux, Musique ou tout autre élément via la source manuelle.
 - **Liens dans le Graphe** — Une propriété `Related` dans le frontmatter relie chaque note à sa catégorie, ses genres et ses créateurs, synchronisée automatiquement pour un beau graphe.
 - **Cartes de Partage** — Transformez n'importe quelle note de contenu en une image de carte partageable (affiche, titre, année, genre, note IMDb et votre note) et publiez-la sur X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky ou Pinterest — partagez-la directement vers les applications de votre appareil, ou copiez/enregistrez l'image pour l'utiliser où vous voulez.
+- **Synchronisation AniList** — Poussez la progression, le statut et la note de vos anime directement vers votre compte AniList, ou récupérez votre liste dans vos notes.
 - **Tri et Réduction** — Triez les cartes par nom, année, note ou date ; réduisez n'importe quelle catégorie.
 - **Statistiques** — Genres principaux, créateurs principaux (films et séries uniquement) et éléments principaux par catégorie avec classements médailles.
 - **Détection de Doublons** — Empêche automatiquement l'ajout du même titre deux fois par URL. Une commande intégrée trouve et supprime les doublons existants.
@@ -117,6 +118,7 @@ Library est **hors-ligne d'abord**. Le plugin ne contacte le réseau que lorsque
 | `api.rawg.io` | Vous recherchez une catégorie de jeux RAWG | Le titre que vous tapez et votre clé RAWG | Récupérer les métadonnées de jeux (année, genre, développeur, couverture) |
 | `api.deezer.com` | Vous recherchez une catégorie musicale Deezer | L'album ou l'artiste que vous tapez | Récupérer les métadonnées d'album (artiste, année, genre, nombre de pistes, couverture) |
 | `graphql.anilist.co` | Vous recherchez une catégorie anime | Le titre que vous tapez | Récupérer les métadonnées anime (titre, année, genre, épisodes, score AniList, studio, affiche) |
+| `graphql.anilist.co` | Vous exécutez une commande de synchronisation AniList | Votre jeton d'accès AniList et la progression, le statut et la note de la note | Lire ou mettre à jour votre liste d'anime AniList |
 | `comicvine.gamespot.com` | Vous recherchez une catégorie comics | Le titre que vous tapez et votre clé Comic Vine | Récupérer les métadonnées de comics (titre, année, éditeur, nombre de numéros, couverture) |
 
 Aucune autre donnée ne quitte jamais votre vault. Le plugin **n'a pas de télémétrie, pas d'analytique et pas de mécanisme de mise à jour automatique**. Les clés API (OMDb, Google Books, RAWG, Comic Vine) sont stockées uniquement dans les paramètres locaux du plugin et envoyées uniquement à leurs services respectifs. Les images de couverture sont chargées directement depuis les URLs retournées par chaque source.
@@ -277,6 +279,25 @@ Le partage est entièrement local : la carte est dessinée dans l'application à
 
 ---
 
+## Synchronisation AniList
+
+Gardez la progression de vos anime synchronisée avec votre compte [AniList](https://anilist.co).
+
+**Configuration** — dans **Paramètres → Library → AniList sync** :
+
+1. Enregistrez un client API gratuit sur [anilist.co/settings/developer](https://anilist.co/settings/developer), avec l'URL de redirection définie sur `https://anilist.co/api/v2/oauth/pin`.
+2. Collez le **Client ID**, cliquez sur **Connect** et autorisez.
+3. AniList vous affiche un jeton d'accès — collez-le dans le plugin. Cliquez sur **Test connection** pour confirmer.
+
+Utilisez ensuite les commandes :
+
+- **Push current note to AniList** — envoie la progression (épisodes regardés), le statut (en cours / terminé / prévu) et votre note de la note anime active vers votre liste AniList.
+- **Pull progress from AniList** — récupère votre liste d'anime AniList et met à jour les notes correspondantes. Le pull est **unidirectionnel** : il ne fait jamais reculer une note qui est localement plus avancée ou déjà terminée, et il laisse votre `My Rating` personnel intact.
+
+Seules les notes avec `Source: anilist` (ajoutées via la source anime AniList) sont synchronisées. Votre jeton est stocké localement dans les paramètres du plugin et n'est envoyé qu'à AniList.
+
+---
+
 ## Commandes
 
 | Commande                             | Description                                                                |
@@ -288,6 +309,8 @@ Le partage est entièrement local : la carte est dessinée dans l'application à
 | `Rebuild graph links`                | Connecte chaque note de contenu à sa catégorie, ses genres et ses créateurs. |
 | `Find & remove duplicates`           | Scanne toutes les notes par URL, affiche les doublons et supprime ceux sélectionnés. |
 | `Share current note`                 | Génère la note sous forme d'image de carte et la partage sur X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky ou Pinterest. |
+| `Push current note to AniList`       | Envoie la progression, le statut et la note de la note anime active vers votre compte AniList. |
+| `Pull progress from AniList`         | Récupère votre liste AniList et met à jour les notes correspondantes (unidirectionnel). |
 
 ---
 

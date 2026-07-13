@@ -1,6 +1,6 @@
 {
 	"name": "library",
-	"version": "2.2.0",
+	"version": "2.2.1",
 	"description": "Organize movies, series, anime, comics, books, games, and music as visual cards with automatic metadata.",
 	"main": "main.js",
 	"type": "module",

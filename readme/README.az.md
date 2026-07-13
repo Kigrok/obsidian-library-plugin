@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Kitabxana</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Versiya">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Versiya">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Yükləmələr">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Versiyası">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Lisenziya">
@@ -35,6 +35,7 @@
 - **Xüsusi Kateqoriyalar** — Filmlər, Seriallar, Anime, Komikslər, Kitablar, Oyunlar, Musiqi və ya əl ilə mənbə vasitəsilə hər hansı digər şeylər üçün kateqoriyalar yaradın.
 - **Qrafik Bağlantıları** — `Related` ön məlumat xüsusiyyəti hər qeydi onun kateqoriyası, janrları və yaradıcıları ilə bağlayır, gözəl qrafik üçün avtomatik olaraq sinxronlaşdırılır.
 - **Paylaşım Kartları** — Hər hansı məzmun qeydini paylaşıla bilən kart şəklinə (poster, ad, il, janr, IMDb xalı və sizin reytinqiniz) çevirin və onu X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky və ya Pinterest-də paylaşın — birbaşa cihazınızın tətbiqlərinə göndərin, və ya istənilən yerdə istifadə etmək üçün şəkli kopyalayın/saxlayın.
+- **AniList Sinxronizasiyası** — Anime irəliləyişinizi, statusunuzu və reytinqinizi birbaşa AniList hesabınıza göndərin, və ya siyahınızı yenidən qeydlərinizə çəkin.
 - **Sıralama & Yığılma** — Kartları ad, il, reytinq və ya tarixə görə sıralayın; istənilən kateqoriyanı yığın.
 - **Statistika** — Ən yaxşı janrlar, yalnız yaradıcılar (filmlər & seriallar), və hər kateqoriya üzrə medal sıralaması ilə ən yaxşı elementlər.
 - **Dublikat Aşkarlanması** — URL eyni adı iki dəfə əlavə etməyi avtomatik olaraq dayandırır. Daxili əmr mövcud dublikatları tapır və silir.
@@ -117,6 +118,7 @@ Kitabxana **offlayn-ilk**dir. Plugin yalnız əlavə etmək üçün bir adı akt
 | `api.rawg.io` | RAWG oyun kateqoriyası axtaranda | Yazdığınız ad və RAWG açarınız | Oyun metadatasını yüklə (il, janr, inkişaf etdirici, örtük) |
 | `api.deezer.com` | Deezer musiqi kateqoriyası axtaranda | Yazdığınız albom və ya sənətçi | Albom metadatasını yüklə (sənətçi, il, janr, treklər sayı, örtük) |
 | `graphql.anilist.co` | Anime kateqoriyası axtaranda | Yazdığınız ad | Anime metadatasını yüklə (ad, il, janr, epizodlar, AniList xalı, studiya, poster) |
+| `graphql.anilist.co` | AniList sinxronizasiya əmrini işə saldığınızda | AniList giriş tokeniniz və qeydin irəliləyişi, statusu və reytinqi | AniList anime siyahınızı oxu və ya yenilə |
 | `comicvine.gamespot.com` | Komiks kateqoriyası axtaranda | Yazdığınız ad və Comic Vine açarınız | Komiks metadatasını yüklə (ad, il, nəşriyyat, nüsxə sayı, örtük) |
 
 Digər məlumat heç vaxt vaultunuzu tərk etmir. Pluginda **telemetriya, analitika və özünü yeniləmə mexanizmi yoxdur**. API açarları (OMDb, Google Books, RAWG, Comic Vine) yalnız yerli plugin ayarlarında saxlanılır və yalnız müvafiq xidmətlərə göndərilir. Örtük şəkilləri birbaşa hər mənbənin qaytardığı URL-lərdən yüklənir.
@@ -275,6 +277,25 @@ Paylaşım tamamilə yerlidir: kart tətbiq içində qeydin öz metadatası və 
 
 ---
 
+## AniList Sinxronizasiyası
+
+Anime irəliləyişinizi [AniList](https://anilist.co) hesabınızla sinxron saxlayın.
+
+**Qurulum** — **Ayarlar → Kitabxana → AniList sinxronizasiyası**da:
+
+1. [anilist.co/settings/developer](https://anilist.co/settings/developer) ünvanında pulsuz API klienti qeydiyyatdan keçirin, yönləndirmə URL-ini `https://anilist.co/api/v2/oauth/pin` təyin edərək.
+2. **Client ID**-ni yapışdırın, **Connect** düyməsinə basın və icazə verin.
+3. AniList sizə giriş tokeni göstərir — onu plugine yapışdırın. Təsdiqləmək üçün **Test connection** düyməsinə basın.
+
+Sonra əmrlərdən istifadə edin:
+
+- `Push current note to AniList` — aktiv anime qeydinin irəliləyişini (baxılan epizodlar), statusunu (baxılır / tamamlanıb / planlanır) və reytinqinizi AniList siyahınıza göndərir.
+- `Pull progress from AniList` — AniList anime siyahınızı yükləyir və uyğun qeydləri yeniləyir. Çəkmə **yalnız irəliyə**dir: yerli olaraq daha irəlidə olan və ya artıq tamamlanmış qeydi heç vaxt geri qaytarmır və şəxsi `My Rating`-inizə toxunmur.
+
+Yalnız `Source: anilist` olan qeydlər (AniList anime mənbəyi vasitəsilə əlavə edilmiş) sinxronlaşdırılır. Tokeniniz yerli olaraq plugin ayarlarında saxlanılır və yalnız AniList-ə göndərilir.
+
+---
+
 ## Əmrlər
 
 | Əmr                              | Təsvir                                                              |
@@ -286,6 +307,8 @@ Paylaşım tamamilə yerlidir: kart tətbiq içində qeydin öz metadatası və 
 | `Rebuild graph links`                | Hər məzmun qeydini onun kateqoriyası, janrları və yaradıcıları ilə birləşdirin.          |
 | `Find & remove duplicates`           | Bütün qeydləri URL üzrə tarayın, dublikatları göstərin və seçilmişləri silin.       |
 | `Share current note`                 | Qeydi kart şəkli kimi yaradın və onu X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky və ya Pinterest-də paylaşın. |
+| `Push current note to AniList`       | Aktiv anime qeydinin irəliləyişini, statusunu və reytinqini AniList hesabınıza göndərin. |
+| `Pull progress from AniList`         | AniList siyahınızı yükləyin və uyğun qeydləri yeniləyin (yalnız irəliyə). |
 
 ---
 

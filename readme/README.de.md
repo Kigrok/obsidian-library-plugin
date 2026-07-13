@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | **[DE](README.de.md)** | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | **[DE](README.de.md)** | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -35,6 +35,7 @@
 - **Benutzerdefinierte Kategorien** — Erstelle Kategorien für Filme, Serien, Anime, Comics, Spiele, Musik oder alles andere über die manuelle Quelle.
 - **Graph-Verknüpfungen** — Eine `Related` Frontmatter-Eigenschaft verknüpft jede Notiz mit ihrer Kategorie, Genres und Erstellern, automatisch synchronisiert für einen schönen Graphen.
 - **Teilen-Karten** — Verwandle jede Inhaltsnotiz in ein teilbares Kartenbild (Poster, Titel, Jahr, Genre, IMDb-Bewertung und deine Bewertung) und poste es auf X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky oder Pinterest — teile es direkt an die Apps deines Geräts oder kopiere/speichere das Bild, um es überall zu verwenden.
+- **AniList-Sync** — Übertrage deinen Anime-Fortschritt, Status und deine Bewertung direkt in dein AniList-Konto oder hole deine Liste zurück in deine Notizen.
 - **Sortieren & Zusammenfassen** — Sortiere Karten nach Name, Jahr, Bewertung oder Datum; klappe beliebige Kategorien zusammen.
 - **Statistiken** — Top-Genres, Top-Ersteller (nur Filme & Serien) und Top-Elemente pro Kategorie mit Medaillen-Rankings.
 - **Duplikaterkennung** — Verhindert automatisch das Hinzufügen desselben Titels zweimal anhand der URL. Ein integrierter Befehl findet und entfernt vorhandene Duplikate.
@@ -117,6 +118,7 @@ Library ist **offline-zuerst**. Das Plugin kontaktiert das Netzwerk nur, wenn du
 | `api.rawg.io` | Du durchsuchst eine RAWG-Spiel-Kategorie | Der Titel, den du eingibst, und dein RAWG-Schlüssel | Spiel-Metadaten abrufen (Jahr, Genre, Entwickler, Cover) |
 | `api.deezer.com` | Du durchsuchst eine Deezer-Musik-Kategorie | Der Album- oder Künstlername, den du eingibst | Album-Metadaten abrufen (Künstler, Jahr, Genre, Anzahl der Titel, Cover) |
 | `graphql.anilist.co` | Du durchsuchst eine Anime-Kategorie | Der Titel, den du eingibst | Anime-Metadaten abrufen (Titel, Jahr, Genre, Episoden, AniList-Bewertung, Studio, Poster) |
+| `graphql.anilist.co` | Du führst einen AniList-Sync-Befehl aus | Dein AniList-Zugriffstoken und der Fortschritt, Status und die Bewertung der Notiz | Deine AniList-Anime-Liste lesen oder aktualisieren |
 | `comicvine.gamespot.com` | Du durchsuchst eine Comics-Kategorie | Der Titel, den du eingibst, und dein Comic-Vine-Schlüssel | Comic-Metadaten abrufen (Titel, Jahr, Verlag, Ausgabenanzahl, Cover) |
 
 Keine anderen Daten verlassen jemals dein Vault. Das Plugin hat **keine Telemetrie, keine Analysen und keinen Selbstaktualisierungsmechanismus**. API-Schlüssel (OMDb, Google Books, RAWG, Comic Vine) werden nur in deinen lokalen Plugin-Einstellungen gespeichert und nur an die jeweiligen Dienste gesendet. Cover-Bilder werden direkt aus den von jeder Quelle zurückgegebenen URLs geladen.
@@ -277,6 +279,25 @@ Das Teilen ist vollständig lokal: Die Karte wird in der App aus den eigenen Met
 
 ---
 
+## AniList-Sync
+
+Halte deinen Anime-Fortschritt mit deinem [AniList](https://anilist.co)-Konto synchron.
+
+**Einrichtung** — unter **Einstellungen → Library → AniList-Sync**:
+
+1. Registriere einen kostenlosen API-Client unter [anilist.co/settings/developer](https://anilist.co/settings/developer), mit der Redirect-URL `https://anilist.co/api/v2/oauth/pin`.
+2. Füge die **Client ID** ein, klicke auf **Connect** und autorisiere.
+3. AniList zeigt dir ein Zugriffstoken — füge es in das Plugin ein. Klicke auf **Test connection**, um zu bestätigen.
+
+Dann nutze die Befehle:
+
+- `Push current note to AniList` — sendet den Fortschritt der aktiven Anime-Notiz (gesehene Episoden), den Status (wird angesehen / abgeschlossen / geplant) und deine Bewertung an deine AniList-Liste.
+- `Pull progress from AniList` — ruft deine AniList-Anime-Liste ab und aktualisiert passende Notizen. Pull ist **nur vorwärts**: Eine Notiz, die lokal weiter fortgeschritten oder bereits abgeschlossen ist, wird niemals zurückgesetzt, und deine persönliche `My Rating` bleibt unangetastet.
+
+Nur Notizen mit `Source: anilist` (hinzugefügt über die AniList-Anime-Quelle) werden synchronisiert. Dein Token wird lokal in den Plugin-Einstellungen gespeichert und nur an AniList gesendet.
+
+---
+
 ## Befehle
 
 | Befehl                               | Beschreibung                                                               |
@@ -288,6 +309,8 @@ Das Teilen ist vollständig lokal: Die Karte wird in der App aus den eigenen Met
 | `Rebuild graph links`                | Verknüpft jede Inhaltsnotiz mit ihrer Kategorie, Genres und Erstellern.    |
 | `Find & remove duplicates`           | Scanne alle Notizen nach URL, zeige Duplikate und entferne ausgewählte.    |
 | `Share current note`                 | Rendert die Notiz als Kartenbild und teilt es auf X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky oder Pinterest. |
+| `Push current note to AniList`       | Sendet den Fortschritt, Status und die Bewertung der aktiven Anime-Notiz an dein AniList-Konto. |
+| `Pull progress from AniList`         | Ruft deine AniList-Liste ab und aktualisiert passende Notizen (nur vorwärts). |
 
 ---
 

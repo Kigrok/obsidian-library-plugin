@@ -26,6 +26,7 @@ import { LibrarySearchModal } from './ui/librarySearchModal'
 import { PromptModal } from './ui/promptModal'
 import { DuplicateRemovalModal, type DuplicateGroup } from './ui/duplicateModal'
 import { ShareModal, shareTargetFromFile } from './ui/shareModal'
+import { aniListViewer, fetchList, listStatus, pushEntry, type AniListEntry } from './anilistSync'
 import { LibraryView, LIBRARY_VIEW_TYPE } from './view'
 import {
 	toStr,
@@ -155,6 +156,18 @@ export default class LibraryPlugin extends Plugin {
 				if (!checking && target) new ShareModal(this.app, target.fm, target.name).open()
 				return true
 			}
+		})
+
+		this.addCommand({
+			id: 'anilist-push',
+			name: tr('cmd.anilistPush'),
+			callback: () => { void this.anilistPushCurrent() }
+		})
+
+		this.addCommand({
+			id: 'anilist-pull',
+			name: tr('cmd.anilistPull'),
+			callback: () => { void this.anilistPull() }
 		})
 	}
 
@@ -397,6 +410,77 @@ export default class LibraryPlugin extends Plugin {
 			if (toStr(fm.URL) === url) return file
 		}
 		return null
+	}
+
+	private async anilistPushCurrent(): Promise<void> {
+		const token = this.settings.anilistToken.trim()
+		if (!token) { new Notice(tr('notice.anilist.noToken')); return }
+		const file = this.app.workspace.getActiveFile()
+		if (!file) { new Notice(tr('notice.anilist.notAnime')); return }
+		const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+		const sourceId = fm ? toStr(fm['Source ID']) : ''
+		if (!fm || toStr(fm.Source) !== 'anilist' || !sourceId) {
+			new Notice(tr('notice.anilist.notAnime'))
+			return
+		}
+		const mediaId = Number(sourceId)
+		if (!Number.isFinite(mediaId)) { new Notice(tr('notice.anilist.notAnime')); return }
+		const watched = parseWatched(fm.Progress)
+		const status = listStatus(fm.Complete === true, watched)
+		const rating = Number(toStr(fm['My Rating']))
+		const scoreRaw = Number.isFinite(rating) && rating > 0 ? Math.min(100, Math.round(rating * 10)) : null
+		const ok = await pushEntry(token, mediaId, watched, status, scoreRaw)
+		new Notice(ok
+			? tr('notice.anilist.pushed', { name: toStr(fm.Name) || file.basename })
+			: tr('notice.anilist.pushFailed'))
+	}
+
+	private async anilistPull(): Promise<void> {
+		const token = this.settings.anilistToken.trim()
+		if (!token) { new Notice(tr('notice.anilist.noToken')); return }
+		const viewer = await aniListViewer(token)
+		if (!viewer) { new Notice(tr('notice.anilist.pullFailed')); return }
+		new Notice(tr('notice.anilist.pulling'))
+		let entries: AniListEntry[]
+		try {
+			entries = await fetchList(token, viewer.id)
+		} catch (e) {
+			console.error('Library: AniList pull error', e)
+			new Notice(tr('notice.anilist.pullFailed'))
+			return
+		}
+		const byId = new Map<number, AniListEntry>()
+		for (const e of entries) byId.set(e.mediaId, e)
+
+		let updated = 0
+		for (const file of this.app.vault.getMarkdownFiles()) {
+			if (isTemplateFile(file.path)) continue
+			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+			if (!fm || toStr(fm.Source) !== 'anilist') continue
+			const entry = byId.get(Number(toStr(fm['Source ID'])))
+			if (!entry) continue
+			// Only advance forward — never regress a note that is locally further along or already
+			// complete. This makes pull safe to run over hand-edited notes (no silent data loss).
+			const localWatched = parseWatched(fm.Progress)
+			const localComplete = fm.Complete === true
+			const newWatched = Math.max(localWatched, entry.progress)
+			const newComplete = localComplete || entry.status === 'COMPLETED'
+			if (newWatched === localWatched && newComplete === localComplete) continue
+			// Keep the note's episode total so Progress stays in the "watched/total" shape the
+			// rest of the plugin parses; never let total fall below watched (a stale note total
+			// smaller than AniList progress would otherwise write nonsense like "15/12").
+			const match = toStr(fm.Progress).match(progressPattern)
+			const noteTotal = match ? Number(match[2]) : 0
+			const total = String(Math.max(noteTotal, newWatched, 1))
+			await this.app.fileManager.processFrontMatter(file, (current) => {
+				Object.assign(current, {
+					Progress: `${String(newWatched)}/${total}`,
+					Complete: newComplete
+				})
+			})
+			updated++
+		}
+		new Notice(tr('notice.anilist.pulled', { count: updated }))
 	}
 
 	findDuplicates(): DuplicateGroup[] {

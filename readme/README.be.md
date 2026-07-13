@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **BE**
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **BE**
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -35,6 +35,7 @@
 - **Карыстальніцкія катэгорыі** — Ствайце катэгорыі для фільмаў, серыялаў, анімэ, коміксаў, кніг, гульняў, музыкі ці чаго заўгодна праз ручную крыніцу.
 - **Спасылкі графа** — Уласцівасць `Related` у frontmatter злучае кожную нататку з яе катэгорыяй, жанрамі і стваральнікамі, аўтаматычна падтрымліваемая ў сінхранізацыі для прыгожага графа.
 - **Карткі для абмену** — Ператварыце любую нататку кантэнту ў выяву-картку, якой можна падзяліцца (плакат, назва, год, жанр, рэйтынг IMDb і ваш рэйтынг), і апублікуйце яе ў X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky ці Pinterest — падзяліцеся ёй прама ў праграмах вашай прылады або скапіруйце/захавайце выяву, каб выкарыстоўваць дзе заўгодна.
+- **Сінхранізацыя AniList** — Адпраўляйце прагрэс, статус і рэйтынг вашага анімэ прама ў ваш акаўнт AniList, або сцягвайце ваш спіс назад у нататкі.
 - **Сартаванне і згортванне** — Сартуйце карткі па назве, году, рэйтынгу ці даце; згортвайце любую катэгорыю.
 - **Статыстыка** — Лепшыя жанры, лепшыя стваральнікі (толькі фільмы і серыялы) і лепшыя элементы па катэгорыі з медальнымі рэйтынгамі.
 - **Выяўленне дублікатаў** — Аўтаматычна перашкаджае даданню адной і той жа назвы двойчы па URL. Убудаваная каманда знаходзіць і выдаляе існуючыя дублікі.
@@ -117,6 +118,7 @@ Library з'яўляецца **offline-first**. Плагін звязваецца
 | `api.rawg.io` | Вы шукаеце катэгорыю гульняў RAWG | Назва, якую вы ўводзіце, і ваш ключ RAWG | Атрыманне метаданых гульня (год, жанры, распрацоўшчык, вокладка) |
 | `api.deezer.com` | Вы шукаеце катэгорыю музыкі Deezer | Альбом ці выканаўца, якога вы ўводзіце | Атрыманне метаданых альбома (выканаўца, год, жанры, колькасць трэкаў, вокладка) |
 | `graphql.anilist.co` | Вы шукаеце катэгорыю анімэ | Назва, якую вы ўводзіце | Атрыманне метаданых анімэ (назва, год, жанр, серыі, ацэнка AniList, студыя, плакат) |
+| `graphql.anilist.co` | Вы запускаеце каманду сінхранізацыі AniList | Ваш access token AniList і прагрэс, статус і рэйтынг нататкі | Чытанне ці абнаўленне вашага спісу анімэ AniList |
 | `comicvine.gamespot.com` | Вы шукаеце катэгорыю коміксаў | Назва, якую вы ўводзіце, і ваш ключ Comic Vine | Атрыманне метаданых комікса (назва, год, выдавец, колькасць выпускаў, вокладка) |
 
 Ніякія іншыя дадзеныя ніколі не пакідаюць ваш vault. Плагін **не мае тэлеметрыі, аналітыкі і механізму аўтаматычнага абнаўлення**. API-ключы (OMDb, Google Books, RAWG, Comic Vine) захоўваюцца толькі ў вашых мясцовых наладах плагіна і адпраўляюцца толькі адпаведным паслугам. Выявы вокладак загружаюцца прама з URL, якія вяртаюцца кожнай крыніцай.
@@ -277,6 +279,25 @@ Related:
 
 ---
 
+## Сінхранізацыя AniList
+
+Трымайце прагрэс вашага анімэ ў сінхранізацыі з вашым акаўнтам [AniList](https://anilist.co).
+
+**Наладка** — у **Налады → Library → AniList sync**:
+
+1. Зарэгіструйце бясплатны API-кліент на [anilist.co/settings/developer](https://anilist.co/settings/developer), з redirect URL, усталяваным на `https://anilist.co/api/v2/oauth/pin`.
+2. Устаўце **Client ID**, націсніце **Connect** і аўтарызуйцеся.
+3. AniList пакажа вам access token — устаўце яго ў плагін. Націсніце **Test connection**, каб пацвердзіць.
+
+Затым выкарыстоўвайце каманды:
+
+- `Push current note to AniList` — адпраўляе прагрэс актыўнай нататкі анімэ (пагледжаныя серыі), статус (watching / completed / planning) і ваш рэйтынг у ваш спіс AniList.
+- `Pull progress from AniList` — сцягвае ваш спіс анімэ AniList і абнаўляе адпаведныя нататкі. Сцягванне **толькі наперад**: яно ніколі не адкочвае нататку, якая лакальна прасунулася далей ці ўжо завершана, і пакідае ваш асабісты `My Rating` некранутым.
+
+Сінхранізуюцца толькі нататкі з `Source: anilist` (дададзеныя праз крыніцу анімэ AniList). Ваш токен захоўваецца лакальна ў наладах плагіна і адпраўляецца толькі ў AniList.
+
+---
+
 ## Каманды
 
  | Каманда                             | Апісанне                                                                 |
@@ -288,6 +309,8 @@ Related:
 | `Rebuild graph links`               | Злучыце кожную нататку кантэнту з яе катэгорыяй, жанрамі і стваральнікамі. |
 | `Find & remove duplicates`          | Скануйце ўсе нататкі па URL, пакажыце дублікаты і выдаліце выбраныя.     |
 | `Share current note`                | Стварыце з нататкі выяву-картку і падзяліцеся ёй у X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky ці Pinterest. |
+| `Push current note to AniList`      | Адправіць прагрэс, статус і рэйтынг актыўнай нататкі анімэ ў ваш акаўнт AniList. |
+| `Pull progress from AniList`        | Сцягнуць ваш спіс AniList і абнавіць адпаведныя нататкі (толькі наперад). |
 
 ---
 

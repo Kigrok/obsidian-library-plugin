@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | **[ES](README.es.md)** | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | **[ES](README.es.md)** | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -35,6 +35,7 @@
 - **Categorías Personalizadas** — Crea categorías para Películas, Series, Anime, Cómics, Libros, Juegos, Música o cualquier otra cosa a través de la fuente manual.
 - **Enlaces en el Grafo** — Una propiedad `Related` en el frontmatter enlaza cada nota con su categoría, géneros y creadores, sincronizados automáticamente para un grafo hermoso.
 - **Tarjetas para Compartir** — Convierte cualquier nota de contenido en una imagen de tarjeta lista para compartir (póster, título, año, género, puntuación de IMDb y tu valoración) y publícala en X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky o Pinterest — compártela directamente con las apps de tu dispositivo, o copia/guarda la imagen para usarla donde quieras.
+- **Sincronización con AniList** — Envía el progreso, el estado y la valoración de tu anime directamente a tu cuenta de AniList, o descarga tu lista de vuelta a tus notas.
 - **Ordenación y Contracción** — Ordena tarjetas por nombre, año, valoración o fecha; contrae cualquier categoría.
 - **Estadísticas** — Géneros principales, creadores principales (solo películas y series) y elementos principales por categoría con clasificaciones de medalla.
 - **Detección de Duplicados** — Previene automáticamente añadir el mismo título dos veces por URL. Un comando integrado encuentra y elimina duplicados existentes.
@@ -117,6 +118,7 @@ Library es **offline-first**. El complemento solo contacta la red cuando buscas 
 | `api.rawg.io` | Buscas en una categoría de juegos RAWG | El título que escribes y tu clave RAWG | Obtener metadatos de juegos (año, género, desarrollador, portada) |
 | `api.deezer.com` | Buscas en una categoría de música Deezer | El álbum o artista que escribes | Obtener metadatos de álbum (artista, año, género, conteo de pistas, portada) |
 | `graphql.anilist.co` | Buscas en una categoría de anime | El título que escribes | Obtener metadatos de anime (título, año, género, episodios, puntuación de AniList, estudio, póster) |
+| `graphql.anilist.co` | Ejecutas un comando de sincronización con AniList | Tu token de acceso de AniList y el progreso, el estado y la valoración de la nota | Leer o actualizar tu lista de anime de AniList |
 | `comicvine.gamespot.com` | Buscas en una categoría de cómics | El título que escribes y tu clave de Comic Vine | Obtener metadatos de cómics (título, año, editorial, conteo de números, portada) |
 
 Ningún otro dato sale nunca de tu vault. El complemento **no tiene telemetría, ni análisis, ni mecanismo de actualización automática**. Las claves API (OMDb, Google Books, RAWG, Comic Vine) se almacenan solo en la configuración local del complemento y se envían solo a sus respectivos servicios. Las imágenes de portada se cargan directamente desde las URLs devueltas por cada fuente.
@@ -277,6 +279,25 @@ Compartir es totalmente local: la tarjeta se dibuja dentro de la app a partir de
 
 ---
 
+## Sincronización con AniList
+
+Mantén el progreso de tu anime sincronizado con tu cuenta de [AniList](https://anilist.co).
+
+**Configuración** — en **Ajustes → Library → AniList sync**:
+
+1. Registra un cliente API gratuito en [anilist.co/settings/developer](https://anilist.co/settings/developer), con la URL de redirección establecida en `https://anilist.co/api/v2/oauth/pin`.
+2. Pega el **Client ID**, haz clic en **Connect** y autoriza.
+3. AniList te muestra un token de acceso — pégalo en el complemento. Haz clic en **Test connection** para confirmar.
+
+Luego usa los comandos:
+
+- **`Push current note to AniList`** — envía el progreso (episodios vistos), el estado (viendo / completado / planeado) y tu valoración de la nota de anime activa a tu lista de AniList.
+- **`Pull progress from AniList`** — obtiene tu lista de anime de AniList y actualiza las notas coincidentes. La descarga es **solo hacia adelante**: nunca retrocede una nota que localmente está más avanzada o ya completa, y deja intacta tu valoración personal `My Rating`.
+
+Solo se sincronizan las notas con `Source: anilist` (añadidas a través de la fuente de anime de AniList). Tu token se almacena localmente en la configuración del complemento y se envía únicamente a AniList.
+
+---
+
 ## Comandos
 
 | Comando                              | Descripción                                                                |
@@ -288,6 +309,8 @@ Compartir es totalmente local: la tarjeta se dibuja dentro de la app a partir de
 | `Rebuild graph links`                | Conecta cada nota de contenido con su categoría, géneros y creadores.       |
 | `Find & remove duplicates`           | Escanea todas las notas por URL, muestra duplicados y elimina los seleccionados. |
 | `Share current note`                 | Renderiza la nota como una imagen de tarjeta y compártela en X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky o Pinterest. |
+| `Push current note to AniList`       | Envía el progreso, el estado y la valoración de la nota de anime activa a tu cuenta de AniList. |
+| `Pull progress from AniList`         | Obtiene tu lista de AniList y actualiza las notas coincidentes (solo hacia adelante). |
 
 ---
 

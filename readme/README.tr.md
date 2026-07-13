@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **TR**
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **TR**
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -35,6 +35,7 @@
 - **Özel Kategoriler** — Filmler, Diziler, Anime, Çizgi Romanlar, Kitaplar, Oyunlar, Müzik veya manuel kaynak aracılığıyla başka herhangi bir şey için kategoriler oluşturun.
 - **Graf Bağlantıları** — Frontmatter'daki bir `Related` özelliği her notu kategorisi, türleri ve yaratıcılarıyla bağlar, güzel bir graf için otomatik olarak senkronize edilir.
 - **Paylaşım Kartları** — Herhangi bir içerik notunu paylaşılabilir bir kart görseline (poster, başlık, yıl, tür, IMDb puanı ve kendi puanınız) dönüştürün ve X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky veya Pinterest'te paylaşın — doğrudan cihazınızın uygulamalarına gönderin ya da görseli kopyalayıp/kaydederek her yerde kullanın.
+- **AniList Senkronizasyonu** — Anime ilerlemenizi, durumunuzu ve puanınızı doğrudan AniList hesabınıza gönderin ya da listenizi notlarınıza geri çekin.
 - **Sıralama ve Daraltma** — Kartları ada, yıla, puana veya tarihe göre sıralayın; herhangi bir kategoriyi daraltın.
 - **İstatistikler** — Üst türler, üst yaratıcılar (yalnızca film ve diziler) ve madalya sıralamalarıyla kategori başına üst öğeler.
 - **Çoğaltma Algılama** — URL'ye göre aynı başlığın iki kez eklenmesini otomatik olarak önler. Yerleşik bir komut mevcut çoğaltmaları bulur ve kaldırır.
@@ -117,6 +118,7 @@ Library **çevrimdışı önceliklidir**. Eklenti, yalnızca eklemek için bir b
 | `api.rawg.io` | Bir RAWG oyun kategorisi aradığınızda | Yazdığınız başlık ve RAWG anahtarınız | Oyun meta verilerini alın (yıl, tür, geliştirici, kapak) |
 | `api.deezer.com` | Bir Deezer müzik kategorisi aradığınızda | Yazdığınız albüm veya sanatçı | Albüm meta verilerini alın (sanatçı, yıl, tür, parça sayısı, kapak) |
 | `graphql.anilist.co` | Bir anime kategorisi aradığınızda | Yazdığınız başlık | Anime meta verilerini alın (başlık, yıl, tür, bölümler, AniList puanı, stüdyo, poster) |
+| `graphql.anilist.co` | Bir AniList senkronizasyon komutu çalıştırdığınızda | AniList erişim jetonunuz ve notun ilerlemesi, durumu ve puanı | AniList anime listenizi okuyun veya güncelleyin |
 | `comicvine.gamespot.com` | Bir çizgi roman kategorisi aradığınızda | Yazdığınız başlık ve Comic Vine anahtarınız | Çizgi roman meta verilerini alın (başlık, yıl, yayıncı, sorun sayısı, kapak) |
 
 Başka hiçbir veri asla kasinizdan dışarı çıkmaz. Eklenti **telemetri, analiz veya otomatik güncelleme mekanizması içermez**. API anahtarları (OMDb, Google Books, RAWG, Comic Vine) yalnızca yerel eklenti ayarlarınızda saklanır ve yalnızca ilgili hizmetlere gönderilir. Kapak resimleri doğrudan her kaynaktan dönen URL'lerden yüklenir.
@@ -277,6 +279,25 @@ Paylaşım tamamen yereldir: kart, notun kendi meta verilerinden ve kapağından
 
 ---
 
+## AniList Senkronizasyonu
+
+Anime ilerlemenizi [AniList](https://anilist.co) hesabınızla senkronize tutun.
+
+**Kurulum** — **Ayarlar → Library → AniList sync** bölümünde:
+
+1. [anilist.co/settings/developer](https://anilist.co/settings/developer) adresinde ücretsiz bir API istemcisi kaydedin ve yönlendirme URL'sini `https://anilist.co/api/v2/oauth/pin` olarak ayarlayın.
+2. **Client ID**'yi yapıştırın, **Connect**'e tıklayın ve yetkilendirin.
+3. AniList size bir erişim jetonu gösterir — bunu eklentiye yapıştırın. Onaylamak için **Test connection**'a tıklayın.
+
+Ardından komutları kullanın:
+
+- **`Push current note to AniList`** — etkin anime notunun ilerlemesini (izlenen bölümler), durumunu (izleniyor / tamamlandı / planlanıyor) ve puanınızı AniList listenize gönderir.
+- **`Pull progress from AniList`** — AniList anime listenizi alır ve eşleşen notları günceller. Çekme işlemi **yalnızca ileri yöneliktir**: yerel olarak daha ileride olan ya da zaten tamamlanmış bir notu asla geriye götürmez ve kişisel `My Rating` değerinize dokunmaz.
+
+Yalnızca `Source: anilist` olan notlar (AniList anime kaynağı aracılığıyla eklenenler) senkronize edilir. Jetonunuz yerel olarak eklenti ayarlarında saklanır ve yalnızca AniList'e gönderilir.
+
+---
+
 ## Komutlar
 
 | Komut                                | Açıklama                                                                 |
@@ -288,6 +309,8 @@ Paylaşım tamamen yereldir: kart, notun kendi meta verilerinden ve kapağından
 | `Rebuild graph links`                | Her içerik notunu kategorisine, türlerine ve yaratıcılarına bağlayın.    |
 | `Find & remove duplicates`           | URL'ye göre tüm notları tarayın, çoğaltmaları gösterin ve seçilenleri kaldırın. |
 | `Share current note`                 | Notu bir kart görseli olarak oluşturun ve X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky veya Pinterest'te paylaşın. |
+| `Push current note to AniList`       | Etkin anime notunun ilerlemesini, durumunu ve puanını AniList hesabınıza gönderin. |
+| `Pull progress from AniList`         | AniList listenizi alın ve eşleşen notları güncelleyin (yalnızca ileri yönelik). |
 
 ---
 

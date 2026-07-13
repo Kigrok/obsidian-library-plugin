@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **HR**
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **HR**
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -35,6 +35,7 @@
 - **Prilagođene kategorije** — Stvorite kategorije za filmove, serije, anime, stripove, knjige, igrice, glazbu ili bilo što drugo putem ručnog izvora.
 - **Veze grafana** — Svojstvo `Related` u frontmatteru povezuje svaku bilješku s njezinom kategorijom, žanrovima i stvarateljima, automatski održavano sinkroniziranim za prekrasan graf.
 - **Kartice za dijeljenje** — Pretvorite bilo koju bilješku sadržaja u sliku kartice za dijeljenje (poster, naslov, godina, žanr, IMDb ocjena i vaša ocjena) i objavite je na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky ili Pinterest — podijelite je izravno u aplikacije svog uređaja ili kopirajte/spremite sliku za korištenje bilo gdje.
+- **AniList sinkronizacija** — Pošaljite napredak, status i ocjenu svog animea izravno na svoj AniList račun ili povucite svoju listu natrag u bilješke.
 - **Sortiranje i sažimanje** — Sortirajte kartice po nazivu, godini, ocjeni ili datumu; sažmite bilo koju kategoriju.
 - **Statistika** — Najbolji žanrovi, najbolji stvaratelji (samo filmovi i serije) i najbolje stavke po kategoriji s medaljama.
 - **Otkrivanje duplikata** — Automatski sprječava dodavanje istog naslova dva puta prema URL-u. Ugrađena naredba pronalazi i uklanja postojeće duplikate.
@@ -117,6 +118,7 @@ Library je **offline-first**. Plugin kontaktira mrežu samo kada aktivno pretra�
 | `api.rawg.io` | Pretražujete kategoriju RAWG igara | Naslov koji unosite i vaš RAWG ključ | Dohvaćanje metapodataka igre (godina, žanrovi, programer, naslovnica) |
 | `api.deezer.com` | Pretražujete kategoriju Deezer glazbe | Album ili izvođač koji unosite | Dohvaćanje metapodataka albuma (izvođač, godina, žanrovi, broj pjesama, naslovnica) |
 | `graphql.anilist.co` | Pretražujete kategoriju animea | Naslov koji unosite | Dohvaćanje metapodataka animea (naslov, godina, žanrovi, epizode, AniList ocjena, studio, poster) |
+| `graphql.anilist.co` | Pokrenete naredbu AniList sinkronizacije | Vaš AniList pristupni token te napredak, status i ocjena bilješke | Čitanje ili ažuriranje vaše AniList anime liste |
 | `comicvine.gamespot.com` | Pretražujete kategoriju stripova | Naslov koji unosite i vaš Comic Vine ključ | Dohvaćanje metapodataka stripa (naslov, godina, izdavač, broj izdanja, naslovnica) |
 
 Nikakvi drugi podaci ne napuštaju vaš vault. Plugin **nema telemetriju, nema analitiku i nema mehanizam samo-ažuriranja**. API ključevi (OMDb, Google Books, RAWG, Comic Vine) pohranjeni su samo u vašim lokalnim postavkama plugin-a i šalju se samo njihovim odgovarajućim uslugama. Slike naslovnica učitavaju se izravno s URL-ova koje vraća svaki izvor.
@@ -277,6 +279,25 @@ Dijeljenje je potpuno lokalno: kartica se crta unutar aplikacije iz vlastitih me
 
 ---
 
+## AniList sinkronizacija
+
+Održavajte napredak svog animea sinkroniziranim sa svojim [AniList](https://anilist.co) računom.
+
+**Postavljanje** — u **Postavke → Library → AniList sync**:
+
+1. Registrirajte besplatnog API klijenta na [anilist.co/settings/developer](https://anilist.co/settings/developer), s redirect URL-om postavljenim na `https://anilist.co/api/v2/oauth/pin`.
+2. Zalijepite **Client ID**, kliknite **Connect** i autorizirajte.
+3. AniList vam prikazuje pristupni token — zalijepite ga u plugin. Kliknite **Test connection** za potvrdu.
+
+Zatim koristite naredbe:
+
+- **Push current note to AniList** — šalje napredak aktivne anime bilješke (pogledane epizode), status (u gledanju / završeno / planirano) i vašu ocjenu na vašu AniList listu.
+- **Pull progress from AniList** — dohvaća vašu AniList anime listu i ažurira odgovarajuće bilješke. Pull je **samo unaprijed**: nikada ne vraća unatrag bilješku koja je lokalno naprednija ili već završena i ostavlja vašu osobnu `My Rating` netaknutom.
+
+Sinkroniziraju se samo bilješke s `Source: anilist` (dodane putem AniList anime izvora). Vaš token pohranjen je lokalno u postavkama plugina i šalje se samo AniListu.
+
+---
+
 ## Naredbe
 
 | Naredba                              | Opis                                                                     |
@@ -288,6 +309,8 @@ Dijeljenje je potpuno lokalno: kartica se crta unutar aplikacije iz vlastitih me
 | `Rebuild graph links`                | Povezuje svaku bilješku sadržaja s njezinom kategorijom, žanrovima i stvarateljima. |
 | `Find & remove duplicates`           | Skenira sve bilješke po URL-u, prikazuje duplikate i uklanja odabrane.    |
 | `Share current note`                 | Prikazuje bilješku kao sliku kartice i dijeli je na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky ili Pinterest. |
+| `Push current note to AniList`       | Šalje napredak, status i ocjenu aktivne anime bilješke na vaš AniList račun. |
+| `Pull progress from AniList`         | Dohvaća vašu AniList listu i ažurira odgovarajuće bilješke (samo unaprijed). |
 
 ---
 

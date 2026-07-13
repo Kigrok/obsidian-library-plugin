@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **[CS](README.cs.md)**
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **[CS](README.cs.md)**
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -35,6 +35,7 @@
 - **Vlastní Kategorie** — Vytvářejte kategorie pro Filmy, Seriály, Anime, Komiksy, Knihy, Hry, Hudbu nebo cokoliv jiného přes manuální zdroj.
 - **Grafické Odkazy** — Vlastnost `Related` v frontmatteru propojuje každou poznámku s její kategorií, žánry a tvůrci, automaticky synchronizovaná pro krásný graf.
 - **Sdílitelné Karty** — Proměňte libovolnou obsahovou poznámku ve sdílitelný obrázek karty (poster, název, rok, žánr, hodnocení IMDb a vaše hodnocení) a zveřejněte ji na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky nebo Pinterest — sdílejte ji přímo do aplikací ve vašem zařízení, nebo obrázek zkopírujte či uložte a použijte kdekoliv.
+- **AniList Sync** — Odešlete postup, stav a hodnocení svého anime přímo na svůj AniList účet, nebo stáhněte svůj seznam zpět do svých poznámek.
 - **Řazení a Skládání** — Řaďte karty podle názvu, roku, hodnocení nebo data; sbíjejte libovolné kategorie.
 - **Statistiky** — Nejlepší žánry, nejlepší tvůrci (pouze filmy a seriály) a nejlepší položky v každé kategorii s medailovým žebříčkem.
 - **Detekce Duplicit** — Automaticky zabraňuje přidání stejného titulu dvakrát podle URL. Vestavěný příkaz najde a odstraní existující duplicity.
@@ -117,6 +118,7 @@ Library je **offline-první**. Plugin kontaktuje síť pouze, když aktivně vyh
 | `api.rawg.io` | Vyhledáváváte v kategorii her RAWG | Název, který zadáte, a váš RAWG klíč | Načtení metadat her (rok, žánre, vývojář, obal) |
 | `api.deezer.com` | Vyhledáváváte v kategorii hudby Deezer | Album nebo umělec, který zadáte | Načtení metadat alba (umělec, rok, žánre, počet stop, obal) |
 | `graphql.anilist.co` | Vyhledáváte v kategorii anime | Název, který zadáte | Načtení metadat anime (název, rok, žánr, epizody, skóre AniList, studio, poster) |
+| `graphql.anilist.co` | Spustíte příkaz synchronizace s AniList | Váš AniList přístupový token a postup, stav a hodnocení poznámky | Čtení nebo aktualizace vašeho AniList anime seznamu |
 | `comicvine.gamespot.com` | Vyhledáváváte v kategorii komiksů | Název, který zadáte, a váš Comic Vine klíč | Načtení metadat komiksů (název, rok, vydavatel, počet čísel, obal) |
 
 Žádná další data nikdy neopustí váš vault. Plugin **nemá telemetrii, analytiku ani mechanismus samoaktualizace**. API klíče (OMDb, Google Books, RAWG, Comic Vine) jsou uloženy pouze v místních nastaveních pluginu a odesílány pouze příslušným službám. Obrázky obalů se načítají přímo z URL vrácených jednotlivými zdroji.
@@ -277,6 +279,25 @@ Sdílení je zcela lokální: karta se vykresluje přímo v aplikaci z vlastníc
 
 ---
 
+## AniList Sync
+
+Udržujte postup svého anime synchronizovaný s vaším [AniList](https://anilist.co) účtem.
+
+**Nastavení** — v **Nastavení → Library → AniList sync**:
+
+1. Zaregistrujte bezplatného API klienta na [anilist.co/settings/developer](https://anilist.co/settings/developer) s přesměrovací URL nastavenou na `https://anilist.co/api/v2/oauth/pin`.
+2. Vložte **Client ID**, klikněte na **Connect** a autorizujte.
+3. AniList vám zobrazí přístupový token — vložte jej do pluginu. Klikněte na **Test connection** pro potvrzení.
+
+Poté použijte příkazy:
+
+- `Push current note to AniList` — odešle postup aktivní anime poznámky (zhlédnuté epizody), stav (sleduji / dokončeno / plánuji) a vaše hodnocení do vašeho AniList seznamu.
+- `Pull progress from AniList` — načte váš AniList anime seznam a aktualizuje odpovídající poznámky. Stahování je **pouze dopředné**: nikdy nevrátí zpět poznámku, která je lokálně dále nebo již dokončená, a ponechá vaše osobní `My Rating` beze změny.
+
+Synchronizují se pouze poznámky s `Source: anilist` (přidané přes zdroj anime AniList). Váš token je uložen lokálně v nastaveních pluginu a je odesílán pouze na AniList.
+
+---
+
 ## Příkazy
 
 | Příkaz                               | Popis                                                                     |
@@ -288,6 +309,8 @@ Sdílení je zcela lokální: karta se vykresluje přímo v aplikaci z vlastníc
 | `Rebuild graph links`                | Propojí každou obsahovou poznámku s kategorií, žánry a tvůrci.            |
 | `Find & remove duplicates`           | Prohledá všechny poznámky podle URL, zobrazí duplicity a odstraní vybrané. |
 | `Share current note`                 | Vykreslí poznámku jako obrázek karty a sdílí ji na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky nebo Pinterest. |
+| `Push current note to AniList`       | Odešle postup, stav a hodnocení aktivní anime poznámky na váš AniList účet. |
+| `Pull progress from AniList`         | Načte váš AniList seznam a aktualizuje odpovídající poznámky (pouze dopředně). |
 
 ---
 

@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | **עברית**
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | **עברית**
 
 <p align="center">
-  <img src="banner.png" alt="סמל ספריית Obsidian" width="100%">
+  <img src="../banner.png" alt="סמל ספריית Obsidian" width="100%">
 </p>
 
 <h1 align="center">הספרייה</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="גרסה">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="גרסה">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="הורדות">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="גרסת Obsidian">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="רישיון">
@@ -35,6 +35,7 @@
 - **קטגוריות מותאמות אישית** — צור קטגוריות לסרטים, סדרות, אנימה, קומיקסים, ספרים, משחקים, מוזיקה או כל דבר אחר דרך המקור הידני.
 - **קישורי תרשים** — מאפיין `Related` בנתונים הקדמיים מחבר כל הערה לקטגוריה, ז'אנרים ויוצרים, ומתעדכן אוטומטית לתרשים יפהפה.
 - **כרטיסי שיתוף** — הפוך כל הערת תוכן לתמונת כרטיס לשיתוף (פוסטר, כותרת, שנה, ז'אנר, דירוג IMDb והדירוג שלך) ופרסם אותה ל-X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky או Pinterest — שתף אותה ישירות לאפליקציות של המכשיר שלך, או העתק/שמור את התמונה לשימוש בכל מקום.
+- **סנכרון AniList** — דחוף את ההתקדמות, הסטטוס והדירוג של האנימה שלך ישירות לחשבון AniList שלך, או משוך את הרשימה שלך בחזרה להערות שלך.
 - **מיון וקיפול** — מיין כרטיסים לפי שם, שנה, דירוג או תאריך; קפל כל קטגוריה.
 - **סטטיסטיקות** — ז'אנרים מובילים, יוצרים מובילים (סרטים וסדרות בלבד), ופריטים מובילים לכל קטגוריה עם דירוג מדליות.
 - **זיהוי כפילויות** — מונע אוטומטית הוספת אותו כותר פעמיים לפי כתובת URL. פקודה מובנה מוצאת ומוחקת כפילויות קיימות.
@@ -115,6 +116,7 @@
 | `api.rawg.io` | אתה מחפש בקטגוריית משחק RAWG | הכותר שאתה מקליד ומפתח RAWG שלך | אחזר מטה-נתונים של משחק (שנה, ז'אנר, מפתח, עטיפה) |
 | `api.deezer.com` | אתה מחפש בקטגוריית מוזיקה של Deezer | האלבום או האמן שאתה מקליד | אחזר מטה-נתונים של אלבום (אמן, שנה, ז'אנר, ספירת רצועות, עטיפה) |
 | `graphql.anilist.co` | אתה מחפש בקטגוריית אנימה | הכותר שאתה מקליד | אחזר מטה-נתונים של אנימה (כותר, שנה, ז'אנר, פרקים, דירוג AniList, אולפן, פוסטר) |
+| `graphql.anilist.co` | אתה מריץ פקודת סנכרון AniList | אסימון הגישה שלך ל-AniList וההתקדמות, הסטטוס והדירוג של ההערה | קרא או עדכן את רשימת האנימה שלך ב-AniList |
 | `comicvine.gamespot.com` | אתה מחפש בקטגוריית קומיקסים | הכותר שאתה מקליד ומפתח Comic Vine שלך | אחזר מטה-נתונים של קומיקס (כותר, שנה, מפרסם, ספירת גיליונות, עטיפה) |
 
 לא עוזב שום מידע אחר את הכספת שלך. לתוסף **אין טלמטריה, ניתוח, או מנגנון עדכון עצמי**. מפתחות API (OMDb, Google Books, RAWG, Comic Vine) מאוחסנים רק בהגדרות התוסף המקומיות ונשלחים רק לשירותים המתאימים. תמונות עטיפה נטענות ישירות מכתובות ה-URL שהוחזרו מכל מקור.
@@ -275,6 +277,25 @@ Related:
 
 ---
 
+## סנכרון AniList
+
+שמור על סנכרון התקדמות האנימה שלך עם חשבון [AniList](https://anilist.co) שלך.
+
+**הגדרה** — ב-**הגדרות → הספרייה → סנכרון AniList**:
+
+1. רשום לקוח API חינם ב-[anilist.co/settings/developer](https://anilist.co/settings/developer), עם כתובת ההפניה מוגדרת ל-`https://anilist.co/api/v2/oauth/pin`.
+2. הדבק את ה-**Client ID**, לחץ על **Connect**, ואשר.
+3. AniList מציג לך אסימון גישה — הדבק אותו בתוסף. לחץ על **Test connection** כדי לאשר.
+
+לאחר מכן השתמש בפקודות:
+
+- `Push current note to AniList` — שולח את ההתקדמות של הערת האנימה הפעילה (פרקים שנצפו), הסטטוס (בצפייה / הושלם / מתוכנן) והדירוג שלך לרשימת AniList שלך.
+- `Pull progress from AniList` — מאחזר את רשימת האנימה שלך ב-AniList ומעדכן הערות תואמות. המשיכה היא **קדימה בלבד**: היא לעולם לא מסיגה לאחור הערה שמתקדמת יותר באופן מקומי או שכבר הושלמה, והיא משאירה את ה-`My Rating` האישי שלך ללא שינוי.
+
+רק הערות עם `Source: anilist` (שנוספו דרך מקור האנימה של AniList) מסונכרנות. האסימון שלך מאוחסן מקומית בהגדרות התוסף ונשלח רק ל-AniList.
+
+---
+
 ## פקודות
 
 | פקודה | תיאור |
@@ -286,6 +307,8 @@ Related:
 | `Rebuild graph links` | חבר כל הערת תוכן לקטגוריה, ז'אנרים ויוצרים שלה. |
 | `Find & remove duplicates` | סרוק כל הערה לפי URL, הצג כפילויות, והסר נבחרות. |
 | `Share current note` | רנדר את ההערה כתמונת כרטיס ושתף אותה ל-X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky או Pinterest. |
+| `Push current note to AniList` | שלח את ההתקדמות, הסטטוס והדירוג של הערת האנימה הפעילה לחשבון AniList שלך. |
+| `Pull progress from AniList` | אחזר את רשימת AniList שלך ועדכן הערות תואמות (קדימה בלבד). |
 
 ---
 

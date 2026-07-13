@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Bersyon">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Bersyon">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Mga Download">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Bersyon ng Obsidian">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Lisensya">
@@ -35,6 +35,7 @@
 - **Mga Custom na Kategorya** — Lumikha ng mga kategorya para sa mga Pelikula, Serye, Anime, Komiks, Libro, Laro, Musika, o anumang iba pa sa pamamagitan ng manual na source.
 - **Mga Link sa Graph** — Ang `Related` na frontmatter property ay nag-uugnay sa bawat note sa kanyang kategorya, mga genre, at mga creator, na awtomatikong pinapanatili ang sync para sa isang magandang graph.
 - **Share Cards** — Gawing naibabahaging card image ang anumang content note (poster, pamagat, taon, genre, IMDb score, at ang iyong rating) at i-post ito sa X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, o Pinterest — ibahagi ito nang diretso sa mga app ng iyong device, o kopyahin/i-save ang larawan upang gamitin kahit saan.
+- **AniList Sync** — I-push ang iyong anime progress, status, at rating nang direkta sa iyong AniList account, o i-pull ang iyong listahan pabalik sa iyong mga note.
 - **Pag-sort at Pag-fold** — I-sort ang mga card ayon sa pangalan, taon, rating, o petsa; i-fold ang anumang kategorya.
 - **Mga Estadistika** — Mga nangungunang genre, nangungunang mga creator (mga pelikula at serye lamang), at mga nangungunang item bawat kategorya na may medal rankings.
 - **Pag-detect ng Duplicate** — Awtomatikong pinipigilan ang pagdaragdag ng parehong pamagat dalawang beses sa pamamagitan ng URL. Ang isang built-in na command ay naghahanap at nag-aalis ng mga umiiral na duplicate.
@@ -117,6 +118,7 @@ Ang Library ay **offline-muna**. Ang plugin ay nakikipag-ugnayan lamang sa netwo
 | `api.rawg.io` | Naghahanap ka ng isang RAWG game na kategorya | Ang pamagat na iyong tina-type at ang iyong RAWG key | Kunin ang metadata ng laro (taon, genre, developer, cover) |
 | `api.deezer.com` | Naghahanap ka ng isang Deezer music na kategorya | Ang album o artist na iyong tina-type | Kunin ang metadata ng album (artist, taon, genre, bilang ng track, cover) |
 | `graphql.anilist.co` | Naghahanap ka ng isang anime na kategorya | Ang pamagat na iyong tina-type | Kunin ang metadata ng anime (pamagat, taon, genre, mga episode, AniList score, studio, poster) |
+| `graphql.anilist.co` | Nagpapatakbo ka ng isang AniList sync command | Ang iyong AniList access token at ang progreso, status, at rating ng note | Basahin o i-update ang iyong AniList anime list |
 | `comicvine.gamespot.com` | Naghahanap ka ng isang komiks na kategorya | Ang pamagat na iyong tina-type at ang iyong Comic Vine key | Kunin ang metadata ng komiks (pamagat, taon, publisher, bilang ng issue, cover) |
 
 Walang ibang datos na lumalabas sa iyong vault kailanman. Ang plugin ay **walang telemetry, walang analytics, at walang mekanismo ng self-update**. Ang mga API key (OMDb, Google Books, RAWG, Comic Vine) ay naka-imbak lamang sa iyong lokal na plugin settings at ipinapadala lamang sa kanilang kaukulang mga serbisyo. Ang mga larawan ng cover ay naglo-load nang direkta mula sa mga URL na ibinabalik ng bawat source.
@@ -275,6 +277,25 @@ Ang pagbabahagi ay ganap na lokal: ang card ay iginuguhit sa loob ng app mula sa
 
 ---
 
+## AniList Sync
+
+Panatilihing naka-sync ang iyong anime progress sa iyong [AniList](https://anilist.co) account.
+
+**Pag-setup** — sa **Mga Setting → Library → AniList sync**:
+
+1. Magrehistro ng libreng API client sa [anilist.co/settings/developer](https://anilist.co/settings/developer), na ang redirect URL ay nakatakda sa `https://anilist.co/api/v2/oauth/pin`.
+2. I-paste ang **Client ID**, i-click ang **Connect**, at mag-authorize.
+3. Magpapakita sa iyo ang AniList ng isang access token — i-paste ito sa plugin. I-click ang **Test connection** upang kumpirmahin.
+
+Pagkatapos, gamitin ang mga command:
+
+- `Push current note to AniList` — ipinapadala ang progreso (mga napanood na episode), status (watching / completed / planning), at ang iyong rating ng aktibong anime note sa iyong AniList list.
+- `Pull progress from AniList` — kinukuha ang iyong AniList anime list at ina-update ang mga tumutugmang note. Ang pull ay **forward-only**: hindi nito kailanman ibinababa ang isang note na mas nauna na nang lokal o kumpleto na, at hindi nito ginagalaw ang iyong personal na `My Rating`.
+
+Ang mga note lamang na may `Source: anilist` (idinagdag sa pamamagitan ng AniList anime source) ang sini-sync. Ang iyong token ay naka-imbak lokal sa plugin settings at ipinapadala lamang sa AniList.
+
+---
+
 ## Mga Command
 
 | Command                              | Paglalarawan                                                              |
@@ -286,6 +307,8 @@ Ang pagbabahagi ay ganap na lokal: ang card ay iginuguhit sa loob ng app mula sa
 | `Rebuild graph links`                | Ikonekta ang bawat content note sa kanyang kategorya, genre, at mga creator.          |
 | `Find & remove duplicates`           | I-scan ang lahat ng note ayon sa URL, ipakita ang mga duplicate, at alisin ang mga napili.       |
 | `Share current note`                 | I-render ang note bilang card image at ibahagi ito sa X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, o Pinterest. |
+| `Push current note to AniList`        | Ipadala ang progreso, status, at rating ng aktibong anime note sa iyong AniList account. |
+| `Pull progress from AniList`          | Kunin ang iyong AniList list at i-update ang mga tumutugmang note (forward-only). |
 
 ---
 

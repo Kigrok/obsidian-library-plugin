@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **[NL](README.nl.md)**
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **[NL](README.nl.md)**
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -35,6 +35,7 @@
 - **Aangepaste Categorieën** — Maak categorieën voor Films, Series, Anime, Stripboeken, Boeken, Games, Muziek of iets anders via de handmatige bron.
 - **Grafieklinks** — Een `Related` frontmatter-eigenschap koppelt elke notitie aan categorie, genres en makers, automatisch gesynchroniseerd voor een mooie grafiek.
 - **Deelkaarten** — Verander elke inhoudsnotitie in een deelbare kaartafbeelding (poster, titel, jaar, genre, IMDb-score en je eigen beoordeling) en plaats deze op X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky of Pinterest — deel direct naar de apps op je apparaat, of kopieer/bewaar de afbeelding om overal te gebruiken.
+- **AniList-synchronisatie** — Push je animevoortgang, status en beoordeling rechtstreeks naar je AniList-account, of haal je lijst terug in je notities.
 - **Sorteren en Inklappen** — Sorteer kaarten op naam, jaar, beoordeling of datum; klapp willekeurige categorieën in.
 - **Statistieken** — Topgenres, topmakers (alleen films en series) en topitems per categorie met medaille-ranglijsten.
 - **Duplicaatdetectie** — Voorkomt automatisch het twee keer toevoegen van dezelfde titel op URL. Een ingebouwd commando vindt en verwijdert bestaande duplicaten.
@@ -117,6 +118,7 @@ Library is **offline-eerst**. De plugin maakt alleen contact met het netwerk wan
 | `api.rawg.io` | Je zoekt in een RAWG-gamecategorie | De titel die je typt en je RAWG-sleutel | Gamemetadata ophalen (jaar, genre, ontwikkelaar, cover) |
 | `api.deezer.com` | Je zoekt in een Deezer-muziekcategorie | Het album of de artiest die je typt | Albummetadata ophalen (artiest, jaar, genre, trackaantal, cover) |
 | `graphql.anilist.co` | Je zoekt in een anime-categorie | De titel die je typt | Anime-metadata ophalen (titel, jaar, genre, afleveringen, AniList-score, studio, poster) |
+| `graphql.anilist.co` | Je voert een AniList-synchronisatiecommando uit | Je AniList-toegangstoken en de voortgang, status en beoordeling van de notitie | Je AniList-animelijst lezen of bijwerken |
 | `comicvine.gamespot.com` | Je zoekt in een stripboekencategorie | De titel die je typt en je Comic Vine-sleutel | Stripboekmetadata ophalen (titel, jaar, uitgever, uitgaveaantal, cover) |
 
 Geen enkele andere data verlaat ooit je vault. De plugin heeft **geen telemetrie, geen analyse en geen zelf-update-mechanisme**. API-sleutels (OMDb, Google Books, RAWG, Comic Vine) worden alleen opgeslagen in je lokale plugin-instellingen en alleen naar hun respectieve services verzonden. Coverafbeeldingen worden direct geladen vanaf de URL's die door elke bron worden geretourneerd.
@@ -277,6 +279,25 @@ Delen is volledig lokaal: de kaart wordt in de app getekend op basis van de eige
 
 ---
 
+## AniList-synchronisatie
+
+Houd je animevoortgang gesynchroniseerd met je [AniList](https://anilist.co)-account.
+
+**Configuratie** — in **Instellingen → Library → AniList-synchronisatie**:
+
+1. Registreer een gratis API-client op [anilist.co/settings/developer](https://anilist.co/settings/developer), met de redirect-URL ingesteld op `https://anilist.co/api/v2/oauth/pin`.
+2. Plak de **Client ID**, klik op **Connect** en autoriseer.
+3. AniList toont je een toegangstoken — plak dit in de plugin. Klik op **Test connection** om te bevestigen.
+
+Gebruik daarna de commando's:
+
+- `Push current note to AniList` — stuurt de voortgang (bekeken afleveringen), de status (kijken / voltooid / gepland) en jouw beoordeling van de actieve animenotitie naar je AniList-lijst.
+- `Pull progress from AniList` — haalt je AniList-animelijst op en werkt bijpassende notities bij. Pull is **alleen voorwaarts**: het zet een notitie die lokaal verder is of al voltooid is nooit terug, en laat je persoonlijke `My Rating` ongemoeid.
+
+Alleen notities met `Source: anilist` (toegevoegd via de AniList-animebron) worden gesynchroniseerd. Je token wordt lokaal opgeslagen in de plugin-instellingen en wordt alleen naar AniList verzonden.
+
+---
+
 ## Commando's
 
 | Commando                             | Beschrijving                                                                |
@@ -288,6 +309,8 @@ Delen is volledig lokaal: de kaart wordt in de app getekend op basis van de eige
 | `Rebuild graph links`                | Koppel elke inhoudsnotitie aan categorie, genres en makers.                 |
 | `Find & remove duplicates`           | Scan alle notities op URL, toon duplicaten en verwijder geselecteerde.      |
 | `Share current note`                 | Genereer de notitie als kaartafbeelding en deel deze op X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky of Pinterest. |
+| `Push current note to AniList`        | Stuur de voortgang, status en beoordeling van de actieve animenotitie naar je AniList-account. |
+| `Pull progress from AniList`          | Haal je AniList-lijst op en werk bijpassende notities bij (alleen voorwaarts). |
 
 ---
 

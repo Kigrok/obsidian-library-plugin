@@ -1,7 +1,8 @@
-import { App, PluginSettingTab, Setting } from "obsidian";
+import { App, Notice, PluginSettingTab, Setting } from "obsidian";
 import type LibraryPlugin from "./main";
 import { isContentType, type ContentType } from "./providers/types";
 import { tr } from "./i18n";
+import { aniListViewer, anilistAuthUrl } from "./anilistSync";
 
 export class LibrarySettingTab extends PluginSettingTab {
 	private plugin: LibraryPlugin;
@@ -67,6 +68,57 @@ export class LibrarySettingTab extends PluginSettingTab {
 						this.plugin.settings.comicVineApiKey = v.trim();
 						await this.plugin.saveSettings();
 					}),
+			);
+
+		new Setting(containerEl)
+			.setName(tr("settings.section.anilist"))
+			.setHeading();
+		containerEl.createEl("p", { text: tr("settings.anilist.desc") });
+
+		new Setting(containerEl)
+			.setName(tr("settings.anilist.clientId"))
+			.addText((text) =>
+				text
+					.setPlaceholder(tr("settings.anilist.clientId.placeholder"))
+					.setValue(this.plugin.settings.anilistClientId)
+					.onChange(async (v) => {
+						this.plugin.settings.anilistClientId = v.trim();
+						await this.plugin.saveSettings();
+					}),
+			)
+			.addButton((b) =>
+				b.setButtonText(tr("settings.anilist.connect")).onClick(() => {
+					const id = this.plugin.settings.anilistClientId.trim();
+					if (!id) {
+						new Notice(tr("settings.anilist.needClientId"));
+						return;
+					}
+					window.open(anilistAuthUrl(id), "_blank");
+				}),
+			);
+
+		new Setting(containerEl)
+			.setName(tr("settings.anilist.token"))
+			.addText((text) => {
+				text.inputEl.type = "password";
+				text
+					.setPlaceholder(tr("settings.anilist.token.placeholder"))
+					.setValue(this.plugin.settings.anilistToken)
+					.onChange(async (v) => {
+						this.plugin.settings.anilistToken = v.trim();
+						await this.plugin.saveSettings();
+					});
+			})
+			.addButton((b) =>
+				b.setButtonText(tr("settings.anilist.test")).onClick(async () => {
+					const token = this.plugin.settings.anilistToken.trim();
+					const viewer = token ? await aniListViewer(token) : null;
+					new Notice(
+						viewer
+							? tr("settings.anilist.connected", { name: viewer.name })
+							: tr("settings.anilist.invalidToken"),
+					);
+				}),
 			);
 
 		new Setting(containerEl)

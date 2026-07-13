@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | **العربية**
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | **العربية**
 
 <p align="center">
-  <img src="banner.png" alt="شعار مكتبة Obsidian" width="100%">
+  <img src="../banner.png" alt="شعار مكتبة Obsidian" width="100%">
 </p>
 
 <h1 align="center">المكتبة</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="الإصدار">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="الإصدار">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="التنزيلات">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="إصدار Obsidian">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="الرخصة">
@@ -35,6 +35,7 @@
 - **فئات مخصصة** — أنشئ فئات للأفلام والمسلسلات والأنمي والكوميكس والكتب والألعاب والموسيقى أو أي شيء آخر عبر المصدر اليدوي.
 - **روابط الرسم البياني** — خاصية `Related` في البيانات الأمامية تربط كل ملاحظة بفئتها وأنواعها ومنشئيها، وتبقى متزامنة تلقائيًا لرسم بياني جميل.
 - **بطاقات المشاركة** — حوّل أي ملاحظة محتوى إلى صورة بطاقة قابلة للمشاركة (الملصق، العنوان، السنة، النوع، تقييم IMDb، وتقييمك الخاص) وانشرها على X أو Telegram أو Reddit أو WhatsApp أو Facebook أو LinkedIn أو VK أو Bluesky أو Pinterest — شاركها مباشرة إلى تطبيقات جهازك، أو انسخ/احفظ الصورة لاستخدامها في أي مكان.
+- **مزامنة AniList** — ادفع تقدّم الأنمي وحالته وتقييمه مباشرةً إلى حساب AniList الخاص بك، أو اسحب قائمتك إلى ملاحظاتك.
 - **الترتيب والطي** — رتّب البطاقات حسب الاسم أو السنة أو التقييم أو التاريخ؛ اطوِ أي فئة.
 - **الإحصائيات** — الأنواع الأعلى، المنشئون الأعلى (للفيلم والمسلسل فقط)، والعناصر الأعلى لكل فئة مع ترتيب الميداليات.
 - **اكتشاف التكرار** — يمنع تلقائيًا إضافة العنوان نفسه مرتين حسب الرابط. أمر مدمج يعثر على التكرارات القائمة ويحذفها.
@@ -115,6 +116,7 @@
 | `api.rawg.io` | تبحث في فئة ألعاب RAWG | العنوان الذي تكتبه ومفتاح RAWG الخاص بك | جلب بيانات اللعبة (العام، النوع، المطور، الغلاف) |
 | `api.deezer.com` | تبحث في فئة موسيقى Deezer | الألبوم أو الفنان الذي تكتبه | جلب بيانات الألبوم (الفنان، العام، النوع، عدد المقاطع، الغلاف) |
 | `graphql.anilist.co` | تبحث في فئة أنمي | العنوان الذي تكتبه | جلب بيانات الأنمي (العنوان، العام، النوع، عدد الحلقات، تقييم AniList، الاستوديو، الملصق) |
+| `graphql.anilist.co` | تنفّذ أمر مزامنة AniList | رمز وصول AniList الخاص بك وتقدّم الملاحظة وحالتها وتقييمها | قراءة أو تحديث قائمة أنمي AniList الخاصة بك |
 | `comicvine.gamespot.com` | تبحث في فئة كوميكس | العنوان الذي تكتبه ومفتاح Comic Vine الخاص بك | جلب بيانات الكوميك (العنوان، العام، الناشر، عدد الأعداد، الغلاف) |
 
 لا تخرج أي بيانات أخرى من مكتبتك أبدًا. الإضافة **بلا تحليلات، بلا أتمتة، وبدون آلية تحديث ذاتي**. مفاتيح API (OMDb، Google Books، RAWG، Comic Vine) مخزنة فقط في إعدادات الإضافات المحلية ولا تُرسل إلا إلى خدماتها الخاصة. تُحمّل صور الأغلفة مباشرة من عناوين URL التي تُرجعها كل مصدر.
@@ -275,6 +277,25 @@ Related:
 
 ---
 
+## مزامنة AniList
+
+أبقِ تقدّم الأنمي لديك متزامنًا مع حساب [AniList](https://anilist.co) الخاص بك.
+
+**الإعداد** — في **الإعدادات > المكتبة > مزامنة AniList**:
+
+1. سجّل عميل API مجانيًا على [anilist.co/settings/developer](https://anilist.co/settings/developer)، مع ضبط رابط إعادة التوجيه على `https://anilist.co/api/v2/oauth/pin`.
+2. الصق **Client ID**، وانقر على **Connect**، وامنح التصريح.
+3. يعرض لك AniList رمز وصول — الصقه في الإضافة. انقر على **Test connection** للتأكيد.
+
+ثم استخدم الأوامر:
+
+- **Push current note to AniList** — يرسل تقدّم ملاحظة الأنمي النشطة (الحلقات المشاهدة)، والحالة (قيد المشاهدة / مكتمل / مخطط له)، وتقييمك إلى قائمة AniList الخاصة بك.
+- **Pull progress from AniList** — يجلب قائمة أنمي AniList الخاصة بك ويحدّث الملاحظات المطابقة. السحب **أحادي الاتجاه (للأمام فقط)**: لا يتراجع أبدًا بملاحظة أنت متقدم فيها محليًا أو مكتملة بالفعل، ويترك تقييمك الشخصي `My Rating` دون تغيير.
+
+تُزامَن فقط الملاحظات التي تحمل `Source: anilist` (المضافة عبر مصدر أنمي AniList). يُخزَّن رمزك محليًا في إعدادات الإضافة ولا يُرسَل إلا إلى AniList.
+
+---
+
 ## الأوامر
 
 | الأمر | الوصف |
@@ -286,6 +307,8 @@ Related:
 | `Rebuild graph links` | اربط كل ملاحظة محتوى بفئتها وأنواعها ومنشئيها. |
 | `Find & remove duplicates` | افحص جميع الملاحظات حسب الرابط، اعرض التكرارات، وأزل المحددة. |
 | `Share current note` | اعرض الملاحظة كصورة بطاقة وشاركها على X أو Telegram أو Reddit أو WhatsApp أو Facebook أو LinkedIn أو VK أو Bluesky أو Pinterest. |
+| `Push current note to AniList` | أرسل تقدّم ملاحظة الأنمي النشطة وحالتها وتقييمها إلى حساب AniList الخاص بك. |
+| `Pull progress from AniList` | اجلب قائمة AniList الخاصة بك وحدّث الملاحظات المطابقة (للأمام فقط). |
 
 ---
 

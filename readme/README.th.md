@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library แบนเนอร์" width="100%">
+  <img src="../banner.png" alt="Obsidian Library แบนเนอร์" width="100%">
 </p>
 
 <h1 align="center">คลังสมบัติ</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="เวอร์ชัน">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="เวอร์ชัน">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="การดาวน์โหลด">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="เวอร์ชัน Obsidian">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="ลิขสิทธิ์">
@@ -35,6 +35,7 @@
 - **หมวดหมู่ที่กำหนดเอง** — สร้างหมวดหมู่สำหรับภาพยนตร์ ซีรีส์ แอนิเมะ การ์ตูน หนังสือ เกม เพลง หรือสิ่งอื่นใดผ่านแหล่งข้อมูลด้วยตนเอง
 - **ลิงก์กราฟ** — คุณสมบัติ frontmatter `Related` เชื่อมต่อบันทึกทุกรายการกับหมวดหมู่ ประเภท และผู้สร้าง รักษาการซิงค์โดยอัตโนมัติเพื่อกราฟที่สวยงาม
 - **การ์ดแชร์** — เปลี่ยนบันทึกเนื้อหาใดๆ ให้เป็นรูปการ์ดที่แชร์ได้ (โปสเตอร์ ชื่อเรื่อง ปี ประเภท คะแนน IMDb และคะแนนของคุณ) แล้วโพสต์ไปยัง X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky หรือ Pinterest — แชร์ตรงไปยังแอปในอุปกรณ์ของคุณ หรือคัดลอก/บันทึกรูปเพื่อใช้ที่ใดก็ได้
+- **ซิงค์ AniList** — ส่งความคืบหน้า สถานะ และคะแนนแอนิเมะของคุณตรงไปยังบัญชี AniList ของคุณ หรือดึงรายการของคุณกลับเข้ามาในบันทึก
 - **การจัดเรียงและการพับ** — เรียงลำดับการ์ดตามชื่อ ปี คะแนน หรือวันที่ พับหมวดหมู่ใดก็ได้
 - **สถิติ** — ประเภทยอดนิยม ผู้สร้างยอดนิยม (เฉพาะภาพยนตร์และซีรีส์เท่านั้น) และรายการยอดนิยมแต่ละหมวดหมู่พร้อมการจัดอันดับเหรียญ
 - **การตรวจจับซ้ำ** — ป้องกันการเพิ่มชื่อเรื่องเดียวกันสองครั้งโดย URL โดยอัตโนมัติ คำสั่งในตัวจะค้นหาและลบรายการที่ซ้ำกัน
@@ -117,6 +118,7 @@
 | `api.rawg.io` | ค้นหาหมวดหมู่เกม RAWG | ชื่อเรื่องที่คุณพิมพ์และ RAWG key ของคุณ | ดึงข้อมูลเมตาเกม (ปี ประเภท ผู้พัฒนา ปก) |
 | `api.deezer.com` | ค้นหาหมวดหมู่เพลง Deezer | อัลบั้มหรือศิลปินที่คุณพิมพ์ | ดึงข้อมูลเมตาอัลบั้ม (ศิลปิน ปี ประเภท จำนวนแทร็ค ปก) |
 | `graphql.anilist.co` | ค้นหาหมวดหมู่แอนิเมะ | ชื่อเรื่องที่คุณพิมพ์ | ดึงข้อมูลเมตาแอนิเมะ (ชื่อเรื่อง ปี ประเภท ตอน คะแนน AniList สตูดิโอ โปสเตอร์) |
+| `graphql.anilist.co` | คุณรันคำสั่งซิงค์ AniList | AniList access token ของคุณและความคืบหน้า สถานะ และคะแนนของบันทึก | อ่านหรืออัปเดตรายการแอนิเมะ AniList ของคุณ |
 | `comicvine.gamespot.com` | ค้นหาหมวดหมู่การ์ตูน | ชื่อเรื่องที่คุณพิมพ์และ Comic Vine key ของคุณ | ดึงข้อมูลเมตาการ์ตูน (ชื่อเรื่อง ปี สำนักพิมพ์ จำนวน issues ปก) |
 
 ข้อมูลอื่นๆ จะไม่ออกจาก vault ของคุณเลย ปลั๊กอิน **ไม่มี遥测 ไม่มีการวิเคราะห์ และไม่มีกลไกอัปเดตอัตโนมัติ** API key (OMDb Google Books RAWG Comic Vine) ถูกเก็บไว้ในการตั้งค่าปลั๊กอินท้องถิ่นเท่านั้นและส่งไปยังบริการที่เกี่ยวข้องเท่านั้น รูปปกจะโหลดโดยตรงจาก URL ที่แหล่งข้อมูลแต่ละแห่งส่งกลับ
@@ -277,6 +279,25 @@ Related:
 
 ---
 
+## ซิงค์ AniList
+
+ทำให้ความคืบหน้าแอนิเมะของคุณซิงค์กับบัญชี [AniList](https://anilist.co) ของคุณอยู่เสมอ
+
+**การตั้งค่า** — ใน **การตั้งค่า → คลังสมบัติ → AniList sync**:
+
+1. ลงทะเบียน API client ฟรีที่ [anilist.co/settings/developer](https://anilist.co/settings/developer) โดยตั้งค่า redirect URL เป็น `https://anilist.co/api/v2/oauth/pin`
+2. วาง **Client ID** คลิก **Connect** และให้สิทธิ์
+3. AniList จะแสดง access token ให้คุณ — วางลงในปลั๊กอิน คลิก **Test connection** เพื่อยืนยัน
+
+จากนั้นใช้คำสั่ง:
+
+- **Push current note to AniList** — ส่งความคืบหน้า (ตอนที่ดูแล้ว) สถานะ (กำลังดู / ดูจบ / วางแผนจะดู) และคะแนนของคุณจากบันทึกแอนิเมะที่ใช้งานอยู่ไปยังรายการ AniList ของคุณ
+- **Pull progress from AniList** — ดึงรายการแอนิเมะ AniList ของคุณและอัปเดตบันทึกที่ตรงกัน การดึงข้อมูลเป็นแบบ **เดินหน้าอย่างเดียว**: จะไม่ย้อนกลับบันทึกที่ในเครื่องคืบหน้าไปมากกว่าหรือดูจบแล้ว และจะไม่แตะต้อง `My Rating` ส่วนตัวของคุณ
+
+เฉพาะบันทึกที่มี `Source: anilist` (เพิ่มผ่านแหล่งข้อมูลแอนิเมะ AniList) เท่านั้นที่จะถูกซิงค์ token ของคุณถูกเก็บไว้ในการตั้งค่าปลั๊กอินท้องถิ่นและส่งไปยัง AniList เท่านั้น
+
+---
+
 ## คำสั่ง
 
 | คำสั่ง                              | คำอธิบาย                                                              |
@@ -288,6 +309,8 @@ Related:
 | `Rebuild graph links`                | เชื่อมต่อบันทึกเนื้อหาทุกรายการกับหมวดหมู่ ประเภท และผู้สร้าง          |
 | `Find & remove duplicates`           | สแกนบันทึกทั้งหมดตาม URL แสดงรายการที่ซ้ำ และลบรายการที่เลือก       |
 | `Share current note`                 | เรนเดอร์บันทึกเป็นรูปการ์ดและแชร์ไปยัง X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky หรือ Pinterest |
+| `Push current note to AniList`       | ส่งความคืบหน้า สถานะ และคะแนนจากบันทึกแอนิเมะที่ใช้งานอยู่ไปยังบัญชี AniList ของคุณ |
+| `Pull progress from AniList`         | ดึงรายการ AniList ของคุณและอัปเดตบันทึกที่ตรงกัน (เดินหน้าอย่างเดียว) |
 
 ---
 

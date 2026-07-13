@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Biểu ngữ Obsidian Library" width="100%">
+  <img src="../banner.png" alt="Biểu ngữ Obsidian Library" width="100%">
 </p>
 
 <h1 align="center">Thư viện</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Phiên bản">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Phiên bản">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Lượt tải">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Phiên bản Obsidian">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Giấy phép">
@@ -35,6 +35,7 @@
 - **Danh Mục Tùy Chỉnh** — Tạo danh mục cho Phim, Series, Anime, Truyện Tranh, Sách, Trò Chơi, Nhạc, hoặc bất kỳ thứ gì khác qua nguồn thủ công.
 - **Liên Kết Biểu Đồ** — Thuộc tính frontmatter `Related` liên kết mỗi ghi chú với danh mục, thể loại và nhà sáng tạo, được đồng bộ tự động cho biểu đồ đẹp.
 - **Thẻ Chia Sẻ** — Biến bất kỳ ghi chú nội dung nào thành hình ảnh thẻ có thể chia sẻ (poster, tiêu đề, năm, thể loại, điểm IMDb và đánh giá của bạn) và đăng lên X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, hoặc Pinterest — chia sẻ thẳng đến các ứng dụng trên thiết bị của bạn, hoặc sao chép/lưu hình ảnh để dùng ở bất cứ đâu.
+- **Đồng Bộ AniList** — Đẩy tiến độ, trạng thái và đánh giá anime của bạn thẳng đến tài khoản AniList, hoặc kéo danh sách của bạn về lại các ghi chú.
 - **Sắp Xếp & Thu Gộp** — Sắp xếp thẻ theo tên, năm, đánh giá hoặc ngày; thu gộp bất kỳ danh mục nào.
 - **Thống Kê** — Thể loại hàng đầu, nhà sáng tạo hàng đầu (chỉ phim & series), và mục hàng đầu mỗi danh mục với xếp hạng huy chương.
 - **Phát Hiện Trùng Lặp** — Tự động ngăn chặn thêm cùng tiêu đề twice bằng URL. Lệnh built-in tìm và xóa các bản trùng lặp.
@@ -117,6 +118,7 @@ Thư viện là **ưu tiên ngoại tuyến**. Plugin chỉ liên lạc mạng k
 | `api.rawg.io` | Bạn tìm kiếm danh mục trò chơi RAWG | Tiêu đề bạn nhập và RAWG key của bạn | Lấy metadata trò chơi (năm, thể loại, nhà phát triển, bìa) |
 | `api.deezer.com` | Bạn tìm kiếm danh mục nhạc Deezer | Album hoặc nghệ sĩ bạn nhập | Lấy metadata album (nghệ sĩ, năm, thể loại, số tracks, bìa) |
 | `graphql.anilist.co` | Bạn tìm kiếm danh mục anime | Tiêu đề bạn nhập | Lấy metadata anime (tiêu đề, năm, thể loại, tập phim, điểm AniList, studio, poster) |
+| `graphql.anilist.co` | Bạn chạy lệnh đồng bộ AniList | AniList access token của bạn và tiến độ, trạng thái, đánh giá của ghi chú | Đọc hoặc cập nhật danh sách anime AniList của bạn |
 | `comicvine.gamespot.com` | Bạn tìm kiếm danh mục truyện tranh | Tiêu đề bạn nhập và Comic Vine key của bạn | Lấy metadata truyện tranh (tiêu đề, năm, nhà xuất bản, số issues, bìa) |
 
 Không có dữ liệu nào khác rời khỏi vault của bạn. Plugin **không có遥测, không phân tích, và không có cơ chế tự cập nhật**. API key (OMDb, Google Books, RAWG, Comic Vine) chỉ được lưu trong cài đặt plugin cục bộ và chỉ gửi đến dịch vụ tương ứng. Hình ảnh bìa tải trực tiếp từ URL được mỗi nguồn trả về.
@@ -277,6 +279,25 @@ Chia sẻ hoàn toàn cục bộ: thẻ được vẽ trong ứng dụng từ ch
 
 ---
 
+## Đồng Bộ AniList
+
+Giữ tiến độ anime của bạn đồng bộ với tài khoản [AniList](https://anilist.co) của bạn.
+
+**Thiết lập** — trong **Cài đặt → Thư viện → Đồng bộ AniList**:
+
+1. Đăng ký một API client miễn phí tại [anilist.co/settings/developer](https://anilist.co/settings/developer), với redirect URL được đặt thành `https://anilist.co/api/v2/oauth/pin`.
+2. Dán **Client ID**, nhấp **Connect**, và cấp quyền.
+3. AniList hiển thị cho bạn một access token — dán nó vào plugin. Nhấp **Test connection** để xác nhận.
+
+Sau đó dùng các lệnh:
+
+- `Push current note to AniList` — gửi tiến độ (số tập đã xem), trạng thái (đang xem / hoàn thành / dự định) và đánh giá của ghi chú anime đang hoạt động đến danh sách AniList của bạn.
+- `Pull progress from AniList` — lấy danh sách anime AniList của bạn và cập nhật các ghi chú khớp. Pull **chỉ tiến về phía trước**: nó không bao giờ làm thụt lùi một ghi chú đang ở tiến độ xa hơn cục bộ hoặc đã hoàn thành, và giữ nguyên `My Rating` cá nhân của bạn.
+
+Chỉ các ghi chú có `Source: anilist` (được thêm qua nguồn anime AniList) mới được đồng bộ. Token của bạn được lưu cục bộ trong cài đặt plugin và chỉ gửi đến AniList.
+
+---
+
 ## Lệnh
 
 | Lệnh                                | Mô tả                                                                  |
@@ -288,6 +309,8 @@ Chia sẻ hoàn toàn cục bộ: thẻ được vẽ trong ứng dụng từ ch
 | `Rebuild graph links`                | Kết nối mọi ghi chú nội dung với danh mục, thể loại và nhà sáng tạo.          |
 | `Find & remove duplicates`           | Quét tất cả ghi chú theo URL, hiển thị trùng lặp và xóa các mục được chọn.       |
 | `Share current note`                 | Tạo hình ảnh thẻ từ ghi chú và chia sẻ lên X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, hoặc Pinterest. |
+| `Push current note to AniList`       | Gửi tiến độ, trạng thái và đánh giá của ghi chú anime đang hoạt động đến tài khoản AniList của bạn. |
+| `Pull progress from AniList`         | Lấy danh sách AniList của bạn và cập nhật các ghi chú khớp (chỉ tiến về phía trước). |
 
 ---
 

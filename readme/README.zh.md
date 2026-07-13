@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | **[ZH](README.zh.md)** | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | **[ZH](README.zh.md)** | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library 横幅" width="100%">
+  <img src="../banner.png" alt="Obsidian Library 横幅" width="100%">
 </p>
 
 <h1 align="center">图书馆</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="版本">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="版本">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="下载量">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian 版本">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="许可证">
@@ -35,6 +35,7 @@
 - **自定义分类** — 为电影、剧集、动画、漫画、图书、游戏、音乐或其他任何内容创建分类，通过手动源。
 - **图谱链接** — `Related` 前置属性将每个笔记链接到其分类、类型和创作者，自动保持同步以形成美丽的图谱。
 - **分享卡片** — 将任意内容笔记转换为可分享的卡片图片（海报、标题、年份、类型、IMDb 评分和您的评分），并发布到 X、Telegram、Reddit、WhatsApp、Facebook、LinkedIn、VK、Bluesky 或 Pinterest — 直接分享到您设备的应用，或复制/保存图片以便随处使用。
+- **AniList 同步** — 将您的动画进度、状态和评分直接推送到您的 AniList 账户，或将您的列表拉取回笔记中。
 - **排序与折叠** — 按名称、年份、评分或日期排序卡片；折叠任意分类。
 - **统计** — 热门类型、热门创作者（仅电影和剧集）、各分类热门项目（带奖牌排名）。
 - **重复检测** — 通过 URL 自动防止添加相同标题两次。内置命令可查找并移除现有重复项。
@@ -117,6 +118,7 @@
 | `api.rawg.io` | 搜索 RAWG 游戏分类时 | 您输入的标题和 RAWG 密钥 | 获取游戏元数据（年份、类型、开发者、封面） |
 | `api.deezer.com` | 搜索 Deezer 音乐分类时 | 您输入的专辑或艺术家 | 获取专辑元数据（艺术家、年份、类型、曲目数、封面） |
 | `graphql.anilist.co` | 搜索动画分类时 | 您输入的标题 | 获取动画元数据（标题、年份、类型、集数、AniList评分、制作公司、海报） |
+| `graphql.anilist.co` | 运行 AniList 同步命令时 | 您的 AniList 访问令牌以及笔记的进度、状态和评分 | 读取或更新您的 AniList 动画列表 |
 | `comicvine.gamespot.com` | 搜索漫画分类时 | 您输入的标题和 Comic Vine 密钥 | 获取漫画元数据（标题、年份、出版商、期数、封面） |
 
 没有其他数据会离开您的保险库。插件 **没有遥测、没有分析、没有自动更新机制**。API 密钥（OMDb、Google Books、RAWG、Comic Vine）仅存储在您的本地插件设置中，仅发送到各自的服务。封面图片直接从各数据源返回的 URL 加载。
@@ -277,6 +279,25 @@ Related:
 
 ---
 
+## AniList 同步
+
+将您的动画进度与您的 [AniList](https://anilist.co) 账户保持同步。
+
+**设置** — 在 **设置 → 图书馆 → AniList sync** 中：
+
+1. 在 [anilist.co/settings/developer](https://anilist.co/settings/developer) 注册一个免费的 API 客户端，并将重定向 URL 设置为 `https://anilist.co/api/v2/oauth/pin`。
+2. 粘贴 **Client ID**，点击 **Connect**，然后授权。
+3. AniList 会向您显示一个访问令牌 — 将其粘贴到插件中。点击 **Test connection** 以确认。
+
+然后使用以下命令：
+
+- **Push current note to AniList** — 将活动动画笔记的进度（已观看集数）、状态（观看中 / 已完成 / 计划中）和您的评分发送到您的 AniList 列表。
+- **Pull progress from AniList** — 获取您的 AniList 动画列表并更新匹配的笔记。拉取是 **仅向前** 的：它绝不会回退本地进度更靠前或已完成的笔记，并且不会改动您个人的 `My Rating`。
+
+只有带有 `Source: anilist`（通过 AniList 动画源添加）的笔记才会被同步。您的令牌存储在本地插件设置中，并且仅发送到 AniList。
+
+---
+
 ## 命令
 
 | 命令                              | 描述                                                              |
@@ -288,6 +309,8 @@ Related:
 | `Rebuild graph links`                | 将每个内容笔记连接到其分类、类型和创作者。          |
 | `Find & remove duplicates`           | 按 URL 扫描所有笔记，显示重复项并移除选中的项。       |
 | `Share current note`                 | 将笔记渲染为卡片图片并分享到 X、Telegram、Reddit、WhatsApp、Facebook、LinkedIn、VK、Bluesky 或 Pinterest。 |
+| `Push current note to AniList`       | 将活动动画笔记的进度、状态和评分发送到您的 AniList 账户。 |
+| `Pull progress from AniList`         | 获取您的 AniList 列表并更新匹配的笔记（仅向前）。 |
 
 ---
 

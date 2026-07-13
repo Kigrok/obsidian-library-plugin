@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">لائبریری</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="ورژن">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="ورژن">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="ڈاؤن لوڈز">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian ورژن">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="لائسنس">
@@ -35,6 +35,7 @@
 - **حسب ضرورت قسمیں** — فلمیں، سیریلز، انیمے، کامکس، کتب، گیمز، موزیک یا دستی ذریعے کے ذریعے کسی بھی چیز کے لیے قسمیں بنائیں۔
 - **گراف لنکس** — ایک `Related` فرنٹ میٹر خاصیت ہر نوٹ کو اس کی قسم، جانرز اور تخلیق کاروں سے جوڑتی ہے، خوبصورت گراف کے لیے خودکار طور پر مطابقت پذیر رکھی جاتی ہے۔
 - **شیئر کارڈز** — کسی بھی مواد کے نوٹ کو شیئر کرنے کے قابل کارڈ تصویر میں بدلیں (پوسٹر، عنوان، سال، جانر، IMDb اسکور، اور آپ کی درجہ بندی) اور اسے X، Telegram، Reddit، WhatsApp، Facebook، LinkedIn، VK، Bluesky، یا Pinterest پر پوسٹ کریں — اسے سیدھا اپنے آلے کی ایپس پر شیئر کریں، یا تصویر کو کاپی/محفوظ کرکے کہیں بھی استعمال کریں۔
+- **AniList مطابقت پذیری** — اپنی انیمے کی پیشرفت، حالت، اور درجہ بندی سیدھا اپنے AniList اکاؤنٹ پر بھیجیں، یا اپنی فہرست کو واپس اپنے نوٹس میں کھینچیں۔
 - **-sorting اور折叠** — کارڈز کو نام، سال، درجہ بندی یا تاریخ کے مطابق ساجیں؛ کسی بھی قسم کو مروڑیں۔
 - **اعداد و شمار** — سب سے اچھے جانرز، سب سے اچھے تخلیق کار (صرف فلمیں اور سیریلز)، اور ہر قسم کے لیے میڈل رینکنگ کے ساتھ سب سے اچھے آئٹمز۔
 - **ڈوپلیکیٹ پتہ لگانا** — URL کے ذریعے ایک ہی عنوان کو دوبارہ شامل ہونے سے خودکار طور پر روکتا ہے۔ ایک اندری کمانڈ موجودہ ڈوپلیکیٹس کو تلاش کرتی ہے اور ہٹاتی ہے۔
@@ -117,6 +118,7 @@
 | `api.rawg.io` | آپ RAWG گیم قسم کو تلاش کرتے ہیں | آپ کا لکھا ہوا عنوان اور RAWG کلید | گیم کا میٹا ڈیٹا حاصل کریں (سال، جانر، ڈویلپر، کور) |
 | `api.deezer.com` | آپ Deezer موزیک قسم کو تلاش کرتے ہیں | آپ کا لکھا ہوا البم یا آرٹسٹ | البم کا میٹا ڈیٹا حاصل کریں (آرٹسٹ، سال، جانر، ٹریکس کی تعداد، کور) |
 | `graphql.anilist.co` | آپ انیمے قسم کو تلاش کرتے ہیں | آپ کا لکھا ہوا عنوان | انیمے کا میٹا ڈیٹا حاصل کریں (عنوان، سال، جانر، قسمیں، AniList اسکور، اسٹوڈیو، پوسٹر) |
+| `graphql.anilist.co` | آپ AniList مطابقت پذیری کمانڈ چلاتے ہیں | آپ کا AniList رسائی ٹوکن اور نوٹ کی پیشرفت، حالت، اور درجہ بندی | آپ کی AniList انیمے فہرست پڑھیں یا اپ ڈیٹ کریں |
 | `comicvine.gamespot.com` | آپ کامکس قسم کو تلاش کرتے ہیں | آپ کا لکھا ہوا عنوان اور Comic Vine کلید | کامکس کا میٹا ڈیٹا حاصل کریں (عنوان، سال، ناشر، شمار کی تعداد، کور) |
 
 کوئی بھی ہوا ڈیٹا آپ کے وولٹ سے کبھی نہیں جاتا۔ پلاگن میں **کوئی ٹیلیمیٹری، تجزیات، اور خودکار اپ ڈیٹ میکانزم نہیں**۔ API کلیدیں (OMDb، Google Books، RAWG، Comic Vine) صرف آپ کی مقامی پلاگن ترتیبات میں محفوظ ہیں اور صرف ان کے متعلقہ خدمات کو بھیجی جاتی ہیں۔ کورٹ تصاویر براہ راست ہر ذریعے کی طرف سے واپس کی گئی URL سے لوڈ ہوتی ہیں۔
@@ -275,6 +277,25 @@ Related:
 
 ---
 
+## AniList مطابقت پذیری
+
+اپنی انیمے کی پیشرفت کو اپنے [AniList](https://anilist.co) اکاؤنٹ کے ساتھ مطابقت پذیر رکھیں۔
+
+**سیٹ اپ** — **ترتیبات → لائبریری → AniList sync** میں:
+
+1. [anilist.co/settings/developer](https://anilist.co/settings/developer) پر ایک مفت API کلائنٹ رجسٹر کریں، ری ڈائریکٹ URL کو `https://anilist.co/api/v2/oauth/pin` پر سیٹ کرکے۔
+2. **Client ID** پیسٹ کریں، **Connect** پر کلک کریں، اور اجازت دیں۔
+3. AniList آپ کو ایک رسائی ٹوکن دکھاتا ہے — اسے پلاگن میں پیسٹ کریں۔ تصدیق کے لیے **Test connection** پر کلک کریں۔
+
+پھر کمانڈز استعمال کریں:
+
+- `Push current note to AniList` — فعال انیمے نوٹ کی پیشرفت (دیکھی گئی اقساط)، حالت (دیکھ رہے ہیں / مکمل / منصوبہ بند)، اور آپ کی درجہ بندی کو آپ کی AniList فہرست پر بھیجتا ہے۔
+- `Pull progress from AniList` — آپ کی AniList انیمے فہرست حاصل کرتا ہے اور مماثل نوٹس کو اپ ڈیٹ کرتا ہے۔ کھینچنا **صرف آگے کی طرف** ہے: یہ کبھی بھی ایسے نوٹ کو پیچھے نہیں کرتا جو مقامی طور پر زیادہ آگے ہے یا پہلے سے مکمل ہے، اور یہ آپ کی ذاتی `My Rating` کو نہیں چھوتا۔
+
+صرف وہ نوٹس جن میں `Source: anilist` ہے (AniList انیمے ذریعے کے ذریعے شامل کیے گئے) مطابقت پذیر کیے جاتے ہیں۔ آپ کا ٹوکن مقامی طور پر پلاگن ترتیبات میں محفوظ ہوتا ہے اور صرف AniList کو بھیجا جاتا ہے۔
+
+---
+
 ## کمانڈز
 
 | کمانڈ                              | وضاحت                                                              |
@@ -286,6 +307,8 @@ Related:
 | `Rebuild graph links`                | ہر مواد کے نوٹ کو اس کی قسم، جانرز اور تخلیق کاروں سے جوڑیں۔          |
 | `Find & remove duplicates`           | تمام نوٹس کو URL کے مطابق اسکین کریں، ڈوپلیکیٹس دکھائیں، اور منتخب شدگی کو ہٹائیں۔       |
 | `Share current note`                 | نوٹ کو کارڈ تصویر کے طور پر بنائیں اور اسے X، Telegram، Reddit، WhatsApp، Facebook، LinkedIn، VK، Bluesky، یا Pinterest پر شیئر کریں۔ |
+| `Push current note to AniList` | فعال انیمے نوٹ کی پیشرفت، حالت، اور درجہ بندی کو اپنے AniList اکاؤنٹ پر بھیجیں۔ |
+| `Pull progress from AniList` | اپنی AniList فہرست حاصل کریں اور مماثل نوٹس کو اپ ڈیٹ کریں (صرف آگے کی طرف)۔ |
 
 ---
 

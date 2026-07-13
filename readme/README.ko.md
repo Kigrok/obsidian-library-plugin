@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | **[KO](README.ko.md)** | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | **[KO](README.ko.md)** | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library 배너" width="100%">
+  <img src="../banner.png" alt="Obsidian Library 배너" width="100%">
 </p>
 
 <h1 align="center">라이브러리</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="버전">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="버전">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="다운로드 수">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian 버전">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="라이선스">
@@ -35,6 +35,7 @@
 - **사용자 정의 카테고리** — 영화, 시리즈, 애니메이션, 만화, 도서, 게임, 음악 또는 수동 소스를 사용하여 기타 카테고리를 생성할 수 있습니다.
 - **그래프 링크** — `Related` 프론트매터 속성이 각 노트를 카테고리, 장르, 크리에이터에 연결하고, 아름다운 그래프를 위해 자동으로 동기화됩니다.
 - **공유 카드** — 모든 콘텐츠 노트를 공유 가능한 카드 이미지(포스터, 제목, 연도, 장르, IMDb 점수, 내 평점)로 변환하여 X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky 또는 Pinterest에 게시합니다 — 기기의 앱으로 바로 공유하거나, 이미지를 복사/저장하여 어디서나 사용하세요.
+- **AniList 동기화** — 애니메이션 진행 상황, 상태, 평점을 AniList 계정으로 바로 푸시하거나, 목록을 노트로 다시 가져옵니다.
 - **정렬 및 접기** — 이름, 연도, 평점, 날짜별로 카드를 정렬할 수 있고, 모든 카테고리를 접을 수 있습니다.
 - **통계** — 상위 장르, 상위 크리에이터(영화 및 시리즈만), 카테고리별 상위 항목(메달 랭킹 포함).
 - **중복 감지** — URL로 동일한 제목의 중복 추가를 자동으로 방지합니다. 내장 명령으로 기존 중복을 찾아 제거합니다.
@@ -117,6 +118,7 @@
 | `api.rawg.io` | RAWG 게임 카테고리를 검색할 때 | 입력한 제목과 RAWG 키 | 게임 메타데이터 가져오기(연도, 장르, 개발자, 커버) |
 | `api.deezer.com` | Deezer 음악 카테고리를 검색할 때 | 입력한 앨범 또는 아티스트 | 앨범 메타데이터 가져오기(아티스트, 연도, 장르, 트랙 수, 커버) |
 | `graphql.anilist.co` | 애니메이션 카테고리를 검색할 때 | 입력한 제목 | 애니메이션 메타데이터 가져오기(제목, 연도, 장르, 에피소드, AniList 점수, 스튜디오, 포스터) |
+| `graphql.anilist.co` | AniList 동기화 명령을 실행할 때 | AniList 액세스 토큰과 노트의 진행 상황, 상태, 평점 | AniList 애니메이션 목록 읽기 또는 업데이트 |
 | `comicvine.gamespot.com` | 만화 카테고리를 검색할 때 | 입력한 제목과 Comic Vine 키 | 만화 메타데이터 가져오기(제목, 연도, 출판사, 호수, 커버) |
 
 그 외의 데이터는 볼트를 떠나지 않습니다. 플러그인에 **텔레메트리, 분석, 자동 업데이트 메커니즘이 없습니다**. API 키(OMDb, Google Books, RAWG, Comic Vine)는 로컬 플러그인 설정에만 저장되며 해당 서비스에만 전송됩니다. 커버 이미지는 각 소스에서 반환된 URL에서 직접 로드됩니다.
@@ -277,6 +279,25 @@ Related:
 
 ---
 
+## AniList 동기화
+
+애니메이션 진행 상황을 [AniList](https://anilist.co) 계정과 동기화된 상태로 유지하세요.
+
+**설정** — **설정 → 라이브러리 → AniList sync**에서:
+
+1. [anilist.co/settings/developer](https://anilist.co/settings/developer)에서 무료 API 클라이언트를 등록하고, 리다이렉트 URL을 `https://anilist.co/api/v2/oauth/pin`으로 설정합니다.
+2. **Client ID**를 붙여넣고 **Connect**를 클릭한 후 승인합니다.
+3. AniList가 액세스 토큰을 보여줍니다 — 이를 플러그인에 붙여넣습니다. **Test connection**을 클릭하여 확인합니다.
+
+그런 다음 명령을 사용하세요:
+
+- **Push current note to AniList** — 활성 애니메이션 노트의 진행 상황(시청한 에피소드), 상태(시청 중 / 완료 / 예정), 평점을 AniList 목록으로 전송합니다.
+- **Pull progress from AniList** — AniList 애니메이션 목록을 가져와 일치하는 노트를 업데이트합니다. Pull은 **전진 전용**입니다: 로컬에서 더 앞서 있거나 이미 완료된 노트를 되돌리지 않으며, 개인 `My Rating`은 건드리지 않습니다.
+
+`Source: anilist`인 노트(AniList 애니메이션 소스로 추가된 노트)만 동기화됩니다. 토큰은 로컬 플러그인 설정에 저장되며 AniList에만 전송됩니다.
+
+---
+
 ## 명령어
 
 | 명령어                              | 설명                                                              |
@@ -288,6 +309,8 @@ Related:
 | `Rebuild graph links`                | 모든 콘텐츠 노트를 카테고리, 장르, 크리에이터에 연결합니다.          |
 | `Find & remove duplicates`           | URL로 모든 노트를 스캔하고, 중복을 표시하며, 선택한 것을 제거합니다.       |
 | `Share current note`                 | 노트를 카드 이미지로 렌더링하여 X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky 또는 Pinterest에 공유합니다. |
+| `Push current note to AniList`       | 활성 애니메이션 노트의 진행 상황, 상태, 평점을 AniList 계정으로 전송합니다. |
+| `Pull progress from AniList`         | AniList 목록을 가져와 일치하는 노트를 업데이트합니다(전진 전용). |
 
 ---
 

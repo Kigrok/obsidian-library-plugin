@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Banner Obsidian Library" width="100%">
+  <img src="../banner.png" alt="Banner Obsidian Library" width="100%">
 </p>
 
 <h1 align="center">Pustaka</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Versi">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Versi">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Unduhan">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Versi Obsidian">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Lisensi">
@@ -35,6 +35,7 @@
 - **Kategori Kustom** — Buat kategori untuk Film, Serial, Anime, Komik, Buku, Game, Musik, atau hal lain melalui sumber manual.
 - **Tautan Grafik** — Properti frontmatter `Related` menghubungkan setiap catatan dengan kategorinya, genre, dan kreator, disinkronkan secara otomatis untuk grafik yang indah.
 - **Kartu Berbagi** — Ubah catatan konten apa pun menjadi gambar kartu yang dapat dibagikan (poster, judul, tahun, genre, peringkat IMDb, dan peringkat Anda) dan posting ke X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, atau Pinterest — bagikan langsung ke aplikasi di perangkat Anda, atau salin/simpan gambar untuk digunakan di mana saja.
+- **Sinkronisasi AniList** — Kirim kemajuan, status, dan peringkat anime Anda langsung ke akun AniList Anda, atau tarik daftar Anda kembali ke dalam catatan Anda.
 - **Pengurutan & Pelipatan** — Urutkan kartu berdasarkan nama, tahun, peringkat, atau tanggal; lipat kategori apa pun.
 - **Statistik** — Genre teratas, kreator teratas (hanya film & serial), dan item teratas per kategori dengan peringkat medali.
 - **Deteksi Duplikat** — Secara otomatis mencegah penambahan judul yang sama dua kali berdasarkan URL. Perintah bawaan menemukan dan menghapus duplikat yang ada.
@@ -117,6 +118,7 @@ Pustaka adalah **offline-first**. Plugin hanya menghubungi jaringan ketika Anda 
 | `api.rawg.io` | Anda mencari kategori game RAWG | Judul yang Anda ketik dan RAWG key Anda | Mengambil metadata game (tahun, genre, pengembang, cover) |
 | `api.deezer.com` | Anda mencari kategori musik Deezer | Album atau artis yang Anda ketik | Mengambil metadata album (artis, tahun, genre, jumlah trek, cover) |
 | `graphql.anilist.co` | Anda mencari kategori anime | Judul yang Anda ketik | Mengambil metadata anime (judul, tahun, genre, episode, nilai AniList, studio, poster) |
+| `graphql.anilist.co` | Anda menjalankan perintah sinkronisasi AniList | Access token AniList Anda dan kemajuan, status, serta peringkat catatan | Membaca atau memperbarui daftar anime AniList Anda |
 | `comicvine.gamespot.com` | Anda mencari kategori komik | Judul yang Anda ketik dan Comic Vine key Anda | Mengambil metadata komik (judul, tahun, penerbit, jumlah issue, cover) |
 
 Data lainnya tidak pernah keluar dari vault Anda. Plugin **tidak memiliki遥测, tidak memiliki analitik, dan tidak memiliki mekanisme pembaruan otomatis**. API key (OMDb, Google Books, RAWG, Comic Vine) hanya disimpan di pengaturan plugin lokal Anda dan hanya dikirim ke layanan masing-masing. Gambar cover dimuat langsung dari URL yang dikembalikan oleh setiap sumber.
@@ -277,6 +279,25 @@ Berbagi sepenuhnya lokal: kartu digambar di dalam aplikasi dari metadata dan cov
 
 ---
 
+## Sinkronisasi AniList
+
+Jaga kemajuan anime Anda tetap sinkron dengan akun [AniList](https://anilist.co) Anda.
+
+**Penyiapan** — di **Pengaturan → Pustaka → Sinkronisasi AniList**:
+
+1. Daftarkan API client gratis di [anilist.co/settings/developer](https://anilist.co/settings/developer), dengan redirect URL disetel ke `https://anilist.co/api/v2/oauth/pin`.
+2. Tempel **Client ID**, klik **Connect**, dan otorisasi.
+3. AniList menampilkan access token kepada Anda — tempel ke dalam plugin. Klik **Test connection** untuk mengonfirmasi.
+
+Lalu gunakan perintah:
+
+- `Push current note to AniList` — mengirim kemajuan (episode yang telah ditonton), status (sedang ditonton / selesai / direncanakan), dan peringkat Anda dari catatan anime aktif ke daftar AniList Anda.
+- `Pull progress from AniList` — mengambil daftar anime AniList Anda dan memperbarui catatan yang cocok. Penarikan bersifat **maju-saja**: ia tidak pernah memundurkan catatan yang secara lokal lebih maju atau sudah selesai, dan membiarkan `My Rating` pribadi Anda tidak tersentuh.
+
+Hanya catatan dengan `Source: anilist` (ditambahkan melalui sumber anime AniList) yang disinkronkan. Token Anda disimpan secara lokal di pengaturan plugin dan hanya dikirim ke AniList.
+
+---
+
 ## Perintah
 
 | Perintah                            | Deskripsi                                                              |
@@ -288,6 +309,8 @@ Berbagi sepenuhnya lokal: kartu digambar di dalam aplikasi dari metadata dan cov
 | `Rebuild graph links`                | Hubungkan setiap catatan konten ke kategorinya, genre, dan kreator.          |
 | `Find & remove duplicates`           | Pindai semua catatan berdasarkan URL, tampilkan duplikat, dan hapus yang dipilih.       |
 | `Share current note`                 | Render catatan sebagai gambar kartu dan bagikan ke X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, atau Pinterest. |
+| `Push current note to AniList`       | Kirim kemajuan, status, dan peringkat catatan anime aktif ke akun AniList Anda. |
+| `Pull progress from AniList`         | Ambil daftar AniList Anda dan perbarui catatan yang cocok (maju-saja). |
 
 ---
 

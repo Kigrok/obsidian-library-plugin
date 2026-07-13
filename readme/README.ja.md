@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | **[JA](README.ja.md)** | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | **[JA](README.ja.md)** | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library バナー" width="100%">
+  <img src="../banner.png" alt="Obsidian Library バナー" width="100%">
 </p>
 
 <h1 align="center">ライブラリ</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="バージョン">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="バージョン">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="ダウンロード数">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian バージョン">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="ライセンス">
@@ -35,6 +35,7 @@
 - **カスタムカテゴリ** — 映画、シリーズ、アニメ、漫画、本、ゲーム、音楽、またはマニュアルソースを使用してその他のカテゴリを作成できます。
 - **グラフリンク** — `Related` フロントマッタープロパティが各ノートをカテゴリ、ジャンル、クリエイターにリンクし、美しいグラフのために自動同期されます。
 - **共有カード** — 任意のコンテンツノートを共有可能なカード画像（ポスター、タイトル、年、ジャンル、IMDb スコア、あなたの評価）に変換し、X、Telegram、Reddit、WhatsApp、Facebook、LinkedIn、VK、Bluesky、Pinterest に投稿できます — デバイスのアプリに直接共有したり、画像をコピー／保存してどこでも使えます。
+- **AniList 同期** — アニメの進捗、ステータス、評価を AniList アカウントに直接プッシュしたり、リストをノートに引き戻したりできます。
 - **ソートと折りたたみ** — 名前、年、評価、日付でカードをソート。任意のカテゴリを折りたたみできます。
 - **統計** — トップジャンル、トップクリエイター（映画＆シリーズのみ）、カテゴリごとのトップアイテム（メダル付きランキング）。
 - **重複検出** — URL による同一タイトルの重複追加を自動防止。内蔵コマンドで既存の重複を検索・削除できます。
@@ -117,6 +118,7 @@
 | `api.rawg.io` | RAWG ゲームカテゴリを検索時 | 入力したタイトルと RAWG キー | ゲームのメタデータ取得（年、ジャンル、開発者、カバー） |
 | `api.deezer.com` | Deezer 音楽カテゴリを検索時 | 入力したアルバムまたはアーティスト | アルバムのメタデータ取得（アーティスト、年、ジャンル、トラック数、カバー） |
 | `graphql.anilist.co` | アニメカテゴリを検索時 | 入力したタイトル | アニメのメタデータ取得（タイトル、年、ジャンル、エピソード数、AniList スコア、スタジオ、ポスター） |
+| `graphql.anilist.co` | AniList 同期コマンドを実行時 | AniList アクセストークンとノートの進捗、ステータス、評価 | AniList のアニメリストの読み取りまたは更新 |
 | `comicvine.gamespot.com` | 漫画カテゴリを検索時 | 入力したタイトルと Comic Vine キー | 漫画のメタデータ取得（タイトル、年、出版社、号数、カバー） |
 
 これ以外のデータがボールトから外に出ることはありません。プラグインに **テレメトリ、分析、自動更新機能** はありません。API キー（OMDb、Google Books、RAWG、Comic Vine）はローカルのプラグイン設定にのみ保存され、それぞれのサービスにのみ送信されます。カバー画像は各ソースから返された URL から直接読み込まれます。
@@ -277,6 +279,25 @@ Related:
 
 ---
 
+## AniList 同期
+
+アニメの進捗を [AniList](https://anilist.co) アカウントと同期させましょう。
+
+**セットアップ** — **設定 → ライブラリ → AniList 同期** で：
+
+1. [anilist.co/settings/developer](https://anilist.co/settings/developer) で無料の API クライアントを登録し、リダイレクト URL を `https://anilist.co/api/v2/oauth/pin` に設定します。
+2. **Client ID** を貼り付け、**Connect** をクリックして認可します。
+3. AniList にアクセストークンが表示されるので、それをプラグインに貼り付けます。**Test connection** をクリックして確認します。
+
+その後、次のコマンドを使用します：
+
+- **Push current note to AniList** — アクティブなアニメノートの進捗（視聴済みエピソード数）、ステータス（視聴中／完了／視聴予定）、あなたの評価を AniList リストに送信します。
+- **Pull progress from AniList** — AniList のアニメリストを取得し、一致するノートを更新します。プルは **前進のみ**：ローカルの方が進んでいるノートや既に完了したノートを後退させることはなく、あなた個人の `My Rating` はそのまま維持されます。
+
+同期されるのは `Source: anilist` のノート（AniList アニメソースで追加されたもの）のみです。トークンはローカルのプラグイン設定に保存され、AniList にのみ送信されます。
+
+---
+
 ## コマンド
 
 | コマンド                              | 説明                                                                      |
@@ -288,6 +309,8 @@ Related:
 | `Rebuild graph links`                | すべてのコンテンツノートをカテゴリ、ジャンル、クリエイターに接続します。          |
 | `Find & remove duplicates`           | URL ですべてのノートをスキャンし、重複を表示し、選択したものを削除します。       |
 | `Share current note`                 | ノートをカード画像としてレンダリングし、X、Telegram、Reddit、WhatsApp、Facebook、LinkedIn、VK、Bluesky、Pinterest に共有します。 |
+| `Push current note to AniList`       | アクティブなアニメノートの進捗、ステータス、評価を AniList アカウントに送信します。 |
+| `Pull progress from AniList`         | AniList リストを取得し、一致するノートを更新します（前進のみ）。 |
 
 ---
 

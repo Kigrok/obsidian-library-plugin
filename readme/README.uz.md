@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md)
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Kutubxona</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Versiya">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Versiya">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Yuklamalar">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian versiyasi">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Litsenziya">
@@ -35,6 +35,7 @@
 - **Maxsus Kategoriyalar** — Filmlar, Seriallar, Anime, Komikslar, Kitoblar, O'yinlar, Musiqi yoki qo'lda manba orqali boshqa narsalar uchun kategoriyalar yarating.
 - **Grafik Bog'lanishlari** — `Related` oldingi ma'lumot xususiyati har bir eslatmani uning kategoriyasi, janrlari va yaratuvchilari bilan bog'laydi, chiroyli grafik uchun avtomatik sinxronlanadi.
 - **Ulashish Kartalari** — Istalgan kontent eslatmasini ulashsa bo'ladigan karta surati (poster, sarlavha, yil, janr, IMDb bahosi va sizning reytingingiz)ga aylantiring va uni X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky yoki Pinterest ga joylang — uni to'g'ridan-to'g'ri qurilmangiz ilovalariga ulashing yoki rasmni istalgan joyda ishlatish uchun nusxalang/saqlang.
+- **AniList Sinxronizatsiyasi** — Anime taraqqiyotingizni, holatingizni va reytingingizni to'g'ridan-to'g'ri AniList hisobingizga yuboring yoki ro'yxatingizni eslatmalaringizga qaytarib torting.
 - **Saralash & Yig'ilish** — Kartalarni nom, yil, reyting yoki sana bo'yicha saralang; istalgan kategoriyani yig'ing.
 - **Statistika** — Eng yaxshi janrlar, eng yaxshi yaratuvchilar (faqat filmlar va seriallar) va medal reytinglari bilan har bir kategoriya uchun eng yaxshi elementlar.
 - **Takroriy Topish** — URL bo'yicha bir xil nomni qo'shishni avtomatik to'xtatadi. Ichki buyruq mavjud takroriy topadi va o'chiradi.
@@ -117,6 +118,7 @@ Kutubxona **offline-birinchi**. Plagin faqat qo'shish uchun nomni faol qidirgani
 | `api.rawg.io` | RAWG o'yin kategoriyasini qidirganingizda | Siz kiritgan nom va RAWG kalitingiz | O'yin metadatasini yuklash (yil, janr, ishlab chiqaruvchi, muqova) |
 | `api.deezer.com` | Deezer musiqi kategoriyasini qidirganingizda | Siz kiritgan albom yoki ijrochi | Albom metadatasini yuklash (ijrochi, yil, janr, treklar soni, muqova) |
 | `graphql.anilist.co` | Anime kategoriyasini qidirganingizda | Siz kiritgan nom | Anime metadatasini yuklash (nom, yil, janr, epizodlar, AniList bali, studiya, poster) |
+| `graphql.anilist.co` | AniList sinxronizatsiya buyrug'ini ishga tushirganingizda | AniList kirish tokeningiz va eslatmaning taraqqiyoti, holati va reytingi | AniList anime ro'yxatingizni o'qish yoki yangilash |
 | `comicvine.gamespot.com` | Komiks kategoriyasini qidirganingizda | Siz kiritgan nom va Comic Vine kalitingiz | Komiks metadatasini yuklash (nom, yil, nashriyot, sonlar soni, muqova) |
 
 Boshqa hech qanday ma'lumot sizning vaultingizdan chiqmaydi. Plaginda **telemetriya, analitika va o'zini yangilash mexanizmi yo'q**. API kalitlari (OMDb, Google Books, RAWG, Comic Vine) faqat mahalliy plagin sozlamalarida saqlanadi va faqat tegishli xizmatlarga yuboriladi. Muqova rasmlari to'g'ridan-to'g'ri har bir manbaning qaytargan URL laridan yuklanadi.
@@ -275,6 +277,25 @@ Ulashish to'liq mahalliy: karta ilova ichida eslatmaning o'z metadatalari va muq
 
 ---
 
+## AniList Sinxronizatsiyasi
+
+Anime taraqqiyotingizni [AniList](https://anilist.co) hisobingiz bilan sinxron saqlang.
+
+**Sozlash** — **Sozlamalar → Kutubxona → AniList sinxronizatsiyasi** bo'limida:
+
+1. [anilist.co/settings/developer](https://anilist.co/settings/developer) manzilida bepul API klientni ro'yxatdan o'tkazing, yo'naltirish URL manzilini `https://anilist.co/api/v2/oauth/pin` ga o'rnating.
+2. **Client ID**ni joylang, **Connect** tugmasini bosing va ruxsat bering.
+3. AniList sizga kirish tokenini ko'rsatadi — uni plaginga joylang. Tasdiqlash uchun **Test connection** tugmasini bosing.
+
+Keyin buyruqlardan foydalaning:
+
+- `Push current note to AniList` — faol anime eslatmasining taraqqiyotini (ko'rilgan epizodlar), holatini (ko'rilmoqda / tugallangan / rejalashtirilgan) va reytingingizni AniList ro'yxatingizga yuboradi.
+- `Pull progress from AniList` — AniList anime ro'yxatingizni yuklab oladi va mos keladigan eslatmalarni yangilaydi. Torib olish **faqat oldinga** yo'naltirilgan: u mahalliy jihatdan oldinroqda bo'lgan yoki allaqachon tugallangan eslatmani hech qachon orqaga qaytarmaydi va shaxsiy `My Rating` ingizga tegmaydi.
+
+Faqat `Source: anilist` ga ega eslatmalar (AniList anime manbasi orqali qo'shilgan) sinxronlanadi. Tokeningiz plagin sozlamalarida mahalliy saqlanadi va faqat AniList ga yuboriladi.
+
+---
+
 ## Buyruqlar
 
 | Buyruq                              | Tavsif                                                              |
@@ -286,6 +307,8 @@ Ulashish to'liq mahalliy: karta ilova ichida eslatmaning o'z metadatalari va muq
 | `Rebuild graph links`                | Har bir kontent eslatmasini uning kategoriyasi, janrlari va yaratuvchilari bilan bog'lang.          |
 | `Find & remove duplicates`           | Barcha eslatmalarni URL bo'yicha skanerlang, takroriy ko'rsating va tanlanganlarni o'chiring.       |
 | `Share current note`                 | Eslatmani karta surati sifatida chizib, uni X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky yoki Pinterest da ulashing. |
+| `Push current note to AniList`        | Faol anime eslatmasining taraqqiyoti, holati va reytingini AniList hisobingizga yuboring. |
+| `Pull progress from AniList`          | AniList ro'yxatingizni yuklab oling va mos keladigan eslatmalarni yangilang (faqat oldinga). |
 
 ---
 

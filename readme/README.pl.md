@@ -1,13 +1,13 @@
-> [EN](README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **PL**
+> [EN](../README.md) | [RU](README.ru.md) | [UK](README.uk.md) | [DE](README.de.md) | [ES](README.es.md) | [FR](README.fr.md) | [ZH](README.zh.md) | [JA](README.ja.md) | [KO](README.ko.md) | [AR](README.ar.md) | **PL**
 
 <p align="center">
-  <img src="banner.png" alt="Obsidian Library Banner" width="100%">
+  <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.0-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -35,6 +35,7 @@
 - **Własne kategorie** — Twórz kategorie dla filmów, seriali, anime, komiksów, książek, gier, muzyki lub czegokolwiek innego za pomocą ręcznego źródła.
 - **Linki grafu** — Właściwość `Related` w frontmatterze łączy każdą notatkę z jej kategorią, gatunkami i twórcami, automatycznie utrzymywana w synchronizacji dla pięknego grafu.
 - **Karty do udostępniania** — Zamień dowolną notatkę treści w obraz karty do udostępnienia (plakat, tytuł, rok, gatunek, ocena IMDb i Twoja ocena) i opublikuj go na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky lub Pinterest — udostępnij go bezpośrednio aplikacjom na Twoim urządzeniu lub skopiuj/zapisz obraz, aby użyć go gdziekolwiek.
+- **Synchronizacja AniList** — Wyślij postęp, status i ocenę swojego anime prosto na konto AniList lub pobierz swoją listę z powrotem do notatek.
 - **Sortowanie i zwijanie** — Sortuj karty według nazwy, roku, oceny lub daty; zwijaj dowolną kategorię.
 - **Statystyki** — Najlepsze gatunki, najlepsi twórcy (tylko filmy i seriale) i najlepsze pozycje w każdej kategorii z rankingami medalowymi.
 - **Wykrywanie duplikatów** — Automatycznie zapobiega dodawaniu tego samego tytułu dwukrotnie według URL. Wbudowane polecenie znajduje i usuwa istniejące duplikaty.
@@ -117,6 +118,7 @@ Library jest **offline-first**. Plugin kontaktuje się z siecią tylko wtedy, gd
 | `api.rawg.io` | Przeszukujesz kategorię gier RAWG | Tytuł, który wpisujesz, i Twój klucz RAWG | Pobieranie metadanych gry (rok, gatunki, deweloper, okładka) |
 | `api.deezer.com` | Przeszukujesz kategorię muzyki Deezer | Album lub artysta, którego wpisujesz | Pobieranie metadanych albumu (artysta, rok, gatunki, liczba utworów, okładka) |
 | `graphql.anilist.co` | Przeszukujesz kategorię anime | Tytuł, który wpisujesz | Pobieranie metadanych anime (tytuł, rok, gatunek, odcinki, ocena AniList, studio, plakat) |
+| `graphql.anilist.co` | Uruchamiasz polecenie synchronizacji AniList | Twój token dostępu AniList oraz postęp, status i ocena notatki | Odczyt lub aktualizacja Twojej listy anime na AniList |
 | `comicvine.gamespot.com` | Przeszukujesz kategorię komiksów | Tytuł, który wpisujesz, i Twój klucz Comic Vine | Pobieranie metadanych komiksu (tytuł, rok, wydawca, liczba numerów, okładka) |
 
 Żadne inne dane nigdy nie opuszczają Twojego vaultu. Plugin **nie ma telemetrii, nie ma analityki i nie ma mechanizmu automatycznej aktualizacji**. Klucze API (OMDb, Google Books, RAWG, Comic Vine) są przechowywane tylko w lokalnych ustawieniach pluginu i wysyłane tylko do odpowiednich usług. Obrazy okładek są ładowane bezpośrednio z adresów URL zwracanych przez każde źródło.
@@ -277,6 +279,25 @@ Udostępnianie odbywa się całkowicie lokalnie: karta jest rysowana w aplikacji
 
 ---
 
+## Synchronizacja AniList
+
+Utrzymuj postęp swojego anime w synchronizacji z kontem [AniList](https://anilist.co).
+
+**Konfiguracja** — w **Ustawienia → Library → AniList sync**:
+
+1. Zarejestruj darmowego klienta API na [anilist.co/settings/developer](https://anilist.co/settings/developer), ustawiając redirect URL na `https://anilist.co/api/v2/oauth/pin`.
+2. Wklej **Client ID**, kliknij **Connect** i autoryzuj.
+3. AniList pokaże Ci token dostępu — wklej go do pluginu. Kliknij **Test connection**, aby potwierdzić.
+
+Następnie użyj poleceń:
+
+- **Push current note to AniList** — wysyła postęp aktywnej notatki anime (obejrzane odcinki), status (oglądane / ukończone / planowane) i Twoją ocenę do Twojej listy AniList.
+- **Pull progress from AniList** — pobiera Twoją listę anime z AniList i aktualizuje pasujące notatki. Pull jest **tylko do przodu**: nigdy nie cofa notatki, która lokalnie jest dalej lub już ukończona, i pozostawia Twoją osobistą `My Rating` nietkniętą.
+
+Synchronizowane są tylko notatki z `Source: anilist` (dodane przez źródło anime AniList). Twój token jest przechowywany lokalnie w ustawieniach pluginu i wysyłany tylko do AniList.
+
+---
+
 ## Polecenia
 
 | Polecenie                            | Opis                                                                     |
@@ -288,6 +309,8 @@ Udostępnianie odbywa się całkowicie lokalnie: karta jest rysowana w aplikacji
 | `Rebuild graph links`                | Połącz każdą notatkę treści z jej kategorią, gatunkami i twórcami.        |
 | `Find & remove duplicates`           | Przeskanuj wszystkie notatki według URL, wyświetl duplikaty i usuń wybrane. |
 | `Share current note`                 | Wyrenderuj notatkę jako obraz karty i udostępnij ją na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky lub Pinterest. |
+| `Push current note to AniList`       | Wyślij postęp, status i ocenę aktywnej notatki anime do Twojego konta AniList. |
+| `Pull progress from AniList`         | Pobierz swoją listę AniList i zaktualizuj pasujące notatki (tylko do przodu). |
 
 ---
 
