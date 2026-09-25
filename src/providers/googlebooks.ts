@@ -81,7 +81,7 @@ export class GoogleBooksProvider implements ContentProvider {
 			if (!info) {
 				const params = this.withKey(new URLSearchParams())
 				const query = params.toString()
-				const url = `${GoogleBooksProvider.BASE}/${sourceId}${query ? `?${query}` : ''}`
+				const url = `${GoogleBooksProvider.BASE}/${encodeURIComponent(sourceId)}${query ? `?${query}` : ''}`
 				const resp = await requestUrl({ url, throw: false })
 				if (resp.status !== 200) return null
 				info = (resp.json as GoogleItem).volumeInfo

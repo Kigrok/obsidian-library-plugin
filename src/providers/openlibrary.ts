@@ -51,7 +51,12 @@ export class OpenLibraryProvider implements ContentProvider {
 		}
 	}
 
-	// Open Library search already carries full doc; refetch без raw не имеет источника, поэтому no-op.
+	refreshable(): boolean {
+		return false
+	}
+
+	// Open Library search already carries the full doc; a refresh without raw has
+	// no document to refetch from, so it is a no-op.
 	async fetch(_sourceId: string, _type: ContentType, raw?: unknown): Promise<NormalizedMetadata | null> {
 		if (!raw || typeof raw !== 'object') return null
 		const doc = raw as OpenLibraryDoc

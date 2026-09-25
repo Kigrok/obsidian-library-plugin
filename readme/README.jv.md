@@ -7,7 +7,7 @@
 <h1 align="center">Pustaka</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Versi">
+  <img src="https://img.shields.io/badge/version-2.3.0-blue" alt="Versi">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Unduhan">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Versi Obsidian">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Lisensi">
@@ -28,18 +28,19 @@
 ## Fitur Utama
 
 - **Grid Kartu Visual** — Tab Pustaka khusus menampilkan koleksi Anda sebagai galeri kartu cover art.
-- **Pencarian Bawaan** — Cari dan tambahkan judul langsung di dalam aplikasi: OMDb untuk film dan serial, Open Library atau Google Books untuk buku, RAWG untuk game, Deezer untuk musik, AniList untuk anime, Comic Vine untuk komik.
+- **Pencarian Bawaan** — Cari dan tambahkan judul langsung di dalam aplikasi: OMDb untuk film dan serial, Open Library atau Google Books untuk buku, RAWG/Steam untuk game, Deezer untuk musik, AniList untuk anime, Comic Vine untuk komik.
 - **Pelacakan Serial Pintar** — Jumlah season dan episode diambil secara otomatis dan disinkronkan.
 - **Indikator Kemajuan** — Bar kemajuan visual pada kartu dan header catatan menunjukkan seberapa banyak Anda telah menonton atau membaca.
 - **Header Catatan Kaya** — Setiap catatan konten mendapat header yang dibuat otomatis dengan semua metadata penting.
+- **Trailer, Gambar lan Musim** — Cathetan film lan seri nuduhake trailer YouTube/Vimeo sing dipasang, baris gambar, lan durasi; seri uga duwe dhaptar musim kanthi jumlah episode, rating, lan trailer saben musim.
 - **Kategori Kustom** — Buat kategori untuk Film, Serial, Anime, Komik, Buku, Game, Musik, atau hal lain melalui sumber manual.
-- **Tautan Grafik** — Properti frontmatter `Related` menghubungkan setiap catatan dengan kategorinya, genre, dan kreator, disinkronkan secara otomatis untuk grafik yang indah.
+- **Tautan Grafik** — Genre, pangripta, lan pemain disimpen minangka tautan ing properti dhewe `Genre`, `Creator`, lan `Cast`, mula cathetan saben genre, pangripta, lan pemain nglumpukake judhule ing backlink lan grafik nuduhake kabeh.
 - **Kartu Berbagi** — Ubah catatan konten apa pun menjadi gambar kartu yang dapat dibagikan (poster, judul, tahun, genre, peringkat IMDb, dan peringkat Anda) dan posting ke X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, atau Pinterest — bagikan langsung ke aplikasi di perangkat Anda, atau salin/simpan gambar untuk digunakan di mana saja.
 - **Sinkronisasi AniList** — Kirim kemajuan, status, dan peringkat anime Anda langsung ke akun AniList Anda, atau tarik daftar Anda kembali ke dalam catatan Anda.
-- **Pengurutan & Pelipatan** — Urutkan kartu berdasarkan nama, tahun, peringkat, atau tanggal; lipat kategori apa pun.
-- **Statistik** — Genre teratas, kreator teratas (hanya film & serial), dan item teratas per kategori dengan peringkat medali.
+- **Pengurutan & Pelipatan** — Urutna kertu miturut jeneng, taun, rating, utawa tanggal; lempit kategori apa wae — tetep kelempit sanajan sawise diwiwiti maneh.
+- **Statistik** — Pilih kolom dhewe: judhul kanthi rating paling dhuwur saka kategori apa wae utawa nilai sing paling kerep saka properti apa wae (genre, panulis, pemain…), plus grafik wektu nonton.
 - **Deteksi Duplikat** — Secara otomatis mencegah penambahan judul yang sama dua kali berdasarkan URL. Perintah bawaan menemukan dan menghapus duplikat yang ada.
-- **Multibahasa** — 31 bahasa: Inggris, Ukraina, Rusia, Belarusia, Kazakh, Uzbek, Jerman, Spanyol, Prancis, Italia, Belanda, Ceko, Kroasia, Polandia, Rumania, Turki, Azerbaijan, Persia, Hindi, Bengali, Urdu, Tagalog, Vietnam, Thailand, Jawa, Jepang, Korea, Cina, Arab, Sinhala, Ibrani.
+- **Multibahasa** — antarmuka plugin wis diterjemahake menyang **kabeh basa sing didhukung Obsidian** (70+), dadi tansah cocog karo basa Obsidian-mu. Terjemahan README lengkap kasedhiya kanggo 30 basa (deleng bar basa ing ndhuwur).
 
 ---
 
@@ -53,14 +54,14 @@ Instal **Pustaka** dari [direktori Plugin Komunitas Obsidian](https://community.
 
 1. Buka **Pengaturan** > **Pustaka**.
 2. Tambahkan **Kategori** Anda — pilih jenis yang sudah ditentukan (Film, Serial, Buku, Komik, Game, Musik, Anime, atau Manual) dari dropdown dan klik **Tambah kategori**. Setiap kategori memiliki nama tampilan (diterjemahkan ke bahasa Anda), nilai `Type` (selalu bahasa Inggris, contoh `Movie`), sumber, dan folder opsional untuk menyimpan catatan.
-3. _（Opsional）_ Masukkan API key untuk layanan yang Anda gunakan: [OMDb](https://www.omdbapi.com/apikey.aspx) untuk film/serial, [RAWG](https://rawg.io/apidocs) untuk game, [Comic Vine](https://comicvine.gamespot.com/api/) untuk komik. Anime (AniList) dan musik (Deezer) tidak memerlukan key.
+3. _（Opsional）_ Masukkan API key untuk layanan yang Anda gunakan: [OMDb](https://www.omdbapi.com/apikey.aspx) untuk film/serial, [RAWG](https://rawg.io/apidocs) untuk game, [Comic Vine](https://comicvine.gamespot.com/api/) untuk komik, [TMDB](https://www.themoviedb.org/settings/api) kanggo trailer, gambar lan rincian musim, lan [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) kanggo nggoleki buku. Anime (AniList), musik (Deezer), lan Steam ora mbutuhake key.
 
 ### 3. Menambahkan Kartu dengan Judul
 
 Tidak perlu mengisi frontmatter secara manual lagi — tambahkan film, serial, buku, anime, atau komik hanya dengan mencari namanya:
 
-1. Buka tab **Pustaka** dari ikon ribbon (atau jalankan `Open Library`).
-2. Klik tombol **+** di pojok kanan atas halaman Pustaka (atau jalankan `Add content`).
+1. Buka tab **Pustaka** dari ikon ribbon (atau jalankan `Bukak pustaka`).
+2. Klik tombol **+** di pojok kanan atas halaman Pustaka (atau jalankan `Tambahake konten`).
 3. Pilih kategori, ketik **judul** di kotak pencarian, dan pilih hasil.
 4. Kartu dibuat seketika, dengan poster, tahun, genre, kreator, dan peringkat terisi secara otomatis.
 
@@ -72,11 +73,15 @@ Untuk kategori **Manual**, Anda cukup mengetik judul dan mengisi cover, tahun, d
 
 ## Statistik
 
-Tab Pustaka mencakup bagian **Statistik** yang dapat dilipat di bagian atas:
+Ing ndhuwur tab Pustaka, bagean **Statistik** sing bisa dilempit nuduhake kolom sing kok pilih:
 
-- **Genre Teratas** — diurutkan berdasarkan frekuensi di seluruh pustaka Anda.
-- **Kreator Teratas** — diurutkan berdasarkan jumlah film dan serial yang mereka tampilkan.
-- **Teratas per Kategori** — untuk setiap kategori (Film, Serial, Buku, dll.), 3 item teratas berdasarkan peringkat dengan thumbnail cover kecil.
+- **Top kategori** — telung judhul kanthi rating paling dhuwur ing sawijining kategori, karo sampul: *Film utama*, *Buku utama*, lan liya-liyane. Diurutake miturut `My Rating`, yen ora ana miturut `Rating IMDB`.
+- **Top properti** — telung nilai sing paling kerep saka sawijining properti ing kabeh pustaka: *Genre utama*, *Panulis utama*, *Pemain utama*, utawa properti liyane, contone *Utama: Author*. `Sci-Fi`, `sci-fi`, lan `[[Sci-Fi]]` diitung siji nilai.
+- **Wektu nonton** — grafik jam sing dienggo nonton film, serial, lan anime, diitung saka `Runtime` lan `Progress` saben cathetan.
+
+Atur ing **Setelan → Library → Statistik**: **Tambah top** nampilake kategorimu lan properti sing ditemokake ing cathetan, lambang tong sampah mbusak kolom, lan saklar ndhelikake grafik wektu nonton. Kolom katon miturut urutan ditambahake; kategori anyar uga nambahake top-e dhewe.
+
+Kategori sing dilempit tetep kelempit sawise diwiwiti maneh.
 
 ---
 
@@ -97,17 +102,25 @@ Setiap kategori terikat dengan sumber yang menjalankan pencariannya:
 | ---------------- | --------------- | ----------------------------------------------------------- |
 | **OMDb**         | Film, Serial    | Key gratis diperlukan — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
 | **Books**        | Buku            | Open Library (tanpa key) + Google Books (key gratis opsional). Hasil digabung — Google Books di atas, Open Library di bawah. |
-| **RAWG**         | Game            | Key gratis diperlukan — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Games**         | Game            | RAWG (key gratis diperlukan — [rawg.io/apidocs](https://rawg.io/apidocs)) + Steam (tidak perlu). Hasil digabung — RAWG di atas, Steam di bawah. |
 | **Deezer**       | Musik (album)   | Tidak perlu                                                    |
 | **AniList**        | Anime           | Tidak perlu — API GraphQL AniList gratis, ora perlu key |
 | **Comic Vine**   | Komik           | Key gratis diperlukan — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**       | Apa pun lainnya | Tidak perlu — Anda mengetik judul dan mengisi field sendiri          |
 
+Cathetan film lan seri bisa ditambah maneh karo **TMDB** (kunci gratis opsional): trailer, gambar, durasi, lan dhaptar musim seri dijupuk lan ditulis menyang frontmatter cathetan.
+
 ---
 
 ## Privasi & Penggunaan Jaringan
 
-Pustaka adalah **offline-first**. Plugin hanya menghubungi jaringan ketika Anda secara aktif mencari judul untuk ditambahkan, dan hanya dengan istilah pencarian yang Anda ketik:
+Pustaka iku **offline-first**: pustaka sampeyan mung cathetan biasa lan tetep mlaku tanpa sambungan. Plugin mung ngirim data sing kadhaftar ing ngisor iki, lan mung ing kahanan iki:
+
+- **Nalika sampeyan tumindak dhewe:** nggoleki judhul, nyegerake metadata, mbukak prentah AniList, utawa ngeklik tombol nuduhake.
+- **Nalika sampeyan mbukak cathetan pustaka:** metadatane dianyari saka sumbere liwat `Source ID`, paling akeh sepisan saben 5 menit kanggo saben cathetan; cathetan tanpa `Source ID` digoleki nganggo jenenge.
+- **Sawise nganyari plugin utawa ngganti kunci API:** proses latar mburi nganyari cathetan pustaka sampeyan saka sumbere sepisan, siji-siji.
+
+Gambar sampul, gambar diam, lan pamuter trailer sing dirujuk dening cathetan sampeyan dimuat saka host sing kadhaftar ing ngisor iki.
 
 | Layanan | Kapan | Apa yang dikirim | Mengapa |
 | --- | --- | --- | --- |
@@ -119,9 +132,21 @@ Pustaka adalah **offline-first**. Plugin hanya menghubungi jaringan ketika Anda 
 | `api.deezer.com` | Anda mencari kategori musik Deezer | Album atau artis yang Anda ketik | Mengambil metadata album (artis, tahun, genre, jumlah trek, cover) |
 | `graphql.anilist.co` | Anda mencari kategori anime | Judul yang Anda ketik | Mengambil metadata anime (judul, tahun, genre, episode, nilai AniList, studio, poster) |
 | `graphql.anilist.co` | Anda menjalankan perintah sinkronisasi AniList | Access token AniList Anda dan kemajuan, status, serta peringkat catatan | Membaca atau memperbarui daftar anime AniList Anda |
+| `anilist.co` | Sampeyan ngeklik **Sambungake** ing setelan sinkronisasi AniList | Client ID AniList-mu | Mbukak kaca otorisasi AniList ing browser |
 | `comicvine.gamespot.com` | Anda mencari kategori komik | Judul yang Anda ketik dan Comic Vine key Anda | Mengambil metadata komik (judul, tahun, penerbit, jumlah issue, cover) |
+| `store.steampowered.com` | Sampeyan nggoleki utawa nambahake game Steam | Judhul sing sampeyan tulis utawa Steam app id | Njupuk metadata game (taun, genre, pangembang, cover) |
+| `cdn.cloudflare.steamstatic.com` | Kertu game Steam duwe cover | Steam app id | Ngamot gambar cover |
+| `api.themoviedb.org` | Sampeyan nambah utawa nyegerake cathetan film/seri lan nyetel kunci TMDB | Id IMDb cathetan lan kunci TMDB sampeyan | Njupuk trailer, gambar, durasi, lan dhaptar musim seri |
+| `image.tmdb.org` | Cathetan film/seri duwe gambar | Path gambar TMDB | Ngamot gambar |
+| `v3-cinemeta.strem.io` | Anda menambahkan atau menyegarkan catatan film/seri | ID IMDb catatan | Mengambil trailer, gambar, durasi, dan daftar musim seri — tanpa kunci |
+| `images.metahub.space` | Catatan film/seri memiliki gambar | ID IMDb catatan | Memuat gambar (latar) |
+| `episodes.metahub.space` | Catatan seri memiliki gambar episode | ID IMDb seri serta nomor musim dan episode | Memuat gambar episode |
+| `i.ytimg.com` | Catatan film menampilkan gambar trailer | ID video trailer | Memuat gambar trailer |
+| `s4.anilist.co` | Catatan anime memiliki banner | Jalur CDN AniList | Memuat gambar banner |
+| `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Sampeyan mbukak cathetan sing duwe trailer | Id trailer | Ngematake pamuter trailer |
+| `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Sampeyan ngeklik tombol nuduhake | Katrangan kertu (judhul, rating sampeyan, link sumber) | Mbukak jendela nuduhake jaringan sing dipilih kanthi kiriman sing wis diisi — gambar kertu tetep lokal |
 
-Data lainnya tidak pernah keluar dari vault Anda. Plugin **tidak memiliki遥测, tidak memiliki analitik, dan tidak memiliki mekanisme pembaruan otomatis**. API key (OMDb, Google Books, RAWG, Comic Vine) hanya disimpan di pengaturan plugin lokal Anda dan hanya dikirim ke layanan masing-masing. Gambar cover dimuat langsung dari URL yang dikembalikan oleh setiap sumber.
+Data lainnya tidak pernah keluar dari vault Anda. Plugin **tidak memilikitelemetri, tidak memiliki analitik, dan tidak memiliki mekanisme pembaruan otomatis**. API key (OMDb, Google Books, RAWG, Comic Vine, TMDB) hanya disimpan di pengaturan plugin lokal Anda dan hanya dikirim ke layanan masing-masing. Gambar cover dimuat langsung dari URL yang dikembalikan oleh setiap sumber.
 
 ---
 
@@ -131,20 +156,31 @@ Plugin membaca dan menulis frontmatter YAML standar. Catatan dibuat untuk Anda, 
 
 ### Film
 
+> **Properti cover** — properti frontmatter sing nyimpen cover bisa diganti jenenge ing **Setelan → Library** (contone `image`); cathetan sing wis ana tetep bisa digunakake.
+
 ```yaml
 ---
 Type: Movie
 Name: Inception
 Year: 2010
 Genre:
-    - Action
-    - Sci-Fi
+    - "[[Action]]"
+    - "[[Sci-Fi]]"
 Creator:
-    - Christopher Nolan
+    - "[[Christopher Nolan]]"
+Cast:
+    - "[[Leonardo DiCaprio]]"
+    - "[[Joseph Gordon-Levitt]]"
+    - "[[Elliot Page]]"
 Rating IMDB: 8.8
+Rating RT: 87
+Runtime: 148
 My Rating: 9
 Cover: https://m.media-amazon.com/images/...
 URL: https://www.imdb.com/title/tt1375666/
+Trailer: https://www.youtube.com/watch?v=YoHD9XEInc0
+Gallery:
+    - https://image.tmdb.org/t/p/w780/9e3Dz7H1J0s5cBZLX2yXKxkC7Jg.jpg
 Progress: 1/1
 Complete: true
 Date: 01.03.2026
@@ -163,15 +199,33 @@ Year: 2016
 End Year: 2025
 Season: 5
 Genre:
-    - Drama
-    - Fantasy
-    - Horror
+    - "[[Drama]]"
+    - "[[Fantasy]]"
+    - "[[Horror]]"
 Creator:
-    - The Duffer Brothers
+    - "[[The Duffer Brothers]]"
+Cast:
+    - "[[Winona Ryder]]"
+    - "[[David Harbour]]"
+    - "[[Millie Bobby Brown]]"
 Rating IMDB: 8.7
+Rating RT: 91
+Runtime: 42
 My Rating: 9
 Cover: https://m.media-amazon.com/images/...
 URL: https://www.imdb.com/title/tt4574334/
+Trailer: https://www.youtube.com/watch?v=b9EkMc79ZSU
+Gallery:
+    - https://image.tmdb.org/t/p/w780/56v2KjBlU4XaOv9rVYEQypROD7P.jpg
+Seasons:
+    - name: Season 1
+      episodes: 8
+      rating: 8.0
+      trailer: https://www.youtube.com/watch?v=XWxyRG_tckY
+    - name: Season 2
+      episodes: 9
+      rating: 8.1
+      trailer: https://www.youtube.com/watch?v=R1ZXOOLMJ8s
 Progress: 25/42
 Complete: false
 Date: 01.03.2026
@@ -180,7 +234,9 @@ Source ID: tt4574334
 ---
 ```
 
-> **Pembaruan otomatis serial:** Jalankan `Refresh metadata for current note` (atau cukup buka catatan) dan plugin akan memperbarui jumlah episode total di `Progress` (misalnya dari `25/42` menjadi `25/50`) dan jumlah `Season`, sambil mempertahankan jumlah tontonan Anda tetap utuh.
+> **Pembaruan otomatis serial:** Jalankan `Anyari metadata catetan saiki` (atau cukup buka catatan) dan plugin akan memperbarui jumlah episode total di `Progress` (misalnya dari `25/42` menjadi `25/50`) dan jumlah `Season`, sambil mempertahankan jumlah tontonan Anda tetap utuh.
+
+> **Trailer, gambar lan musim:** Yen kunci TMDB disetel, plugin otomatis ngisi `Trailer`, `Gallery`, `Runtime` lan (kanggo seri) `Seasons` — `Runtime` yaiku durasi film ing menit, utawa menit saben episode kanggo seri. Header cathetan banjur nuduhake pamuter sing dipasang, baris gambar, lan dhaptar musim kanthi jumlah episode, rating, lan tombol trailer saben musim. Saben kolom minangka frontmatter biasa: owahi utawa busak lan plugin ora bakal ngowahi nilai sampeyan ing refresh sabanjure. Saben versi plugin anyar uga nglakokake saput puteran ing latar mburi kanggo nambahi kolom anyar, siji-siji tanpa ngalangi app.
 
 ### Buku
 
@@ -190,9 +246,9 @@ Type: Book
 Name: Dune
 Year: 1965
 Genre:
-    - Science Fiction
+    - "[[Science Fiction]]"
 Creator:
-    - Frank Herbert
+    - "[[Frank Herbert]]"
 Cover: https://covers.openlibrary.org/b/id/...-L.jpg
 ISBN: 9780441013593
 My Rating: 9
@@ -212,10 +268,10 @@ Type: Anime
 Name: Steins;Gate
 Year: 2011
 Genre:
-    - Sci-Fi
-    - Thriller
+    - "[[Sci-Fi]]"
+    - "[[Thriller]]"
 Creator:
-    - White Fox
+    - "[[White Fox]]"
 Rating AniList: 9.1
 Status: FINISHED
 Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
@@ -236,9 +292,9 @@ Type: Comic
 Name: Watchmen
 Year: 1986
 Genre:
-    - Comics
+    - "[[Comics]]"
 Creator:
-    - DC Comics
+    - "[[DC Comics]]"
 Cover: https://comicvine.gamespot.com/a/uploads/...
 URL: https://comicvine.gamespot.com/watchmen/4050-33819/
 Progress: 0/12
@@ -253,23 +309,25 @@ Source ID: 33819
 
 ## Tautan Grafik
 
-Setiap catatan konten mendapat properti frontmatter `Related`, disimpan secara otomatis — isi catatan tidak pernah disentuh:
+Genre, pangripta, lan — kanggo film lan seri — pemain disimpen minangka tautan ing properti dhewe:
 
 ```yaml
-Related:
-    - "[[Movie]]"
+Genre:
     - "[[Action]]"
     - "[[Sci-Fi]]"
+Creator:
     - "[[Christopher Nolan]]"
+Cast:
+    - "[[Leonardo DiCaprio]]"
 ```
 
-Tautan ini menghubungkan catatan Anda melalui kategori, genre, dan kreator yang dibagikan, sehingga tampilan grafik Obsidian membentuk klaster yang rapi. Catatan hub nyata dibuat untuk setiap kategori (misalnya `Movie`) sehingga klaster tetap terlihat meskipun tautan yang belum diselesaikan disembunyikan. Properti ditulis saat catatan dibuat dan disegarkan setiap kali metadata berubah — jalankan `Rebuild graph links` hanya jika Anda ingin memaksa pembuatan ulang penuh.
+Mula cathetan saben genre, pangripta, lan pemain nampilake kabeh judhule ing backlink, lan grafik nyambungake cathetan liwat kuwi. Jeneng biasa — diketik manual utawa ditinggal versi sadurunge — dadi tautan saben cathetan owah; tautan nganggo alias tetep kaya asline. `Bangun maneh tautan graf` ngowahi kabeh pustaka sepisan. Properti `Related` saka versi sadurunge ora dienggo maneh lan dibusak saka cathetan.
 
 ---
 
 ## Berbagi
 
-Setiap catatan konten mendapat tombol **Bagikan** di header-nya (atau jalankan `Share current note`). Ia merender gambar kartu — poster, judul, tahun, genre, nilai IMDb/AniList, dan peringkat Anda — yang dapat Anda posting di mana saja:
+Setiap catatan konten mendapat tombol **Bagikan** di header-nya (atau jalankan `Bagi cathetan iki`). Ia merender gambar kartu — poster, judul, tahun, genre, nilai IMDb/AniList, dan peringkat Anda — yang dapat Anda posting di mana saja:
 
 - **Di perangkat seluler** — tombol **Bagikan…** membuka lembar berbagi bawaan perangkat Anda dengan gambar kartu terlampir langsung, sehingga Anda dapat mengirimnya langsung ke aplikasi apa pun.
 - **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — membuka komposer jaringan tersebut dengan keterangan yang sudah terisi (judul, peringkat Anda, tautan sumber, dan tautan ke plugin ini). Gambar kartu disalin ke clipboard Anda pada saat yang sama, jadi Anda cukup menempelkannya (Ctrl/Cmd+V) ke dalam postingan.
@@ -286,13 +344,13 @@ Jaga kemajuan anime Anda tetap sinkron dengan akun [AniList](https://anilist.co)
 **Penyiapan** — di **Pengaturan → Pustaka → Sinkronisasi AniList**:
 
 1. Daftarkan API client gratis di [anilist.co/settings/developer](https://anilist.co/settings/developer), dengan redirect URL disetel ke `https://anilist.co/api/v2/oauth/pin`.
-2. Tempel **Client ID**, klik **Connect**, dan otorisasi.
-3. AniList menampilkan access token kepada Anda — tempel ke dalam plugin. Klik **Test connection** untuk mengonfirmasi.
+2. Tempel **Client ID**, klik **Sambungake**, dan otorisasi.
+3. AniList menampilkan access token kepada Anda — tempel ke dalam plugin. Klik **Coba sambungan** untuk mengonfirmasi.
 
 Lalu gunakan perintah:
 
-- `Push current note to AniList` — mengirim kemajuan (episode yang telah ditonton), status (sedang ditonton / selesai / direncanakan), dan peringkat Anda dari catatan anime aktif ke daftar AniList Anda.
-- `Pull progress from AniList` — mengambil daftar anime AniList Anda dan memperbarui catatan yang cocok. Penarikan bersifat **maju-saja**: ia tidak pernah memundurkan catatan yang secara lokal lebih maju atau sudah selesai, dan membiarkan `My Rating` pribadi Anda tidak tersentuh.
+- `Kirim cathetan saiki menyang AniList` — mengirim kemajuan (episode yang telah ditonton), status (sedang ditonton / selesai / direncanakan), dan peringkat Anda dari catatan anime aktif ke daftar AniList Anda.
+- `Tarik kemajuan saka AniList` — mengambil daftar anime AniList Anda dan memperbarui catatan yang cocok. Penarikan bersifat **maju-saja**: ia tidak pernah memundurkan catatan yang secara lokal lebih maju atau sudah selesai, dan membiarkan `My Rating` pribadi Anda tidak tersentuh.
 
 Hanya catatan dengan `Source: anilist` (ditambahkan melalui sumber anime AniList) yang disinkronkan. Token Anda disimpan secara lokal di pengaturan plugin dan hanya dikirim ke AniList.
 
@@ -302,15 +360,16 @@ Hanya catatan dengan `Source: anilist` (ditambahkan melalui sumber anime AniList
 
 | Perintah                            | Deskripsi                                                              |
 | ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Buka tab galeri Pustaka.                                           |
-| `Add content`                        | Cari sumber dan buat catatan konten (atau ketik judul untuk Manual). |
-| `Search your library`                | Cari samar dan buka catatan yang sudah ada di pustaka Anda.                 |
-| `Refresh metadata for current note`  | Ambil ulang metadata untuk catatan aktif; perbarui total episode serial.   |
-| `Rebuild graph links`                | Hubungkan setiap catatan konten ke kategorinya, genre, dan kreator.          |
-| `Find & remove duplicates`           | Pindai semua catatan berdasarkan URL, tampilkan duplikat, dan hapus yang dipilih.       |
-| `Share current note`                 | Render catatan sebagai gambar kartu dan bagikan ke X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, atau Pinterest. |
-| `Push current note to AniList`       | Kirim kemajuan, status, dan peringkat catatan anime aktif ke akun AniList Anda. |
-| `Pull progress from AniList`         | Ambil daftar AniList Anda dan perbarui catatan yang cocok (maju-saja). |
+| `Bukak pustaka`                       | Buka tab galeri Pustaka.                                           |
+| `Tambahake konten`                        | Cari sumber dan buat catatan konten (atau ketik judul untuk Manual). |
+| `Goleki ing pustakamu`                | Cari samar dan buka catatan yang sudah ada di pustaka Anda.                 |
+| `Anyari metadata catetan saiki`  | Ambil ulang metadata untuk catatan aktif; perbarui total episode serial.   |
+| `Bangun maneh tautan graf`                | Ngowahi `Genre`, `Creator`, lan `Cast` dadi tautan ing kabeh cathetan konten. |
+| `Goleki lan copot duplikat`           | Pindai semua catatan berdasarkan URL, tampilkan duplikat, dan hapus yang dipilih.       |
+| `Bagi cathetan iki`                 | Render catatan sebagai gambar kartu dan bagikan ke X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, atau Pinterest. |
+| `Kirim cathetan saiki menyang AniList`       | Kirim kemajuan, status, dan peringkat catatan anime aktif ke akun AniList Anda. |
+| `Tarik kemajuan saka AniList`         | Ambil daftar AniList Anda dan perbarui catatan yang cocok (maju-saja). |
+| `Anyari metadata kabeh catetan` | Njupuk metadata kabeh catetan ing perpustakaan, siji-siji ing latar mburi. |
 
 ---
 
@@ -319,6 +378,12 @@ Hanya catatan dengan `Source: anilist` (ditambahkan melalui sumber anime AniList
 - **Menemukan bug?** Buka [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
 - **Punya ide fitur?** Mulai [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
 - **Menyukai plugin?** Beri bintang pada repositori untuk menunjukkan dukungan Anda!
+
+---
+
+## Lisensi
+
+[MIT License](LICENSE) — bebas digunakake, diowahi lan dienggo bareng.
 
 ---
 

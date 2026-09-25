@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -28,18 +28,19 @@
 ## Funzionalità Principali
 
 - **Griglia Visuale di Schede** — Un tab dedicato Library visualizza la tua collezione come una galleria di schede con copertine.
-- **Ricerca Integrata** — Cerca e aggiungi titoli direttamente nell'app: OMDb per film e serie, Open Library o Google Books per i libri, RAWG per i giochi, Deezer per la musica, AniList per l'anime, Comic Vine per i fumetti.
+- **Ricerca Integrata** — Cerca e aggiungi titoli direttamente nell'app: OMDb per film e serie, Open Library o Google Books per i libri, RAWG/Steam per i giochi, Deezer per la musica, AniList per l'anime, Comic Vine per i fumetti.
 - **Monitoraggio Intelligente delle Serie** — Le stagioni e il numero totale degli episodi vengono recuperati automaticamente e mantenuti sincronizzati.
 - **Indicatori di Progresso** — Barre di progresso visive sulle schede e negli header delle note mostrano quanto hai guardato o letto.
 - **Header delle Note Ricchi** — Ogni nota di contenuto riceve un header generato automaticamente con tutti i metadati chiave.
+- **Trailer, immagini e stagioni** — Le note di film e serie mostrano un trailer YouTube/Vimeo integrato, una riga di immagini e la durata; le serie hanno anche un elenco delle stagioni con numero di episodi, valutazioni e trailer per stagione.
 - **Categorie Personalizzate** — Crea categorie per Film, Serie, Anime, Fumetti, Libri, Giochi, Musica o qualsiasi altra cosa tramite la fonte manuale.
-- **Collegamenti nel Grafo** — Una proprietà `Related` nel frontmatter collega ogni nota alla sua categoria, generi e creatori, mantenuta sincronizzata automaticamente per un bel grafo.
+- **Collegamenti nel Grafo** — Generi, autori e cast sono salvati come link nelle proprie proprietà `Genre`, `Creator` e `Cast`, così la nota di ogni genere, autore e attore raccoglie i suoi titoli nei backlink e il grafo mostra tutto.
 - **Schede Condivisibili** — Trasforma qualsiasi nota di contenuto in un'immagine-scheda condivisibile (poster, titolo, anno, genere, punteggio IMDb e la tua valutazione) e pubblicala su X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky o Pinterest — condividila direttamente nelle app del tuo dispositivo, oppure copia/salva l'immagine per usarla ovunque.
 - **Sincronizzazione AniList** — Invia i progressi, lo stato e la valutazione dei tuoi anime direttamente al tuo account AniList, oppure recupera la tua lista nelle tue note.
-- **Ordinamento e Compressione** — Ordina le schede per nome, anno, valutazione o data; comprimi qualsiasi categoria.
-- **Statistiche** — Generi principali, creatori principali (solo film e serie) e elementi principali per categoria con classifiche a medaglia.
+- **Ordinamento e Compressione** — Ordina le schede per nome, anno, valutazione o data; comprimi qualsiasi categoria: resta compressa anche dopo un riavvio.
+- **Statistiche** — Scegli tu le colonne: i titoli con la valutazione più alta di una categoria o i valori più frequenti di una proprietà (generi, creatori, attori…), più un grafico del tempo di visione.
 - **Rilevamento Duplicati** — Impedisce automaticamente l'aggiunta dello stesso titolo due volte per URL. Un comando integrato trova e rimuove i duplicati esistenti.
-- **Multilingue** — 31 lingue: inglese, ucraino, russo, bielorusso, kazako, uzbeko, tedesco, spagnolo, francese, italiano, olandese, ceco, croato, polacco, rumeno, turco, azerbaigiano, persiano, hindi, bengali, urdu, tagalog, vietnamita, tailandese, giavanese, giapponese, coreano, cinese, arabo, singalese, ebraico.
+- **Multilingue** — l'interfaccia del plugin è tradotta in **tutte le lingue supportate da Obsidian** (oltre 70), quindi corrisponde sempre alla lingua del tuo Obsidian. Il README è tradotto integralmente in 30 di esse (vedi la barra delle lingue in alto).
 
 ---
 
@@ -52,19 +53,19 @@ Installa **Library** dalla [directory Obsidian Community Plugins](https://commun
 ### 2. Configurazione Base
 
 1. Vai su **Impostazioni** > **Library**.
-2. Aggiungi le tue **Categorie** — seleziona un tipo predefinito (Movies, Series, Books, Comics, Games, Music, Anime o Manual) dal menu a tendina e clicca su **Add category**. Ogni categoria ha un nome visualizzato (tradotto nella tua lingua), un valore `Type` (sempre in inglese, ad esempio `Movie`), una fonte e una cartella opzionale per memorizzare le note.
-3. _(Opzionale)_ Inserisci le chiavi API per i servizi che utilizzi: [OMDb](https://www.omdbapi.com/apikey.aspx) per film/serie, [RAWG](https://rawg.io/apidocs) per i giochi, [Comic Vine](https://comicvine.gamespot.com/api/) per i fumetti. Anime (AniList) e musica (Deezer) non richiedono chiave.
+2. Aggiungi le tue **Categorie** — seleziona un tipo predefinito (Movies, Series, Books, Comics, Games, Music, Anime o Manual) dal menu a tendina e clicca su **Aggiungi categoria**. Ogni categoria ha un nome visualizzato (tradotto nella tua lingua), un valore `Type` (sempre in inglese, ad esempio `Movie`), una fonte e una cartella opzionale per memorizzare le note.
+3. _(Opzionale)_ Inserisci le chiavi API per i servizi che utilizzi: [OMDb](https://www.omdbapi.com/apikey.aspx) per film/serie, [RAWG](https://rawg.io/apidocs) per i giochi, [Comic Vine](https://comicvine.gamespot.com/api/) per i fumetti, [TMDB](https://www.themoviedb.org/settings/api) per trailer, immagini e dettagli delle stagioni, [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) per la ricerca dei libri. Anime (AniList), musica (Deezer) e Steam non richiedono chiavi.
 
 ### 3. Aggiungere una Scheda per Titolo
 
 Niente più compilazione manuale del frontmatter — aggiungi un film, serie, anime o fumetto semplicemente cercando il suo nome:
 
-1. Apri il tab **Library** dall'icona nella barra laterale (esegui `Open Library`).
-2. Clicca sul pulsante **+** in alto a destra della pagina Library (esegui `Add content`).
+1. Apri il tab **Library** dall'icona nella barra laterale (esegui `Apri la libreria`).
+2. Clicca sul pulsante **+** in alto a destra della pagina Library (esegui `Aggiungi contenuto`).
 3. Scegli una categoria, digita il **titolo** nella casella di ricerca e seleziona un risultato.
 4. Una scheda viene creata istantaneamente, con poster, anno, genere, creatori e valutazione compilati automaticamente.
 
-Il pulsante **Search** accanto a **+** cerca i titoli già nella tua libreria.
+Il pulsante **Cerca nella tua libreria** accanto a **+** cerca i titoli già nella tua libreria.
 
 Per le categorie **Manuali** digita semplicemente un titolo e compila la copertina, l'anno e gli altri campi tu stesso.
 
@@ -72,11 +73,15 @@ Per le categorie **Manuali** digita semplicemente un titolo e compila la coperti
 
 ## Statistiche
 
-Il tab Library include una sezione **Statistiche** ripiegabile in alto:
+In cima alla scheda «Libreria», la sezione comprimibile **Statistiche** mostra le colonne che scegli:
 
-- **Generi Principali** — classificati per frequenza in tutta la tua libreria.
-- **Creatori Principali** — classificati per numero di film e serie in cui appaiono.
-- **Principali per Categoria** — per ogni categoria (Film, Serie, Libri, ecc.), i primi 3 elementi per valutazione con miniature delle copertine.
+- **Classifiche di categoria** — i tre titoli con la valutazione più alta di una categoria, con le copertine: *Film principali*, *Libri principali* e così via. Ordinati per `My Rating` o, in mancanza, per `Rating IMDB`.
+- **Classifiche di proprietà** — i tre valori più frequenti di una proprietà in tutta la libreria: *Generi principali*, *Creatori principali*, *Attori principali* o qualsiasi altra proprietà, come *Principali: Author*. `Sci-Fi`, `sci-fi` e `[[Sci-Fi]]` contano come un solo valore.
+- **Tempo di visione** — un grafico delle ore dedicate a film, serie e anime, calcolato da `Runtime` e `Progress` di ogni nota.
+
+Si configura in **Impostazioni → Library → Statistiche**: **Aggiungi classifica** elenca le tue categorie e le proprietà trovate nelle note, l'icona del cestino rimuove una colonna e un interruttore nasconde il grafico del tempo di visione. Le colonne compaiono nell'ordine in cui le aggiungi; una nuova categoria aggiunge la propria classifica.
+
+Le categorie compresse restano compresse anche dopo un riavvio.
 
 ---
 
@@ -97,17 +102,25 @@ Ogni categoria è legata a una fonte che alimenta la sua ricerca:
 | ----------------- | ------------------- | ------------------------------------------------------------ |
 | **OMDb**          | Film, Serie         | Chiave gratuita richiesta — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
 | **Books**         | Libri               | Open Library (nessuna chiave) + Google Books (chiave gratuita opzionale). I risultati vengono uniti — Google Books per primo, Open Library sotto. |
-| **RAWG**          | Giochi              | Chiave gratuita richiesta — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Games**          | Giochi              | RAWG (chiave gratuita richiesta — [rawg.io/apidocs](https://rawg.io/apidocs)) + Steam (nessuna). I risultati vengono uniti — RAWG per primo, Steam sotto. |
 | **Deezer**        | Musica (album)      | Nessuna                                                     |
 | **AniList**         | Anime               | Nessuna — API GraphQL gratuita di AniList, nessuna chiave necessaria |
 | **Comic Vine**    | Fumetti             | Chiave gratuita richiesta — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**        | Qualsiasi altro     | Nessuna — digiti il titolo e compili i campi tu stesso      |
 
+Le note di film e serie possono essere arricchite con **TMDB** (chiave gratuita opzionale): trailer, immagini, durata e l'elenco delle stagioni della serie vengono recuperati e scritti nel frontmatter della nota.
+
 ---
 
 ## Privacy e Utilizzo della Rete
 
-Library è **offline-first**. Il plugin contatta la rete solo quando cerchi attivamente un titolo da aggiungere, e solo con i termini di ricerca che digiti:
+Library è **pensato per funzionare offline**: la tua libreria è fatta di normali note e funziona anche senza connessione. Il plugin invia solo i dati elencati qui sotto, e solo in questi casi:
+
+- **Quando agisci tu:** cerchi un titolo, aggiorni i metadati, esegui un comando AniList o premi il pulsante di condivisione.
+- **Quando apri una nota della libreria:** i suoi metadati vengono aggiornati dalla sua fonte tramite `Source ID`, al massimo una volta ogni 5 minuti per nota; una nota senza `Source ID` viene cercata per nome.
+- **Dopo un aggiornamento del plugin o il cambio di una chiave API:** un passaggio in background aggiorna una volta le note della libreria dalle loro fonti, una nota alla volta.
+
+Copertine, fotogrammi e player dei trailer a cui fanno riferimento le note vengono caricati dagli host elencati qui sotto.
 
 | Servizio | Quando | Cosa viene inviato | Perché |
 | --- | --- | --- | --- |
@@ -119,9 +132,21 @@ Library è **offline-first**. Il plugin contatta la rete solo quando cerchi atti
 | `api.deezer.com` | Cerchi in una categoria musicale Deezer | L'album o l'artista che digiti | Recuperare i metadati dell'album (artista, anno, genere, conteggio tracce, copertina) |
 | `graphql.anilist.co` | Cerchi in una categoria anime | Il titolo che digiti | Recuperare i metadati anime (titolo, anno, genere, episodi, punteggio AniList, studio, poster) |
 | `graphql.anilist.co` | Esegui un comando di sincronizzazione AniList | Il tuo token di accesso AniList e i progressi, lo stato e la valutazione della nota | Leggere o aggiornare la tua lista anime di AniList |
+| `anilist.co` | Fai clic su **Connetti** nelle impostazioni di sincronizzazione AniList | Il tuo Client ID di AniList | Aprire la pagina di autorizzazione di AniList nel browser |
 | `comicvine.gamespot.com` | Cerchi in una categoria fumetti | Il titolo che digiti e la tua chiave Comic Vine | Recuperare i metadati dei fumetti (titolo, anno, editore, conteggio numeri, copertina) |
+| `store.steampowered.com` | Cerchi o aggiungi un gioco Steam | Il titolo digitato o l’id dell’app Steam | Recuperare i metadati del gioco (anno, genere, sviluppatore, copertina) |
+| `cdn.cloudflare.steamstatic.com` | Una scheda di gioco Steam ha una copertina | L’id dell’app Steam | Caricare l’immagine di copertina |
+| `api.themoviedb.org` | Aggiungi o aggiorni una nota di film/serie con una chiave TMDB | L'ID IMDb della nota e la tua chiave TMDB | Recuperare trailer, immagini, durata e l'elenco delle stagioni |
+| `image.tmdb.org` | Una nota di film/serie ha delle immagini | Il percorso dell'immagine TMDB | Caricare le immagini |
+| `v3-cinemeta.strem.io` | Aggiungi o aggiorni una nota di un film o di una serie | L’id IMDb della nota | Recuperare il trailer, le immagini, la durata e l’elenco delle stagioni della serie — senza chiave |
+| `images.metahub.space` | Una nota di un film o di una serie ha delle immagini | L’id IMDb della nota | Caricare le immagini (sfondi) |
+| `episodes.metahub.space` | Una nota di una serie ha immagini degli episodi | L’id IMDb della serie e i numeri di stagione ed episodio | Caricare le immagini degli episodi |
+| `i.ytimg.com` | Una nota di un film mostra immagini del trailer | L’id del video del trailer | Caricare le immagini del trailer |
+| `s4.anilist.co` | Una nota di un anime ha un banner | Il percorso sul CDN di AniList | Caricare l’immagine del banner |
+| `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Apri una nota con un trailer | L'ID del trailer | Incorporare il player del trailer |
+| `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Premi il pulsante di condivisione | La didascalia della card (titolo, la tua valutazione, link alla fonte) | Aprire la finestra di condivisione della rete scelta con il post già compilato — l'immagine della card resta locale |
 
-Nessun altro dato lascia mai il tuo vault. Il plugin **non ha telemetria, nessuna analisi e nessun meccanismo di auto-aggiornamento**. Le chiavi API (OMDb, Google Books, RAWG, Comic Vine) sono memorizzate solo nelle impostazioni locali del plugin e inviate solo ai rispettivi servizi. Le immagini delle copertine vengono caricate direttamente dagli URL restituiti da ciascuna fonte.
+Nessun altro dato lascia mai il tuo vault. Il plugin **non ha telemetria, nessuna analisi e nessun meccanismo di auto-aggiornamento**. Le chiavi API (OMDb, Google Books, RAWG, Comic Vine, TMDB) sono memorizzate solo nelle impostazioni locali del plugin e inviate solo ai rispettivi servizi. Le immagini delle copertine vengono caricate direttamente dagli URL restituiti da ciascuna fonte.
 
 ---
 
@@ -131,20 +156,31 @@ Il plugin legge e scrive nel frontmatter YAML standard. Le note vengono create p
 
 ### Movie
 
+> **Proprietà copertina** — la proprietà del frontmatter che contiene la copertina può essere rinominata in **Impostazioni → Library** (ad esempio in `image`); le note esistenti continuano a funzionare.
+
 ```yaml
 ---
 Type: Movie
 Name: Inception
 Year: 2010
 Genre:
-    - Action
-    - Sci-Fi
+    - "[[Action]]"
+    - "[[Sci-Fi]]"
 Creator:
-    - Christopher Nolan
+    - "[[Christopher Nolan]]"
+Cast:
+    - "[[Leonardo DiCaprio]]"
+    - "[[Joseph Gordon-Levitt]]"
+    - "[[Elliot Page]]"
 Rating IMDB: 8.8
+Rating RT: 87
+Runtime: 148
 My Rating: 9
 Cover: https://m.media-amazon.com/images/...
 URL: https://www.imdb.com/title/tt1375666/
+Trailer: https://www.youtube.com/watch?v=YoHD9XEInc0
+Gallery:
+    - https://image.tmdb.org/t/p/w780/9e3Dz7H1J0s5cBZLX2yXKxkC7Jg.jpg
 Progress: 1/1
 Complete: true
 Date: 01.03.2026
@@ -163,15 +199,33 @@ Year: 2016
 End Year: 2025
 Season: 5
 Genre:
-    - Drama
-    - Fantasy
-    - Horror
+    - "[[Drama]]"
+    - "[[Fantasy]]"
+    - "[[Horror]]"
 Creator:
-    - The Duffer Brothers
+    - "[[The Duffer Brothers]]"
+Cast:
+    - "[[Winona Ryder]]"
+    - "[[David Harbour]]"
+    - "[[Millie Bobby Brown]]"
 Rating IMDB: 8.7
+Rating RT: 91
+Runtime: 42
 My Rating: 9
 Cover: https://m.media-amazon.com/images/...
 URL: https://www.imdb.com/title/tt4574334/
+Trailer: https://www.youtube.com/watch?v=b9EkMc79ZSU
+Gallery:
+    - https://image.tmdb.org/t/p/w780/56v2KjBlU4XaOv9rVYEQypROD7P.jpg
+Seasons:
+    - name: Season 1
+      episodes: 8
+      rating: 8.0
+      trailer: https://www.youtube.com/watch?v=XWxyRG_tckY
+    - name: Season 2
+      episodes: 9
+      rating: 8.1
+      trailer: https://www.youtube.com/watch?v=R1ZXOOLMJ8s
 Progress: 25/42
 Complete: false
 Date: 01.03.2026
@@ -180,7 +234,9 @@ Source ID: tt4574334
 ---
 ```
 
-> **Aggiornamento automatico delle serie:** Esegui `Refresh metadata for current note` (o apri semplicemente la nota) e il plugin aggiorna il conteggio totale degli episodi in `Progress` (ad esempio da `25/42` a `25/50`) e il conteggio delle `Season`, mantenendo intatto il tuo conteggio visionato.
+> **Aggiornamento automatico delle serie:** Esegui `Aggiorna i metadati della nota corrente` (o apri semplicemente la nota) e il plugin aggiorna il conteggio totale degli episodi in `Progress` (ad esempio da `25/42` a `25/50`) e il conteggio delle `Season`, mantenendo intatto il tuo conteggio visionato.
+
+> **Trailer, immagini e stagioni:** con una chiave TMDB impostata, il plugin compila automaticamente `Trailer`, `Gallery`, `Runtime` e (per le serie) `Seasons` — `Runtime` è la durata del film in minuti o i minuti per episodio per una serie. L'intestazione della nota mostra quindi un player integrato, una riga di immagini e un elenco di stagioni con numero di episodi, valutazioni e pulsanti trailer per stagione. Ogni campo è normale frontmatter: modificalo o eliminalo e il plugin lascerà intatti i tuoi valori al prossimo aggiornamento. A ogni versione del plugin parte anche un passaggio in background sulla libreria che completa i nuovi campi, nota per nota e senza bloccare l’app.
 
 ### Book
 
@@ -190,9 +246,9 @@ Type: Book
 Name: Dune
 Year: 1965
 Genre:
-    - Science Fiction
+    - "[[Science Fiction]]"
 Creator:
-    - Frank Herbert
+    - "[[Frank Herbert]]"
 Cover: https://covers.openlibrary.org/b/id/...-L.jpg
 ISBN: 9780441013593
 My Rating: 9
@@ -212,10 +268,10 @@ Type: Anime
 Name: Steins;Gate
 Year: 2011
 Genre:
-    - Sci-Fi
-    - Thriller
+    - "[[Sci-Fi]]"
+    - "[[Thriller]]"
 Creator:
-    - White Fox
+    - "[[White Fox]]"
 Rating AniList: 9.1
 Status: FINISHED
 Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
@@ -236,9 +292,9 @@ Type: Comic
 Name: Watchmen
 Year: 1986
 Genre:
-    - Comics
+    - "[[Comics]]"
 Creator:
-    - DC Comics
+    - "[[DC Comics]]"
 Cover: https://comicvine.gamespot.com/a/uploads/...
 URL: https://comicvine.gamespot.com/watchmen/4050-33819/
 Progress: 0/12
@@ -253,27 +309,29 @@ Source ID: 33819
 
 ## Collegamenti nel Grafo
 
-Ogni nota di contenuto riceve una proprietà `Related` nel frontmatter, mantenuta aggiornata automaticamente — il corpo della nota non viene mai toccato:
+Generi, autori e, per film e serie, il cast sono salvati come link nelle proprie proprietà:
 
 ```yaml
-Related:
-    - "[[Movie]]"
+Genre:
     - "[[Action]]"
     - "[[Sci-Fi]]"
+Creator:
     - "[[Christopher Nolan]]"
+Cast:
+    - "[[Leonardo DiCaprio]]"
 ```
 
-Questi collegamenti collegano le tue note tramite categorie, generi e creatori condivisi, così la vista grafo di Obsidian forma cluster puliti. Un vero nodo hub viene creato per ogni categoria (ad esempio `Movie`) in modo che i cluster siano visibili anche quando i link non risolti sono nascosti. La proprietà viene scritta quando una nota viene creata e aggiornata ogni volta che i suoi metadati cambiano — esegui `Rebuild graph links` solo se vuoi forzare una ricostruzione completa.
+Così la nota di ogni genere, autore e attore elenca tutti i suoi titoli nei backlink, e il grafo collega le note attraverso di loro. I nomi semplici — scritti a mano o lasciati da una versione precedente — diventano link a ogni modifica di una nota; un link con alias resta com'è. `Ricostruisci i link del grafo` converte l'intera libreria in una volta. La proprietà `Related` delle versioni precedenti non è più usata e viene rimossa dalle note.
 
 ---
 
 ## Condivisione
 
-Ogni nota di contenuto riceve un pulsante **Share** nel suo header (o esegui `Share current note`). Genera un'immagine-scheda — poster, titolo, anno, genere, punteggio IMDb/AniList e la tua valutazione — che puoi pubblicare ovunque:
+Ogni nota di contenuto riceve un pulsante **Condividi** nel suo header (o esegui `Condividi la nota corrente`). Genera un'immagine-scheda — poster, titolo, anno, genere, punteggio IMDb/AniList e la tua valutazione — che puoi pubblicare ovunque:
 
-- **Su dispositivi mobili** — il pulsante **Share…** apre il foglio di condivisione nativo del tuo dispositivo con l'immagine-scheda già allegata, così puoi inviarla direttamente a qualsiasi app.
+- **Su dispositivi mobili** — il pulsante **Condividi…** apre il foglio di condivisione nativo del tuo dispositivo con l'immagine-scheda già allegata, così puoi inviarla direttamente a qualsiasi app.
 - **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — apre il compositore della rete con una didascalia precompilata (titolo, la tua valutazione, il link alla fonte e un link a questo plugin). L'immagine-scheda viene copiata contemporaneamente negli appunti, così basta incollarla (Ctrl/Cmd+V) nel post.
-- **Copy image / Copy text / Save image** — copia la scheda generata o la didascalia negli appunti, oppure salva l'immagine nella cartella degli allegati del tuo vault per allegarla manualmente.
+- **Copia immagine / Copia testo / Salva immagine** — copia la scheda generata o la didascalia negli appunti, oppure salva l'immagine nella cartella degli allegati del tuo vault per allegarla manualmente.
 
 La condivisione è completamente locale: la scheda viene disegnata nell'app a partire dai metadati e dalla copertina della nota stessa. Nulla viene caricato — il plugin apre soltanto nel browser l'URL del compositore che scegli.
 
@@ -286,8 +344,8 @@ Mantieni i progressi dei tuoi anime sincronizzati con il tuo account [AniList](h
 **Configurazione** — in **Impostazioni → Library → Sincronizzazione AniList**:
 
 1. Registra un client API gratuito su [anilist.co/settings/developer](https://anilist.co/settings/developer), impostando l'URL di reindirizzamento su `https://anilist.co/api/v2/oauth/pin`.
-2. Incolla il **Client ID**, clicca su **Connect** e autorizza.
-3. AniList ti mostra un token di accesso — incollalo nel plugin. Clicca su **Test connection** per confermare.
+2. Incolla il **Client ID**, clicca su **Connetti** e autorizza.
+3. AniList ti mostra un token di accesso — incollalo nel plugin. Clicca su **Prova la connessione** per confermare.
 
 Poi usa i comandi:
 
@@ -302,15 +360,16 @@ Vengono sincronizzate solo le note con `Source: anilist` (aggiunte tramite la fo
 
 | Comando                              | Descrizione                                                                  |
 | ------------------------------------ | ---------------------------------------------------------------------------- |
-| `Open Library`                       | Apre il tab galleria di Library.                                             |
-| `Add content`                        | Cerca una fonte e crea una nota di contenuto (o digita un titolo per Manual). |
-| `Search your library`                | Ricerca fuzzy e apri qualsiasi nota già nella tua libreria.                  |
-| `Refresh metadata for current note`  | Recupera nuovamente i metadati per la nota attiva; aggiorna i totali episodi delle serie. |
-| `Rebuild graph links`                | Collega ogni nota di contenuto alla sua categoria, generi e creatori.         |
-| `Find & remove duplicates`           | Scansiona tutte le note per URL, mostra i duplicati e rimuovi quelli selezionati. |
-| `Share current note`                 | Genera la nota come immagine-scheda e condividila su X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky o Pinterest. |
-| `Push current note to AniList`        | Invia i progressi, lo stato e la valutazione della nota anime attiva al tuo account AniList. |
-| `Pull progress from AniList`          | Recupera la tua lista AniList e aggiorna le note corrispondenti (solo in avanti). |
+| `Apri la libreria`                       | Apre il tab galleria di Library.                                             |
+| `Aggiungi contenuto`                        | Cerca una fonte e crea una nota di contenuto (o digita un titolo per Manual). |
+| `Cerca nella tua libreria`                | Ricerca fuzzy e apri qualsiasi nota già nella tua libreria.                  |
+| `Aggiorna i metadati della nota corrente`  | Recupera nuovamente i metadati per la nota attiva; aggiorna i totali episodi delle serie. |
+| `Ricostruisci i link del grafo`                | Trasforma `Genre`, `Creator` e `Cast` in link in tutte le note di contenuto. |
+| `Trova e rimuovi i duplicati`           | Scansiona tutte le note per URL, mostra i duplicati e rimuovi quelli selezionati. |
+| `Condividi la nota corrente`                 | Genera la nota come immagine-scheda e condividila su X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky o Pinterest. |
+| `Invia la nota corrente ad AniList`        | Invia i progressi, lo stato e la valutazione della nota anime attiva al tuo account AniList. |
+| `Recupera i progressi da AniList`          | Recupera la tua lista AniList e aggiorna le note corrispondenti (solo in avanti). |
+| `Aggiorna i metadati di tutte le note` | Recupera i metadati di tutte le note della libreria, una alla volta in background. |
 
 ---
 
@@ -319,6 +378,12 @@ Vengono sincronizzate solo le note con `Source: anilist` (aggiunte tramite la fo
 - **Hai trovato un bug?** Apri un [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
 - **Hai un'idea per una funzionalità?** Avvia una [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
 - **Ti piace il plugin?** Considera di dare una stella al repository per mostrare il tuo supporto!
+
+---
+
+## Licenza
+
+[MIT License](LICENSE) — libera di essere usata, modificata e condivisa.
 
 ---
 

@@ -70,9 +70,12 @@ export class DeezerProvider implements ContentProvider {
 
 	async fetch(sourceId: string): Promise<NormalizedMetadata | null> {
 		try {
-			const resp = await requestUrl({ url: `${DeezerProvider.ALBUM}${sourceId}`, throw: false })
+			const resp = await requestUrl({ url: `${DeezerProvider.ALBUM}${encodeURIComponent(sourceId)}`, throw: false })
 			if (resp.status !== 200) return null
-			const album = resp.json as DeezerAlbumFull
+			const album = resp.json as DeezerAlbumFull | null
+			// A removed album answers 200 with `{ error }` instead of the album;
+			// taking it as metadata would reset the note's track count to 1.
+			if (!album || typeof album.id !== 'number') return null
 
 			const genres = (album.genres?.data ?? []).map((g) => g.name).filter((n): n is string => Boolean(n))
 			const fields: Record<string, unknown> = {

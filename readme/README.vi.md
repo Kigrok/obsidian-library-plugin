@@ -7,7 +7,7 @@
 <h1 align="center">Thư viện</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Phiên bản">
+  <img src="https://img.shields.io/badge/version-2.3.0-blue" alt="Phiên bản">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Lượt tải">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Phiên bản Obsidian">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Giấy phép">
@@ -28,18 +28,19 @@
 ## Tính Năng Chính
 
 - **Lưới Thẻ Trực Quan** — Tab Thư viện chuyên dụng hiển thị bộ sưu tập của bạn dưới dạng thư viện thẻ bìa artwork.
-- **Tìm Kiếm Built-in** — Tìm kiếm và thêm tiêu đề ngay trong ứng dụng: OMDb cho phim và series, Open Library hoặc Google Books cho sách, RAWG cho trò chơi, Deezer cho nhạc, AniList cho anime, Comic Vine cho truyện tranh.
+- **Tìm Kiếm Built-in** — Tìm kiếm và thêm tiêu đề ngay trong ứng dụng: OMDb cho phim và series, Open Library hoặc Google Books cho sách, RAWG/Steam cho trò chơi, Deezer cho nhạc, AniList cho anime, Comic Vine cho truyện tranh.
 - **Theo Dõi Series Thông Minh** — Số season và tổng tập được tự động lấy và đồng bộ.
 - **Chỉ Báo Tiến Độ** — Thanh tiến độ trực quan trên thẻ và tiêu đề ghi chú hiển thị bạn đã xem hoặc đọc được bao nhiêu.
 - **Tiêu Đề Ghi Chú Phong Phú** — Mỗi ghi chú nội dung đều có tiêu đề tự động tạo với tất cả metadata chính.
+- **Trailer, ảnh và mùa** — Ghi chú phim và series hiển thị trailer YouTube/Vimeo nhúng, hàng ảnh và thời lượng; series còn có danh sách mùa với số tập, đánh giá và trailer từng mùa.
 - **Danh Mục Tùy Chỉnh** — Tạo danh mục cho Phim, Series, Anime, Truyện Tranh, Sách, Trò Chơi, Nhạc, hoặc bất kỳ thứ gì khác qua nguồn thủ công.
-- **Liên Kết Biểu Đồ** — Thuộc tính frontmatter `Related` liên kết mỗi ghi chú với danh mục, thể loại và nhà sáng tạo, được đồng bộ tự động cho biểu đồ đẹp.
+- **Liên Kết Biểu Đồ** — Thể loại, người sáng tạo và diễn viên được lưu dưới dạng liên kết trong các thuộc tính riêng `Genre`, `Creator` và `Cast`, nên ghi chú của mỗi thể loại, người sáng tạo và diễn viên gom mọi tựa phim trong liên kết ngược và biểu đồ hiển thị tất cả.
 - **Thẻ Chia Sẻ** — Biến bất kỳ ghi chú nội dung nào thành hình ảnh thẻ có thể chia sẻ (poster, tiêu đề, năm, thể loại, điểm IMDb và đánh giá của bạn) và đăng lên X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, hoặc Pinterest — chia sẻ thẳng đến các ứng dụng trên thiết bị của bạn, hoặc sao chép/lưu hình ảnh để dùng ở bất cứ đâu.
 - **Đồng Bộ AniList** — Đẩy tiến độ, trạng thái và đánh giá anime của bạn thẳng đến tài khoản AniList, hoặc kéo danh sách của bạn về lại các ghi chú.
-- **Sắp Xếp & Thu Gộp** — Sắp xếp thẻ theo tên, năm, đánh giá hoặc ngày; thu gộp bất kỳ danh mục nào.
-- **Thống Kê** — Thể loại hàng đầu, nhà sáng tạo hàng đầu (chỉ phim & series), và mục hàng đầu mỗi danh mục với xếp hạng huy chương.
+- **Sắp Xếp & Thu Gộp** — Sắp xếp thẻ theo tên, năm, đánh giá hoặc ngày; thu gọn bất kỳ danh mục nào — danh mục vẫn thu gọn sau khi khởi động lại.
+- **Thống Kê** — Bạn tự chọn các cột: những tựa có đánh giá cao nhất của một danh mục hoặc các giá trị xuất hiện nhiều nhất của một thuộc tính (thể loại, nhà sáng tạo, diễn viên…), cùng biểu đồ thời gian xem.
 - **Phát Hiện Trùng Lặp** — Tự động ngăn chặn thêm cùng tiêu đề twice bằng URL. Lệnh built-in tìm và xóa các bản trùng lặp.
-- **Đa Ngôn Ngữ** — 31 ngôn ngữ: Tiếng Anh, Tiếng Ukraina, Tiếng Nga, Tiếng Belarus, Tiếng Kazakhstan, Tiếng Uzbek, Tiếng Đức, Tiếng Tây Ban Nha, Tiếng Pháp, Tiếng Ý, Tiếng Hà Lan, Tiếng Séc, Tiếng Croatia, Tiếng Ba Lan, Tiếng Romania, Tiếng Thổ Nhĩ Kỳ, Tiếng Azerbaijan, Tiếng Ba Tư, Tiếng Hindi, Tiếng Bengal, Tiếng Urdu, Tiếng Tagalog, Tiếng Việt, Tiếng Thái, Tiếng Java, Tiếng Nhật, Tiếng Hàn, Tiếng Trung, Tiếng Ả Rập, Tiếng Sinhala, Tiếng Do Thái.
+- **Đa Ngôn Ngữ** — giao diện plugin được dịch sang **mọi ngôn ngữ mà Obsidian hỗ trợ** (hơn 70), nên luôn khớp với ngôn ngữ Obsidian của bạn. README được dịch đầy đủ sang 30 ngôn ngữ trong số đó (xem thanh ngôn ngữ ở đầu trang).
 
 ---
 
@@ -53,14 +54,14 @@ Cài đặt **Thư viện** từ [thư mục Plugins Cộng Đồng Obsidian](ht
 
 1. Vào **Cài đặt** > **Thư viện**.
 2. Thêm **Danh mục** của bạn — chọn loại định nghĩa sẵn (Phim, Series, Sách, Truyện Tranh, Trò Chơi, Nhạc, Anime, hoặc Thủ công) từ danh sách thả xuống và nhấp **Thêm danh mục**. Mỗi danh mục có tên hiển thị (được dịch sang ngôn ngữ của bạn), giá trị `Type` (luôn bằng tiếng Anh, ví dụ `Movie`), nguồn và thư mục tùy chọn để lưu ghi chú.
-3. _（Tùy chọn）_ Nhập API key cho các dịch vụ bạn sử dụng: [OMDb](https://www.omdbapi.com/apikey.aspx) cho phim/series, [RAWG](https://rawg.io/apidocs) cho trò chơi, [Comic Vine](https://comicvine.gamespot.com/api/) cho truyện tranh. Anime (AniList) và nhạc (Deezer) không cần key.
+3. _（Tùy chọn）_ Nhập API key cho các dịch vụ bạn sử dụng: [OMDb](https://www.omdbapi.com/apikey.aspx) cho phim/series, [RAWG](https://rawg.io/apidocs) cho trò chơi, [Comic Vine](https://comicvine.gamespot.com/api/) cho truyện tranh, [TMDB](https://www.themoviedb.org/settings/api) cho trailer, ảnh và thông tin mùa, [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) cho tìm kiếm sách. Anime (AniList), nhạc (Deezer) và Steam không cần key.
 
 ### 3. Thêm Thẻ Bằng Tiêu Đề
 
 Không cần điền frontmatter thủ công nữa — thêm phim, series, sách, anime hoặc truyện tranh chỉ bằng cách tìm kiếm tên:
 
-1. Mở tab **Thư viện** từ biểu tượng ribbon (hoặc chạy `Open Library`).
-2. Nhấp nút **+** ở góc trên bên phải trang Thư viện (hoặc chạy `Add content`).
+1. Mở tab **Thư viện** từ biểu tượng ribbon (hoặc chạy `Mở thư viện`).
+2. Nhấp nút **+** ở góc trên bên phải trang Thư viện (hoặc chạy `Thêm nội dung`).
 3. Chọn danh mục, nhập **tiêu đề** vào ô tìm kiếm và chọn kết quả.
 4. Thẻ được tạo ngay lập tức, với poster, năm, thể loại, nhà sáng tạo và đánh giá được điền tự động.
 
@@ -72,11 +73,15 @@ Với danh mục **Thủ công**, bạn chỉ cần nhập tiêu đề và tự 
 
 ## Thống Kê
 
-Tab Thư viện bao gồm phần **Thống Kê** có thể thu gộp ở đầu:
+Ở đầu thẻ Thư viện, phần **Thống kê** có thể thu gọn hiển thị các cột bạn chọn:
 
-- **Thể Loại Hàng Đầu** — xếp hạng theo tần suất trong toàn bộ thư viện.
-- **Nhà Sáng Tạo Hàng Đầu** — xếp hạng theo số lượng phim và series họ tham gia.
-- **Hàng Đầu Mỗi Danh Mục** — cho mỗi danh mục (Phim, Series, Sách, v.v.), top 3 mục theo đánh giá với thumbnail bìa nhỏ.
+- **Hàng đầu theo danh mục** — ba tựa có đánh giá cao nhất của một danh mục, kèm ảnh bìa: *Phim hàng đầu*, *Sách hàng đầu*, v.v. Xếp theo `My Rating`, nếu không có thì theo `Rating IMDB`.
+- **Hàng đầu theo thuộc tính** — ba giá trị xuất hiện nhiều nhất của một thuộc tính trong toàn bộ thư viện: *Thể loại hàng đầu*, *Nhà sáng tạo hàng đầu*, *Diễn viên hàng đầu* hoặc bất kỳ thuộc tính nào khác, như *Hàng đầu: Author*. `Sci-Fi`, `sci-fi` và `[[Sci-Fi]]` được tính là một giá trị.
+- **Thời gian xem** — biểu đồ số giờ dành cho phim, series và anime, tính từ `Runtime` và `Progress` của mỗi ghi chú.
+
+Thiết lập trong **Cài đặt → Library → Thống kê**: **Thêm bảng xếp hạng** liệt kê các danh mục của bạn và các thuộc tính có trong ghi chú, biểu tượng thùng rác xóa một cột, và một công tắc ẩn biểu đồ thời gian xem. Các cột hiển thị theo thứ tự bạn thêm; danh mục mới sẽ tự thêm mục hàng đầu của nó.
+
+Danh mục đã thu gọn vẫn thu gọn sau khi khởi động lại.
 
 ---
 
@@ -97,17 +102,25 @@ Mỗi danh mục được liên kết với nguồn cung cấp tìm kiếm:
 | ---------------- | --------------- | ----------------------------------------------------------- |
 | **OMDb**         | Phim, Series   | Cần key miễn phí — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
 | **Books**        | Sách            | Open Library (không cần key) + Google Books (key miễn phí tùy chọn). Kết quả được hợp nhất — Google Books trước, Open Library phía dưới. |
-| **RAWG**         | Trò chơi        | Cần key miễn phí — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Games**         | Trò chơi        | RAWG (cần key miễn phí — [rawg.io/apidocs](https://rawg.io/apidocs)) + Steam (không cần). Kết quả được hợp nhất — RAWG trước, Steam phía dưới. |
 | **Deezer**       | Nhạc (album)    | Không cần                                                    |
 | **AniList**        | Anime           | Không cần — API GraphQL AniList miễn phí, không cần key |
 | **Comic Vine**   | Truyện tranh    | Cần key miễn phí — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Thủ công**     | Bất kỳ thứ gì khác | Không cần — bạn tự nhập tiêu đề và điền các trường |
 
+Ghi chú phim và series có thể được làm phong phú thêm bằng **TMDB** (khóa miễn phí tùy chọn): trailer, ảnh, thời lượng và danh sách mùa của series được tải về và ghi vào frontmatter của ghi chú.
+
 ---
 
 ## Bảo Mật & Sử Dụng Mạng
 
-Thư viện là **ưu tiên ngoại tuyến**. Plugin chỉ liên lạc mạng khi bạn tích cực tìm kiếm tiêu đề để thêm, và chỉ với các từ khóa bạn nhập:
+Library hoạt động **ưu tiên ngoại tuyến**: thư viện của bạn chỉ là các ghi chú thông thường và vẫn hoạt động khi không có kết nối. Plugin chỉ gửi dữ liệu được liệt kê dưới đây, và chỉ trong các trường hợp sau:
+
+- **Khi bạn tự thao tác:** tìm kiếm một tựa đề, làm mới metadata, chạy một lệnh AniList hoặc nhấn nút chia sẻ.
+- **Khi bạn mở một ghi chú trong thư viện:** metadata của ghi chú được làm mới từ nguồn theo `Source ID`, tối đa một lần mỗi 5 phút cho mỗi ghi chú; ghi chú không có `Source ID` sẽ được tìm theo tên.
+- **Sau khi cập nhật plugin hoặc đổi khóa API:** một lượt chạy nền làm mới các ghi chú trong thư viện từ nguồn của chúng một lần, lần lượt từng ghi chú.
+
+Ảnh bìa, ảnh tĩnh và trình phát trailer mà ghi chú của bạn tham chiếu được tải từ các máy chủ được liệt kê dưới đây.
 
 | Dịch vụ | Khi nào | Gửi gì | Tại sao |
 | --- | --- | --- | --- |
@@ -119,9 +132,21 @@ Thư viện là **ưu tiên ngoại tuyến**. Plugin chỉ liên lạc mạng k
 | `api.deezer.com` | Bạn tìm kiếm danh mục nhạc Deezer | Album hoặc nghệ sĩ bạn nhập | Lấy metadata album (nghệ sĩ, năm, thể loại, số tracks, bìa) |
 | `graphql.anilist.co` | Bạn tìm kiếm danh mục anime | Tiêu đề bạn nhập | Lấy metadata anime (tiêu đề, năm, thể loại, tập phim, điểm AniList, studio, poster) |
 | `graphql.anilist.co` | Bạn chạy lệnh đồng bộ AniList | AniList access token của bạn và tiến độ, trạng thái, đánh giá của ghi chú | Đọc hoặc cập nhật danh sách anime AniList của bạn |
+| `anilist.co` | Bạn nhấn **Kết nối** trong cài đặt đồng bộ AniList | Client ID AniList của bạn | Mở trang ủy quyền của AniList trong trình duyệt |
 | `comicvine.gamespot.com` | Bạn tìm kiếm danh mục truyện tranh | Tiêu đề bạn nhập và Comic Vine key của bạn | Lấy metadata truyện tranh (tiêu đề, năm, nhà xuất bản, số issues, bìa) |
+| `store.steampowered.com` | Bạn tìm kiếm hoặc thêm một game Steam | Tiêu đề bạn nhập hoặc ID ứng dụng Steam | Lấy siêu dữ liệu game (năm, thể loại, nhà phát triển, bìa) |
+| `cdn.cloudflare.steamstatic.com` | Thẻ game Steam có ảnh bìa | ID ứng dụng Steam | Tải ảnh bìa |
+| `api.themoviedb.org` | Bạn thêm hoặc làm mới ghi chú phim/series với khóa TMDB | IMDb ID của ghi chú và khóa TMDB của bạn | Lấy trailer, ảnh, thời lượng và danh sách mùa |
+| `image.tmdb.org` | Ghi chú phim/series có ảnh | Đường dẫn ảnh TMDB | Tải ảnh |
+| `v3-cinemeta.strem.io` | Bạn thêm hoặc làm mới ghi chú phim/series | ID IMDb của ghi chú | Lấy trailer, ảnh tĩnh, thời lượng và danh sách mùa của series — không cần khóa |
+| `images.metahub.space` | Ghi chú phim/series có ảnh tĩnh | ID IMDb của ghi chú | Tải ảnh tĩnh (nền) |
+| `episodes.metahub.space` | Ghi chú series có ảnh tĩnh của tập | ID IMDb của series cùng số mùa và số tập | Tải ảnh tĩnh của các tập |
+| `i.ytimg.com` | Ghi chú phim hiển thị ảnh tĩnh của trailer | ID video trailer | Tải ảnh tĩnh của trailer |
+| `s4.anilist.co` | Ghi chú anime có banner | Đường dẫn CDN của AniList | Tải ảnh banner |
+| `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Bạn mở ghi chú có trailer | ID trailer | Nhúng trình phát trailer |
+| `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Bạn nhấn nút chia sẻ | Chú thích thẻ (tiêu đề, đánh giá của bạn, liên kết nguồn) | Mở cửa sổ chia sẻ của mạng đã chọn với nội dung điền sẵn — ảnh thẻ vẫn ở cục bộ |
 
-Không có dữ liệu nào khác rời khỏi vault của bạn. Plugin **không có遥测, không phân tích, và không có cơ chế tự cập nhật**. API key (OMDb, Google Books, RAWG, Comic Vine) chỉ được lưu trong cài đặt plugin cục bộ và chỉ gửi đến dịch vụ tương ứng. Hình ảnh bìa tải trực tiếp từ URL được mỗi nguồn trả về.
+Không có dữ liệu nào khác rời khỏi vault của bạn. Plugin **không cótelemetry, không phân tích, và không có cơ chế tự cập nhật**. API key (OMDb, Google Books, RAWG, Comic Vine, TMDB) chỉ được lưu trong cài đặt plugin cục bộ và chỉ gửi đến dịch vụ tương ứng. Hình ảnh bìa tải trực tiếp từ URL được mỗi nguồn trả về.
 
 ---
 
@@ -131,20 +156,31 @@ Plugin đọc và ghi vào frontmatter YAML tiêu chuẩn. Ghi chú được t�
 
 ### Phim
 
+> **Thuộc tính bìa** — thuộc tính frontmatter lưu ảnh bìa có thể đổi tên trong **Cài đặt → Library** (ví dụ thành `image`); các ghi chú hiện có vẫn hoạt động.
+
 ```yaml
 ---
 Type: Movie
 Name: Inception
 Year: 2010
 Genre:
-    - Action
-    - Sci-Fi
+    - "[[Action]]"
+    - "[[Sci-Fi]]"
 Creator:
-    - Christopher Nolan
+    - "[[Christopher Nolan]]"
+Cast:
+    - "[[Leonardo DiCaprio]]"
+    - "[[Joseph Gordon-Levitt]]"
+    - "[[Elliot Page]]"
 Rating IMDB: 8.8
+Rating RT: 87
+Runtime: 148
 My Rating: 9
 Cover: https://m.media-amazon.com/images/...
 URL: https://www.imdb.com/title/tt1375666/
+Trailer: https://www.youtube.com/watch?v=YoHD9XEInc0
+Gallery:
+    - https://image.tmdb.org/t/p/w780/9e3Dz7H1J0s5cBZLX2yXKxkC7Jg.jpg
 Progress: 1/1
 Complete: true
 Date: 01.03.2026
@@ -163,15 +199,33 @@ Year: 2016
 End Year: 2025
 Season: 5
 Genre:
-    - Drama
-    - Fantasy
-    - Horror
+    - "[[Drama]]"
+    - "[[Fantasy]]"
+    - "[[Horror]]"
 Creator:
-    - The Duffer Brothers
+    - "[[The Duffer Brothers]]"
+Cast:
+    - "[[Winona Ryder]]"
+    - "[[David Harbour]]"
+    - "[[Millie Bobby Brown]]"
 Rating IMDB: 8.7
+Rating RT: 91
+Runtime: 42
 My Rating: 9
 Cover: https://m.media-amazon.com/images/...
 URL: https://www.imdb.com/title/tt4574334/
+Trailer: https://www.youtube.com/watch?v=b9EkMc79ZSU
+Gallery:
+    - https://image.tmdb.org/t/p/w780/56v2KjBlU4XaOv9rVYEQypROD7P.jpg
+Seasons:
+    - name: Season 1
+      episodes: 8
+      rating: 8.0
+      trailer: https://www.youtube.com/watch?v=XWxyRG_tckY
+    - name: Season 2
+      episodes: 9
+      rating: 8.1
+      trailer: https://www.youtube.com/watch?v=R1ZXOOLMJ8s
 Progress: 25/42
 Complete: false
 Date: 01.03.2026
@@ -180,7 +234,9 @@ Source ID: tt4574334
 ---
 ```
 
-> **Tự động cập nhật series:** Chạy `Refresh metadata for current note` (hoặc chỉ cần mở ghi chú) và plugin cập nhật tổng số tập trong `Progress` (ví dụ `25/42` thành `25/50`) và số `Season`, trong khi giữ nguyên số lượng bạn đã xem.
+> **Tự động cập nhật series:** Chạy `Làm mới metadata cho ghi chú hiện tại` (hoặc chỉ cần mở ghi chú) và plugin cập nhật tổng số tập trong `Progress` (ví dụ `25/42` thành `25/50`) và số `Season`, trong khi giữ nguyên số lượng bạn đã xem.
+
+> **Trailer, ảnh và mùa:** Khi đã đặt khóa TMDB, plugin tự động điền `Trailer`, `Gallery`, `Runtime` và (với series) `Seasons` — `Runtime` là độ dài phim tính bằng phút, hoặc số phút mỗi tập với series. Tiêu đề ghi chú sau đó hiển thị trình phát nhúng, hàng ảnh và danh sách mùa với số tập, đánh giá và nút trailer từng mùa. Mọi trường đều là frontmatter thường: chỉnh sửa hoặc xóa, plugin sẽ không đụng đến giá trị của bạn ở lần làm mới kế tiếp. Mỗi phiên bản plugin mới cũng chạy một lượt quét thư viện ở chế độ nền để bổ sung các trường mới, lần lượt từng ghi chú mà không chặn ứng dụng.
 
 ### Sách
 
@@ -190,9 +246,9 @@ Type: Book
 Name: Dune
 Year: 1965
 Genre:
-    - Science Fiction
+    - "[[Science Fiction]]"
 Creator:
-    - Frank Herbert
+    - "[[Frank Herbert]]"
 Cover: https://covers.openlibrary.org/b/id/...-L.jpg
 ISBN: 9780441013593
 My Rating: 9
@@ -212,10 +268,10 @@ Type: Anime
 Name: Steins;Gate
 Year: 2011
 Genre:
-    - Sci-Fi
-    - Thriller
+    - "[[Sci-Fi]]"
+    - "[[Thriller]]"
 Creator:
-    - White Fox
+    - "[[White Fox]]"
 Rating AniList: 9.1
 Status: FINISHED
 Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
@@ -236,9 +292,9 @@ Type: Comic
 Name: Watchmen
 Year: 1986
 Genre:
-    - Comics
+    - "[[Comics]]"
 Creator:
-    - DC Comics
+    - "[[DC Comics]]"
 Cover: https://comicvine.gamespot.com/a/uploads/...
 URL: https://comicvine.gamespot.com/watchmen/4050-33819/
 Progress: 0/12
@@ -253,23 +309,25 @@ Source ID: 33819
 
 ## Liên Kết Biểu Đồ
 
-Mỗi ghi chú nội dung đều có thuộc tính frontmatter `Related`, được tự động cập nhật — nội dung ghi chú không bao giờ bị thay đổi:
+Thể loại, người sáng tạo và, với phim và phim bộ, diễn viên được lưu dưới dạng liên kết trong các thuộc tính riêng:
 
 ```yaml
-Related:
-    - "[[Movie]]"
+Genre:
     - "[[Action]]"
     - "[[Sci-Fi]]"
+Creator:
     - "[[Christopher Nolan]]"
+Cast:
+    - "[[Leonardo DiCaprio]]"
 ```
 
-Các liên kết này kết nối các ghi chú của bạn qua danh mục, thể loại và nhà sáng tạo được chia sẻ, giúp chế độ xem biểu đồ Obsidian tạo thành các cụm gọn gàng. Một ghi chú trung tâm thực sự được tạo cho mỗi danh mục (ví dụ `Movie`) nên các cụm hiển thị ngay cả khi ẩn các liên kết chưa giải quyết. Thuộc tính được ghi khi tạo ghi chú và làm mới mỗi khi metadata thay đổi — chỉ chạy `Rebuild graph links` nếu bạn muốn buộc xây dựng lại toàn bộ.
+Nhờ đó, ghi chú của mỗi thể loại, người sáng tạo và diễn viên liệt kê mọi tựa phim trong liên kết ngược, và biểu đồ nối các ghi chú qua chúng. Tên thường — gõ tay hoặc còn lại từ phiên bản trước — sẽ thành liên kết mỗi khi ghi chú thay đổi; liên kết có bí danh được giữ nguyên. `Xây dựng lại liên kết đồ thị` chuyển đổi toàn bộ thư viện một lần. Thuộc tính `Related` của các phiên bản trước không còn được dùng và bị xóa khỏi ghi chú.
 
 ---
 
 ## Chia Sẻ
 
-Mỗi ghi chú nội dung đều có nút **Chia sẻ** trong tiêu đề (hoặc chạy `Share current note`). Nó tạo một hình ảnh thẻ — poster, tiêu đề, năm, thể loại, điểm IMDb/AniList và đánh giá của bạn — mà bạn có thể đăng ở bất cứ đâu:
+Mỗi ghi chú nội dung đều có nút **Chia sẻ** trong tiêu đề (hoặc chạy `Chia sẻ ghi chú hiện tại`). Nó tạo một hình ảnh thẻ — poster, tiêu đề, năm, thể loại, điểm IMDb/AniList và đánh giá của bạn — mà bạn có thể đăng ở bất cứ đâu:
 
 - **Trên di động** — nút **Chia sẻ…** mở bảng chia sẻ gốc của thiết bị với hình ảnh thẻ được đính kèm trực tiếp, để bạn có thể gửi thẳng đến bất kỳ ứng dụng nào.
 - **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — mở trình soạn thảo của mạng với chú thích được điền sẵn (tiêu đề, đánh giá của bạn, liên kết nguồn và liên kết đến plugin này). Hình ảnh thẻ được sao chép vào clipboard cùng lúc, nên bạn chỉ cần dán (Ctrl/Cmd+V) vào bài đăng.
@@ -286,13 +344,13 @@ Giữ tiến độ anime của bạn đồng bộ với tài khoản [AniList](h
 **Thiết lập** — trong **Cài đặt → Thư viện → Đồng bộ AniList**:
 
 1. Đăng ký một API client miễn phí tại [anilist.co/settings/developer](https://anilist.co/settings/developer), với redirect URL được đặt thành `https://anilist.co/api/v2/oauth/pin`.
-2. Dán **Client ID**, nhấp **Connect**, và cấp quyền.
-3. AniList hiển thị cho bạn một access token — dán nó vào plugin. Nhấp **Test connection** để xác nhận.
+2. Dán **Client ID**, nhấp **Kết nối**, và cấp quyền.
+3. AniList hiển thị cho bạn một access token — dán nó vào plugin. Nhấp **Kiểm tra kết nối** để xác nhận.
 
 Sau đó dùng các lệnh:
 
-- `Push current note to AniList` — gửi tiến độ (số tập đã xem), trạng thái (đang xem / hoàn thành / dự định) và đánh giá của ghi chú anime đang hoạt động đến danh sách AniList của bạn.
-- `Pull progress from AniList` — lấy danh sách anime AniList của bạn và cập nhật các ghi chú khớp. Pull **chỉ tiến về phía trước**: nó không bao giờ làm thụt lùi một ghi chú đang ở tiến độ xa hơn cục bộ hoặc đã hoàn thành, và giữ nguyên `My Rating` cá nhân của bạn.
+- `Đẩy ghi chú hiện tại lên AniList` — gửi tiến độ (số tập đã xem), trạng thái (đang xem / hoàn thành / dự định) và đánh giá của ghi chú anime đang hoạt động đến danh sách AniList của bạn.
+- `Lấy tiến độ từ AniList` — lấy danh sách anime AniList của bạn và cập nhật các ghi chú khớp. Pull **chỉ tiến về phía trước**: nó không bao giờ làm thụt lùi một ghi chú đang ở tiến độ xa hơn cục bộ hoặc đã hoàn thành, và giữ nguyên `My Rating` cá nhân của bạn.
 
 Chỉ các ghi chú có `Source: anilist` (được thêm qua nguồn anime AniList) mới được đồng bộ. Token của bạn được lưu cục bộ trong cài đặt plugin và chỉ gửi đến AniList.
 
@@ -302,15 +360,16 @@ Chỉ các ghi chú có `Source: anilist` (được thêm qua nguồn anime AniL
 
 | Lệnh                                | Mô tả                                                                  |
 | ------------------------------------ | ----------------------------------------------------------------------- |
-| `Open Library`                       | Mở tab thư viện.                                           |
-| `Add content`                        | Tìm kiếm nguồn và tạo ghi chú nội dung (hoặc nhập tiêu đề cho Thủ công). |
-| `Search your library`                | Tìm kiếm mờ và mở bất kỳ ghi chú nào đã có trong thư viện.                 |
-| `Refresh metadata for current note`  | Lấy lại metadata cho ghi chú đang hoạt động; cập nhật tổng tập series.   |
-| `Rebuild graph links`                | Kết nối mọi ghi chú nội dung với danh mục, thể loại và nhà sáng tạo.          |
-| `Find & remove duplicates`           | Quét tất cả ghi chú theo URL, hiển thị trùng lặp và xóa các mục được chọn.       |
-| `Share current note`                 | Tạo hình ảnh thẻ từ ghi chú và chia sẻ lên X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, hoặc Pinterest. |
-| `Push current note to AniList`       | Gửi tiến độ, trạng thái và đánh giá của ghi chú anime đang hoạt động đến tài khoản AniList của bạn. |
-| `Pull progress from AniList`         | Lấy danh sách AniList của bạn và cập nhật các ghi chú khớp (chỉ tiến về phía trước). |
+| `Mở thư viện`                       | Mở tab thư viện.                                           |
+| `Thêm nội dung`                        | Tìm kiếm nguồn và tạo ghi chú nội dung (hoặc nhập tiêu đề cho Thủ công). |
+| `Tìm kiếm trong thư viện`                | Tìm kiếm mờ và mở bất kỳ ghi chú nào đã có trong thư viện.                 |
+| `Làm mới metadata cho ghi chú hiện tại`  | Lấy lại metadata cho ghi chú đang hoạt động; cập nhật tổng tập series.   |
+| `Xây dựng lại liên kết đồ thị`                | Chuyển `Genre`, `Creator` và `Cast` thành liên kết trong mọi ghi chú nội dung. |
+| `Tìm và xóa bản trùng lặp`           | Quét tất cả ghi chú theo URL, hiển thị trùng lặp và xóa các mục được chọn.       |
+| `Chia sẻ ghi chú hiện tại`                 | Tạo hình ảnh thẻ từ ghi chú và chia sẻ lên X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, hoặc Pinterest. |
+| `Đẩy ghi chú hiện tại lên AniList`       | Gửi tiến độ, trạng thái và đánh giá của ghi chú anime đang hoạt động đến tài khoản AniList của bạn. |
+| `Lấy tiến độ từ AniList`         | Lấy danh sách AniList của bạn và cập nhật các ghi chú khớp (chỉ tiến về phía trước). |
+| `Làm mới metadata cho tất cả ghi chú` | Tải siêu dữ liệu của mọi ghi chú trong thư viện, lần lượt ở chế độ nền. |
 
 ---
 
@@ -319,6 +378,12 @@ Chỉ các ghi chú có `Source: anilist` (được thêm qua nguồn anime AniL
 - **Tìm thấy lỗi?** Mở [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
 - **Có ý tưởng tính năng?** Bắt đầu [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
 - **Thích plugin?** Hãy star repo để ủng hộ!
+
+---
+
+## Giấy phép
+
+[MIT License](LICENSE) — được tự do sử dụng, chỉnh sửa và chia sẻ.
 
 ---
 

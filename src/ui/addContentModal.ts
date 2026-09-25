@@ -6,6 +6,7 @@ export class AddContentModal extends SuggestModal<SearchResult> {
 	private provider: ContentProvider
 	private type: ContentType
 	private onPick: (result: SearchResult) => void
+	private initial: string
 	private debounceTimer: number | null = null
 	private cache = new Map<string, SearchResult[]>()
 
@@ -13,13 +14,22 @@ export class AddContentModal extends SuggestModal<SearchResult> {
 		app: App,
 		provider: ContentProvider,
 		type: ContentType,
-		onPick: (result: SearchResult) => void
+		onPick: (result: SearchResult) => void,
+		initial = ''
 	) {
 		super(app)
 		this.provider = provider
 		this.type = type
 		this.onPick = onPick
+		this.initial = initial
 		this.setPlaceholder(tr('modal.search.placeholder'))
+	}
+
+	onOpen(): void {
+		void super.onOpen()
+		if (!this.initial) return
+		this.inputEl.value = this.initial
+		this.inputEl.dispatchEvent(new Event('input'))
 	}
 
 	async getSuggestions(query: string): Promise<SearchResult[]> {

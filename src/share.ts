@@ -1,5 +1,7 @@
 import { App, requestUrl, TFile } from 'obsidian'
-import { sanitizeFilename, toStr } from './util'
+import { RATING_RT_ICON } from './constants'
+import { tr } from './i18n'
+import { coverValue, linkLabel, sanitizeFilename, toStr, toStrArray } from './util'
 
 const W = 1200
 const H = 630
@@ -84,14 +86,30 @@ export interface ShareText {
 	redditTitle: string
 }
 
+// Ratings from every source, in the order the card prints them (RT stays a %).
+export function shareRatings(fm: Frontmatter): string[] {
+	const ext: string[] = []
+	const imdb = toStr(fm['Rating IMDB']).trim()
+	if (imdb) ext.push(`IMDb ${imdb}`)
+	const rt = toStr(fm['Rating RT']).trim()
+	if (rt) ext.push(`${RATING_RT_ICON} ${rt}%`)
+	const rawg = toStr(fm['Rating RAWG']).trim()
+	if (rawg) ext.push(`RAWG ${rawg}`)
+	const mc = toStr(fm['Rating MC']).trim()
+	if (mc) ext.push(`MC ${mc}`)
+	const anilist = toStr(fm['Rating AniList']).trim()
+	if (anilist) ext.push(`AniList ${anilist}`)
+	return ext
+}
+
 export function buildShareText(fm: Frontmatter, name: string): ShareText {
 	const year = fm.Year ? ` (${toStr(fm.Year)})` : ''
 	const ratingRaw = fm['My Rating'] ?? fm.Rating
 	const rating = ratingRaw ? toStr(ratingRaw).trim() : ''
-	const ratingPart = rating ? ` — my rating ${rating}/10` : ''
+	const ratingPart = rating ? ` — ${tr('share.myRating', { rating })}` : ''
 	const url = toStr(fm.URL).trim()
 	const headline = `${name}${year}${ratingPart}`
-	const text = `${headline}\n\nTracked with Library for Obsidian\n${PLUGIN_URL}`
+	const text = `${headline}\n\n${tr('share.trackedWith')}\n${PLUGIN_URL}`
 	return { text, url, redditTitle: headline }
 }
 
@@ -130,7 +148,7 @@ export function shareIntent(network: string, share: ShareText): string {
 }
 
 // Render a shareable landscape card (poster + title + rating) to a PNG blob.
-export async function renderShareCard(app: App, fm: Frontmatter, name: string): Promise<Blob | null> {
+export async function renderShareCard(app: App, fm: Frontmatter, name: string, coverProperty = 'Cover'): Promise<Blob | null> {
 	const canvas = createEl('canvas')
 	canvas.width = W
 	canvas.height = H
@@ -144,7 +162,7 @@ export async function renderShareCard(app: App, fm: Frontmatter, name: string): 
 
 	const posterX = PAD
 	const posterY = (H - POSTER_H) / 2
-	const coverBytes = await loadCoverBytes(app, fm.Cover ?? fm.Image ?? fm.Baner)
+	const coverBytes = await loadCoverBytes(app, coverValue(fm, coverProperty))
 	const img = coverBytes ? await loadImage(coverBytes) : null
 	roundRect(ctx, posterX, posterY, POSTER_W, POSTER_H, 16)
 	ctx.save()
@@ -187,8 +205,8 @@ export async function renderShareCard(app: App, fm: Frontmatter, name: string): 
 
 	const meta: string[] = []
 	if (fm.Year) meta.push(toStr(fm.Year))
-	const genre = toStr(fm.Genre).trim()
-	if (genre) meta.push(genre.split(',').slice(0, 3).map((g) => g.trim()).join(' · '))
+	const genres = toStrArray(fm.Genre).map(linkLabel).slice(0, 3)
+	if (genres.length > 0) meta.push(genres.join(' · '))
 	if (meta.length > 0) {
 		ctx.fillStyle = '#a0a0b0'
 		ctx.font = '30px sans-serif'
@@ -199,7 +217,7 @@ export async function renderShareCard(app: App, fm: Frontmatter, name: string): 
 		})
 	}
 
-	const creator = toStr(fm.Creator ?? fm.Director ?? fm.Author ?? fm.Artist).trim()
+	const creator = toStrArray(fm.Creator ?? fm.Director ?? fm.Author ?? fm.Artist).map(linkLabel).join(', ')
 	if (creator) {
 		ctx.fillStyle = '#8a8a9a'
 		ctx.font = '28px sans-serif'
@@ -210,11 +228,7 @@ export async function renderShareCard(app: App, fm: Frontmatter, name: string): 
 		})
 	}
 
-	const ext: string[] = []
-	const imdb = toStr(fm['Rating IMDB']).trim()
-	if (imdb) ext.push(`IMDb ${imdb}`)
-	const anilist = toStr(fm['Rating AniList']).trim()
-	if (anilist) ext.push(`AniList ${anilist}`)
+	const ext = shareRatings(fm)
 	if (ext.length > 0) {
 		ctx.fillStyle = '#7a7a8a'
 		ctx.font = '24px sans-serif'
@@ -240,7 +254,7 @@ export async function renderShareCard(app: App, fm: Frontmatter, name: string): 
 	ctx.fillStyle = '#5a5a6e'
 	ctx.font = '24px sans-serif'
 	ctx.textAlign = 'right'
-	ctx.fillText('Tracked with Library for Obsidian', W - PAD, H - 32)
+	ctx.fillText(tr('share.trackedWith'), W - PAD, H - 32)
 
 	return new Promise((resolve) => {
 		canvas.toBlob((blob) => resolve(blob), 'image/png')

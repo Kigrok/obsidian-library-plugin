@@ -16,7 +16,7 @@
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-.card-image {
+.library-card .card-image {
 	width: 100%;
 	aspect-ratio: 2/3;
 	background: var(--background-primary);
@@ -25,14 +25,14 @@
 	justify-content: center;
 }
 
-.card-image img {
+.library-card .card-image img {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
 	border-radius: 10px 10px 0 0;
 }
 
-.card-info {
+.library-card .card-info {
 	padding: 5px 10px 10px;
 	display: flex;
 	flex-direction: column;
@@ -42,18 +42,18 @@
 	justify-content: center;
 }
 
-.card-title {
+.library-card .card-title {
 	font-weight: bold;
 	font-size: 0.95em;
 	line-height: 1.2;
 }
 
-.card-title a {
+.library-card .card-title a {
 	color: var(--text-normal);
 	text-decoration: none;
 }
 
-.card-author {
+.library-card .card-author {
 	font-size: 0.8em;
 	color: var(--text-muted);
 	white-space: nowrap;
@@ -61,32 +61,32 @@
 	text-overflow: ellipsis;
 }
 
-.card-year {
+.library-card .card-year {
 	font-size: 0.75em;
 	color: var(--text-muted);
 }
 
-.card-rating {
+.library-card .card-rating {
 	font-size: 0.85em;
 	font-weight: bold;
 	color: var(--interactive-accent);
 	margin-top: 1%;
 }
 
-.card-progress {
+.library-card .card-progress {
 	margin-top: 4%;
 	display: flex;
 	flex-direction: column;
 	gap: 2px;
 }
 
-.card-progress-label {
+.library-card .card-progress-label {
 	font-size: 0.75em;
 	color: var(--text-muted);
 	text-align: center;
 }
 
-.card-progress-bar {
+.library-card .card-progress-bar {
 	width: 100%;
 	height: 4px;
 	background: var(--background-modifier-border);
@@ -94,7 +94,7 @@
 	overflow: hidden;
 }
 
-.card-progress-fill {
+.library-card .card-progress-fill {
 	height: 100%;
 	background: var(--interactive-accent);
 	border-radius: 1%;
@@ -149,19 +149,27 @@
 	position: relative;
 }
 
-.library-sort-trigger {
-	background: none;
+/* Obsidian's own `button:not(.clickable-icon)` rule paints a button the flat
+   --interactive-normal grey and keeps its border the same colour, so the sort
+   controls read as black boxes with no outline. These selectors out-specify
+   that rule and give the buttons a real surface and a visible edge. */
+.library-sort-dropdown .library-sort-trigger,
+.note-header-wrap .note-header-season-trailer {
+	background-color: var(--background-secondary);
 	border: 1px solid var(--background-modifier-border);
+	box-shadow: none;
 	cursor: pointer;
 	color: var(--text-muted);
 	font-size: 0.75em;
 	padding: 3px 10px;
 	border-radius: 4px;
-	transition: all 0.15s;
+	transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
 
-.library-sort-trigger:hover {
+.library-sort-dropdown .library-sort-trigger:hover,
+.note-header-wrap .note-header-season-trailer:hover {
 	color: var(--text-normal);
+	background-color: var(--background-modifier-hover);
 	border-color: var(--interactive-accent);
 }
 
@@ -185,33 +193,43 @@
 	flex-direction: column;
 }
 
-.library-sort-menu-item {
-	background: none;
+.library-sort-menu .library-sort-menu-item {
+	background-color: transparent;
 	border: none;
+	box-shadow: none;
 	cursor: pointer;
 	color: var(--text-muted);
 	font-size: 0.8em;
 	padding: 6px 14px;
 	text-align: left;
-	transition: all 0.1s;
+	transition: background-color 0.1s, color 0.1s;
 }
 
-.library-sort-menu-item:hover {
+/* Rows stay readable as separate entries instead of merging into one slab. */
+.library-sort-menu .library-sort-menu-item + .library-sort-menu-item {
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+.library-sort-menu .library-sort-menu-item:hover {
 	color: var(--text-normal);
-	background: var(--background-modifier-hover);
+	background-color: var(--background-modifier-hover);
 }
 
-.library-sort-menu-item.active {
+.library-sort-menu .library-sort-menu-item.active {
 	color: var(--interactive-accent);
 	font-weight: bold;
 }
 
-.library-grid.collapsed {
+/* Folded: one explicit row keeps its height, every further row collapses to
+   nothing and is clipped. */
+.library-view .library-grid.collapsed {
+	grid-template-rows: auto;
+	grid-auto-rows: 0;
+	row-gap: 0;
 	overflow: hidden;
-	max-height: var(--row-height);
 }
 
-.note-header {
+.note-header-wrap .note-header {
 	display: flex;
 	gap: 10%;
 	align-items: flex-start;
@@ -219,54 +237,54 @@
 	line-height: 1.4;
 }
 
-.note-header-cover {
+.note-header-wrap .note-header-cover {
 	flex: 0 0 40%;
 	max-width: 40%;
 }
 
-.note-header-cover img {
+.note-header-wrap .note-header-cover img {
 	width: 100%;
 	border-radius: 10px;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
-.note-header-info {
+.note-header-wrap .note-header-info {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
 }
 
-.note-header-title {
+.note-header-wrap .note-header-title {
 	margin: 8% 0 6% 0;
 	font-size: 1.6em;
 	line-height: 1.2;
 }
 
-.note-header-title a {
+.note-header-wrap .note-header-title a {
 	text-decoration: none;
 	color: inherit;
 }
 
-.note-header-title a:hover {
+.note-header-wrap .note-header-title a:hover {
 	color: var(--interactive-accent);
 }
 
-.note-header-row {
+.note-header-wrap .note-header-row {
 	font-size: 0.95em;
 	color: var(--text-normal);
 }
 
-.note-header-row b {
+.note-header-wrap .note-header-row b {
 	color: var(--text-muted);
 }
 
-.note-header-complete {
+.note-header-wrap .note-header-complete {
 	margin-top: 8px;
 	font-weight: bold;
 }
 
-.note-header-progress-bar {
+.note-header-wrap .note-header-progress-bar {
 	display: inline-block;
 	width: 100px;
 	height: 6px;
@@ -277,10 +295,85 @@
 	margin-left: 8px;
 }
 
-.note-header-progress-fill {
+.note-header-wrap .note-header-progress-fill {
 	height: 100%;
 	background: var(--interactive-accent);
 	border-radius: 3px;
+}
+
+.note-header-wrap .note-header-media {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.note-header-player {
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	border-radius: 10px;
+	overflow: hidden;
+	background: var(--background-secondary);
+}
+
+.note-header-player iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+.note-header-wrap .note-header-gallery {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.note-header-wrap .note-header-gallery a {
+	line-height: 0;
+}
+
+.note-header-wrap .note-header-gallery img {
+	width: 132px;
+	height: 74px;
+	object-fit: cover;
+	border-radius: 6px;
+}
+
+.note-header-wrap .note-header-seasons {
+	margin-top: 14px;
+	display: flex;
+	flex-direction: column;
+}
+
+.note-header-wrap .note-header-season {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 6px 0;
+	border-bottom: 1px solid var(--background-modifier-border);
+	font-size: 0.95em;
+}
+
+.note-header-wrap .note-header-season:last-child {
+	border-bottom: none;
+}
+
+.note-header-wrap .note-header-season-name {
+	flex: 1;
+	color: var(--text-normal);
+}
+
+.note-header-wrap .note-header-season-episodes {
+	color: var(--text-muted);
+}
+
+.note-header-wrap .note-header-season-rating {
+	font-weight: bold;
+	color: var(--text-normal);
+}
+
+.note-header-wrap .note-header-season-trailer {
+	cursor: pointer;
 }
 
 .library-settings-category {
@@ -288,6 +381,21 @@
 	padding: 8px;
 	margin-bottom: 8px;
 	border-radius: 6px;
+}
+
+.library-settings-advanced {
+	margin-top: 4px;
+}
+
+.library-settings-advanced > summary {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+	cursor: pointer;
+	padding: 4px 0;
+}
+
+.library-settings-advanced > summary:hover {
+	color: var(--text-normal);
 }
 
 .library-view {
@@ -460,6 +568,7 @@
 
 .library-stats-body {
 	display: flex;
+	flex-wrap: wrap;
 	gap: 24px;
 	padding: 14px;
 }
@@ -468,9 +577,103 @@
 	display: none;
 }
 
-.library-stats-col {
-	flex: 1;
+/* The top columns wrap among themselves; the chart keeps the right side. */
+.library-stats-tops {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 24px;
+	flex: 1 1 420px;
 	min-width: 0;
+}
+
+
+.library-stats-col {
+	flex: 1 1 170px;
+	min-width: 0;
+}
+
+/* Wide enough for "1395 h 48 min · 90%"; anything longer wraps instead of
+   running past the section's edge. */
+.library-time-col {
+	flex: 0 0 230px;
+	min-width: 0;
+}
+
+@media (max-width: 640px) {
+	.library-stats-body {
+		flex-direction: column;
+	}
+
+	.library-time-col {
+		order: -1;
+		flex-basis: auto;
+		max-width: 300px;
+	}
+}
+
+.library-time-chart {
+	position: relative;
+	width: 100%;
+	max-width: 190px;
+	aspect-ratio: 1 / 1;
+	margin: 0 auto 12px;
+	border-radius: 50%;
+}
+
+.library-time-hole {
+	position: absolute;
+	inset: 25%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 4px;
+	border-radius: 50%;
+	background: var(--background-primary);
+	text-align: center;
+}
+
+.library-time-total {
+	font-size: 0.78em;
+	font-weight: 600;
+	line-height: 1.15;
+}
+
+.library-time-total span {
+	white-space: nowrap;
+}
+
+.library-time-legend {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.library-time-item {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 2px 8px;
+	font-size: 0.85em;
+}
+
+.library-time-dot {
+	flex-shrink: 0;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+}
+
+.library-time-name {
+	min-width: 0;
+	color: var(--text-normal);
+	overflow-wrap: anywhere;
+}
+
+/* Right-aligned beside the name, or on a line of its own when both do not fit. */
+.library-time-value {
+	margin-left: auto;
+	color: var(--text-muted);
+	white-space: nowrap;
 }
 
 .library-stats-col h3 {
@@ -533,10 +736,6 @@
 	color: var(--text-muted);
 }
 
-.library-dup-modal {
-	padding: 16px;
-}
-
 .library-dup-group {
 	border: 1px solid var(--background-modifier-border);
 	border-radius: 6px;
@@ -582,7 +781,7 @@
 	cursor: pointer;
 }
 
-.note-header-share {
+.note-header-wrap .note-header-share {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -597,12 +796,12 @@
 	box-shadow: none;
 }
 
-.note-header-share:hover {
+.note-header-wrap .note-header-share:hover {
 	color: var(--interactive-accent);
 	background: var(--background-modifier-hover);
 }
 
-.note-header-share .svg-icon {
+.note-header-wrap .note-header-share .svg-icon {
 	width: 18px;
 	height: 18px;
 }
@@ -680,4 +879,25 @@
 	padding: 6px 14px;
 	border-radius: 6px;
 	cursor: pointer;
+}
+
+/* Lightbox: no modal box at all — just the picture, enlarged, on a near-black
+   backdrop. A click anywhere (or Escape) brings the note back. */
+.library-lightbox {
+	position: fixed;
+	inset: 0;
+	z-index: var(--layer-modal);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.92);
+	cursor: zoom-out;
+}
+
+.library-lightbox img {
+	/* The image box fills the viewport and `contain` fits the picture inside
+	   it, so a small still is enlarged instead of sitting tiny in the middle. */
+	width: 94vw;
+	height: 88vh;
+	object-fit: contain;
 }

@@ -21,6 +21,8 @@ interface RawgDetails {
 	genres?: { name: string }[]
 	developers?: { name: string }[]
 	publishers?: { name: string }[]
+	rating?: number | null
+	metacritic?: number | null
 }
 
 export class RawgProvider implements ContentProvider {
@@ -69,7 +71,7 @@ export class RawgProvider implements ContentProvider {
 			const key = this.getKey().trim()
 			if (!key) return null
 			const params = new URLSearchParams({ key })
-			const resp = await requestUrl({ url: `${RawgProvider.BASE}/${sourceId}?${params.toString()}`, throw: false })
+			const resp = await requestUrl({ url: `${RawgProvider.BASE}/${encodeURIComponent(sourceId)}?${params.toString()}`, throw: false })
 			if (resp.status !== 200) return null
 			const details = resp.json as RawgDetails
 
@@ -82,6 +84,13 @@ export class RawgProvider implements ContentProvider {
 				Cover: details.background_image ?? null
 			}
 			if (details.slug) fields['URL'] = `https://rawg.io/games/${details.slug}`
+			// RAWG rates 0-5, Metacritic 0-100 — both are normalized to a 0-10 scale.
+			if (typeof details.rating === 'number' && details.rating > 0) {
+				fields['Rating RAWG'] = Math.round(details.rating * 20) / 10
+			}
+			if (typeof details.metacritic === 'number' && details.metacritic > 0) {
+				fields['Rating MC'] = Math.round(details.metacritic) / 10
+			}
 
 			return { fields, progressTotal: 1, imdbId: null }
 		} catch (e) {

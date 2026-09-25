@@ -6,10 +6,13 @@ interface AniListMedia {
 	title: { romaji?: string; english?: string; native?: string }
 	startDate?: { year?: number | null }
 	episodes?: number | null
+	duration?: number | null
 	genres?: string[]
 	status?: string
 	averageScore?: number | null
 	coverImage?: { extraLarge?: string; large?: string }
+	bannerImage?: string | null
+	trailer?: { id?: string; site?: string }
 	studios?: { nodes?: { name: string }[] }
 	siteUrl?: string
 }
@@ -23,7 +26,7 @@ interface AniListMediaResponse {
 }
 
 const MEDIA_FIELDS =
-	'id title { romaji english native } startDate { year } episodes genres status averageScore coverImage { extraLarge large } studios(isMain: true) { nodes { name } } siteUrl'
+	'id title { romaji english native } startDate { year } episodes duration genres status averageScore coverImage { extraLarge large } bannerImage trailer { id site } studios(isMain: true) { nodes { name } } siteUrl'
 
 // Anime via AniList GraphQL (no key). Jikan's search endpoint proxies MyAnimeList and is frequently down (504).
 export class AnimeProvider implements ContentProvider {
@@ -50,6 +53,14 @@ export class AnimeProvider implements ContentProvider {
 
 	private cover(media: AniListMedia): string | null {
 		return media.coverImage?.extraLarge ?? media.coverImage?.large ?? null
+	}
+
+	private trailer(media: AniListMedia): string | null {
+		const id = media.trailer?.id
+		if (!id) return null
+		if (media.trailer?.site === 'youtube') return `https://www.youtube.com/watch?v=${id}`
+		if (media.trailer?.site === 'dailymotion') return `https://www.dailymotion.com/video/${id}`
+		return null
 	}
 
 	async search(query: string): Promise<SearchResult[]> {
@@ -92,6 +103,12 @@ export class AnimeProvider implements ContentProvider {
 			}
 			if (typeof media.averageScore === 'number') fields['Rating AniList'] = media.averageScore / 10
 			if (media.status) fields['Status'] = media.status
+			// AniList reports the length of one episode; the note contract keeps
+			// `Runtime` per episode for anything episodic.
+			if (typeof media.duration === 'number' && media.duration > 0) fields.Runtime = media.duration
+			const trailer = this.trailer(media)
+			if (trailer) fields.Trailer = trailer
+			if (media.bannerImage) fields.Gallery = [media.bannerImage]
 
 			const episodes = media.episodes && media.episodes > 0 ? media.episodes : null
 			return { fields, progressTotal: episodes, imdbId: null }

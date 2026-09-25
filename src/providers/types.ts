@@ -26,4 +26,21 @@ export interface ContentProvider {
 	readonly contentTypes: ContentType[]
 	search(query: string, type: ContentType): Promise<SearchResult[]>
 	fetch(sourceId: string, type: ContentType, raw?: unknown): Promise<NormalizedMetadata | null>
+	// false when `fetch` without the search result has nothing to look up
+	// (Open Library), so a refresh does not count the note as failed.
+	refreshable?(sourceId: string): boolean
+}
+
+export interface SeasonEntry {
+	name: string
+	episodes: number
+	rating: number | null
+	trailer: string | null
+}
+
+// Fills the fields a provider cannot serve itself (trailer, stills, seasons).
+// Enrichers are not providers: they are keyed by an id another source returned
+// and their output is merged into that source's fields.
+export interface MetadataEnricher {
+	enrich(imdbId: string, type: ContentType): Promise<Record<string, unknown>>
 }

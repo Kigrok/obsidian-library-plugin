@@ -1,5 +1,12 @@
 import { requestUrl } from 'obsidian'
-import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
+import { isEmptyValue, plausibleRuntime } from '../util'
+import type {
+	ContentProvider,
+	ContentType,
+	MetadataEnricher,
+	NormalizedMetadata,
+	SearchResult
+} from './types'
 
 function delay(ms: number): Promise<void> {
 	return new Promise((resolve) => window.setTimeout(resolve, ms))
@@ -17,14 +24,22 @@ interface OmdbSearchResponse {
 	Response?: string
 }
 
+interface OmdbRating {
+	Source?: string
+	Value?: string
+}
+
 interface OmdbDetails {
 	Title: string
 	Year?: string
 	Genre?: string
 	Director?: string
 	Writer?: string
+	Actors?: string
 	Poster?: string
 	imdbRating?: string
+	Ratings?: OmdbRating[]
+	Runtime?: string
 	totalSeasons?: string
 	imdbID: string
 	Response?: string
@@ -45,9 +60,11 @@ export class OmdbProvider implements ContentProvider {
 	private static readonly BASE = 'https://www.omdbapi.com/'
 
 	private getKey: () => string
+	private enrichers: MetadataEnricher[]
 
-	constructor(getKey: () => string) {
+	constructor(getKey: () => string, enrichers: MetadataEnricher[] = []) {
 		this.getKey = getKey
+		this.enrichers = enrichers
 	}
 
 	private url(params: Record<string, string>): string {
@@ -62,6 +79,29 @@ export class OmdbProvider implements ContentProvider {
 
 	private cover(value: string | undefined): string | null {
 		return na(value)
+	}
+
+	// OMDb returns Rotten Tomatoes as a percentage string ("87%") in the Ratings array.
+	private rtRating(details: OmdbDetails): number | null {
+		const entry = (details.Ratings ?? []).find((r) => r.Source === 'Rotten Tomatoes')
+		const match = entry?.Value?.match(/^(\d+)%$/)
+		return match ? Number(match[1]) : null
+	}
+
+	// OMDb wins for shared keys (e.g. Runtime); enrichers only fill what OMDb
+	// lacks, in order — TMDB (richer, keyed) before Cinemeta (keyless).
+	private async applyEnrichers(
+		fields: Record<string, unknown>,
+		imdbId: string,
+		type: ContentType
+	): Promise<void> {
+		for (const enricher of this.enrichers) {
+			const extra = await enricher.enrich(imdbId, type)
+			for (const [key, value] of Object.entries(extra)) {
+				if (isEmptyValue(value)) continue
+				if (isEmptyValue(fields[key])) fields[key] = value
+			}
+		}
 	}
 
 	async search(query: string, type: ContentType): Promise<SearchResult[]> {
@@ -104,6 +144,11 @@ export class OmdbProvider implements ContentProvider {
 			const genres = genreSource
 				? genreSource.split(',').map((s) => s.trim()).filter(Boolean)
 				: []
+			// OMDb lists the top-billed actors of a movie or series.
+			const actorSource = na(details.Actors)
+			const cast = actorSource
+				? actorSource.split(',').map((s) => s.trim()).filter(Boolean)
+				: []
 			const rawYear = na(details.Year)
 			const rating = na(details.imdbRating)
 
@@ -112,10 +157,17 @@ export class OmdbProvider implements ContentProvider {
 				Year: this.year(rawYear),
 				Genre: genres,
 				Creator: creators,
+				Cast: cast,
 				Cover: this.cover(details.Poster),
 				URL: `https://www.imdb.com/title/${details.imdbID}/`
 			}
 			if (rating) fields['Rating IMDB'] = parseFloat(rating)
+			const rt = this.rtRating(details)
+			if (rt !== null) fields['Rating RT'] = rt
+			const runtime = plausibleRuntime(details.Runtime)
+			if (runtime !== null) fields.Runtime = runtime
+
+			await this.applyEnrichers(fields, details.imdbID, type)
 
 			if (type === 'series') {
 				return this.enrichSeries(fields, details, sourceId)

@@ -35,14 +35,17 @@ export class ShareModal extends Modal {
 	private fm: Record<string, unknown>
 	private name: string
 	private share: ShareText
+	private coverProperty: string
 	private blob: Blob | null = null
 	private previewEl!: HTMLElement
 	private previewUrl: string | null = null
+	private closed = false
 
-	constructor(app: App, fm: Record<string, unknown>, name: string) {
+	constructor(app: App, fm: Record<string, unknown>, name: string, coverProperty = 'Cover') {
 		super(app)
 		this.fm = fm
 		this.name = name
+		this.coverProperty = coverProperty
 		this.share = buildShareText(fm, name)
 	}
 
@@ -90,11 +93,14 @@ export class ShareModal extends Modal {
 
 	private async renderPreview(): Promise<void> {
 		try {
-			this.blob = await renderShareCard(this.app, this.fm, this.name)
+			this.blob = await renderShareCard(this.app, this.fm, this.name, this.coverProperty)
 		} catch (e) {
 			console.error('Library: failed to render share card', e)
 			this.blob = null
 		}
+		// Closed while the card was still rendering: an object URL made now
+		// would never be revoked.
+		if (this.closed) return
 		this.previewEl.empty()
 		if (this.blob) {
 			if (this.previewUrl) URL.revokeObjectURL(this.previewUrl)
@@ -150,6 +156,7 @@ export class ShareModal extends Modal {
 	}
 
 	onClose(): void {
+		this.closed = true
 		if (this.previewUrl) {
 			URL.revokeObjectURL(this.previewUrl)
 			this.previewUrl = null

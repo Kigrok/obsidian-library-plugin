@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.2.1-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.0-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -28,18 +28,19 @@
 ## Características Principales
 
 - **Cuadrícula Visual de Tarjetas** — Una pestaña dedicada de Library renderiza tu colección como una galería de tarjetas con arte de portada.
-- **Búsqueda Integrada** — Busca y añade títulos directamente en la app: OMDb para películas y series, Open Library o Google Books para libros, RAWG para juegos, Deezer para música, AniList para anime, Comic Vine para cómics.
+- **Búsqueda Integrada** — Busca y añade títulos directamente en la app: OMDb para películas y series, Open Library o Google Books para libros, RAWG/Steam para juegos, Deezer para música, AniList para anime, Comic Vine para cómics.
 - **Seguimiento Inteligente de Series** — Las temporadas y el total de episodios se obtienen automáticamente y se mantienen sincronizados.
 - **Indicadores de Progreso** — Barras de progreso visuales en tarjetas y encabezados de notas muestran cuánto has visto o leído.
 - **Encabezados de Notas Ricos** — Cada nota de contenido recibe un encabezado generado automáticamente con todos los metadatos clave.
+- **Tráilers, imágenes y temporadas** — Las notas de películas y series muestran un tráiler integrado de YouTube/Vimeo, una fila de imágenes y la duración; las series incluyen además una lista de temporadas con número de episodios, valoraciones y tráilers por temporada.
 - **Categorías Personalizadas** — Crea categorías para Películas, Series, Anime, Cómics, Libros, Juegos, Música o cualquier otra cosa a través de la fuente manual.
-- **Enlaces en el Grafo** — Una propiedad `Related` en el frontmatter enlaza cada nota con su categoría, géneros y creadores, sincronizados automáticamente para un grafo hermoso.
+- **Enlaces en el Grafo** — Los géneros, creadores y el reparto se guardan como enlaces en sus propias propiedades `Genre`, `Creator` y `Cast`, así que la nota de cada género, creador y actor reúne sus títulos en los retroenlaces y el grafo lo muestra todo.
 - **Tarjetas para Compartir** — Convierte cualquier nota de contenido en una imagen de tarjeta lista para compartir (póster, título, año, género, puntuación de IMDb y tu valoración) y publícala en X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky o Pinterest — compártela directamente con las apps de tu dispositivo, o copia/guarda la imagen para usarla donde quieras.
 - **Sincronización con AniList** — Envía el progreso, el estado y la valoración de tu anime directamente a tu cuenta de AniList, o descarga tu lista de vuelta a tus notas.
-- **Ordenación y Contracción** — Ordena tarjetas por nombre, año, valoración o fecha; contrae cualquier categoría.
-- **Estadísticas** — Géneros principales, creadores principales (solo películas y series) y elementos principales por categoría con clasificaciones de medalla.
+- **Ordenación y Contracción** — Ordena las tarjetas por nombre, año, valoración o fecha; contrae cualquier categoría: seguirá contraída tras reiniciar.
+- **Estadísticas** — Tú eliges las columnas: los títulos mejor valorados de cualquier categoría o los valores más frecuentes de cualquier propiedad (géneros, creadores, actores…), además de un gráfico del tiempo visto.
 - **Detección de Duplicados** — Previene automáticamente añadir el mismo título dos veces por URL. Un comando integrado encuentra y elimina duplicados existentes.
-- **Multilingüe** — 31 idiomas: inglés, ucraniano, ruso, bielorruso, kazajo, uzbeko, alemán, español, francés, italiano, neerlandés, checo, croata, polaco, rumano, turco, azerbaiyano, persa, hindi, bengalí, urdu, tagalo, vietnamita, tailandés, javanés, japonés, coreano, chino, árabe, cingalés, hebreo.
+- **Multilingüe** — la interfaz del plugin está traducida a **todos los idiomas que admite Obsidian** (más de 70), así que siempre coincide con el idioma de tu Obsidian. Hay traducciones completas del README para 30 de ellos (consulta la barra de idiomas de arriba).
 
 ---
 
@@ -52,19 +53,19 @@ Instala **Library** desde el [directorio de Obsidian Community Plugins](https://
 ### 2. Configuración Básica
 
 1. Ve a **Ajustes** > **Library**.
-2. Añade tus **Categorías** — selecciona un tipo predefinido (Movies, Series, Books, Comics, Games, Music, Anime o Manual) del menú desplegable y haz clic en **Add category**. Cada categoría tiene un nombre para mostrar (traducido a tu idioma), un valor `Type` (siempre en inglés, por ejemplo `Movie`), una fuente y una carpeta opcional para almacenar notas.
-3. _(Opcional)_ Introduce claves API para los servicios que uses: [OMDb](https://www.omdbapi.com/apikey.aspx) para películas/series, [RAWG](https://rawg.io/apidocs) para juegos, [Comic Vine](https://comicvine.gamespot.com/api/) para cómics. Anime (AniList) y música (Deezer) no requieren clave.
+2. Añade tus **Categorías** — selecciona un tipo predefinido (Movies, Series, Books, Comics, Games, Music, Anime o Manual) del menú desplegable y haz clic en **Agregar categoría**. Cada categoría tiene un nombre para mostrar (traducido a tu idioma), un valor `Type` (siempre en inglés, por ejemplo `Movie`), una fuente y una carpeta opcional para almacenar notas.
+3. _(Opcional)_ Introduce claves API para los servicios que uses: [OMDb](https://www.omdbapi.com/apikey.aspx) para películas/series, [RAWG](https://rawg.io/apidocs) para juegos, [Comic Vine](https://comicvine.gamespot.com/api/) para cómics, [TMDB](https://www.themoviedb.org/settings/api) para tráilers, imágenes y detalles de temporadas, [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) para buscar libros. Anime (AniList), música (Deezer) y Steam no necesitan clave.
 
 ### 3. Añadir una Tarjeta por Título
 
 ¡No más rellenar frontmatter a mano! Añade una película, serie, anime o cómic simplemente buscando su nombre:
 
-1. Abre la pestaña **Library** desde el icono de la barra lateral (o ejecuta `Open Library`).
-2. Haz clic en el botón **+** en la parte superior derecha de la página de Library (o ejecuta `Add content`).
+1. Abre la pestaña **Library** desde el icono de la barra lateral (o ejecuta `Abrir biblioteca`).
+2. Haz clic en el botón **+** en la parte superior derecha de la página de Library (o ejecuta `Agregar contenido`).
 3. Elige una categoría, escribe el **título** en el cuadro de búsqueda y selecciona un resultado.
 4. Se crea una tarjeta al instante, con póster, año, género, creadores y valoración rellenados automáticamente.
 
-El botón **Search** junto a **+** busca títulos que ya están en tu biblioteca.
+El botón **Buscar en tu biblioteca** junto a **+** busca títulos que ya están en tu biblioteca.
 
 Para categorías **Manuales** simplemente escribes un título y rellenas la portada, el año y otros campos tú mismo.
 
@@ -72,11 +73,15 @@ Para categorías **Manuales** simplemente escribes un título y rellenas la port
 
 ## Estadísticas
 
-La pestaña de Library incluye una sección plegable de **Estadísticas** en la parte superior:
+En la parte superior de la pestaña «Biblioteca», la sección plegable **Estadísticas** muestra las columnas que elijas:
 
-- **Géneros Principales** — clasificados por frecuencia en toda tu biblioteca.
-- **Creadores Principales** — clasificados por número de películas y series en las que aparecen.
-- **Principales por Categoría** — para cada categoría (Películas, Series, Libros, etc.), los 3 elementos principales por valoración con miniaturas de portada pequeñas.
+- **Tops de categoría** — los tres títulos mejor valorados de una categoría, con portadas: *Top películas*, *Top libros*, etc. Ordenados por `My Rating` y, si falta, por `Rating IMDB`.
+- **Tops de propiedad** — los tres valores más frecuentes de una propiedad en toda tu biblioteca: *Top géneros*, *Top creadores*, *Top actores* o cualquier otra propiedad, como *Top: Author*. `Sci-Fi`, `sci-fi` y `[[Sci-Fi]]` cuentan como un solo valor.
+- **Tiempo visto** — un gráfico de las horas dedicadas a películas, series y anime, calculado a partir de `Runtime` y `Progress` de cada nota.
+
+Se configura en **Ajustes → Library → Estadísticas**: **Añadir top** muestra tus categorías y las propiedades encontradas en tus notas, el icono de la papelera quita una columna y un interruptor oculta el gráfico del tiempo visto. Las columnas aparecen en el orden en que las añades; una categoría nueva añade su propio top.
+
+Las categorías contraídas siguen contraídas tras reiniciar.
 
 ---
 
@@ -97,17 +102,25 @@ Cada categoría está vinculada a una fuente que potencia su búsqueda:
 | ----------------- | ------------------- | ----------------------------------------------------------- |
 | **OMDb**          | Películas, Series   | Clave gratuita requerida — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
 | **Books**         | Libros              | Open Library (sin clave) + Google Books (clave gratuita opcional). Los resultados se combinan — Google Books primero, Open Library debajo. |
-| **RAWG**          | Juegos              | Clave gratuita requerida — [rawg.io/apidocs](https://rawg.io/apidocs) |
+| **Games**          | Juegos              | RAWG (clave gratuita requerida — [rawg.io/apidocs](https://rawg.io/apidocs)) + Steam (ninguna). Los resultados se combinan — RAWG primero, Steam debajo. |
 | **Deezer**        | Música (álbumes)    | Ninguna                                                    |
 | **AniList**       | Anime               | Ninguna — API GraphQL gratuita de AniList, no se necesita clave |
 | **Comic Vine**    | Cómics              | Clave gratuita requerida — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
 | **Manual**        | Cualquier otra cosa | Ninguna — escribes el título y rellenas los campos tú mismo |
 
+Las notas de películas y series pueden enriquecerse con **TMDB** (clave gratuita opcional): el tráiler, las imágenes, la duración y la lista de temporadas de la serie se obtienen y se escriben en el frontmatter de la nota.
+
 ---
 
 ## Privacidad y Uso de Red
 
-Library es **offline-first**. El complemento solo contacta la red cuando buscas activamente un título para añadir, y solo con los términos de búsqueda que escribes:
+Library funciona **priorizando lo local**: tu biblioteca son notas normales y sigue funcionando sin conexión. El plugin solo envía los datos indicados abajo, y solo en estos casos:
+
+- **Cuando actúas tú:** buscas un título, actualizas metadatos, ejecutas un comando de AniList o pulsas el botón de compartir.
+- **Cuando abres una nota de la biblioteca:** sus metadatos se actualizan desde su fuente mediante `Source ID`, como máximo una vez cada 5 minutos por nota; una nota sin `Source ID` se busca por su nombre.
+- **Tras actualizar el plugin o cambiar una clave de API:** un proceso en segundo plano actualiza una vez las notas de tu biblioteca desde sus fuentes, nota a nota.
+
+Las portadas, fotogramas y reproductores de tráiler a los que apuntan tus notas se cargan desde los servidores indicados abajo.
 
 | Servicio | Cuándo | Qué se envía | Por qué |
 | --- | --- | --- | --- |
@@ -119,9 +132,21 @@ Library es **offline-first**. El complemento solo contacta la red cuando buscas 
 | `api.deezer.com` | Buscas en una categoría de música Deezer | El álbum o artista que escribes | Obtener metadatos de álbum (artista, año, género, conteo de pistas, portada) |
 | `graphql.anilist.co` | Buscas en una categoría de anime | El título que escribes | Obtener metadatos de anime (título, año, género, episodios, puntuación de AniList, estudio, póster) |
 | `graphql.anilist.co` | Ejecutas un comando de sincronización con AniList | Tu token de acceso de AniList y el progreso, el estado y la valoración de la nota | Leer o actualizar tu lista de anime de AniList |
+| `anilist.co` | Haces clic en **Conectar** en los ajustes de sincronización con AniList | Tu Client ID de AniList | Abrir la página de autorización de AniList en tu navegador |
 | `comicvine.gamespot.com` | Buscas en una categoría de cómics | El título que escribes y tu clave de Comic Vine | Obtener metadatos de cómics (título, año, editorial, conteo de números, portada) |
+| `store.steampowered.com` | Buscas o añades un juego de Steam | El título que escribes o el id de la app de Steam | Obtener metadatos del juego (año, género, desarrollador, portada) |
+| `cdn.cloudflare.steamstatic.com` | Una tarjeta de juego de Steam tiene portada | El id de la app de Steam | Cargar la imagen de portada |
+| `api.themoviedb.org` | Añades o actualizas una nota de película/serie con una clave TMDB | El ID de IMDb de la nota y tu clave de TMDB | Obtener el tráiler, las imágenes, la duración y la lista de temporadas |
+| `image.tmdb.org` | Una nota de película/serie tiene imágenes | La ruta de la imagen de TMDB | Cargar las imágenes |
+| `v3-cinemeta.strem.io` | Añades o actualizas una nota de película o serie | El id de IMDb de la nota | Obtener el tráiler, los fotogramas, la duración y la lista de temporadas de la serie — sin clave |
+| `images.metahub.space` | Una nota de película o serie tiene fotogramas | El id de IMDb de la nota | Cargar los fotogramas (fondos) |
+| `episodes.metahub.space` | Una nota de serie tiene fotogramas de episodios | El id de IMDb de la serie y los números de temporada y episodio | Cargar los fotogramas de los episodios |
+| `i.ytimg.com` | Una nota de película muestra fotogramas del tráiler | El id del vídeo del tráiler | Cargar los fotogramas del tráiler |
+| `s4.anilist.co` | Una nota de anime tiene un banner | La ruta en el CDN de AniList | Cargar la imagen del banner |
+| `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Abres una nota con un tráiler | El ID del tráiler | Incrustar el reproductor del tráiler |
+| `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Pulsas el botón de compartir | El pie de la tarjeta (título, tu valoración, enlace a la fuente) | Abrir la ventana de compartir de la red elegida con la publicación ya redactada — la imagen de la tarjeta permanece local |
 
-Ningún otro dato sale nunca de tu vault. El complemento **no tiene telemetría, ni análisis, ni mecanismo de actualización automática**. Las claves API (OMDb, Google Books, RAWG, Comic Vine) se almacenan solo en la configuración local del complemento y se envían solo a sus respectivos servicios. Las imágenes de portada se cargan directamente desde las URLs devueltas por cada fuente.
+Ningún otro dato sale nunca de tu vault. El complemento **no tiene telemetría, ni análisis, ni mecanismo de actualización automática**. Las claves API (OMDb, Google Books, RAWG, Comic Vine, TMDB) se almacenan solo en la configuración local del complemento y se envían solo a sus respectivos servicios. Las imágenes de portada se cargan directamente desde las URLs devueltas por cada fuente.
 
 ---
 
@@ -131,20 +156,31 @@ El complemento lee y escribe en YAML frontmatter estándar. Las notas se crean p
 
 ### Movie
 
+> **Propiedad de portada** — la propiedad del frontmatter que guarda la portada se puede renombrar en **Ajustes → Library** (por ejemplo, a `image`); las notas existentes siguen funcionando.
+
 ```yaml
 ---
 Type: Movie
 Name: Inception
 Year: 2010
 Genre:
-    - Action
-    - Sci-Fi
+    - "[[Action]]"
+    - "[[Sci-Fi]]"
 Creator:
-    - Christopher Nolan
+    - "[[Christopher Nolan]]"
+Cast:
+    - "[[Leonardo DiCaprio]]"
+    - "[[Joseph Gordon-Levitt]]"
+    - "[[Elliot Page]]"
 Rating IMDB: 8.8
+Rating RT: 87
+Runtime: 148
 My Rating: 9
 Cover: https://m.media-amazon.com/images/...
 URL: https://www.imdb.com/title/tt1375666/
+Trailer: https://www.youtube.com/watch?v=YoHD9XEInc0
+Gallery:
+    - https://image.tmdb.org/t/p/w780/9e3Dz7H1J0s5cBZLX2yXKxkC7Jg.jpg
 Progress: 1/1
 Complete: true
 Date: 01.03.2026
@@ -163,15 +199,33 @@ Year: 2016
 End Year: 2025
 Season: 5
 Genre:
-    - Drama
-    - Fantasy
-    - Horror
+    - "[[Drama]]"
+    - "[[Fantasy]]"
+    - "[[Horror]]"
 Creator:
-    - The Duffer Brothers
+    - "[[The Duffer Brothers]]"
+Cast:
+    - "[[Winona Ryder]]"
+    - "[[David Harbour]]"
+    - "[[Millie Bobby Brown]]"
 Rating IMDB: 8.7
+Rating RT: 91
+Runtime: 42
 My Rating: 9
 Cover: https://m.media-amazon.com/images/...
 URL: https://www.imdb.com/title/tt4574334/
+Trailer: https://www.youtube.com/watch?v=b9EkMc79ZSU
+Gallery:
+    - https://image.tmdb.org/t/p/w780/56v2KjBlU4XaOv9rVYEQypROD7P.jpg
+Seasons:
+    - name: Season 1
+      episodes: 8
+      rating: 8.0
+      trailer: https://www.youtube.com/watch?v=XWxyRG_tckY
+    - name: Season 2
+      episodes: 9
+      rating: 8.1
+      trailer: https://www.youtube.com/watch?v=R1ZXOOLMJ8s
 Progress: 25/42
 Complete: false
 Date: 01.03.2026
@@ -180,7 +234,9 @@ Source ID: tt4574334
 ---
 ```
 
-> **Actualización automática de series:** Ejecuta `Refresh metadata for current note` (o simplemente abre la nota) y el complemento actualiza el conteo total de episodios en `Progress` (por ejemplo, de `25/42` a `25/50`) y el conteo de `Season`, manteniendo tu conteo visto intacto.
+> **Actualización automática de series:** Ejecuta `Actualizar metadatos de la nota actual` (o simplemente abre la nota) y el complemento actualiza el conteo total de episodios en `Progress` (por ejemplo, de `25/42` a `25/50`) y el conteo de `Season`, manteniendo tu conteo visto intacto.
+
+> **Tráiler, imágenes y temporadas:** Con una clave de TMDB configurada, el plugin rellena `Trailer`, `Gallery`, `Runtime` y (en series) `Seasons` automáticamente — `Runtime` es la duración de la película en minutos o los minutos por episodio en una serie. El encabezado de la nota muestra entonces un reproductor integrado, una fila de imágenes y una lista de temporadas con número de episodios, valoraciones y botones de tráiler por temporada. Cada campo es frontmatter normal: edítalo o bórralo y el plugin respetará tus valores en el siguiente refresco. Cada versión del plugin también recorre la biblioteca una vez en segundo plano y completa los campos nuevos, nota a nota y sin bloquear la aplicación.
 
 ### Book
 
@@ -190,9 +246,9 @@ Type: Book
 Name: Dune
 Year: 1965
 Genre:
-    - Science Fiction
+    - "[[Science Fiction]]"
 Creator:
-    - Frank Herbert
+    - "[[Frank Herbert]]"
 Cover: https://covers.openlibrary.org/b/id/...-L.jpg
 ISBN: 9780441013593
 My Rating: 9
@@ -212,10 +268,10 @@ Type: Anime
 Name: Steins;Gate
 Year: 2011
 Genre:
-    - Sci-Fi
-    - Thriller
+    - "[[Sci-Fi]]"
+    - "[[Thriller]]"
 Creator:
-    - White Fox
+    - "[[White Fox]]"
 Rating AniList: 9.1
 Status: FINISHED
 Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
@@ -236,9 +292,9 @@ Type: Comic
 Name: Watchmen
 Year: 1986
 Genre:
-    - Comics
+    - "[[Comics]]"
 Creator:
-    - DC Comics
+    - "[[DC Comics]]"
 Cover: https://comicvine.gamespot.com/a/uploads/...
 URL: https://comicvine.gamespot.com/watchmen/4050-33819/
 Progress: 0/12
@@ -253,23 +309,25 @@ Source ID: 33819
 
 ## Enlaces en el Grafo
 
-Cada nota de contenido recibe una propiedad `Related` en el frontmatter, mantenida actualizada automáticamente — el cuerpo de la nota nunca se modifica:
+Los géneros, los creadores y, en películas y series, el reparto se guardan como enlaces en sus propias propiedades:
 
 ```yaml
-Related:
-    - "[[Movie]]"
+Genre:
     - "[[Action]]"
     - "[[Sci-Fi]]"
+Creator:
     - "[[Christopher Nolan]]"
+Cast:
+    - "[[Leonardo DiCaprio]]"
 ```
 
-Estos enlaces conectan tus notas a través de categorías compartidas, géneros y creadores, para que la vista de grafo de Obsidian forme clusters limpios. Se crea una nota real de hub por categoría (por ejemplo, `Movie`) para que los clusters se muestren incluso cuando los enlaces no resueltos estén ocultos. La propiedad se escribe cuando se crea una nota y se actualiza cada vez que cambian sus metadatos — ejecuta `Rebuild graph links` solo si quieres forzar una reconstrucción completa.
+Así, la nota de cada género, creador y actor muestra todos sus títulos en los retroenlaces, y el grafo conecta las notas a través de ellos. Los nombres simples —escritos a mano o dejados por una versión anterior— se convierten en enlaces cada vez que cambia una nota; un enlace con alias se conserva tal cual. `Reconstruir enlaces del grafo` convierte toda la biblioteca de una vez. La propiedad `Related` de versiones anteriores ya no se usa y se elimina de las notas.
 
 ---
 
 ## Compartir
 
-Cada nota de contenido tiene un botón **Compartir** en su encabezado (o ejecuta `Share current note`). Renderiza una imagen de tarjeta —póster, título, año, género, puntuación de IMDb/AniList y tu valoración— que puedes publicar donde quieras:
+Cada nota de contenido tiene un botón **Compartir** en su encabezado (o ejecuta `Compartir nota actual`). Renderiza una imagen de tarjeta —póster, título, año, género, puntuación de IMDb/AniList y tu valoración— que puedes publicar donde quieras:
 
 - **En el móvil** — el botón **Compartir…** abre la hoja de compartir nativa de tu dispositivo con la imagen de la tarjeta adjunta directamente, para que puedas enviarla directo a cualquier app.
 - **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — abre el editor de la red con un texto prerellenado (título, tu valoración, el enlace de origen y un enlace a este complemento). La imagen de la tarjeta se copia a tu portapapeles al mismo tiempo, así que solo tienes que pegarla (Ctrl/Cmd+V) en la publicación.
@@ -283,16 +341,16 @@ Compartir es totalmente local: la tarjeta se dibuja dentro de la app a partir de
 
 Mantén el progreso de tu anime sincronizado con tu cuenta de [AniList](https://anilist.co).
 
-**Configuración** — en **Ajustes → Library → AniList sync**:
+**Configuración** — en **Ajustes → Library → Sincronización con AniList**:
 
 1. Registra un cliente API gratuito en [anilist.co/settings/developer](https://anilist.co/settings/developer), con la URL de redirección establecida en `https://anilist.co/api/v2/oauth/pin`.
-2. Pega el **Client ID**, haz clic en **Connect** y autoriza.
-3. AniList te muestra un token de acceso — pégalo en el complemento. Haz clic en **Test connection** para confirmar.
+2. Pega el **Client ID**, haz clic en **Conectar** y autoriza.
+3. AniList te muestra un token de acceso — pégalo en el complemento. Haz clic en **Probar conexión** para confirmar.
 
 Luego usa los comandos:
 
-- **`Push current note to AniList`** — envía el progreso (episodios vistos), el estado (viendo / completado / planeado) y tu valoración de la nota de anime activa a tu lista de AniList.
-- **`Pull progress from AniList`** — obtiene tu lista de anime de AniList y actualiza las notas coincidentes. La descarga es **solo hacia adelante**: nunca retrocede una nota que localmente está más avanzada o ya completa, y deja intacta tu valoración personal `My Rating`.
+- **`Enviar la nota actual a AniList`** — envía el progreso (episodios vistos), el estado (viendo / completado / planeado) y tu valoración de la nota de anime activa a tu lista de AniList.
+- **`Obtener el progreso desde AniList`** — obtiene tu lista de anime de AniList y actualiza las notas coincidentes. La descarga es **solo hacia adelante**: nunca retrocede una nota que localmente está más avanzada o ya completa, y deja intacta tu valoración personal `My Rating`.
 
 Solo se sincronizan las notas con `Source: anilist` (añadidas a través de la fuente de anime de AniList). Tu token se almacena localmente en la configuración del complemento y se envía únicamente a AniList.
 
@@ -302,15 +360,16 @@ Solo se sincronizan las notas con `Source: anilist` (añadidas a través de la f
 
 | Comando                              | Descripción                                                                |
 | ------------------------------------ | -------------------------------------------------------------------------- |
-| `Open Library`                       | Abre la pestaña de galería de Library.                                     |
-| `Add content`                        | Busca una fuente y crea una nota de contenido (o escribe un título para Manual). |
-| `Search your library`                | Busca difusamente y abre cualquier nota que ya esté en tu biblioteca.       |
-| `Refresh metadata for current note`  | Vuelve a obtener metadatos para la nota activa; actualiza conteos de episodios de series. |
-| `Rebuild graph links`                | Conecta cada nota de contenido con su categoría, géneros y creadores.       |
-| `Find & remove duplicates`           | Escanea todas las notas por URL, muestra duplicados y elimina los seleccionados. |
-| `Share current note`                 | Renderiza la nota como una imagen de tarjeta y compártela en X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky o Pinterest. |
-| `Push current note to AniList`       | Envía el progreso, el estado y la valoración de la nota de anime activa a tu cuenta de AniList. |
-| `Pull progress from AniList`         | Obtiene tu lista de AniList y actualiza las notas coincidentes (solo hacia adelante). |
+| `Abrir biblioteca`                       | Abre la pestaña de galería de Library.                                     |
+| `Agregar contenido`                        | Busca una fuente y crea una nota de contenido (o escribe un título para Manual). |
+| `Buscar en tu biblioteca`                | Busca difusamente y abre cualquier nota que ya esté en tu biblioteca.       |
+| `Actualizar metadatos de la nota actual`  | Vuelve a obtener metadatos para la nota activa; actualiza conteos de episodios de series. |
+| `Reconstruir enlaces del grafo`                | Convierte `Genre`, `Creator` y `Cast` en enlaces en todas las notas de contenido. |
+| `Encontrar y eliminar duplicados`           | Escanea todas las notas por URL, muestra duplicados y elimina los seleccionados. |
+| `Compartir nota actual`                 | Renderiza la nota como una imagen de tarjeta y compártela en X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky o Pinterest. |
+| `Enviar la nota actual a AniList`       | Envía el progreso, el estado y la valoración de la nota de anime activa a tu cuenta de AniList. |
+| `Obtener el progreso desde AniList`         | Obtiene tu lista de AniList y actualiza las notas coincidentes (solo hacia adelante). |
+| `Actualizar metadatos de todas las notas` | Obtener los metadatos de todas las notas de la biblioteca, una a una y en segundo plano. |
 
 ---
 
@@ -319,6 +378,12 @@ Solo se sincronizan las notas con `Source: anilist` (añadidas a través de la f
 - **¿Encontraste un bug?** Abre un [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
 - **¿Tienes una idea de función?** Inicia una [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
 - **¿Te encanta el complemento?** ¡Considera dar una estrella al repositorio para mostrar tu apoyo!
+
+---
+
+## Licencia
+
+[MIT License](LICENSE) — libre para usar, modificar y compartir.
 
 ---
 

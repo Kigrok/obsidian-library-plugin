@@ -28,6 +28,10 @@ export class BookAggregatorProvider implements ContentProvider {
 		return [...wrap(fromGoogle, 'googlebooks'), ...wrap(fromOpenlib, 'openlibrary')]
 	}
 
+	refreshable(sourceId: string): boolean {
+		return !sourceId.startsWith('/')
+	}
+
 	async fetch(sourceId: string, _type: ContentType, raw?: unknown): Promise<NormalizedMetadata | null> {
 		const wrapped = raw as WrappedRaw | undefined
 		if (wrapped && typeof wrapped === 'object') {

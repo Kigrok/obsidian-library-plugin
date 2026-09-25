@@ -1,0 +1,49 @@
+# AGENTS.md
+
+This file provides guidance to the AI agent when working with code in this repository.
+
+## Project
+
+Obsidian plugin ("Library") that renders notes as a card gallery. TypeScript in `src/` is bundled to `main.js` (CJS) by esbuild. This working directory **is** the installed plugin folder inside a vault, so `npm run dev` writes `main.js` in place and Obsidian loads it after a plugin reload.
+
+## Commands
+
+- `npm run dev` — esbuild watch build.
+- `npm run build` — `tsc -noEmit -skipLibCheck` + minified `main.js`. This is the required gate before a PR.
+- `npm run lint` — eslint on `src/**/*.ts` + `tests/**/*.ts` (typescript-eslint `recommendedTypeChecked` + `eslint-plugin-obsidianmd`). `vitest.config.ts` is ignored: it sits outside the root `tsconfig` and the project service cannot type it without dragging vitest types into the production `tsc` gate.
+- `npm test` (`npm run test:watch`) — vitest, `tests/**/*.test.ts`, run in jsdom.
+- `npm version <x.y.z>` — lifecycle script syncs `manifest.json` + `versions.json` from `package.json` and stages them; never hand-edit the three version fields. Pushing the tag triggers `.github/workflows/release.yml`, which builds, attests, and publishes the release.
+
+## Tests
+
+`tests/unit/` covers the pure helpers and providers, `tests/compliance/` guards the Obsidian submission rules (manifest, versions, license, source hygiene, README privacy table) and ends with a bundle smoke test that rebuilds `src/main.ts` with esbuild, evaluates it with a shim `require('obsidian')`, and boots the plugin against `tests/stubs/obsidian.ts` (the npm `obsidian` package is types-only, so `vitest.config.ts` aliases the module to that stub). `tests/setup.ts` installs the DOM helpers Obsidian adds (`createEl`/`createDiv`/`setText`/…) and restores Node's `TextEncoder`/`Uint8Array` — jsdom's own realm breaks esbuild's startup invariant check.
+
+The ES2017 type ceiling applies to `src/` only: `tests/tsconfig.json` raises `lib` to ES2020 and uses `moduleResolution: bundler`. Node-only types and `document`-based helpers are fine in tests; the eslint config relaxes the mobile/DOM rules for `tests/**`.
+
+## Constraints that are easy to violate
+
+- **ES2017 is the type ceiling.** `tsconfig.json` `lib` stops at ES2017, so ES2018+ runtime APIs (`Object.fromEntries`, `Array.prototype.flat`, `String.prototype.trimEnd`) fail the build even though esbuild targets es2020. Use a loop or regex instead.
+- **The Obsidian API ceiling is 1.8.7** (`minAppVersion`), but the `obsidian` dependency is `latest`, so the typings accept APIs that do not exist at the minimum supported version. Check the docs version, not the typings.
+- **All network calls use `requestUrl` from `obsidian`, never global `fetch`** — the plugin targets mobile (`isDesktopOnly: false`).
+- **Every UI string goes through `tr()`** (`src/i18n.ts`). Add the key to **all** locale blocks in `I18N` (`src/constants.ts`), not just `en`; `localeMap` there maps Obsidian language subtags to blocks. A string with a count uses `trCount(key, n)` and three keys `<key>1` / `<key>2` / `<key>5` (singular / plural / the Slavic-Baltic "many"); the form is picked by `Intl.PluralRules`, never by hand-written number rules, and a `{count}` in the text is filled. Write a count as a label (`Removed: {count}`) or through `trCount` — never `note(s)`. A locale block stays in its own script: key parity alone passed while `zh-TW` and `pt-BR` held Tatar strings, so `tests/unit/i18n.test.ts` also checks the script of every value.
+- **`Genre`, `Creator` and `Cast` are link properties** (`LINK_FIELDS` in `src/main.ts`): they hold `[[Name]]` entries so every genre's, creator's and actor's note lists its titles as backlinks and the graph draws them. Writes go through `toLinks()` (`src/util.ts`), and `syncLinkFields` turns plain names — typed by hand or left by an earlier version — into links while keeping links someone wrote (aliases included), and removes the `Related` property earlier versions kept. Anything that *shows* these values (header, statistics, share card) unwraps them with `linkLabel()`.
+- **Frontmatter is untrusted data.** Any value that becomes an `href` or `src` goes through `safeUrl()` (`src/util.ts`, http/https only) — a shared note must not be able to plant a `javascript:` link. Names that become files or links go through `sanitizeFilename()` / `sanitizeLink()`.
+- **DOM the plugin puts into Obsidian's own views is removed in `onunload`** (the note header in reading views, the gallery lightbox); registered events and timers alone are not enough.
+- **Frontmatter field names are the data contract** (`Source`, `Source ID`, `Progress` as `watched/total`, `Date` as `dd.mm.yyyy`, `My Rating`, `Rating IMDB`). Renaming one silently breaks refresh, statistics, and AniList sync on existing notes. `Trailer` (link), `Gallery` (list of image URLs), `Seasons` (list of `{name, episodes, rating, trailer}`, series only) and `Runtime` (minutes; for a series the length of **one** episode) and `Cast` (the top-billed actors of a movie or series, from OMDb's `Actors`) are optional additions written by the metadata enrichment — they follow the same "fill empty only" rule on refresh, so hand-edited values win. A series note displays the whole run instead: `totalRuntimeMinutes` (`src/util.ts`) multiplies the stored per-episode value by the `Seasons` episode sum, falling back to the `Progress` denominator, and `formatRuntime` (same file) renders it as `header.hours` + `header.minutes` — minutes alone stop reading once a run passes an hour. The stats view's watch-time donut sums `watchedRuntimeMinutes` (watched episodes × the per-episode length, the whole run once `Complete` is set) for the `movie`/`series`/`anime` categories.
+- **Metadata enrichment is keyless by default.** `src/providers/cinemeta.ts` (IMDb-id-keyed, no account) fills `Trailer`/`Gallery`/`Seasons`/`Runtime` for movies and series; AniList fills `Trailer`/`Gallery` for anime. `src/providers/tmdb.ts` is the optional richer source, applied first when a TMDB key is set. OMDb always wins on shared keys. Enrichers implement `MetadataEnricher` (`src/providers/types.ts`) and are injected into `OmdbProvider` in order — never register one as a `ContentProvider`.
+- **New fields reach existing notes through a background pass, not a migration.** `scheduleEnrich` (`src/main.ts`) walks the vault 10 s after `onLayoutReady`, one note per 700 ms, and stamps `settings.enrichMarks[path] = manifest.version` once a note is refreshed — so a release backfills the whole library on its own and later launches stay quiet. A note is stamped only when its fetch succeeded (a quota error or an outage leaves it for the next pass), an offline device stops the pass early, a provider with nothing to refetch by id says so through `refreshable()` (Open Library), and a finished pass drops the marks of notes that no longer exist. The marks are cleared in `saveSettings` whenever the API-key signature changes (`apiKeySignature`), because a newly added key unlocks data the previous pass could not fetch; a key changed during a running pass sets `enrichAgain` so the walk starts over once it ends. The scheduling timer (`enrichTimer`) and the step pause (`enrichSleepTimer`) stay separate: with one shared timer, a key change cancels the pause and the walk hangs. The `Refresh metadata of all notes` command runs the same walk forced. The pass is abortable: `onunload` sets `unloaded` and resolves the pending sleep, and the bundle smoke test asserts no timer survives it.
+- **View state that survives a reload lives in the settings file**, not in module scope: `settings.sortState` per category, `settings.statsCollapsed` for the statistics section, and `collapsed: true` on a category whose section is folded (read on `render`, written back with `persistSettings()` on user action). `settings.stats` holds the watch-time switch and `tops`, the ordered list of statistics columns — each a category (keyed by its Type value) or a frontmatter property (by name); `loadStats` turns the switches of earlier versions into that list. Nested settings blocks are merged key by key in `loadSettings`, and `onExternalSettingsChange` reloads the file when sync changes it — without it the next save here would overwrite the other device's changes.
+- **The library view redraws only for library notes** (and notes it showed last time); a redraw keeps the scroll position and the folded sections.
+- **`main.js` is generated and gitignored** — never edit or commit it.
+
+## Adding a content source
+
+Implement `ContentProvider` and `ContentType` from `src/providers/types.ts`, keep `Source ID` stable as the refresh key, and register the provider in `src/main.ts`.
+
+When two sources feed the same medium, merge them behind an aggregator instead of registering a second category (`src/providers/bookAggregator.ts`, `src/providers/gameAggregator.ts`): the aggregator tags each search result with `{__pid, __raw}` so `fetch` can route back to the right source, and falls back to the source-id shape on refresh, where no raw result is available (Steam ids are prefixed `steam:`; Open Library ids start with `/`; bare numeric ids belong to RAWG).
+
+## Style and repo etiquette
+
+- Tabs for indentation (`.editorconfig`); strict TypeScript, no `any`.
+- Conventional Commits with the version in the message, e.g. `feat: 2.2.1 — AniList progress sync`. PRs target `main`.
+- User-facing changes usually also require updating the 30 translated READMEs under `readme/` alongside `README.md`. Commands and buttons appear there under their translated names — take them from that locale's `I18N` block, since the command palette searches the translated name.

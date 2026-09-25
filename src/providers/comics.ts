@@ -9,6 +9,7 @@ interface ComicVineVolume {
 	publisher?: { name?: string }
 	count_of_issues?: number
 	site_detail_url?: string
+	api_detail_url?: string
 	description?: string
 }
 
@@ -23,11 +24,23 @@ export class ComicsProvider implements ContentProvider {
 	readonly contentTypes: ContentType[] = ['comic']
 
 	private static readonly BASE = 'https://comicvine.gamespot.com/api'
+	// Comic Vine resource ids are "<resource type>-<id>": volumes are 4050, issues are 4000.
+	private static readonly VOLUME_TYPE = '4050'
 
 	private getKey: () => string
 
 	constructor(getKey: () => string) {
 		this.getKey = getKey
+	}
+
+	private volumeId(sourceId: string): string {
+		return sourceId.replace(/^\d+-/, '')
+	}
+
+	private detailUrl(sourceId: string, raw?: unknown): string {
+		const fromRaw = raw && typeof raw === 'object' ? (raw as ComicVineVolume).api_detail_url : undefined
+		if (typeof fromRaw === 'string' && fromRaw.startsWith(`${ComicsProvider.BASE}/`)) return fromRaw
+		return `${ComicsProvider.BASE}/volume/${ComicsProvider.VOLUME_TYPE}-${this.volumeId(sourceId)}/`
 	}
 
 	private year(volume: ComicVineVolume): number | null {
@@ -74,7 +87,7 @@ export class ComicsProvider implements ContentProvider {
 		}
 	}
 
-	async fetch(sourceId: string): Promise<NormalizedMetadata | null> {
+	async fetch(sourceId: string, _type: ContentType, raw?: unknown): Promise<NormalizedMetadata | null> {
 		try {
 			const key = this.getKey().trim()
 			if (!key) return null
@@ -83,7 +96,7 @@ export class ComicsProvider implements ContentProvider {
 				format: 'json'
 			})
 			const resp = await requestUrl({
-				url: `${ComicsProvider.BASE}/volume/4000-${sourceId}/?${params.toString()}`,
+				url: `${this.detailUrl(sourceId, raw)}?${params.toString()}`,
 				throw: false
 			})
 			if (resp.status !== 200) return null
@@ -97,7 +110,7 @@ export class ComicsProvider implements ContentProvider {
 				Genre: ['Comics'],
 				Creator: vol.publisher?.name ? [vol.publisher.name] : [],
 				Cover: this.cover(vol),
-				URL: vol.site_detail_url || `https://comicvine.gamespot.com/volumes/4000-${sourceId}/`
+				URL: vol.site_detail_url || `https://comicvine.gamespot.com/volume/${ComicsProvider.VOLUME_TYPE}-${this.volumeId(sourceId)}/`
 			}
 
 			const issueCount = vol.count_of_issues && vol.count_of_issues > 0 ? vol.count_of_issues : null

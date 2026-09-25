@@ -26,20 +26,27 @@ export function listStatus(complete: boolean, watched: number): MediaListStatus 
 	return 'PLANNING'
 }
 
+// null covers every failure: `throw: false` only silences HTTP errors, so an
+// offline device or a non-JSON body still throws and is caught here.
 async function gql<T>(token: string, query: string, variables: Record<string, unknown>): Promise<T | null> {
-	const resp = await requestUrl({
-		url: ENDPOINT,
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			Accept: 'application/json',
-			Authorization: `Bearer ${token}`
-		},
-		body: JSON.stringify({ query, variables }),
-		throw: false
-	})
-	if (resp.status !== 200) return null
-	return resp.json as T
+	try {
+		const resp = await requestUrl({
+			url: ENDPOINT,
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				Authorization: `Bearer ${token}`
+			},
+			body: JSON.stringify({ query, variables }),
+			throw: false
+		})
+		if (resp.status !== 200) return null
+		return resp.json as T
+	} catch (e) {
+		console.error('Library: AniList request error', e)
+		return null
+	}
 }
 
 // Validate the token and return the authenticated user (null if the token is bad/expired).
@@ -77,13 +84,16 @@ interface ListCollectionResponse {
 	}
 }
 
-// Pull the user's full anime list (all statuses) as flat entries.
-export async function fetchList(token: string, userId: number): Promise<AniListEntry[]> {
+// Pull the user's full anime list (all statuses) as flat entries; null when the
+// request failed, so an empty list is never mistaken for a sync.
+export async function fetchList(token: string, userId: number): Promise<AniListEntry[] | null> {
 	const query =
 		'query ($userId: Int) { MediaListCollection(userId: $userId, type: ANIME) {' +
 		' lists { entries { mediaId progress status score } } } }'
 	const json = await gql<ListCollectionResponse>(token, query, { userId })
-	const lists = json?.data?.MediaListCollection?.lists ?? []
+	const collection = json?.data?.MediaListCollection
+	if (!collection) return null
+	const lists = collection.lists ?? []
 	const out: AniListEntry[] = []
 	for (const list of lists) {
 		for (const e of list.entries ?? []) {

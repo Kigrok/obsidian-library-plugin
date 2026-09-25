@@ -1,8 +1,40 @@
-import { App, Notice, PluginSettingTab, Setting } from "obsidian";
+import {
+	App,
+	Notice,
+	PluginSettingTab,
+	Setting,
+	type DropdownComponent,
+	type TextComponent,
+} from "obsidian";
 import type LibraryPlugin from "./main";
+import type { ICategory, IStatsTop } from "./constants";
+import { isTemplateFile, rankableProperties, toStr, topLabel } from "./util";
 import { isContentType, type ContentType } from "./providers/types";
 import { tr } from "./i18n";
 import { aniListViewer, anilistAuthUrl } from "./anilistSync";
+
+const TYPE_DEFAULTS: Record<string, string> = {
+	movie: "Movie",
+	series: "Series",
+	book: "Book",
+	comic: "Comic",
+	game: "Game",
+	music: "Music",
+	anime: "Anime",
+	manual: "Manual",
+};
+
+function isDefaultTypeValue(value: string): boolean {
+	return Object.values(TYPE_DEFAULTS).includes(value);
+}
+
+// A YAML sample, not UI text: it stays verbatim in every language.
+const FRONTMATTER_EXAMPLE = [
+	"---",
+	"Type: Movie",
+	"URL: https://www.imdb.com/title/tt.....",
+	"---",
+].join("\n");
 
 export class LibrarySettingTab extends PluginSettingTab {
 	private plugin: LibraryPlugin;
@@ -10,6 +42,63 @@ export class LibrarySettingTab extends PluginSettingTab {
 	constructor(app: App, plugin: LibraryPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
+	}
+
+	// One category per medium: a single source may merge several providers
+	// (Games = RAWG + Steam, Books = Google Books + Open Library).
+	private addSourceOptions(d: DropdownComponent): void {
+		const options: Array<[string, string]> = [
+			["movie", tr("settings.default.movie") + " — OMDb"],
+			["series", tr("settings.default.series") + " — OMDb"],
+			["book", tr("settings.default.book") + " — Google Books + Open Library"],
+			["comic", tr("settings.default.comic") + " — Comic Vine"],
+			["game", tr("settings.default.game") + " — RAWG + Steam"],
+			["music", tr("settings.default.music") + " — Deezer"],
+			["anime", tr("settings.default.anime") + " — AniList"],
+			["manual", tr("settings.category.manual")],
+		]
+		for (const [value, label] of options) d.addOption(value, label)
+	}
+
+	private libraryFrontmatter(): Record<string, unknown>[] {
+		const types = new Set(this.plugin.settings.categories.map((c) => c.typeValue));
+		const list: Record<string, unknown>[] = [];
+		for (const file of this.app.vault.getMarkdownFiles()) {
+			if (isTemplateFile(file.path)) continue;
+			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter;
+			if (fm && types.has(toStr(fm.Type))) list.push(fm);
+		}
+		return list;
+	}
+
+	// A category's statistics column is keyed by its Type value, so it moves
+	// along when that value changes.
+	private retypeCategory(cat: ICategory, typeValue: string): void {
+		for (const top of this.plugin.settings.stats.tops) {
+			if (top.kind === "category" && top.key === cat.typeValue) top.key = typeValue;
+		}
+		cat.typeValue = typeValue;
+	}
+
+	// What "Add top" can still offer: the categories, then the properties the
+	// library's notes use — none that already has its column.
+	private topCandidates(): Array<{ group: string; label: string; top: IStatsTop }> {
+		const listed = new Set<string>();
+		for (const top of this.plugin.settings.stats.tops) listed.add(`${top.kind}:${top.key.toLowerCase()}`);
+		const list: Array<{ group: string; label: string; top: IStatsTop }> = [];
+		const offer = (group: string, label: string, top: IStatsTop): void => {
+			const id = `${top.kind}:${top.key.toLowerCase()}`;
+			if (!top.key || listed.has(id)) return;
+			listed.add(id);
+			list.push({ group, label, top });
+		};
+		for (const cat of this.plugin.settings.categories) {
+			offer(tr("settings.section.categories"), cat.name || cat.typeValue, { kind: "category", key: cat.typeValue });
+		}
+		for (const property of rankableProperties(this.libraryFrontmatter(), this.plugin.settings.coverProperty)) {
+			offer(tr("settings.stats.groupProperties"), property, { kind: "property", key: property });
+		}
+		return list;
 	}
 
 	display(): void {
@@ -58,6 +147,19 @@ export class LibrarySettingTab extends PluginSettingTab {
 			);
 
 		new Setting(containerEl)
+			.setName(tr("settings.tmdbApiKey.name"))
+			.setDesc(tr("settings.tmdbApiKey.desc"))
+			.addText((text) =>
+				text
+					.setPlaceholder(tr("settings.google.placeholder"))
+					.setValue(this.plugin.settings.tmdbApiKey)
+					.onChange(async (v) => {
+						this.plugin.settings.tmdbApiKey = v.trim();
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl)
 			.setName(tr("settings.comicvine.name"))
 			.setDesc(tr("settings.comicvine.desc"))
 			.addText((text) =>
@@ -66,6 +168,19 @@ export class LibrarySettingTab extends PluginSettingTab {
 					.setValue(this.plugin.settings.comicVineApiKey)
 					.onChange(async (v) => {
 						this.plugin.settings.comicVineApiKey = v.trim();
+						await this.plugin.saveSettings();
+					}),
+			);
+
+		new Setting(containerEl)
+			.setName(tr("settings.coverProperty.name"))
+			.setDesc(tr("settings.coverProperty.desc"))
+			.addText((text) =>
+				text
+					.setPlaceholder("Cover")
+					.setValue(this.plugin.settings.coverProperty)
+					.onChange(async (v) => {
+						this.plugin.settings.coverProperty = v.trim();
 						await this.plugin.saveSettings();
 					}),
 			);
@@ -130,10 +245,13 @@ export class LibrarySettingTab extends PluginSettingTab {
 			const div = containerEl.createDiv({
 				cls: "library-settings-category",
 			});
+			let typeInput: TextComponent | null = null;
 
-			new Setting(div)
-				.setName(tr("settings.category.name", { index: i + 1 }))
-				.setDesc(tr("settings.category.desc"))
+			const row = new Setting(div)
+				.setName(
+					cat.name ||
+						tr("settings.category.name", { index: i + 1 }),
+				)
 				.addText((t) =>
 					t
 						.setPlaceholder(
@@ -142,48 +260,74 @@ export class LibrarySettingTab extends PluginSettingTab {
 						.setValue(cat.name)
 						.onChange(async (v) => {
 							cat.name = v.trim();
+							row.nameEl.setText(
+								cat.name ||
+									tr("settings.category.name", {
+										index: i + 1,
+									}),
+							);
 							await this.plugin.saveSettings();
 						}),
 				)
-				.addText((t) =>
-					t
-						.setPlaceholder(
-							tr("settings.category.type.placeholder"),
-						)
-						.setValue(cat.typeValue)
-						.onChange(async (v) => {
-							cat.typeValue = v.trim();
-							await this.plugin.saveSettings();
-						}),
-				)
-				.addDropdown((d) =>
-					d
-						.addOption("movie", "OMDb · " + tr('settings.default.movie'))
-						.addOption("series", "OMDb · " + tr('settings.default.series'))
-						.addOption("anime", "AniList · " + tr('settings.default.anime') + " (free)")
-						.addOption("book", "Books · " + tr('settings.default.book'))
-						.addOption("comic", "Comic Vine · " + tr('settings.default.comic'))
-						.addOption("game", "RAWG · " + tr('settings.default.game'))
-						.addOption("music", "Deezer · " + tr('settings.default.music'))
-						.addOption("manual", tr("settings.category.manual"))
-						.setValue(cat.contentType)
-						.onChange(async (v) => {
-							if (isContentType(v)) cat.contentType = v;
-							await this.plugin.saveSettings();
-						}),
-				)
+				.addDropdown((d) => {
+					this.addSourceOptions(d);
+					d.setValue(cat.contentType).onChange(async (v) => {
+						if (!isContentType(v)) return;
+						// Follow the new source unless a custom Type value was typed.
+						const def = TYPE_DEFAULTS[v];
+						if (
+							def &&
+							(!cat.typeValue ||
+								isDefaultTypeValue(cat.typeValue))
+						) {
+							this.retypeCategory(cat, def);
+							typeInput?.setValue(def);
+						}
+						cat.contentType = v;
+						await this.plugin.saveSettings();
+					});
+				})
 				.addButton((b) =>
 					b
 						.setIcon("trash")
 						.setWarning()
 						.onClick(async () => {
 							this.plugin.settings.categories.splice(i, 1);
+							// Its statistics column goes too, unless another
+							// category still shows notes of that Type.
+							const settings = this.plugin.settings;
+							if (!settings.categories.some((c) => c.typeValue === cat.typeValue)) {
+								settings.stats.tops = settings.stats.tops.filter(
+									(top) => !(top.kind === "category" && top.key === cat.typeValue),
+								);
+							}
 							await this.plugin.saveSettings();
 							this.display();
 						}),
 				);
 
-			new Setting(div)
+			const details = div.createEl("details", {
+				cls: "library-settings-advanced",
+			});
+			details.createEl("summary", {
+				text: tr("settings.category.advanced"),
+			});
+
+			new Setting(details)
+				.setName(tr("settings.category.type"))
+				.addText((t) => {
+					typeInput = t;
+					t.setPlaceholder(
+						tr("settings.category.type.placeholder"),
+					)
+						.setValue(cat.typeValue)
+						.onChange(async (v) => {
+							this.retypeCategory(cat, v.trim());
+							await this.plugin.saveSettings();
+						});
+				});
+
+			new Setting(details)
 				.setName(tr("settings.category.folder"))
 				.addText((t) =>
 					t
@@ -198,56 +342,124 @@ export class LibrarySettingTab extends PluginSettingTab {
 				);
 		});
 
-		const addDiv = containerEl.createDiv({ cls: 'library-settings-category' })
-		let addValue = 'movie'
+		const addDiv = containerEl.createDiv({
+			cls: "library-settings-category",
+		})
+		let addValue = "movie"
 		new Setting(addDiv)
-			.setName(tr('settings.addCategory'))
+			.setName(tr("settings.addCategory"))
 			.addDropdown((d) => {
-				d.addOption('movie', tr('settings.default.movie'))
-				d.addOption('series', tr('settings.default.series'))
-				d.addOption('book', tr('settings.default.book'))
-				d.addOption('comic', tr('settings.default.comic'))
-				d.addOption('game', tr('settings.default.game'))
-				d.addOption('music', tr('settings.default.music'))
-				d.addOption('anime', tr('settings.default.anime'))
-				d.addOption('manual', tr('settings.default.manual'))
-				d.setValue('movie')
-				d.onChange((v) => { addValue = v })
+				this.addSourceOptions(d)
+				d.setValue("movie")
+				d.onChange((v) => {
+					addValue = v
+				})
 			})
 			.addButton((b) =>
 				b
-					.setButtonText(tr('settings.addCategory'))
+					.setButtonText(tr("settings.addCategory"))
 					.setCta()
 					.onClick(async () => {
-						const typeMap: Record<string, { name: string; typeValue: string; contentType: ContentType }> = {
-							movie: { name: tr('settings.default.movie'), typeValue: 'Movie', contentType: 'movie' },
-							series: { name: tr('settings.default.series'), typeValue: 'Series', contentType: 'series' },
-							book: { name: tr('settings.default.book'), typeValue: 'Book', contentType: 'book' },
-							comic: { name: tr('settings.default.comic'), typeValue: 'Comic', contentType: 'comic' },
-							game: { name: tr('settings.default.game'), typeValue: 'Game', contentType: 'game' },
-							music: { name: tr('settings.default.music'), typeValue: 'Music', contentType: 'music' },
-							anime: { name: tr('settings.default.anime'), typeValue: 'Anime', contentType: 'anime' },
-							manual: { name: tr('settings.default.manual'), typeValue: 'Manual', contentType: 'manual' },
+						const names: Record<string, string> = {
+							movie: tr("settings.default.movie"),
+							series: tr("settings.default.series"),
+							book: tr("settings.default.book"),
+							comic: tr("settings.default.comic"),
+							game: tr("settings.default.game"),
+							music: tr("settings.default.music"),
+							anime: tr("settings.default.anime"),
+							manual: tr("settings.default.manual"),
 						}
-						const def = typeMap[addValue]
-						if (!def) return
+						const contentType: ContentType = isContentType(addValue)
+							? addValue
+							: "movie"
+						const typeValue = TYPE_DEFAULTS[contentType] ?? "Movie"
 						this.plugin.settings.categories.push({
-							name: def.name,
-							typeValue: def.typeValue,
-							contentType: def.contentType,
-							folder: '',
+							name: names[contentType] ?? contentType,
+							typeValue,
+							contentType,
+							folder: "",
 						})
+						// A new category shows its top titles right away, the
+						// way every category did before tops were chosen.
+						const tops = this.plugin.settings.stats.tops
+						if (!tops.some((top) => top.kind === "category" && top.key === typeValue)) {
+							tops.push({ kind: "category", key: typeValue })
+						}
 						await this.plugin.saveSettings()
 						this.display()
 					})
 			)
 
+		new Setting(containerEl).setName(tr("stats.title")).setHeading();
+		containerEl.createEl("p", { text: tr("settings.stats.desc") });
+		new Setting(containerEl).setName(tr("stats.watchTime")).addToggle((toggle) =>
+			toggle
+				.setValue(this.plugin.settings.stats.watchTime)
+				.onChange(async (value) => {
+					this.plugin.settings.stats.watchTime = value;
+					await this.plugin.saveSettings();
+				}),
+		);
+		// The columns in the order they show, each with its own remove button.
+		this.plugin.settings.stats.tops.forEach((top, i) => {
+			new Setting(containerEl)
+				.setName(topLabel(top, this.plugin.settings.categories))
+				.addButton((b) =>
+					b
+						.setIcon("trash")
+						.setWarning()
+						.onClick(async () => {
+							this.plugin.settings.stats.tops.splice(i, 1);
+							await this.plugin.saveSettings();
+							this.display();
+						}),
+				);
+		});
+
+		// Adding works like adding a category: a category (its best-rated
+		// titles) or a property of the notes (its most frequent values). The
+		// row stays when everything is listed already, just switched off.
+		const candidates = this.topCandidates();
+		const addTop = containerEl.createDiv({ cls: "library-settings-category" });
+		let chosen = 0;
+		new Setting(addTop)
+			.setName(tr("settings.stats.addTop"))
+			.addDropdown((d) => {
+				const groups = new Map<string, HTMLElement>();
+				candidates.forEach((candidate, index) => {
+					let group = groups.get(candidate.group);
+					if (!group) {
+						group = d.selectEl.createEl("optgroup", { attr: { label: candidate.group } });
+						groups.set(candidate.group, group);
+					}
+					group.createEl("option", { text: candidate.label, attr: { value: String(index) } });
+				});
+				if (candidates.length === 0) d.addOption("", "—");
+				d.setValue(candidates.length > 0 ? "0" : "");
+				d.setDisabled(candidates.length === 0);
+				d.onChange((v) => {
+					chosen = Number(v);
+				});
+			})
+			.addButton((b) =>
+				b
+					.setButtonText(tr("settings.stats.addTop"))
+					.setCta()
+					.setDisabled(candidates.length === 0)
+					.onClick(async () => {
+						const candidate = candidates[chosen];
+						if (!candidate) return;
+						this.plugin.settings.stats.tops.push(candidate.top);
+						await this.plugin.saveSettings();
+						this.display();
+					}),
+			);
+
 		new Setting(containerEl)
 			.setName(tr("settings.section.example"))
 			.setHeading();
 		containerEl.createEl("p", { text: tr("settings.example.desc") });
-		containerEl.createEl("pre").setText(
-			"---\nType: Movie\nURL: https://www.imdb.com/title/tt.....\n---"
-		);
+		containerEl.createEl("pre", { text: FRONTMATTER_EXAMPLE });
 	}
 }
