@@ -7,7 +7,7 @@
 <h1 align="center">පුස්තකාලය</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.0-blue" alt="සංස්කරණය">
+  <img src="https://img.shields.io/badge/version-2.3.1-blue" alt="සංස්කරණය">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="බාගත">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian සංස්කරණය">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="බලපත්‍රය">

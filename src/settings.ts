@@ -2,9 +2,11 @@ import {
 	App,
 	Notice,
 	PluginSettingTab,
+	requireApiVersion,
 	Setting,
 	type DropdownComponent,
-	type TextComponent,
+	type SettingDefinition,
+	type SettingDefinitionItem,
 } from "obsidian";
 import type LibraryPlugin from "./main";
 import type { ICategory, IStatsTop } from "./constants";
@@ -36,12 +38,420 @@ const FRONTMATTER_EXAMPLE = [
 	"---",
 ].join("\n");
 
+type TextKey =
+	| "omdbApiKey"
+	| "googleBooksApiKey"
+	| "rawgApiKey"
+	| "tmdbApiKey"
+	| "comicVineApiKey"
+	| "coverProperty"
+	| "anilistClientId"
+	| "anilistToken";
+
+// One row of the tab. Both renderers draw from the same rows —
+// getSettingDefinitions() on Obsidian 1.13+, display() before it — so users on
+// either side see the same settings.
+interface Row {
+	name: string;
+	desc?: string;
+	render?: (setting: Setting) => void;
+	visible?: () => boolean;
+	searchable?: boolean;
+}
+
+// A group of rows. A group scopes row names, so each category is its own
+// group: every one has a "Type value" row.
+interface Section {
+	heading?: string;
+	group?: boolean;
+	rows: Row[];
+}
+
+// A paragraph of explanation. It renders through a callback because Obsidian
+// skips a declarative row that has neither a name nor a control.
+function note(text: string): Row {
+	return {
+		name: "",
+		searchable: false,
+		render: (row) => {
+			row.setDesc(text);
+		},
+	};
+}
+
 export class LibrarySettingTab extends PluginSettingTab {
 	private plugin: LibraryPlugin;
+	// Categories whose Type value and folder rows are unfolded; screen state only.
+	private expanded = new Set<ICategory>();
 
 	constructor(app: App, plugin: LibraryPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
+	}
+
+	// Obsidian 1.13+: renders these and indexes them for the settings search.
+	// Called on every refresh, so it stays cheap: no vault scans here.
+	getSettingDefinitions(): SettingDefinitionItem[] {
+		const items: SettingDefinitionItem[] = [];
+		for (const section of this.sections()) {
+			const definitions = section.rows.map((row) => this.definition(row));
+			if (section.heading || section.group) items.push({ type: "group", heading: section.heading, items: definitions });
+			else items.push(...definitions);
+		}
+		return items;
+	}
+
+	// Obsidian before 1.13 draws the same rows by hand.
+	display(): void {
+		this.draw();
+	}
+
+	private definition(row: Row): SettingDefinition {
+		const base = { name: row.name, desc: row.desc, visible: row.visible, searchable: row.searchable };
+		const render = row.render;
+		return render ? { ...base, render: (setting: Setting) => render(setting) } : base;
+	}
+
+	private draw(): void {
+		const { containerEl } = this;
+		containerEl.empty();
+		for (const section of this.sections()) {
+			if (section.heading) new Setting(containerEl).setName(section.heading).setHeading();
+			for (const row of section.rows) {
+				if (row.visible && !row.visible()) continue;
+				const setting = new Setting(containerEl);
+				if (row.name) setting.setName(row.name);
+				if (row.desc) setting.setDesc(row.desc);
+				row.render?.(setting);
+			}
+		}
+	}
+
+	// Rows were added or removed. The version stays a literal: the Obsidian
+	// lint recognises requireApiVersion("1.13.0") as the guard for 1.13 APIs.
+	private refresh(): void {
+		if (requireApiVersion("1.13.0")) this.update();
+		else this.draw();
+	}
+
+	// Only a row's visibility changed.
+	private refreshVisibility(): void {
+		if (requireApiVersion("1.13.0")) this.refreshDomState();
+		else this.draw();
+	}
+
+	private sections(): Section[] {
+		const settings = this.plugin.settings;
+		const categories: Section[] = [{ heading: tr("settings.section.categories"), rows: [note(tr("settings.categories.desc"))] }];
+		settings.categories.forEach((cat, index) => {
+			categories.push({ group: true, rows: this.categoryRows(cat, index) });
+		});
+		categories.push({ group: true, rows: [{ name: tr("settings.addCategory"), render: (row) => this.addCategory(row) }] });
+
+		const statsRows: Row[] = [
+			note(tr("settings.stats.desc")),
+			{
+				name: tr("stats.watchTime"),
+				render: (row) => {
+					row.addToggle((toggle) =>
+						toggle.setValue(settings.stats.watchTime).onChange(async (value) => {
+							settings.stats.watchTime = value;
+							await this.plugin.saveSettings();
+						}),
+					);
+				},
+			},
+		];
+		// The columns in the order they show, each with its own remove button.
+		for (const top of settings.stats.tops) {
+			statsRows.push({
+				name: topLabel(top, settings.categories),
+				render: (row) => {
+					row.addExtraButton((button) =>
+						button
+							.setIcon("trash")
+							.setTooltip(tr("dup.remove"))
+							.onClick(async () => {
+								const at = settings.stats.tops.indexOf(top);
+								if (at >= 0) settings.stats.tops.splice(at, 1);
+								await this.plugin.saveSettings();
+								this.refresh();
+							}),
+					);
+				},
+			});
+		}
+		statsRows.push({ name: tr("settings.stats.addTop"), render: (row) => this.addTop(row) });
+
+		return [
+			{
+				rows: [
+					note(tr("settings.intro")),
+					this.textRow("settings.omdb", "omdbApiKey", tr("settings.omdb.placeholder")),
+					this.textRow("settings.google", "googleBooksApiKey", tr("settings.google.placeholder")),
+					this.textRow("settings.rawg", "rawgApiKey", tr("settings.rawg.placeholder")),
+					this.textRow("settings.tmdbApiKey", "tmdbApiKey", tr("settings.rawg.placeholder")),
+					this.textRow("settings.comicvine", "comicVineApiKey", tr("settings.comicvine.placeholder")),
+					this.textRow("settings.coverProperty", "coverProperty", "Cover"),
+				],
+			},
+			{
+				heading: tr("settings.section.anilist"),
+				rows: [
+					note(tr("settings.anilist.desc")),
+					{ name: tr("settings.anilist.clientId"), render: (row) => this.anilistClientId(row) },
+					{ name: tr("settings.anilist.token"), render: (row) => this.anilistToken(row) },
+				],
+			},
+			...categories,
+			{ heading: tr("stats.title"), rows: statsRows },
+			{
+				heading: tr("settings.section.example"),
+				rows: [
+					{
+						name: "",
+						searchable: false,
+						render: (row) => {
+							row.setDesc(tr("settings.example.desc"));
+							row.infoEl.createEl("pre", { text: FRONTMATTER_EXAMPLE });
+						},
+					},
+				],
+			},
+		];
+	}
+
+	private textRow(prefix: string, key: TextKey, placeholder: string): Row {
+		return {
+			name: tr(`${prefix}.name`),
+			desc: tr(`${prefix}.desc`),
+			render: (row) => this.textInput(row, key, placeholder),
+		};
+	}
+
+	private textInput(row: Setting, key: TextKey, placeholder: string, secret = false): void {
+		row.addText((text) => {
+			if (secret) text.inputEl.type = "password";
+			text
+				.setPlaceholder(placeholder)
+				.setValue(this.plugin.settings[key])
+				.onChange(async (value) => {
+					this.plugin.settings[key] = value.trim();
+					await this.plugin.saveSettings();
+				});
+		});
+	}
+
+	private anilistClientId(row: Setting): void {
+		this.textInput(row, "anilistClientId", tr("settings.anilist.clientId.placeholder"));
+		row.addButton((button) =>
+			button.setButtonText(tr("settings.anilist.connect")).onClick(() => {
+				const id = this.plugin.settings.anilistClientId.trim();
+				if (!id) {
+					new Notice(tr("settings.anilist.needClientId"));
+					return;
+				}
+				window.open(anilistAuthUrl(id), "_blank");
+			}),
+		);
+	}
+
+	private anilistToken(row: Setting): void {
+		this.textInput(row, "anilistToken", tr("settings.anilist.token.placeholder"), true);
+		row.addButton((button) =>
+			button.setButtonText(tr("settings.anilist.test")).onClick(async () => {
+				const token = this.plugin.settings.anilistToken.trim();
+				const viewer = token ? await aniListViewer(token) : null;
+				new Notice(
+					viewer
+						? tr("settings.anilist.connected", { name: viewer.name })
+						: tr("settings.anilist.invalidToken"),
+				);
+			}),
+		);
+	}
+
+	// A category is its name and source; the Type value and the folder unfold
+	// under it.
+	private categoryRows(cat: ICategory, index: number): Row[] {
+		const label = (): string => cat.name || tr("settings.category.name", { index: index + 1 });
+		const unfolded = (): boolean => this.expanded.has(cat);
+		return [
+			{ name: label(), render: (row) => this.categoryControls(row, cat, label) },
+			{
+				name: tr("settings.category.type"),
+				visible: unfolded,
+				render: (row) => {
+					row.settingEl.addClass("library-settings-advanced-row");
+					row.addText((text) =>
+						text
+							.setPlaceholder(tr("settings.category.type.placeholder"))
+							.setValue(cat.typeValue)
+							.onChange(async (value) => {
+								this.retypeCategory(cat, value.trim());
+								await this.plugin.saveSettings();
+							}),
+					);
+				},
+			},
+			{
+				name: tr("settings.category.folder"),
+				visible: unfolded,
+				render: (row) => {
+					row.settingEl.addClass("library-settings-advanced-row");
+					row.addText((text) =>
+						text
+							.setPlaceholder(tr("settings.category.folder.placeholder"))
+							.setValue(cat.folder)
+							.onChange(async (value) => {
+								cat.folder = value.trim();
+								await this.plugin.saveSettings();
+							}),
+					);
+				},
+			},
+		];
+	}
+
+	private categoryControls(row: Setting, cat: ICategory, label: () => string): void {
+		const settings = this.plugin.settings;
+		row.addText((text) =>
+			text
+				.setPlaceholder(tr("settings.category.name.placeholder"))
+				.setValue(cat.name)
+				.onChange(async (value) => {
+					cat.name = value.trim();
+					row.setName(label());
+					await this.plugin.saveSettings();
+				}),
+		);
+		row.addDropdown((dropdown) => {
+			this.addSourceOptions(dropdown);
+			dropdown.setValue(cat.contentType).onChange(async (value) => {
+				if (!isContentType(value)) return;
+				// Follow the new source unless a custom Type value was typed.
+				const def = TYPE_DEFAULTS[value];
+				const retype = Boolean(def) && (!cat.typeValue || isDefaultTypeValue(cat.typeValue));
+				if (retype && def) this.retypeCategory(cat, def);
+				cat.contentType = value;
+				await this.plugin.saveSettings();
+				if (retype) this.refresh();
+			});
+		});
+		row.addExtraButton((button) => {
+			const setIcon = (): void => {
+				button.setIcon(this.expanded.has(cat) ? "chevron-up" : "chevron-down");
+			};
+			setIcon();
+			button.setTooltip(tr("settings.category.advanced")).onClick(() => {
+				if (this.expanded.has(cat)) this.expanded.delete(cat);
+				else this.expanded.add(cat);
+				setIcon();
+				this.refreshVisibility();
+			});
+		});
+		row.addExtraButton((button) =>
+			button
+				.setIcon("trash")
+				.setTooltip(tr("dup.remove"))
+				.onClick(async () => {
+					const at = settings.categories.indexOf(cat);
+					if (at >= 0) settings.categories.splice(at, 1);
+					this.expanded.delete(cat);
+					// Its statistics column goes too, unless another category
+					// still shows notes of that Type.
+					if (!settings.categories.some((c) => c.typeValue === cat.typeValue)) {
+						settings.stats.tops = settings.stats.tops.filter(
+							(top) => !(top.kind === "category" && top.key === cat.typeValue),
+						);
+					}
+					await this.plugin.saveSettings();
+					this.refresh();
+				}),
+		);
+	}
+
+	private addCategory(row: Setting): void {
+		let addValue = "movie";
+		row.addDropdown((dropdown) => {
+			this.addSourceOptions(dropdown);
+			dropdown.setValue("movie");
+			dropdown.onChange((value) => {
+				addValue = value;
+			});
+		});
+		row.addButton((button) =>
+			button
+				.setButtonText(tr("settings.addCategory"))
+				.setCta()
+				.onClick(async () => {
+					const names: Record<string, string> = {
+						movie: tr("settings.default.movie"),
+						series: tr("settings.default.series"),
+						book: tr("settings.default.book"),
+						comic: tr("settings.default.comic"),
+						game: tr("settings.default.game"),
+						music: tr("settings.default.music"),
+						anime: tr("settings.default.anime"),
+						manual: tr("settings.default.manual"),
+					};
+					const contentType: ContentType = isContentType(addValue) ? addValue : "movie";
+					const typeValue = TYPE_DEFAULTS[contentType] ?? "Movie";
+					this.plugin.settings.categories.push({
+						name: names[contentType] ?? contentType,
+						typeValue,
+						contentType,
+						folder: "",
+					});
+					// A new category shows its top titles right away, the way
+					// every category did before tops were chosen.
+					const tops = this.plugin.settings.stats.tops;
+					if (!tops.some((top) => top.kind === "category" && top.key === typeValue)) {
+						tops.push({ kind: "category", key: typeValue });
+					}
+					await this.plugin.saveSettings();
+					this.refresh();
+				}),
+		);
+	}
+
+	// Adding works like adding a category: a category (its best-rated titles)
+	// or a property of the notes (its most frequent values). The row stays
+	// when everything is listed already, just switched off. The candidates
+	// scan the vault, so they are built only when the row is drawn.
+	private addTop(row: Setting): void {
+		const candidates = this.topCandidates();
+		let chosen = 0;
+		row.addDropdown((dropdown) => {
+			const groups = new Map<string, HTMLElement>();
+			candidates.forEach((candidate, index) => {
+				let group = groups.get(candidate.group);
+				if (!group) {
+					group = dropdown.selectEl.createEl("optgroup", { attr: { label: candidate.group } });
+					groups.set(candidate.group, group);
+				}
+				group.createEl("option", { text: candidate.label, attr: { value: String(index) } });
+			});
+			if (candidates.length === 0) dropdown.addOption("", "—");
+			dropdown.setValue(candidates.length > 0 ? "0" : "");
+			dropdown.setDisabled(candidates.length === 0);
+			dropdown.onChange((value) => {
+				chosen = Number(value);
+			});
+		});
+		row.addButton((button) =>
+			button
+				.setButtonText(tr("settings.stats.addTop"))
+				.setCta()
+				.setDisabled(candidates.length === 0)
+				.onClick(async () => {
+					const candidate = candidates[chosen];
+					if (!candidate) return;
+					this.plugin.settings.stats.tops.push(candidate.top);
+					await this.plugin.saveSettings();
+					this.refresh();
+				}),
+		);
 	}
 
 	// One category per medium: a single source may merge several providers
@@ -56,8 +466,8 @@ export class LibrarySettingTab extends PluginSettingTab {
 			["music", tr("settings.default.music") + " — Deezer"],
 			["anime", tr("settings.default.anime") + " — AniList"],
 			["manual", tr("settings.category.manual")],
-		]
-		for (const [value, label] of options) d.addOption(value, label)
+		];
+		for (const [value, label] of options) d.addOption(value, label);
 	}
 
 	private libraryFrontmatter(): Record<string, unknown>[] {
@@ -99,367 +509,5 @@ export class LibrarySettingTab extends PluginSettingTab {
 			offer(tr("settings.stats.groupProperties"), property, { kind: "property", key: property });
 		}
 		return list;
-	}
-
-	display(): void {
-		const { containerEl } = this;
-		containerEl.empty();
-
-		containerEl.createEl("p", { text: tr("settings.intro") });
-
-		new Setting(containerEl)
-			.setName(tr("settings.omdb.name"))
-			.setDesc(tr("settings.omdb.desc"))
-			.addText((text) =>
-				text
-					.setPlaceholder(tr("settings.omdb.placeholder"))
-					.setValue(this.plugin.settings.omdbApiKey)
-					.onChange(async (v) => {
-						this.plugin.settings.omdbApiKey = v.trim();
-						await this.plugin.saveSettings();
-					}),
-			);
-
-		new Setting(containerEl)
-			.setName(tr("settings.google.name"))
-			.setDesc(tr("settings.google.desc"))
-			.addText((text) =>
-				text
-					.setPlaceholder(tr("settings.google.placeholder"))
-					.setValue(this.plugin.settings.googleBooksApiKey)
-					.onChange(async (v) => {
-						this.plugin.settings.googleBooksApiKey = v.trim();
-						await this.plugin.saveSettings();
-					}),
-			);
-
-		new Setting(containerEl)
-			.setName(tr("settings.rawg.name"))
-			.setDesc(tr("settings.rawg.desc"))
-			.addText((text) =>
-				text
-					.setPlaceholder(tr("settings.rawg.placeholder"))
-					.setValue(this.plugin.settings.rawgApiKey)
-					.onChange(async (v) => {
-						this.plugin.settings.rawgApiKey = v.trim();
-						await this.plugin.saveSettings();
-					}),
-			);
-
-		new Setting(containerEl)
-			.setName(tr("settings.tmdbApiKey.name"))
-			.setDesc(tr("settings.tmdbApiKey.desc"))
-			.addText((text) =>
-				text
-					.setPlaceholder(tr("settings.google.placeholder"))
-					.setValue(this.plugin.settings.tmdbApiKey)
-					.onChange(async (v) => {
-						this.plugin.settings.tmdbApiKey = v.trim();
-						await this.plugin.saveSettings();
-					}),
-			);
-
-		new Setting(containerEl)
-			.setName(tr("settings.comicvine.name"))
-			.setDesc(tr("settings.comicvine.desc"))
-			.addText((text) =>
-				text
-					.setPlaceholder(tr("settings.comicvine.placeholder"))
-					.setValue(this.plugin.settings.comicVineApiKey)
-					.onChange(async (v) => {
-						this.plugin.settings.comicVineApiKey = v.trim();
-						await this.plugin.saveSettings();
-					}),
-			);
-
-		new Setting(containerEl)
-			.setName(tr("settings.coverProperty.name"))
-			.setDesc(tr("settings.coverProperty.desc"))
-			.addText((text) =>
-				text
-					.setPlaceholder("Cover")
-					.setValue(this.plugin.settings.coverProperty)
-					.onChange(async (v) => {
-						this.plugin.settings.coverProperty = v.trim();
-						await this.plugin.saveSettings();
-					}),
-			);
-
-		new Setting(containerEl)
-			.setName(tr("settings.section.anilist"))
-			.setHeading();
-		containerEl.createEl("p", { text: tr("settings.anilist.desc") });
-
-		new Setting(containerEl)
-			.setName(tr("settings.anilist.clientId"))
-			.addText((text) =>
-				text
-					.setPlaceholder(tr("settings.anilist.clientId.placeholder"))
-					.setValue(this.plugin.settings.anilistClientId)
-					.onChange(async (v) => {
-						this.plugin.settings.anilistClientId = v.trim();
-						await this.plugin.saveSettings();
-					}),
-			)
-			.addButton((b) =>
-				b.setButtonText(tr("settings.anilist.connect")).onClick(() => {
-					const id = this.plugin.settings.anilistClientId.trim();
-					if (!id) {
-						new Notice(tr("settings.anilist.needClientId"));
-						return;
-					}
-					window.open(anilistAuthUrl(id), "_blank");
-				}),
-			);
-
-		new Setting(containerEl)
-			.setName(tr("settings.anilist.token"))
-			.addText((text) => {
-				text.inputEl.type = "password";
-				text
-					.setPlaceholder(tr("settings.anilist.token.placeholder"))
-					.setValue(this.plugin.settings.anilistToken)
-					.onChange(async (v) => {
-						this.plugin.settings.anilistToken = v.trim();
-						await this.plugin.saveSettings();
-					});
-			})
-			.addButton((b) =>
-				b.setButtonText(tr("settings.anilist.test")).onClick(async () => {
-					const token = this.plugin.settings.anilistToken.trim();
-					const viewer = token ? await aniListViewer(token) : null;
-					new Notice(
-						viewer
-							? tr("settings.anilist.connected", { name: viewer.name })
-							: tr("settings.anilist.invalidToken"),
-					);
-				}),
-			);
-
-		new Setting(containerEl)
-			.setName(tr("settings.section.categories"))
-			.setHeading();
-		containerEl.createEl("p", { text: tr("settings.categories.desc") });
-
-		this.plugin.settings.categories.forEach((cat, i) => {
-			const div = containerEl.createDiv({
-				cls: "library-settings-category",
-			});
-			let typeInput: TextComponent | null = null;
-
-			const row = new Setting(div)
-				.setName(
-					cat.name ||
-						tr("settings.category.name", { index: i + 1 }),
-				)
-				.addText((t) =>
-					t
-						.setPlaceholder(
-							tr("settings.category.name.placeholder"),
-						)
-						.setValue(cat.name)
-						.onChange(async (v) => {
-							cat.name = v.trim();
-							row.nameEl.setText(
-								cat.name ||
-									tr("settings.category.name", {
-										index: i + 1,
-									}),
-							);
-							await this.plugin.saveSettings();
-						}),
-				)
-				.addDropdown((d) => {
-					this.addSourceOptions(d);
-					d.setValue(cat.contentType).onChange(async (v) => {
-						if (!isContentType(v)) return;
-						// Follow the new source unless a custom Type value was typed.
-						const def = TYPE_DEFAULTS[v];
-						if (
-							def &&
-							(!cat.typeValue ||
-								isDefaultTypeValue(cat.typeValue))
-						) {
-							this.retypeCategory(cat, def);
-							typeInput?.setValue(def);
-						}
-						cat.contentType = v;
-						await this.plugin.saveSettings();
-					});
-				})
-				.addButton((b) =>
-					b
-						.setIcon("trash")
-						.setWarning()
-						.onClick(async () => {
-							this.plugin.settings.categories.splice(i, 1);
-							// Its statistics column goes too, unless another
-							// category still shows notes of that Type.
-							const settings = this.plugin.settings;
-							if (!settings.categories.some((c) => c.typeValue === cat.typeValue)) {
-								settings.stats.tops = settings.stats.tops.filter(
-									(top) => !(top.kind === "category" && top.key === cat.typeValue),
-								);
-							}
-							await this.plugin.saveSettings();
-							this.display();
-						}),
-				);
-
-			const details = div.createEl("details", {
-				cls: "library-settings-advanced",
-			});
-			details.createEl("summary", {
-				text: tr("settings.category.advanced"),
-			});
-
-			new Setting(details)
-				.setName(tr("settings.category.type"))
-				.addText((t) => {
-					typeInput = t;
-					t.setPlaceholder(
-						tr("settings.category.type.placeholder"),
-					)
-						.setValue(cat.typeValue)
-						.onChange(async (v) => {
-							this.retypeCategory(cat, v.trim());
-							await this.plugin.saveSettings();
-						});
-				});
-
-			new Setting(details)
-				.setName(tr("settings.category.folder"))
-				.addText((t) =>
-					t
-						.setPlaceholder(
-							tr("settings.category.folder.placeholder"),
-						)
-						.setValue(cat.folder)
-						.onChange(async (v) => {
-							cat.folder = v.trim();
-							await this.plugin.saveSettings();
-						}),
-				);
-		});
-
-		const addDiv = containerEl.createDiv({
-			cls: "library-settings-category",
-		})
-		let addValue = "movie"
-		new Setting(addDiv)
-			.setName(tr("settings.addCategory"))
-			.addDropdown((d) => {
-				this.addSourceOptions(d)
-				d.setValue("movie")
-				d.onChange((v) => {
-					addValue = v
-				})
-			})
-			.addButton((b) =>
-				b
-					.setButtonText(tr("settings.addCategory"))
-					.setCta()
-					.onClick(async () => {
-						const names: Record<string, string> = {
-							movie: tr("settings.default.movie"),
-							series: tr("settings.default.series"),
-							book: tr("settings.default.book"),
-							comic: tr("settings.default.comic"),
-							game: tr("settings.default.game"),
-							music: tr("settings.default.music"),
-							anime: tr("settings.default.anime"),
-							manual: tr("settings.default.manual"),
-						}
-						const contentType: ContentType = isContentType(addValue)
-							? addValue
-							: "movie"
-						const typeValue = TYPE_DEFAULTS[contentType] ?? "Movie"
-						this.plugin.settings.categories.push({
-							name: names[contentType] ?? contentType,
-							typeValue,
-							contentType,
-							folder: "",
-						})
-						// A new category shows its top titles right away, the
-						// way every category did before tops were chosen.
-						const tops = this.plugin.settings.stats.tops
-						if (!tops.some((top) => top.kind === "category" && top.key === typeValue)) {
-							tops.push({ kind: "category", key: typeValue })
-						}
-						await this.plugin.saveSettings()
-						this.display()
-					})
-			)
-
-		new Setting(containerEl).setName(tr("stats.title")).setHeading();
-		containerEl.createEl("p", { text: tr("settings.stats.desc") });
-		new Setting(containerEl).setName(tr("stats.watchTime")).addToggle((toggle) =>
-			toggle
-				.setValue(this.plugin.settings.stats.watchTime)
-				.onChange(async (value) => {
-					this.plugin.settings.stats.watchTime = value;
-					await this.plugin.saveSettings();
-				}),
-		);
-		// The columns in the order they show, each with its own remove button.
-		this.plugin.settings.stats.tops.forEach((top, i) => {
-			new Setting(containerEl)
-				.setName(topLabel(top, this.plugin.settings.categories))
-				.addButton((b) =>
-					b
-						.setIcon("trash")
-						.setWarning()
-						.onClick(async () => {
-							this.plugin.settings.stats.tops.splice(i, 1);
-							await this.plugin.saveSettings();
-							this.display();
-						}),
-				);
-		});
-
-		// Adding works like adding a category: a category (its best-rated
-		// titles) or a property of the notes (its most frequent values). The
-		// row stays when everything is listed already, just switched off.
-		const candidates = this.topCandidates();
-		const addTop = containerEl.createDiv({ cls: "library-settings-category" });
-		let chosen = 0;
-		new Setting(addTop)
-			.setName(tr("settings.stats.addTop"))
-			.addDropdown((d) => {
-				const groups = new Map<string, HTMLElement>();
-				candidates.forEach((candidate, index) => {
-					let group = groups.get(candidate.group);
-					if (!group) {
-						group = d.selectEl.createEl("optgroup", { attr: { label: candidate.group } });
-						groups.set(candidate.group, group);
-					}
-					group.createEl("option", { text: candidate.label, attr: { value: String(index) } });
-				});
-				if (candidates.length === 0) d.addOption("", "—");
-				d.setValue(candidates.length > 0 ? "0" : "");
-				d.setDisabled(candidates.length === 0);
-				d.onChange((v) => {
-					chosen = Number(v);
-				});
-			})
-			.addButton((b) =>
-				b
-					.setButtonText(tr("settings.stats.addTop"))
-					.setCta()
-					.setDisabled(candidates.length === 0)
-					.onClick(async () => {
-						const candidate = candidates[chosen];
-						if (!candidate) return;
-						this.plugin.settings.stats.tops.push(candidate.top);
-						await this.plugin.saveSettings();
-						this.display();
-					}),
-			);
-
-		new Setting(containerEl)
-			.setName(tr("settings.section.example"))
-			.setHeading();
-		containerEl.createEl("p", { text: tr("settings.example.desc") });
-		containerEl.createEl("pre", { text: FRONTMATTER_EXAMPLE });
 	}
 }

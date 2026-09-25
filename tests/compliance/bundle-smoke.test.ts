@@ -517,7 +517,7 @@ describe("built bundle", () => {
 		expect(vi.getTimerCount()).toBe(0);
 	});
 
-	it("shows only the name + source per category, type/folder behind the disclosure", async () => {
+	it("shows only the name + source per category, type/folder unfold under it", async () => {
 		const PluginClass = loadPlugin(code);
 		const stub = obsidianStub.createStubApp();
 		const plugin = new PluginClass(stub.app, manifest);
@@ -534,29 +534,53 @@ describe("built bundle", () => {
 		const tab = (plugin.settingTabs as unknown as Array<{ containerEl: HTMLElement; display(): void }>)[0];
 		if (!tab) throw new Error("no settings tab registered");
 		tab.display();
+		const rows = (): Element[] => [...tab.containerEl.querySelectorAll(".setting-item")];
+		const named = (name: string): Element | undefined =>
+			rows().find((el) => el.firstElementChild?.textContent === name);
 
-		const category = tab.containerEl.querySelector(
-			"div.library-settings-category",
-		) as HTMLElement;
-		expect(category).not.toBeNull();
-
-		// One visible setting row (name + source dropdown + delete), and the
-		// source label spells out the merged medium.
-		const visible = category.querySelectorAll(":scope > div.setting-item");
-		expect(visible).toHaveLength(1);
-		const labels = [...(visible[0]?.querySelectorAll("option") ?? [])].map(
+		// One row per category (name + source dropdown), and the source label
+		// spells out the merged medium.
+		const category = named("Movies");
+		expect(category).toBeDefined();
+		const labels = [...(category?.querySelectorAll("option") ?? [])].map(
 			(option) => option.textContent ?? "",
 		);
 		expect(labels.some((label) => label.includes("OMDb"))).toBe(true);
 		expect(labels.some((label) => label.includes("RAWG + Steam"))).toBe(true);
 		expect(labels.some((label) => label === "steam")).toBe(false);
 
-		// Type value + folder live inside the collapsed disclosure.
-		const details = category.querySelector("details");
-		expect(details).not.toBeNull();
-		expect((details as HTMLDetailsElement).open).toBe(false);
-		expect(details?.querySelectorAll("div.setting-item")).toHaveLength(2);
-		expect(category.querySelectorAll(":scope > div.setting-item")).toHaveLength(1);
+		// Type value + folder stay folded until the category's toggle opens them.
+		expect(named("Type value")).toBeUndefined();
+		expect(named("Folder")).toBeUndefined();
+		const toggle = category?.querySelector('[aria-label="Advanced"]');
+		toggle?.dispatchEvent(new MouseEvent("click"));
+		expect(named("Type value")?.querySelector("input")?.value).toBe("Movie");
+		expect(named("Folder")?.querySelector("input")?.value).toBe("Media");
+		named("Movies")?.querySelector('[aria-label="Advanced"]')?.dispatchEvent(new MouseEvent("click"));
+		expect(named("Type value")).toBeUndefined();
+	});
+
+	it("describes the same settings for the 1.13 settings search", async () => {
+		const PluginClass = loadPlugin(code);
+		const stub = obsidianStub.createStubApp();
+		const plugin = new PluginClass(stub.app, manifest);
+		await plugin.onload();
+		const tab = (plugin.settingTabs as unknown as Array<{ getSettingDefinitions(): unknown[] }>)[0];
+		if (!tab) throw new Error("no settings tab registered");
+
+		type Definition = { name?: string; heading?: string; items?: Definition[]; searchable?: boolean };
+		const definitions = tab.getSettingDefinitions() as Definition[];
+		const headings = definitions.filter((d) => d.heading).map((d) => d.heading);
+		expect(headings).toEqual(["AniList sync", "Categories", "Statistics", "Example note"]);
+		const names = definitions
+			.flatMap((d) => (d.items ? d.items : [d]))
+			.filter((d) => d.searchable !== false)
+			.map((d) => d.name);
+		for (const name of ["OMDb API key", "TMDB API key (optional)", "Cover property", "AniList access token", "Add category", "Watch time", "Add top"]) {
+			expect(names).toContain(name);
+		}
+		// The descriptions and the YAML sample are not settings to find.
+		expect(names).not.toContain("");
 	});
 
 	it("adds the note header after the properties panel on file-open, exactly once", async () => {
@@ -1457,7 +1481,7 @@ describe("built bundle", () => {
 		// Remove "Top genres" with its trash button.
 		const trash = [...tab.containerEl.querySelectorAll(".setting-item")]
 			.find((el) => el.firstElementChild?.textContent === "Top genres")
-			?.querySelector("button");
+			?.querySelector('[aria-label="Remove"]');
 		trash?.dispatchEvent(new MouseEvent("click"));
 		await vi.advanceTimersByTimeAsync(0);
 		expect(internals.settings.stats.tops.map((top) => top.key)).toEqual(["Creator", "Cast", "Movie", "Series", "Studio"]);
@@ -1513,7 +1537,10 @@ describe("built bundle", () => {
 		expect(internals.settings.stats.tops.at(-1)).toEqual({ kind: "category", key: "Movie" });
 
 		// A new Type value carries the column along.
-		const typeInput = tab.containerEl.querySelector("details input");
+		const row = (name: string): Element | undefined =>
+			[...tab.containerEl.querySelectorAll(".setting-item")].find((el) => el.firstElementChild?.textContent === name);
+		row("Movies")?.querySelector('[aria-label="Advanced"]')?.dispatchEvent(new MouseEvent("click"));
+		const typeInput = row("Type value")?.querySelector("input");
 		if (!(typeInput instanceof HTMLInputElement)) throw new Error("no type input");
 		typeInput.value = "Film";
 		typeInput.dispatchEvent(new Event("input"));
@@ -1521,7 +1548,7 @@ describe("built bundle", () => {
 		expect(internals.settings.stats.tops.at(-1)).toEqual({ kind: "category", key: "Film" });
 
 		// Removing the category removes its column.
-		const trash = tab.containerEl.querySelector(".library-settings-category .setting-item button");
+		const trash = row("Movies")?.querySelector('[aria-label="Remove"]');
 		trash?.dispatchEvent(new MouseEvent("click"));
 		await vi.advanceTimersByTimeAsync(0);
 		expect(internals.settings.categories).toEqual([]);

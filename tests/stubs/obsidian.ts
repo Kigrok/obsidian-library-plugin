@@ -90,6 +90,25 @@ export function normalizePath(path: string): string {
 		.replace(/^\/|\/$/g, "");
 }
 
+// The app version the stub plays; below 1.13 by default, so settings tabs
+// draw through display().
+let apiVersion = "1.8.7";
+
+export function setStubApiVersion(value: string): void {
+	apiVersion = value;
+}
+
+export function requireApiVersion(version: string): boolean {
+	const have = apiVersion.split(".").map(Number);
+	const want = version.split(".").map(Number);
+	for (let i = 0; i < 3; i++) {
+		const a = have[i] ?? 0;
+		const b = want[i] ?? 0;
+		if (a !== b) return a > b;
+	}
+	return true;
+}
+
 export function setIcon(el: HTMLElement, icon: string): void {
 	el.setAttribute("data-icon", icon);
 }
@@ -436,8 +455,42 @@ export class ButtonComponent {
 	}
 }
 
+// An icon-only button, as Obsidian renders one: a clickable div.
+export class ExtraButtonComponent {
+	extraSettingsEl = document.createElement("div");
+
+	constructor() {
+		this.extraSettingsEl.classList.add("clickable-icon", "extra-setting-button");
+	}
+
+	setIcon(icon: string): this {
+		this.extraSettingsEl.setAttribute("data-icon", icon);
+		return this;
+	}
+
+	setTooltip(value: string): this {
+		this.extraSettingsEl.setAttribute("aria-label", value);
+		return this;
+	}
+
+	setDisabled(disabled: boolean): this {
+		this.extraSettingsEl.classList.toggle("is-disabled", disabled);
+		return this;
+	}
+
+	onClick(cb: () => unknown): this {
+		this.extraSettingsEl.addEventListener("click", () => {
+			void cb();
+		});
+		return this;
+	}
+}
+
 export class Setting {
 	settingEl: HTMLElement;
+	// The app wraps the name and description in infoEl; here the row itself
+	// stands in, so tests keep finding a row by its first child, the name.
+	infoEl: HTMLElement;
 	nameEl: HTMLElement;
 	descEl: HTMLElement;
 	controlEl: HTMLElement;
@@ -445,6 +498,7 @@ export class Setting {
 	constructor(containerEl: HTMLElement) {
 		this.settingEl = document.createElement("div");
 		this.settingEl.classList.add("setting-item");
+		this.infoEl = this.settingEl;
 		this.nameEl = document.createElement("div");
 		this.descEl = document.createElement("div");
 		this.controlEl = document.createElement("div");
@@ -485,6 +539,13 @@ export class Setting {
 		const component = new DropdownComponent();
 		cb(component);
 		this.controlEl.appendChild(component.selectEl);
+		return this;
+	}
+
+	addExtraButton(cb: (component: ExtraButtonComponent) => unknown): this {
+		const component = new ExtraButtonComponent();
+		cb(component);
+		this.controlEl.appendChild(component.extraSettingsEl);
 		return this;
 	}
 

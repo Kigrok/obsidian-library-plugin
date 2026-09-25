@@ -376,26 +376,9 @@
 	cursor: pointer;
 }
 
-.library-settings-category {
-	border: 1px solid var(--background-modifier-border);
-	padding: 8px;
-	margin-bottom: 8px;
-	border-radius: 6px;
-}
-
-.library-settings-advanced {
-	margin-top: 4px;
-}
-
-.library-settings-advanced > summary {
-	color: var(--text-muted);
-	font-size: var(--font-ui-smaller);
-	cursor: pointer;
-	padding: 4px 0;
-}
-
-.library-settings-advanced > summary:hover {
-	color: var(--text-normal);
+/* A category's Type value and folder, unfolded under its row. */
+.library-settings-advanced-row {
+	padding-inline-start: var(--size-4-6);
 }
 
 .library-view {

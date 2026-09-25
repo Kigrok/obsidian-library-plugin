@@ -7,7 +7,7 @@
 <h1 align="center">คลังสมบัติ</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.0-blue" alt="เวอร์ชัน">
+  <img src="https://img.shields.io/badge/version-2.3.1-blue" alt="เวอร์ชัน">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="การดาวน์โหลด">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="เวอร์ชัน Obsidian">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="ลิขสิทธิ์">

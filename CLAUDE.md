@@ -75,6 +75,9 @@ push/pull), `src/ui/*` (modals and the lightbox).
   link names through `sanitizeFilename()` / `sanitizeLink()` (all in `src/util.ts`).
 - **Counts use `trCount(key, n)`** with `<key>1/2/5` locale keys (it fills `{count}`), never
   hand-written plural rules or `note(s)`.
+- **Settings are defined once** in `sections()` (`src/settings.ts`), rendered by `getSettingDefinitions()`
+  on 1.13+ and by `display()` before it. Guard 1.13-only calls with `requireApiVersion("1.13.0")` —
+  a string literal, or the review lint reports an error.
 - **DOM injected into Obsidian's views** (note header, lightbox) is removed in `onunload`.
 - **`main.js` is generated and gitignored** — never edit or commit it.
 - Tabs for indentation; strict TypeScript, no `any`.
