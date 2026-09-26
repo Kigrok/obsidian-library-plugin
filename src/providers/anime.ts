@@ -13,6 +13,7 @@ interface AniListMedia {
 	coverImage?: { extraLarge?: string; large?: string }
 	bannerImage?: string | null
 	trailer?: { id?: string; site?: string }
+	streamingEpisodes?: { thumbnail?: string | null }[]
 	studios?: { nodes?: { name: string }[] }
 	siteUrl?: string
 }
@@ -26,7 +27,7 @@ interface AniListMediaResponse {
 }
 
 const MEDIA_FIELDS =
-	'id title { romaji english native } startDate { year } episodes duration genres status averageScore coverImage { extraLarge large } bannerImage trailer { id site } studios(isMain: true) { nodes { name } } siteUrl'
+	'id title { romaji english native } startDate { year } episodes duration genres status averageScore coverImage { extraLarge large } bannerImage trailer { id site } streamingEpisodes { thumbnail } studios(isMain: true) { nodes { name } } siteUrl'
 
 // Anime via AniList GraphQL (no key). Jikan's search endpoint proxies MyAnimeList and is frequently down (504).
 export class AnimeProvider implements ContentProvider {
@@ -108,7 +109,13 @@ export class AnimeProvider implements ContentProvider {
 			if (typeof media.duration === 'number' && media.duration > 0) fields.Runtime = media.duration
 			const trailer = this.trailer(media)
 			if (trailer) fields.Trailer = trailer
-			if (media.bannerImage) fields.Gallery = [media.bannerImage]
+			// The banner, the trailer's still and episode stills from the streaming listings.
+			const stills = [
+				media.bannerImage,
+				media.trailer?.site === 'youtube' && media.trailer.id ? `https://i.ytimg.com/vi/${media.trailer.id}/hqdefault.jpg` : null,
+				...(media.streamingEpisodes ?? []).map(e => e.thumbnail)
+			].filter((s): s is string => !!s)
+			if (stills.length > 0) fields.Gallery = stills.slice(0, 8)
 
 			const episodes = media.episodes && media.episodes > 0 ? media.episodes : null
 			return { fields, progressTotal: episodes, imdbId: null }

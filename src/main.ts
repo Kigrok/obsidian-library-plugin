@@ -17,6 +17,7 @@ import { BookAggregatorProvider } from './providers/bookAggregator'
 import { CinemetaEnricher } from './providers/cinemeta'
 import { RawgProvider } from './providers/rawg'
 import { GameAggregatorProvider } from './providers/gameAggregator'
+import { GameTrailerFinder } from './providers/gameTrailer'
 import { DeezerProvider } from './providers/deezer'
 import { AnimeProvider } from './providers/anime'
 import { ComicsProvider } from './providers/comics'
@@ -31,6 +32,8 @@ import { PromptModal } from './ui/promptModal'
 import { DuplicateRemovalModal, type DuplicateGroup } from './ui/duplicateModal'
 import { ShareModal, shareTargetFromFile } from './ui/shareModal'
 import { aniListViewer, fetchList, listStatus, pushEntry, type AniListEntry } from './anilistSync'
+import { recommendationsFor, type Recommendation } from './recommendations'
+import { ownedGames, playtimeHours, resolveSteamId } from './steamLibrary'
 import { fetchMalList, isExpired, malIdsFor, malStatus, pushMalEntry, refreshTokens, type MalEntry } from './malSync'
 import { LibraryView, LIBRARY_VIEW_TYPE } from './view'
 import { createEmbedPlayer, toEmbed } from './trailer'
@@ -79,6 +82,10 @@ export default class LibraryPlugin extends Plugin {
 	private isRefreshing = false
 	// One MyAnimeList token refresh at a time; concurrent callers share it.
 	private malRefreshing: Promise<string | null> | null = null
+	private steamImporting = false
+	// Recommendations per Source:Source ID, fetched once a session.
+	private recommendations = new Map<string, Promise<Recommendation[]>>()
+	private steamTimer: number | null = null
 	private refreshCooldowns = new Map<string, number>()
 	private syncingLinks = new Set<string>()
 	private linkTimers = new Map<string, number>()
@@ -106,9 +113,10 @@ export default class LibraryPlugin extends Plugin {
 			new OmdbProvider(() => this.settings.omdbApiKey, [tmdb, new CinemetaEnricher()])
 		)
 		this.registry.register(new BookAggregatorProvider(googleBooks, openLibrary))
+		const trailers = new GameTrailerFinder(() => ({ id: this.settings.twitchClientId, secret: this.settings.twitchClientSecret }))
 		this.registry.register(new GameAggregatorProvider(
-			new RawgProvider(() => this.settings.rawgApiKey),
-			new SteamProvider()
+			new RawgProvider(() => this.settings.rawgApiKey, trailers),
+			new SteamProvider(trailers)
 		))
 		this.registry.register(new DeezerProvider())
 		this.registry.register(new AnimeProvider())
@@ -262,6 +270,12 @@ export default class LibraryPlugin extends Plugin {
 			name: tr('cmd.malPull'),
 			callback: () => { void this.malPull() }
 		})
+
+		this.addCommand({
+			id: 'steam-import',
+			name: tr('cmd.steamImport'),
+			callback: () => { void this.steamImport() }
+		})
 	}
 
 	onunload(): void {
@@ -275,6 +289,9 @@ export default class LibraryPlugin extends Plugin {
 		this.refreshCooldowns.clear()
 		if (this.enrichTimer) window.clearTimeout(this.enrichTimer)
 		if (this.enrichSleepTimer) window.clearTimeout(this.enrichSleepTimer)
+		if (this.steamTimer) window.clearTimeout(this.steamTimer)
+		this.steamTimer = null
+		this.recommendations.clear()
 		this.enrichTimer = null
 		this.enrichSleepTimer = null
 		const resume = this.enrichWait
@@ -436,27 +453,89 @@ export default class LibraryPlugin extends Plugin {
 				}
 			}
 
-			const path = await this.uniqueNotePath(result.title, category.folder)
-			const file = await this.app.vault.create(path, '')
-
-			await this.app.fileManager.processFrontMatter(file, (fm) => {
-				Object.assign(fm, {
-					Type: category.typeValue,
-					Progress: meta.progressTotal ? `0/${String(meta.progressTotal)}` : '',
-					'My Rating': null,
-					Complete: false,
-					Date: todayDmy(),
-					Source: provider.id,
-					'Source ID': result.sourceId,
-				})
-				this.applyMetaFields(fm as Record<string, unknown>, meta)
-			})
-
+			const file = await this.newNote(category, provider.id, result.sourceId, result.title, meta)
 			await this.app.workspace.getLeaf(false).openFile(file)
 			new Notice(tr('notice.created', { name: toStr(meta.fields.Name) || result.title }))
 		} catch (e) {
 			console.error('Library: create note error', e)
 			new Notice(tr('notice.createFailed'))
+		}
+	}
+
+	private async newNote(category: ICategory, source: string, sourceId: string, title: string, meta: NormalizedMetadata, extra: Record<string, unknown> = {}): Promise<TFile> {
+		const path = await this.uniqueNotePath(title, category.folder)
+		const file = await this.app.vault.create(path, '')
+		await this.app.fileManager.processFrontMatter(file, (fm) => {
+			Object.assign(fm, {
+				Type: category.typeValue,
+				Progress: meta.progressTotal ? `0/${String(meta.progressTotal)}` : '',
+				'My Rating': null,
+				Complete: false,
+				Date: todayDmy(),
+				Source: source,
+				'Source ID': sourceId,
+			}, extra)
+			this.applyMetaFields(fm as Record<string, unknown>, meta)
+		})
+		return file
+	}
+
+	// Imports the user's Steam library into the first Games category: a note per
+	// owned game, Playtime in hours. Safe to run again: known games (matched by
+	// store URL) only get their Playtime updated. Store lookups are spaced out,
+	// since the store API limits requests per minute.
+	private async steamImport(): Promise<void> {
+		if (this.steamImporting) return
+		const key = this.settings.steamApiKey.trim()
+		const profile = this.settings.steamId.trim()
+		if (!key || !profile) { new Notice(tr('notice.steam.noKey')); return }
+		const category = this.settings.categories.find(c => c.contentType === 'game')
+		const provider = this.registry.forType('game')
+		if (!category || !provider) { new Notice(tr('notice.steam.noCategory')); return }
+		this.steamImporting = true
+		try {
+			new Notice(tr('notice.steam.importing'))
+			const steamId = await resolveSteamId(key, profile)
+			const games = steamId ? await ownedGames(key, steamId) : null
+			if (!games) { new Notice(tr('notice.steam.failed')); return }
+			const byUrl = new Map<string, TFile>()
+			for (const file of this.app.vault.getMarkdownFiles()) {
+				const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+				if (fm && toStr(fm.Type) === category.typeValue && toStr(fm.URL)) byUrl.set(toStr(fm.URL), file)
+			}
+			let created = 0
+			let updated = 0
+			for (const game of games) {
+				if (this.unloaded) return
+				const url = `https://store.steampowered.com/app/${String(game.appId)}/`
+				const hours = playtimeHours(game.minutes)
+				const existing = byUrl.get(url)
+				try {
+					if (existing) {
+						const fm = this.app.metadataCache.getFileCache(existing)?.frontmatter
+						if (Number(fm?.Playtime) === hours) continue
+						await this.app.fileManager.processFrontMatter(existing, (current: Record<string, unknown>) => { current.Playtime = hours })
+						updated++
+						continue
+					}
+					const sourceId = 'steam:' + String(game.appId)
+					const meta = await provider.fetch(sourceId, 'game') ?? {
+						fields: { Name: game.name, URL: url, Cover: `https://cdn.cloudflare.steamstatic.com/steam/apps/${String(game.appId)}/header.jpg` },
+						progressTotal: null,
+						imdbId: null
+					}
+					const file = await this.newNote(category, provider.id, sourceId, toStr(meta.fields.Name) || game.name, meta, { Playtime: hours })
+					byUrl.set(url, file)
+					created++
+					await new Promise<void>(resolve => { this.steamTimer = window.setTimeout(resolve, 1500) })
+				} catch (e) {
+					console.error('Library: Steam import error', game.appId, e)
+				}
+			}
+			new Notice(tr('notice.steam.imported', { created, updated }))
+		} finally {
+			this.steamImporting = false
+			this.steamTimer = null
 		}
 	}
 
@@ -935,7 +1014,9 @@ export default class LibraryPlugin extends Plugin {
 			this.settings.comicVineApiKey,
 			this.settings.anilistClientId,
 			this.settings.anilistToken,
-			this.settings.tmdbApiKey
+			this.settings.tmdbApiKey,
+			this.settings.twitchClientId,
+			this.settings.twitchClientSecret
 		].join('|')
 	}
 
@@ -1061,6 +1142,8 @@ export default class LibraryPlugin extends Plugin {
 			// property does not duplicate the value into a second field.
 			const present = key === 'Cover' ? coverValue(current, this.coverProperty()) : current[target]
 			if (key === 'Seasons' && !isEmptyValue(present)) current[target] = mergeSeasons(present, value)
+			// A Steam trailer stream gives way once a YouTube one is found.
+			else if (key === 'Trailer' && /steamstatic\.com\//.test(toStr(present)) && /youtube\.com\//.test(toStr(value))) current[target] = value
 			else if (isEmptyValue(present)) current[target] = LINK_FIELDS.indexOf(key) >= 0 ? toLinks(value) : value
 			// A junk runtime stored by an earlier pass must not shadow the
 			// trustworthy value that arrives behind it.
@@ -1248,7 +1331,61 @@ export default class LibraryPlugin extends Plugin {
 		wrap.appendChild(header)
 		this.buildMediaBlock(wrap, fm, name)
 		this.buildSeasonsBlock(wrap, fm, file)
+		this.buildRecommendations(wrap, fm)
 		return wrap
+	}
+
+	// A row of similar titles under the header. It appears once the source
+	// answers and stays away when it has nothing.
+	private buildRecommendations(wrap: HTMLElement, fm: Record<string, unknown>): void {
+		if (!this.settings.showRecommendations) return
+		const source = toStr(fm.Source)
+		const sourceId = toStr(fm['Source ID'])
+		if (!source || !sourceId) return
+		const key = `${source}:${sourceId}`
+		let pending = this.recommendations.get(key)
+		if (!pending) {
+			const category = this.settings.categories.find(c => c.typeValue === toStr(fm.Type))
+			const known = new Set<string>()
+			for (const file of this.app.vault.getMarkdownFiles()) {
+				const id = toStr(this.app.metadataCache.getFileCache(file)?.frontmatter?.['Source ID'])
+				if (id) known.add(id)
+			}
+			pending = recommendationsFor(source, sourceId, toStr(fm.Name), toStrArray(fm.Genre).map(linkLabel), {
+				tmdb: this.settings.tmdbApiKey.trim(),
+				rawg: this.settings.rawgApiKey.trim()
+			}, category?.contentType === 'series', known).catch(() => [] as Recommendation[])
+			this.recommendations.set(key, pending)
+		}
+		const box = wrap.createDiv({ cls: 'library-recs' })
+		void pending.then(recs => {
+			if (recs.length === 0 || this.unloaded) { box.remove(); return }
+			box.createDiv({ cls: 'library-recs-title', text: tr('recs.title') })
+			const row = box.createDiv({ cls: 'library-recs-row' })
+			for (const rec of recs) {
+				const card = row.createDiv({ cls: 'library-rec', attr: { role: 'button', tabindex: '0', title: tr('recs.add') } })
+				const cover = safeUrl(rec.cover)
+				const art = card.createDiv({ cls: 'library-rec-cover' })
+				if (cover) art.createEl('img', { attr: { src: cover, alt: rec.title, loading: 'lazy' } })
+				card.createDiv({ cls: 'library-rec-title', text: rec.title })
+				if (rec.year) card.createDiv({ cls: 'library-rec-year', text: String(rec.year) })
+				const add = (): void => { void this.addRecommendation(rec) }
+				card.addEventListener('click', add)
+				card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); add() } })
+			}
+		})
+	}
+
+	// Adding goes through the normal path, which opens the note instead when
+	// the title is already in the library.
+	private async addRecommendation(rec: Recommendation): Promise<void> {
+		const category = this.settings.categories.find(c => c.contentType === rec.type)
+		if (!category) { new Notice(tr('recs.noCategory')); return }
+		const sourceId = typeof rec.sourceId === 'string' ? rec.sourceId : await rec.sourceId()
+		if (!sourceId) { new Notice(tr('notice.notFound')); return }
+		await this.createFromResult(category, {
+			provider: '', sourceId, title: rec.title, year: rec.year, cover: rec.cover, subtitle: null, raw: undefined
+		})
 	}
 
 	private buildMediaBlock(wrap: HTMLElement, fm: Record<string, unknown>, name: string): void {
@@ -1265,7 +1402,7 @@ export default class LibraryPlugin extends Plugin {
 			const embed = toEmbed(trailer)
 			const href = safeUrl(trailer)
 			if (embed) {
-				media.appendChild(createEmbedPlayer(embed.src, tr('header.trailer')))
+				media.appendChild(createEmbedPlayer(embed, tr('header.trailer')))
 			} else if (href) {
 				const row = createDiv()
 				row.classList.add('note-header-row')

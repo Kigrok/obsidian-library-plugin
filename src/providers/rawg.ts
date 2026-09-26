@@ -1,4 +1,6 @@
 import { requestUrl } from 'obsidian'
+import { steamMediaFor } from './steam'
+import type { GameTrailerFinder } from './gameTrailer'
 import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
 
 interface RawgSearchItem {
@@ -33,8 +35,11 @@ export class RawgProvider implements ContentProvider {
 
 	private getKey: () => string
 
-	constructor(getKey: () => string) {
+	private trailers: GameTrailerFinder
+
+	constructor(getKey: () => string, trailers: GameTrailerFinder) {
 		this.getKey = getKey
+		this.trailers = trailers
 	}
 
 	private year(value: string | null | undefined): number | null {
@@ -66,6 +71,28 @@ export class RawgProvider implements ContentProvider {
 		}
 	}
 
+	// RAWG's screenshots; the trailer from YouTube (IGDB, Wikidata) or else the
+	// game's Steam page, since RAWG's own video list is mostly empty.
+	private async media(id: string, name: string, params: URLSearchParams): Promise<Record<string, unknown>> {
+		const out: Record<string, unknown> = {}
+		const get = async <T>(path: string): Promise<T | null> => {
+			const resp = await requestUrl({ url: `${RawgProvider.BASE}/${encodeURIComponent(id)}/${path}?${params.toString()}`, throw: false })
+			return resp.status === 200 ? resp.json as T : null
+		}
+		const [shots, stores] = await Promise.all([
+			get<{ results?: { image?: string }[] }>('screenshots'),
+			get<{ results?: { url?: string }[] }>('stores')
+		])
+		const gallery = (shots?.results ?? []).map(s => s.image).filter((s): s is string => !!s).slice(0, 8)
+		if (gallery.length > 0) out.Gallery = gallery
+		const steamApp = (stores?.results ?? []).map(s => s.url?.match(/store\.steampowered\.com\/app\/(\d+)/)?.[1]).find(Boolean)
+		const steam = steamApp ? await steamMediaFor(Number(steamApp)) : {}
+		if (!out.Gallery && steam.Gallery) out.Gallery = steam.Gallery
+		const trailer = await this.trailers.youtube(steamApp ? Number(steamApp) : null, name) ?? steam.Trailer
+		if (trailer) out.Trailer = trailer
+		return out
+	}
+
 	async fetch(sourceId: string): Promise<NormalizedMetadata | null> {
 		try {
 			const key = this.getKey().trim()
@@ -92,6 +119,7 @@ export class RawgProvider implements ContentProvider {
 				fields['Rating MC'] = Math.round(details.metacritic) / 10
 			}
 
+			Object.assign(fields, await this.media(sourceId, details.name, params))
 			return { fields, progressTotal: 1, imdbId: null }
 		} catch (e) {
 			console.error('Library: RAWG fetch error', e)

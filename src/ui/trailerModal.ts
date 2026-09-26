@@ -18,7 +18,7 @@ export class TrailerModal extends Modal {
 		this.setTitle(this.title)
 		const embed = toEmbed(this.url)
 		if (embed) {
-			contentEl.appendChild(createEmbedPlayer(embed.src, tr('header.trailer')))
+			contentEl.appendChild(createEmbedPlayer(embed, tr('header.trailer')))
 			return
 		}
 		const href = safeUrl(this.url)

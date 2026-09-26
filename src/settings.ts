@@ -50,7 +50,11 @@ type TextKey =
 	| "anilistClientId"
 	| "anilistToken"
 	| "malClientId"
-	| "malClientSecret";
+	| "malClientSecret"
+	| "steamApiKey"
+	| "steamId"
+	| "twitchClientId"
+	| "twitchClientSecret";
 
 // One row of the tab. Both renderers draw from the same rows —
 // getSettingDefinitions() on Obsidian 1.13+, display() before it — so users on
@@ -196,7 +200,23 @@ export class LibrarySettingTab extends PluginSettingTab {
 					this.textRow("settings.rawg", "rawgApiKey", tr("settings.rawg.placeholder")),
 					this.textRow("settings.tmdbApiKey", "tmdbApiKey", tr("settings.rawg.placeholder")),
 					this.textRow("settings.comicvine", "comicVineApiKey", tr("settings.comicvine.placeholder")),
+					this.textRow("settings.steamKey", "steamApiKey", tr("settings.rawg.placeholder")),
+					this.textRow("settings.steamId", "steamId", "76561198000000000"),
+					this.textRow("settings.twitchId", "twitchClientId", tr("settings.rawg.placeholder")),
+					this.textRow("settings.twitchSecret", "twitchClientSecret", tr("settings.rawg.placeholder")),
 					this.textRow("settings.coverProperty", "coverProperty", "Cover"),
+					{
+						name: tr("settings.recs.name"),
+						desc: tr("settings.recs.desc"),
+						render: (row) => {
+							row.addToggle((toggle) =>
+								toggle.setValue(this.plugin.settings.showRecommendations).onChange(async (value) => {
+									this.plugin.settings.showRecommendations = value;
+									await this.plugin.saveSettings();
+								}),
+							);
+						},
+					},
 				],
 			},
 			{

@@ -196,7 +196,7 @@ export async function renderShareCard(app: App, fm: Frontmatter, name: string, c
 
 	ctx.fillStyle = '#f2f2f5'
 	ctx.font = 'bold 58px sans-serif'
-	const titleLines = wrap(ctx, name, colW, 2)
+	const titleLines = wrap(ctx, name, colW, 3)
 	let y = posterY + 70
 	for (const line of titleLines) {
 		ctx.fillText(line, colX, y)
@@ -211,7 +211,7 @@ export async function renderShareCard(app: App, fm: Frontmatter, name: string, c
 		ctx.fillStyle = '#a0a0b0'
 		ctx.font = '30px sans-serif'
 		y += 14
-		wrap(ctx, meta.join('  ·  '), colW, 1).forEach((l) => {
+		wrap(ctx, meta.join('  ·  '), colW, 3).forEach((l) => {
 			ctx.fillText(l, colX, y)
 			y += 40
 		})
@@ -222,7 +222,7 @@ export async function renderShareCard(app: App, fm: Frontmatter, name: string, c
 		ctx.fillStyle = '#8a8a9a'
 		ctx.font = '28px sans-serif'
 		y += 8
-		wrap(ctx, creator, colW, 1).forEach((l) => {
+		wrap(ctx, creator, colW, 2).forEach((l) => {
 			ctx.fillText(l, colX, y)
 			y += 40
 		})
@@ -236,7 +236,7 @@ export async function renderShareCard(app: App, fm: Frontmatter, name: string, c
 		ctx.fillStyle = '#8a8a9a'
 		ctx.font = '28px sans-serif'
 		y += 8
-		wrap(ctx, `${tr('header.cast')}: ${cast}`, colW, 1).forEach((l) => {
+		wrap(ctx, `${tr('header.cast')}: ${cast}`, colW, 2).forEach((l) => {
 			ctx.fillText(l, colX, y)
 			y += 40
 		})

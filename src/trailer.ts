@@ -1,5 +1,5 @@
 export interface Embed {
-	kind: 'youtube' | 'vimeo'
+	kind: 'youtube' | 'vimeo' | 'video'
 	src: string
 }
 
@@ -61,6 +61,13 @@ export function toEmbed(raw: unknown): Embed | null {
 	if (youtube) return { kind: 'youtube', src: `https://www.youtube-nocookie.com/embed/${youtube}` }
 	const vimeo = vimeoId(url)
 	if (vimeo) return { kind: 'vimeo', src: `https://player.vimeo.com/video/${vimeo}` }
+	// A video file or stream (Steam trailers are HLS), played by the <video> element.
+	try {
+		const parsed = new URL(url)
+		if (parsed.protocol === 'https:' && /\.(m3u8|mp4|webm)$/i.test(parsed.pathname)) return { kind: 'video', src: url }
+	} catch {
+		// not a URL
+	}
 	return null
 }
 
@@ -92,8 +99,15 @@ export function normalizeSeasons(val: unknown): SeasonView[] {
 // calling one on the document itself turns into an appendChild against the
 // document — a HierarchyRequestError in the real app, while jsdom's setup
 // quietly redirects it to <body>.
-export function createEmbedPlayer(src: string, title: string): HTMLElement {
+export function createEmbedPlayer(embed: Embed, title: string): HTMLElement {
 	const wrapper = createDiv({ cls: 'note-header-player' })
+	if (embed.kind === 'video') {
+		wrapper.appendChild(createEl('video', {
+			attr: { src: embed.src, title, controls: '', preload: 'metadata', playsinline: '' }
+		}))
+		return wrapper
+	}
+	const src = embed.src
 	const iframe = createEl('iframe', {
 		attr: {
 			src,
