@@ -164,7 +164,7 @@ Source ID: tt4574334
 | `api.myanimelist.net` | MyAnimeList ہم آہنگی | آپ کا ٹوکن، پیش رفت، حیثیت اور اسکور |
 | `s4.anilist.co` | اینیمے بینرز | CDN راستہ |
 | `comicvine.gamespot.com` | کامکس کی تلاش | عنوان، Comic Vine کلید |
-| `v3-cinemeta.strem.io` | فلم یا سیریز شامل کرنا یا ریفریش کرنا؛ TMDB کلید نہ ہو تو نوٹ کھولنے پر سفارشات | IMDb id؛ صنف |
+| `v3-cinemeta.strem.io` | فلم یا سیریز شامل کرنا یا ریفریش کرنا؛ OMDb کی روزانہ حد ختم ہونے پر فلم اور سیریز کی تلاش؛ TMDB کلید نہ ہو تو نوٹ کھولنے پر سفارشات | عنوان یا IMDb id؛ صنف |
 | `images.metahub.space`, `episodes.metahub.space` | مناظر | IMDb id، سیزن اور قسط کے نمبر |
 | `api.themoviedb.org`, `image.tmdb.org` | TMDB کلید ہو تو فلم یا سیریز شامل یا تازہ کرنا اور نوٹ کھولنے پر سفارشات | IMDb id اور TMDB کلید؛ تصویر کا راستہ |
 | `i.ytimg.com` | ٹریلر کے مناظر | ویڈیو id |

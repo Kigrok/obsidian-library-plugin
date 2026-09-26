@@ -164,7 +164,7 @@ Deine Bibliothek besteht aus einfachen Notizen und funktioniert offline. Das Plu
 | `api.myanimelist.net` | MyAnimeList-Synchronisierung | Dein Token, Fortschritt, Status und Wertung |
 | `s4.anilist.co` | Anime-Banner | CDN-Pfad |
 | `comicvine.gamespot.com` | Comicsuche | Titel, Comic-Vine-Schlüssel |
-| `v3-cinemeta.strem.io` | Hinzufügen oder Aktualisieren eines Films oder einer Serie; Empfehlungen beim Öffnen einer Notiz, ohne TMDB-Schlüssel | IMDb-ID; Genre |
+| `v3-cinemeta.strem.io` | Hinzufügen oder Aktualisieren eines Films oder einer Serie; Film- und Seriensuche, solange das Tageslimit von OMDb erreicht ist; Empfehlungen beim Öffnen einer Notiz, ohne TMDB-Schlüssel | Titel oder IMDb-ID; Genre |
 | `images.metahub.space`, `episodes.metahub.space` | Standbilder | IMDb-ID, Staffel- und Folgennummer |
 | `api.themoviedb.org`, `image.tmdb.org` | Hinzufügen oder Aktualisieren eines Films oder einer Serie und Empfehlungen beim Öffnen einer Notiz, wenn ein TMDB-Schlüssel gesetzt ist | IMDb-ID und TMDB-Schlüssel; Bildpfad |
 | `i.ytimg.com` | Trailer-Standbilder | Video-ID |

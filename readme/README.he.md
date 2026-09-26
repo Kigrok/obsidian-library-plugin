@@ -164,7 +164,7 @@ Source ID: tt4574334
 | `api.myanimelist.net` | סנכרון MyAnimeList | האסימון שלכם, התקדמות, סטטוס וציון |
 | `s4.anilist.co` | באנרים של אנימה | נתיב CDN |
 | `comicvine.gamespot.com` | חיפוש קומיקס | שם, מפתח Comic Vine |
-| `v3-cinemeta.strem.io` | הוספה או רענון של סרט או סדרה; המלצות בפתיחת פתק, בלי מפתח TMDB | מזהה IMDb; ז'אנר |
+| `v3-cinemeta.strem.io` | הוספה או רענון של סרט או סדרה; חיפוש סרטים וסדרות כשהמכסה היומית של OMDb נגמרה; המלצות בפתיחת פתק, בלי מפתח TMDB | שם או מזהה IMDb; ז'אנר |
 | `images.metahub.space`, `episodes.metahub.space` | תמונות | מזהה IMDb, מספרי עונה ופרק |
 | `api.themoviedb.org`, `image.tmdb.org` | הוספה או רענון של סרט או סדרה, והמלצות בפתיחת פתק, אם הוגדר מפתח TMDB | מזהה IMDb ומפתח TMDB; נתיב התמונה |
 | `i.ytimg.com` | תמונות מטריילרים | מזהה הסרטון |

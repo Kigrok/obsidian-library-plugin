@@ -164,7 +164,7 @@ Kütüphaneniz sade notlardan oluşur ve çevrimdışı çalışır. Eklenti; ar
 | `api.myanimelist.net` | MyAnimeList eşitleme | Belirteciniz, ilerleme, durum ve puan |
 | `s4.anilist.co` | Anime afişleri | CDN yolu |
 | `comicvine.gamespot.com` | Çizgi roman arama | Başlık, Comic Vine anahtarı |
-| `v3-cinemeta.strem.io` | Film veya dizi ekleme ya da yenileme; TMDB anahtarı yoksa not açıldığında öneriler | IMDb kimliği; tür |
+| `v3-cinemeta.strem.io` | Film veya dizi ekleme ya da yenileme; OMDb günlük sınırı dolduğunda film ve dizi arama; TMDB anahtarı yoksa not açıldığında öneriler | Başlık veya IMDb kimliği; tür |
 | `images.metahub.space`, `episodes.metahub.space` | Kareler | IMDb kimliği, sezon ve bölüm numaraları |
 | `api.themoviedb.org`, `image.tmdb.org` | TMDB anahtarı ayarlanmışsa film veya dizi ekleme ya da yenileme ve not açıldığında öneriler | IMDb kimliği ve TMDB anahtarı; görsel yolu |
 | `i.ytimg.com` | Fragman kareleri | Video kimliği |

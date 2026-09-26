@@ -164,7 +164,7 @@ Source ID: tt4574334
 | `api.myanimelist.net` | การซิงก์ MyAnimeList | โทเค็นของคุณ ความคืบหน้า สถานะ และคะแนน |
 | `s4.anilist.co` | แบนเนอร์อนิเมะ | พาธ CDN |
 | `comicvine.gamespot.com` | ค้นหาการ์ตูน | ชื่อเรื่อง, คีย์ Comic Vine |
-| `v3-cinemeta.strem.io` | เพิ่มหรือรีเฟรชภาพยนตร์หรือซีรีส์; คำแนะนำเมื่อเปิดโน้ต หากไม่มีคีย์ TMDB | IMDb id; แนว |
+| `v3-cinemeta.strem.io` | เพิ่มหรือรีเฟรชภาพยนตร์หรือซีรีส์; ค้นหาภาพยนตร์และซีรีส์เมื่อโควตารายวันของ OMDb หมด; คำแนะนำเมื่อเปิดโน้ต หากไม่มีคีย์ TMDB | ชื่อเรื่องหรือ IMDb id; แนว |
 | `images.metahub.space`, `episodes.metahub.space` | ภาพนิ่ง | IMDb id, หมายเลขซีซันและตอน |
 | `api.themoviedb.org`, `image.tmdb.org` | เพิ่มหรือรีเฟรชภาพยนตร์หรือซีรีส์ และคำแนะนำเมื่อเปิดโน้ต หากตั้งค่าคีย์ TMDB | IMDb id และคีย์ TMDB; พาธรูปภาพ |
 | `i.ytimg.com` | ภาพนิ่งจากตัวอย่าง | id วิดีโอ |

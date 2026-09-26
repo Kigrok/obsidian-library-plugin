@@ -164,7 +164,7 @@ Source ID: tt4574334
 | `api.myanimelist.net` | MyAnimeList सिंक | आपका टोकन, प्रगति, स्थिति और स्कोर |
 | `s4.anilist.co` | एनीमे बैनर | CDN पथ |
 | `comicvine.gamespot.com` | कॉमिक्स खोज | शीर्षक, Comic Vine कुंजी |
-| `v3-cinemeta.strem.io` | फ़िल्म या सीरीज़ जोड़ना या रिफ़्रेश करना; TMDB कुंजी न हो तो नोट खोलने पर सुझाव | IMDb id; शैली |
+| `v3-cinemeta.strem.io` | फ़िल्म या सीरीज़ जोड़ना या रिफ़्रेश करना; OMDb की दैनिक सीमा ख़त्म होने पर फ़िल्म और सीरीज़ खोज; TMDB कुंजी न हो तो नोट खोलने पर सुझाव | शीर्षक या IMDb id; शैली |
 | `images.metahub.space`, `episodes.metahub.space` | स्टिल्स | IMDb id, सीज़न और एपिसोड नंबर |
 | `api.themoviedb.org`, `image.tmdb.org` | TMDB कुंजी हो तो फ़िल्म या सीरीज़ जोड़ना या रीफ़्रेश करना और नोट खोलने पर सुझाव | IMDb id और TMDB कुंजी; इमेज पथ |
 | `i.ytimg.com` | ट्रेलर स्टिल्स | वीडियो id |

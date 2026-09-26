@@ -164,7 +164,7 @@ Vaša knjižnica su obične bilješke i radi izvanmrežno. Dodatak se spaja na m
 | `api.myanimelist.net` | Sinkronizacija s MyAnimeListom | Vaš token, napredak, status i ocjena |
 | `s4.anilist.co` | Banneri animea | CDN putanja |
 | `comicvine.gamespot.com` | Pretraga stripova | Naslov, ključ za Comic Vine |
-| `v3-cinemeta.strem.io` | Dodavanje ili osvježavanje filma ili serije; preporuke pri otvaranju bilješke, bez TMDB ključa | IMDb id; žanr |
+| `v3-cinemeta.strem.io` | Dodavanje ili osvježavanje filma ili serije; pretraga filmova i serija kad je dnevno ograničenje OMDb-a potrošeno; preporuke pri otvaranju bilješke, bez TMDB ključa | Naslov ili IMDb id; žanr |
 | `images.metahub.space`, `episodes.metahub.space` | Kadrovi | IMDb id, brojevi sezone i epizode |
 | `api.themoviedb.org`, `image.tmdb.org` | Dodavanje ili osvježavanje filma ili serije i preporuke pri otvaranju bilješke, ako postavite TMDB ključ | IMDb id i ključ za TMDB; putanja slike |
 | `i.ytimg.com` | Kadrovi trailera | Id videa |

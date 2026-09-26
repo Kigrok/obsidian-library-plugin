@@ -164,7 +164,7 @@ Biblioteca ta este formată din note simple și funcționează offline. Pluginul
 | `api.myanimelist.net` | Sincronizare MyAnimeList | Tokenul tău, progresul, starea și nota |
 | `s4.anilist.co` | Bannere anime | Cale CDN |
 | `comicvine.gamespot.com` | Căutare de benzi desenate | Titlu, cheie Comic Vine |
-| `v3-cinemeta.strem.io` | Adăugarea sau reîmprospătarea unui film sau serial; recomandări la deschiderea unei notițe, fără cheie TMDB | Id IMDb; gen |
+| `v3-cinemeta.strem.io` | Adăugarea sau reîmprospătarea unui film sau serial; căutare de filme și seriale când limita zilnică OMDb e epuizată; recomandări la deschiderea unei notițe, fără cheie TMDB | Titlu sau id IMDb; gen |
 | `images.metahub.space`, `episodes.metahub.space` | Cadre | Id IMDb, numerele sezonului și episodului |
 | `api.themoviedb.org`, `image.tmdb.org` | Adăugarea sau actualizarea unui film ori serial și recomandări la deschiderea unei notițe, dacă setezi o cheie TMDB | Id IMDb și cheie TMDB; calea imaginii |
 | `i.ytimg.com` | Cadre din trailere | Id-ul videoclipului |

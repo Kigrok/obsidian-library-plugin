@@ -164,7 +164,7 @@ Source ID: tt4574334
 | `api.myanimelist.net` | مزامنة MyAnimeList | رمزك، والتقدم، والحالة، والتقييم |
 | `s4.anilist.co` | لافتات الأنمي | مسار CDN |
 | `comicvine.gamespot.com` | البحث عن القصص المصورة | العنوان، ومفتاح Comic Vine |
-| `v3-cinemeta.strem.io` | إضافة فيلم أو مسلسل أو تحديثه؛ توصيات عند فتح ملاحظة، دون مفتاح TMDB | معرّف IMDb؛ النوع |
+| `v3-cinemeta.strem.io` | إضافة فيلم أو مسلسل أو تحديثه؛ البحث عن الأفلام والمسلسلات حين يُستنفد الحد اليومي لـ OMDb؛ توصيات عند فتح ملاحظة، دون مفتاح TMDB | العنوان أو معرّف IMDb؛ النوع |
 | `images.metahub.space`, `episodes.metahub.space` | اللقطات | معرّف IMDb، ورقما الموسم والحلقة |
 | `api.themoviedb.org`, `image.tmdb.org` | إضافة فيلم أو مسلسل أو تحديثه، وتوصيات عند فتح ملاحظة، إذا ضبطت مفتاح TMDB | معرّف IMDb ومفتاح TMDB؛ مسار الصورة |
 | `i.ytimg.com` | لقطات الإعلانات التشويقية | معرّف الفيديو |

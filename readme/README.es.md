@@ -164,7 +164,7 @@ Tu biblioteca son notas normales y funciona sin conexión. El plugin se conecta 
 | `api.myanimelist.net` | Sincronización con MyAnimeList | Tu token, el progreso, el estado y la puntuación |
 | `s4.anilist.co` | Banners de anime | Ruta del CDN |
 | `comicvine.gamespot.com` | Búsqueda de cómics | Título, clave de Comic Vine |
-| `v3-cinemeta.strem.io` | Añadir o actualizar una película o serie; recomendaciones al abrir una nota, sin clave de TMDB | Id de IMDb; género |
+| `v3-cinemeta.strem.io` | Añadir o actualizar una película o serie; búsqueda de películas y series cuando se agota el límite diario de OMDb; recomendaciones al abrir una nota, sin clave de TMDB | Título o id de IMDb; género |
 | `images.metahub.space`, `episodes.metahub.space` | Fotogramas | Id de IMDb, números de temporada y episodio |
 | `api.themoviedb.org`, `image.tmdb.org` | Añadir o actualizar una película o serie, y recomendaciones al abrir una nota, si configuras una clave de TMDB | Id de IMDb y clave de TMDB; ruta de la imagen |
 | `i.ytimg.com` | Fotogramas de tráileres | Id del vídeo |

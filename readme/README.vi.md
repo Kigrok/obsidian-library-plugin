@@ -164,7 +164,7 @@ Thư viện của bạn là các ghi chú thông thường và hoạt động ng
 | `api.myanimelist.net` | Đồng bộ MyAnimeList | Token của bạn, tiến độ, trạng thái và điểm |
 | `s4.anilist.co` | Banner anime | Đường dẫn CDN |
 | `comicvine.gamespot.com` | Tìm truyện tranh | Tên, khóa Comic Vine |
-| `v3-cinemeta.strem.io` | Thêm hoặc làm mới phim hay series; gợi ý khi mở ghi chú, nếu không có khóa TMDB | IMDb id; thể loại |
+| `v3-cinemeta.strem.io` | Thêm hoặc làm mới phim hay series; tìm phim và series khi OMDb hết giới hạn hằng ngày; gợi ý khi mở ghi chú, nếu không có khóa TMDB | Tên hoặc IMDb id; thể loại |
 | `images.metahub.space`, `episodes.metahub.space` | Ảnh tĩnh | IMDb id, số mùa và số tập |
 | `api.themoviedb.org`, `image.tmdb.org` | Thêm hoặc làm mới phim hay series, và gợi ý khi mở ghi chú, nếu đặt khóa TMDB | IMDb id và khóa TMDB; đường dẫn ảnh |
 | `i.ytimg.com` | Ảnh tĩnh từ trailer | Id video |

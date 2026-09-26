@@ -164,7 +164,7 @@ Twoja biblioteka to zwykłe notatki i działa offline. Wtyczka łączy się z si
 | `api.myanimelist.net` | Synchronizacja z MyAnimeList | Twój token, postęp, status i ocena |
 | `s4.anilist.co` | Banery anime | Ścieżka CDN |
 | `comicvine.gamespot.com` | Wyszukiwanie komiksów | Tytuł, klucz Comic Vine |
-| `v3-cinemeta.strem.io` | Dodanie lub odświeżenie filmu albo serialu; rekomendacje po otwarciu notatki, bez klucza TMDB | Id IMDb; gatunek |
+| `v3-cinemeta.strem.io` | Dodanie lub odświeżenie filmu albo serialu; wyszukiwanie filmów i seriali, gdy dzienny limit OMDb się wyczerpie; rekomendacje po otwarciu notatki, bez klucza TMDB | Tytuł lub id IMDb; gatunek |
 | `images.metahub.space`, `episodes.metahub.space` | Kadry | Id IMDb, numery sezonu i odcinka |
 | `api.themoviedb.org`, `image.tmdb.org` | Dodawanie lub odświeżanie filmu albo serialu i rekomendacje po otwarciu notatki, jeśli ustawisz klucz TMDB | Id IMDb i klucz TMDB; ścieżka obrazka |
 | `i.ytimg.com` | Kadry zwiastunów | Id wideo |

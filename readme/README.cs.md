@@ -164,7 +164,7 @@ Vaše knihovna jsou obyčejné poznámky a funguje offline. Plugin jde online, k
 | `api.myanimelist.net` | Synchronizace s MyAnimeList | Váš token, postup, stav a hodnocení |
 | `s4.anilist.co` | Bannery anime | Cesta CDN |
 | `comicvine.gamespot.com` | Hledání komiksů | Název, klíč Comic Vine |
-| `v3-cinemeta.strem.io` | Přidání nebo obnovení filmu či seriálu; doporučení při otevření poznámky, bez klíče TMDB | IMDb id; žánr |
+| `v3-cinemeta.strem.io` | Přidání nebo obnovení filmu či seriálu; hledání filmů a seriálů, když je vyčerpán denní limit OMDb; doporučení při otevření poznámky, bez klíče TMDB | Název nebo IMDb id; žánr |
 | `images.metahub.space`, `episodes.metahub.space` | Záběry | IMDb id, čísla řady a dílu |
 | `api.themoviedb.org`, `image.tmdb.org` | Přidání nebo obnova filmu či seriálu a doporučení při otevření poznámky, pokud nastavíte klíč TMDB | IMDb id a klíč TMDB; cesta k obrázku |
 | `i.ytimg.com` | Záběry z trailerů | Id videa |

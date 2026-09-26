@@ -95,7 +95,7 @@ export default class LibraryPlugin extends Plugin {
 	private enrichRunning = false
 	private enrichAgain = false
 	private unloaded = false
-	private keySignature = ''
+	private keySignatures: Record<string, string> = {}
 	private lightbox: Lightbox | null = null
 	// Seasons unfolded into their episodes, per note; screen state only.
 	private openSeasons = new Map<string, Set<number>>()
@@ -164,7 +164,7 @@ export default class LibraryPlugin extends Plugin {
 			this.refreshBanner()
 			this.scheduleEnrich(ENRICH_START_DELAY)
 		})
-		this.keySignature = this.apiKeySignature()
+		this.keySignatures = this.apiKeySignatures()
 
 		this.registerEvent(
 			this.app.workspace.on('active-leaf-change', () => {
@@ -308,12 +308,13 @@ export default class LibraryPlugin extends Plugin {
 
 	async saveSettings(): Promise<void> {
 		// A freshly added key unlocks metadata the earlier pass could not fetch,
-		// so the version marks are dropped and the walk starts over — once the
-		// typing has stopped, not with every half-entered key.
-		const signature = this.apiKeySignature()
-		if (signature !== this.keySignature) {
-			this.keySignature = signature
-			this.settings.enrichMarks = {}
+		// so the version marks of the notes it serves are dropped and the walk
+		// starts over — once the typing has stopped, not with every half-entered key.
+		const signatures = this.apiKeySignatures()
+		const changed = Object.keys(signatures).filter(type => signatures[type] !== this.keySignatures[type])
+		if (changed.length > 0) {
+			this.keySignatures = signatures
+			this.dropEnrichMarks(changed)
 			this.scheduleEnrich(ENRICH_START_DELAY)
 		}
 		await this.persistSettings()
@@ -329,7 +330,7 @@ export default class LibraryPlugin extends Plugin {
 			console.error('Library: settings reload error', e)
 			return
 		}
-		this.keySignature = this.apiKeySignature()
+		this.keySignatures = this.apiKeySignatures()
 		this.refreshViews()
 	}
 
@@ -1006,18 +1007,29 @@ export default class LibraryPlugin extends Plugin {
 		})
 	}
 
-	private apiKeySignature(): string {
-		return [
-			this.settings.omdbApiKey,
-			this.settings.googleBooksApiKey,
-			this.settings.rawgApiKey,
-			this.settings.comicVineApiKey,
-			this.settings.anilistClientId,
-			this.settings.anilistToken,
-			this.settings.tmdbApiKey,
-			this.settings.twitchClientId,
-			this.settings.twitchClientSecret
-		].join('|')
+	// The keys each kind of note is fetched with. A changed key re-walks only
+	// those notes: a Twitch key does not cost a movie library its OMDb quota,
+	// and the AniList and MAL sign-ins, which fetch no metadata, re-walk nothing.
+	private apiKeySignatures(): Record<string, string> {
+		const s = this.settings
+		const video = `${s.omdbApiKey}|${s.tmdbApiKey}`
+		return {
+			movie: video,
+			series: video,
+			book: s.googleBooksApiKey,
+			googlebook: s.googleBooksApiKey,
+			comic: s.comicVineApiKey,
+			game: `${s.rawgApiKey}|${s.twitchClientId}|${s.twitchClientSecret}`
+		}
+	}
+
+	private dropEnrichMarks(types: string[]): void {
+		for (const file of this.app.vault.getMarkdownFiles()) {
+			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+			if (!fm) continue
+			const category = this.settings.categories.find(c => c.typeValue === toStr(fm.Type))
+			if (category && types.includes(category.contentType)) delete this.settings.enrichMarks[file.path]
+		}
 	}
 
 	private async tryRefresh(force: boolean): Promise<void> {

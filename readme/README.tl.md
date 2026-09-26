@@ -164,7 +164,7 @@ Ang iyong library ay mga karaniwang tala at gumagana offline. Nag-o-online lang 
 | `api.myanimelist.net` | Pag-sync sa MyAnimeList | Ang iyong token, progreso, status, at score |
 | `s4.anilist.co` | Mga banner ng anime | CDN path |
 | `comicvine.gamespot.com` | Paghahanap ng komiks | Pamagat, Comic Vine key |
-| `v3-cinemeta.strem.io` | Pagdagdag o pag-refresh ng pelikula o serye; mga rekomendasyon kapag binuksan ang tala, kung walang TMDB key | IMDb id; genre |
+| `v3-cinemeta.strem.io` | Pagdagdag o pag-refresh ng pelikula o serye; paghahanap ng pelikula at serye kapag ubos na ang pang-araw-araw na limit ng OMDb; mga rekomendasyon kapag binuksan ang tala, kung walang TMDB key | Pamagat o IMDb id; genre |
 | `images.metahub.space`, `episodes.metahub.space` | Mga still | IMDb id, numero ng season at episode |
 | `api.themoviedb.org`, `image.tmdb.org` | Pagdaragdag o pag-refresh ng pelikula o serye, at mga rekomendasyon kapag binuksan ang tala, kung may TMDB key | IMDb id at TMDB key; path ng larawan |
 | `i.ytimg.com` | Mga still ng trailer | Id ng video |

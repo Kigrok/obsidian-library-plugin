@@ -164,7 +164,7 @@ La tua libreria è fatta di semplici note e funziona offline. Il plugin va onlin
 | `api.myanimelist.net` | Sincronizzazione MyAnimeList | Il tuo token, progressi, stato e voto |
 | `s4.anilist.co` | Banner degli anime | Percorso CDN |
 | `comicvine.gamespot.com` | Ricerca di fumetti | Titolo, chiave Comic Vine |
-| `v3-cinemeta.strem.io` | Aggiunta o aggiornamento di un film o di una serie; consigli all'apertura di una nota, senza chiave TMDB | Id IMDb; genere |
+| `v3-cinemeta.strem.io` | Aggiunta o aggiornamento di un film o di una serie; ricerca di film e serie quando il limite giornaliero di OMDb è esaurito; consigli all'apertura di una nota, senza chiave TMDB | Titolo o id IMDb; genere |
 | `images.metahub.space`, `episodes.metahub.space` | Fotogrammi | Id IMDb, numeri di stagione ed episodio |
 | `api.themoviedb.org`, `image.tmdb.org` | Aggiunta o aggiornamento di un film o di una serie, e consigli all'apertura di una nota, se imposti una chiave TMDB | Id IMDb e chiave TMDB; percorso dell'immagine |
 | `i.ytimg.com` | Fotogrammi dei trailer | Id del video |

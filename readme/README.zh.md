@@ -164,7 +164,7 @@ Source ID: tt4574334
 | `api.myanimelist.net` | MyAnimeList 同步 | 你的令牌、进度、状态和评分 |
 | `s4.anilist.co` | 动画横幅 | CDN 路径 |
 | `comicvine.gamespot.com` | 搜索漫画 | 标题、Comic Vine 密钥 |
-| `v3-cinemeta.strem.io` | 添加或刷新电影、剧集；没有 TMDB 密钥时，打开笔记时的推荐 | IMDb ID；类型 |
+| `v3-cinemeta.strem.io` | 添加或刷新电影、剧集；OMDb 每日额度用完时搜索电影和剧集；没有 TMDB 密钥时，打开笔记时的推荐 | 标题或 IMDb ID；类型 |
 | `images.metahub.space`, `episodes.metahub.space` | 剧照 | IMDb ID、季号和集号 |
 | `api.themoviedb.org`, `image.tmdb.org` | 设置了 TMDB 密钥时，添加或刷新电影或剧集以及打开笔记时的推荐 | IMDb ID 和 TMDB 密钥；图片路径 |
 | `i.ytimg.com` | 预告片截图 | 视频 ID |

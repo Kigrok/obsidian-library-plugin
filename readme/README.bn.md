@@ -164,7 +164,7 @@ Source ID: tt4574334
 | `api.myanimelist.net` | MyAnimeList সিঙ্ক | আপনার টোকেন, অগ্রগতি, অবস্থা ও স্কোর |
 | `s4.anilist.co` | অ্যানিমের ব্যানার | CDN পাথ |
 | `comicvine.gamespot.com` | কমিকস খোঁজা | শিরোনাম, Comic Vine কী |
-| `v3-cinemeta.strem.io` | সিনেমা বা সিরিজ যোগ বা রিফ্রেশ করা; TMDB কী না থাকলে নোট খুললে সুপারিশ | IMDb id; ঘরানা |
+| `v3-cinemeta.strem.io` | সিনেমা বা সিরিজ যোগ বা রিফ্রেশ করা; OMDb-এর দৈনিক সীমা ফুরিয়ে গেলে সিনেমা ও সিরিজ খোঁজা; TMDB কী না থাকলে নোট খুললে সুপারিশ | শিরোনাম বা IMDb id; ঘরানা |
 | `images.metahub.space`, `episodes.metahub.space` | স্থিরচিত্র | IMDb id, সিজন ও পর্বের নম্বর |
 | `api.themoviedb.org`, `image.tmdb.org` | TMDB কী থাকলে সিনেমা বা সিরিজ যোগ বা রিফ্রেশ এবং নোট খুললে সুপারিশ | IMDb id ও TMDB কী; ছবির পাথ |
 | `i.ytimg.com` | ট্রেলারের স্থিরচিত্র | ভিডিও id |

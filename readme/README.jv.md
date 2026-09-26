@@ -164,7 +164,7 @@ Perpustakaan sampeyan mung cathetan biasa lan bisa mlaku offline. Plugin mung on
 | `api.myanimelist.net` | Sinkronisasi MyAnimeList | Token sampeyan, kemajuan, status lan biji |
 | `s4.anilist.co` | Banner anime | Path CDN |
 | `comicvine.gamespot.com` | Nggoleki komik | Judhul, kunci Comic Vine |
-| `v3-cinemeta.strem.io` | Nambah utawa nyegerake film utawa seri; rekomendasi nalika mbukak cathetan, tanpa kunci TMDB | IMDb id; genre |
+| `v3-cinemeta.strem.io` | Nambah utawa nyegerake film utawa seri; nggoleki film lan seri nalika watesan saben dina OMDb wis entek; rekomendasi nalika mbukak cathetan, tanpa kunci TMDB | Judhul utawa IMDb id; genre |
 | `images.metahub.space`, `episodes.metahub.space` | Gambar | IMDb id, nomer musim lan episode |
 | `api.themoviedb.org`, `image.tmdb.org` | Nambah utawa nyegerake film utawa serial, lan rekomendasi nalika mbukak cathetan, yen kunci TMDB disetel | IMDb id lan kunci TMDB; path gambar |
 | `i.ytimg.com` | Gambar trailer | Id video |

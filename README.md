@@ -164,7 +164,7 @@ Your library is plain notes and works offline. The plugin goes online when you s
 | `api.myanimelist.net` | MyAnimeList sync | Your token, progress, status, and score |
 | `s4.anilist.co` | Anime banners | CDN path |
 | `comicvine.gamespot.com` | Comic search | Title, Comic Vine key |
-| `v3-cinemeta.strem.io` | Adding or refreshing a movie or series; recommendations when a note opens, without a TMDB key | IMDb id; genre |
+| `v3-cinemeta.strem.io` | Adding or refreshing a movie or series; movie and series search while OMDb is over its daily limit; recommendations when a note opens, without a TMDB key | Title or IMDb id; genre |
 | `images.metahub.space`, `episodes.metahub.space` | Stills | IMDb id, season and episode numbers |
 | `api.themoviedb.org`, `image.tmdb.org` | Adding or refreshing a movie or series, and recommendations when a note opens, if you set a TMDB key | IMDb id and TMDB key; image path |
 | `i.ytimg.com` | Trailer stills | Video id |

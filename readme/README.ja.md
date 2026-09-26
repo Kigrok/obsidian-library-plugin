@@ -164,7 +164,7 @@ Source ID: tt4574334
 | `api.myanimelist.net` | MyAnimeList 同期 | トークン、進捗、ステータス、スコア |
 | `s4.anilist.co` | アニメのバナー | CDN パス |
 | `comicvine.gamespot.com` | 漫画の検索 | タイトル、Comic Vine キー |
-| `v3-cinemeta.strem.io` | 映画・ドラマの追加または更新、TMDB キーがない場合のノートを開いたときのおすすめ | IMDb ID、ジャンル |
+| `v3-cinemeta.strem.io` | 映画・ドラマの追加または更新、OMDb の1日の上限に達したときの映画とドラマの検索、TMDB キーがない場合のノートを開いたときのおすすめ | タイトルまたは IMDb ID、ジャンル |
 | `images.metahub.space`, `episodes.metahub.space` | スチル画像 | IMDb ID、シーズン番号とエピソード番号 |
 | `api.themoviedb.org`, `image.tmdb.org` | TMDB キーを設定した場合の映画・ドラマの追加と更新、ノートを開いたときのおすすめ | IMDb ID と TMDB キー、画像パス |
 | `i.ytimg.com` | 予告編のスチル画像 | 動画 ID |

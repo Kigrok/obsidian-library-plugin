@@ -164,7 +164,7 @@ Votre bibliothèque se compose de simples notes et fonctionne hors ligne. Le plu
 | `api.myanimelist.net` | Synchronisation MyAnimeList | Votre jeton, la progression, le statut et la note |
 | `s4.anilist.co` | Bannières d'anime | Chemin CDN |
 | `comicvine.gamespot.com` | Recherche de BD | Titre, clé Comic Vine |
-| `v3-cinemeta.strem.io` | Ajout ou actualisation d'un film ou d'une série ; recommandations à l'ouverture d'une note, sans clé TMDB | Identifiant IMDb ; genre |
+| `v3-cinemeta.strem.io` | Ajout ou actualisation d'un film ou d'une série ; recherche de films et de séries quand la limite quotidienne d'OMDb est atteinte ; recommandations à l'ouverture d'une note, sans clé TMDB | Titre ou identifiant IMDb ; genre |
 | `images.metahub.space`, `episodes.metahub.space` | Images | Identifiant IMDb, numéros de saison et d'épisode |
 | `api.themoviedb.org`, `image.tmdb.org` | Ajout ou actualisation d'un film ou d'une série, et recommandations à l'ouverture d'une note, si une clé TMDB est définie | Identifiant IMDb et clé TMDB ; chemin de l'image |
 | `i.ytimg.com` | Images des bandes-annonces | Identifiant de la vidéo |

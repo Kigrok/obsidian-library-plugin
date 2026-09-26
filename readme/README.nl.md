@@ -164,7 +164,7 @@ Je bibliotheek bestaat uit gewone notities en werkt offline. De plugin gaat onli
 | `api.myanimelist.net` | MyAnimeList-synchronisatie | Je token, voortgang, status en score |
 | `s4.anilist.co` | Anime-banners | CDN-pad |
 | `comicvine.gamespot.com` | Strips zoeken | Titel, Comic Vine-sleutel |
-| `v3-cinemeta.strem.io` | Een film of serie toevoegen of verversen; aanbevelingen bij het openen van een notitie, zonder TMDB-sleutel | IMDb-id; genre |
+| `v3-cinemeta.strem.io` | Een film of serie toevoegen of verversen; films en series zoeken zolang de daglimiet van OMDb op is; aanbevelingen bij het openen van een notitie, zonder TMDB-sleutel | Titel of IMDb-id; genre |
 | `images.metahub.space`, `episodes.metahub.space` | Stills | IMDb-id, seizoens- en afleveringsnummer |
 | `api.themoviedb.org`, `image.tmdb.org` | Een film of serie toevoegen of verversen, en aanbevelingen bij het openen van een notitie, als je een TMDB-sleutel hebt ingesteld | IMDb-id en TMDB-sleutel; afbeeldingspad |
 | `i.ytimg.com` | Trailerstills | Video-id |

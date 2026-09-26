@@ -164,7 +164,7 @@ Kutubxona oddiy qaydlardan iborat va oflayn ishlaydi. Plagin tarmoqqa siz qidirg
 | `api.myanimelist.net` | MyAnimeList sinxronlash | Tokeningiz, progress, holat va baho |
 | `s4.anilist.co` | Anime bannerlari | CDN yo'li |
 | `comicvine.gamespot.com` | Komiks qidirish | Nom, Comic Vine kaliti |
-| `v3-cinemeta.strem.io` | Film yoki serial qo'shish yoki yangilash; TMDB kaliti bo'lmasa, qayd ochilganda tavsiyalar | IMDb id; janr |
+| `v3-cinemeta.strem.io` | Film yoki serial qo'shish yoki yangilash; OMDb kunlik limiti tugaganda film va serial qidirish; TMDB kaliti bo'lmasa, qayd ochilganda tavsiyalar | Nom yoki IMDb id; janr |
 | `images.metahub.space`, `episodes.metahub.space` | Kadrlar | IMDb id, mavsum va qism raqamlari |
 | `api.themoviedb.org`, `image.tmdb.org` | TMDB kaliti o'rnatilgan bo'lsa, film yoki serial qo'shish yoki yangilash va qayd ochilganda tavsiyalar | IMDb id va TMDB kaliti; rasm yo'li |
 | `i.ytimg.com` | Treyler kadrlari | Video id |

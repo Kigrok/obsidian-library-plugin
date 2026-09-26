@@ -164,7 +164,7 @@ Kitabxana adi qeydlərdən ibarətdir və oflayn işləyir. Plagin şəbəkəyə
 | `api.myanimelist.net` | MyAnimeList sinxronlaşdırması | Tokeniniz, irəliləyiş, status və qiymət |
 | `s4.anilist.co` | Anime bannerləri | CDN yolu |
 | `comicvine.gamespot.com` | Komiks axtarışı | Ad, Comic Vine açarı |
-| `v3-cinemeta.strem.io` | Film və ya serial əlavə etmək və ya yeniləmək; TMDB açarı yoxdursa, qeyd açılanda tövsiyələr | IMDb id; janr |
+| `v3-cinemeta.strem.io` | Film və ya serial əlavə etmək və ya yeniləmək; OMDb-nin gündəlik limiti bitəndə film və serial axtarışı; TMDB açarı yoxdursa, qeyd açılanda tövsiyələr | Ad və ya IMDb id; janr |
 | `images.metahub.space`, `episodes.metahub.space` | Kadrlar | IMDb id, mövsüm və seriya nömrələri |
 | `api.themoviedb.org`, `image.tmdb.org` | TMDB açarı təyin olunubsa, film və ya serial əlavə etmək, yeniləmək və qeyd açılanda tövsiyələr | IMDb id və TMDB açarı; şəkil yolu |
 | `i.ytimg.com` | Treyler kadrları | Video id |

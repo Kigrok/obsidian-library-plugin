@@ -164,7 +164,7 @@ Source ID: tt4574334
 | `api.myanimelist.net` | MyAnimeList 동기화 | 토큰, 진행 상황, 상태, 점수 |
 | `s4.anilist.co` | 애니메이션 배너 | CDN 경로 |
 | `comicvine.gamespot.com` | 만화 검색 | 제목, Comic Vine 키 |
-| `v3-cinemeta.strem.io` | 영화나 시리즈 추가 또는 새로 고침; TMDB 키가 없을 때 노트를 열면 추천 | IMDb ID; 장르 |
+| `v3-cinemeta.strem.io` | 영화나 시리즈 추가 또는 새로 고침; OMDb 일일 한도가 소진되었을 때 영화와 시리즈 검색; TMDB 키가 없을 때 노트를 열면 추천 | 제목 또는 IMDb ID; 장르 |
 | `images.metahub.space`, `episodes.metahub.space` | 스틸 이미지 | IMDb ID, 시즌과 에피소드 번호 |
 | `api.themoviedb.org`, `image.tmdb.org` | TMDB 키를 설정했을 때 영화나 시리즈 추가·새로 고침과 노트를 열 때 추천 | IMDb ID와 TMDB 키, 이미지 경로 |
 | `i.ytimg.com` | 예고편 스틸 이미지 | 동영상 ID |
