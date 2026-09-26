@@ -31,6 +31,7 @@ import { PromptModal } from './ui/promptModal'
 import { DuplicateRemovalModal, type DuplicateGroup } from './ui/duplicateModal'
 import { ShareModal, shareTargetFromFile } from './ui/shareModal'
 import { aniListViewer, fetchList, listStatus, pushEntry, type AniListEntry } from './anilistSync'
+import { fetchMalList, isExpired, malIdsFor, malStatus, pushMalEntry, refreshTokens, type MalEntry } from './malSync'
 import { LibraryView, LIBRARY_VIEW_TYPE } from './view'
 import { createEmbedPlayer, toEmbed } from './trailer'
 import { applyEpisodeChange, followProgress, hasChapters, mergeSeasons, seasonsOf, setChapters, type EpisodeChange, type TrackKind } from './episodes'
@@ -76,6 +77,8 @@ export default class LibraryPlugin extends Plugin {
 	private bannerTimer: number | null = null
 	private bannerRetries = 0
 	private isRefreshing = false
+	// One MyAnimeList token refresh at a time; concurrent callers share it.
+	private malRefreshing: Promise<string | null> | null = null
 	private refreshCooldowns = new Map<string, number>()
 	private syncingLinks = new Set<string>()
 	private linkTimers = new Map<string, number>()
@@ -240,6 +243,24 @@ export default class LibraryPlugin extends Plugin {
 			id: 'anilist-pull',
 			name: tr('cmd.anilistPull'),
 			callback: () => { void this.anilistPull() }
+		})
+
+		this.addCommand({
+			id: 'mal-push',
+			name: tr('cmd.malPush'),
+			checkCallback: (checking: boolean) => {
+				const file = this.app.workspace.getActiveFile()
+				const fm = file ? this.app.metadataCache.getFileCache(file)?.frontmatter : undefined
+				if (!fm || toStr(fm.Source) !== 'anilist' || !toStr(fm['Source ID'])) return false
+				if (!checking) void this.malPushCurrent()
+				return true
+			}
+		})
+
+		this.addCommand({
+			id: 'mal-pull',
+			name: tr('cmd.malPull'),
+			callback: () => { void this.malPull() }
 		})
 	}
 
@@ -577,20 +598,39 @@ export default class LibraryPlugin extends Plugin {
 		}
 		const byId = new Map<number, AniListEntry>()
 		for (const e of entries) byId.set(e.mediaId, e)
+		const updated = await this.applyPulled(id => {
+			const entry = byId.get(id)
+			return entry && { progress: entry.progress, complete: entry.status === 'COMPLETED' }
+		})
+		new Notice(tr('notice.anilist.pulled', { count: updated }))
+	}
 
-		let updated = 0
+	// AniList-sourced anime notes, with their AniList id.
+	private anilistNotes(): { file: TFile; id: number }[] {
+		const out: { file: TFile; id: number }[] = []
 		for (const file of this.app.vault.getMarkdownFiles()) {
 			if (isTemplateFile(file.path)) continue
 			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
 			if (!fm || toStr(fm.Source) !== 'anilist') continue
-			const entry = byId.get(Number(toStr(fm['Source ID'])))
-			if (!entry) continue
+			const id = Number(toStr(fm['Source ID']))
+			if (Number.isFinite(id) && id > 0) out.push({ file, id })
+		}
+		return out
+	}
+
+	// Writes a pulled list into the AniList notes; returns how many changed.
+	private async applyPulled(entryFor: (anilistId: number) => { progress: number; complete: boolean } | undefined): Promise<number> {
+		let updated = 0
+		for (const { file, id } of this.anilistNotes()) {
+			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+			const entry = entryFor(id)
+			if (!fm || !entry) continue
 			// Only advance forward — never regress a note that is locally further along or already
 			// complete. This makes pull safe to run over hand-edited notes (no silent data loss).
 			const localWatched = parseWatched(fm.Progress)
 			const localComplete = fm.Complete === true
 			const newWatched = Math.max(localWatched, entry.progress)
-			const newComplete = localComplete || entry.status === 'COMPLETED'
+			const newComplete = localComplete || entry.complete
 			if (newWatched === localWatched && newComplete === localComplete) continue
 			// Keep the note's episode total so Progress stays in the "watched/total" shape the
 			// rest of the plugin parses; never let total fall below watched (a stale note total
@@ -608,10 +648,74 @@ export default class LibraryPlugin extends Plugin {
 				})
 				updated++
 			} catch (e) {
-				console.error('Library: AniList pull error', file.path, e)
+				console.error('Library: pull error', file.path, e)
 			}
 		}
-		new Notice(tr('notice.anilist.pulled', { count: updated }))
+		return updated
+	}
+
+	// A valid MyAnimeList access token, refreshed when it is about to expire.
+	async malToken(): Promise<string | null> {
+		const tokens = this.settings.malTokens
+		if (!tokens) return null
+		if (!isExpired(tokens)) return tokens.access
+		if (!this.malRefreshing) this.malRefreshing = this.refreshMalToken(tokens.refresh)
+		return this.malRefreshing
+	}
+
+	private async refreshMalToken(refresh: string): Promise<string | null> {
+		try {
+			const next = await refreshTokens(this.settings.malClientId.trim(), this.settings.malClientSecret.trim(), refresh)
+			if (!next) return null
+			this.settings.malTokens = next
+			await this.saveSettings()
+			return next.access
+		} finally {
+			this.malRefreshing = null
+		}
+	}
+
+	private async malPushCurrent(): Promise<void> {
+		const token = await this.malToken()
+		if (!token) { new Notice(tr('notice.mal.noToken')); return }
+		const file = this.app.workspace.getActiveFile()
+		const fm = file ? this.app.metadataCache.getFileCache(file)?.frontmatter : undefined
+		const mediaId = fm ? Number(toStr(fm['Source ID'])) : NaN
+		if (!file || !fm || toStr(fm.Source) !== 'anilist' || !Number.isFinite(mediaId)) {
+			new Notice(tr('notice.anilist.notAnime'))
+			return
+		}
+		const ids = await malIdsFor([mediaId])
+		if (!ids) { new Notice(tr('notice.mal.pushFailed')); return }
+		const malId = ids.get(mediaId)
+		if (!malId) { new Notice(tr('notice.mal.noMalId')); return }
+		const watched = parseWatched(fm.Progress)
+		const rating = Number(toStr(fm['My Rating']))
+		const ok = await pushMalEntry(token, malId, watched, malStatus(fm.Complete === true, watched),
+			Number.isFinite(rating) ? rating : null)
+		new Notice(ok
+			? tr('notice.mal.pushed', { name: toStr(fm.Name) || file.basename })
+			: tr('notice.mal.pushFailed'))
+	}
+
+	private async malPull(): Promise<void> {
+		const token = await this.malToken()
+		if (!token) { new Notice(tr('notice.mal.noToken')); return }
+		new Notice(tr('notice.mal.pulling'))
+		const entries = await fetchMalList(token)
+		const ids = entries && await malIdsFor(this.anilistNotes().map(n => n.id))
+		if (!entries || !ids) {
+			new Notice(tr('notice.mal.pullFailed'))
+			return
+		}
+		const byMal = new Map<number, MalEntry>()
+		for (const e of entries) byMal.set(e.malId, e)
+		const updated = await this.applyPulled(id => {
+			const malId = ids.get(id)
+			const entry = malId === undefined ? undefined : byMal.get(malId)
+			return entry && { progress: entry.progress, complete: entry.status === 'completed' }
+		})
+		new Notice(tr('notice.mal.pulled', { count: updated }))
 	}
 
 	findDuplicates(): DuplicateGroup[] {

@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ The panel at the top of the Library tab shows the columns you pick in Settings �
 
 To sync anime, register a client at [anilist.co/settings/developer](https://anilist.co/settings/developer) with the redirect URL `https://anilist.co/api/v2/oauth/pin`. Paste the Client ID in Settings → Library → AniList sync, click **Connect**, and paste the token AniList shows you. `Push current note to AniList` sends progress, status, and score. `Pull progress from AniList` updates your notes, never moves progress back, and leaves `My Rating` alone. Only notes with `Source: anilist` sync.
 
+The same notes sync with MyAnimeList. Create a client at [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) with the redirect URL `http://localhost`, paste its Client ID (and Client Secret, if it has one) in Settings → Library → MyAnimeList sync, click **Connect**, and paste the address your browser opens. The plugin finds each title's MyAnimeList entry through AniList and refreshes the token on its own. `Push current note to MyAnimeList` and `Pull progress from MyAnimeList` work like their AniList twins.
+
 ## Frontmatter
 
 Each card is a note, and everything the plugin knows about it is in the frontmatter:
@@ -134,8 +136,10 @@ Your library is plain notes and works offline. The plugin goes online when you s
 | `api.rawg.io` | Game search | Title, RAWG key |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Game search and covers | Title or Steam app id |
 | `api.deezer.com` | Music search | Album or artist |
-| `graphql.anilist.co` | Anime search; AniList sync | Title; your token, progress, status, and score |
+| `graphql.anilist.co` | Anime search; AniList sync; MyAnimeList ids for sync | Title; your token, progress, status, and score; AniList ids |
 | `anilist.co` | You click **Connect** | Client ID, opened in your browser |
+| `myanimelist.net` | You click **Connect** for MyAnimeList; token refresh | Client ID and secret, authorization code, refresh token |
+| `api.myanimelist.net` | MyAnimeList sync | Your token, progress, status, and score |
 | `s4.anilist.co` | Anime banners | CDN path |
 | `comicvine.gamespot.com` | Comic search | Title, Comic Vine key |
 | `v3-cinemeta.strem.io` | Adding or refreshing a movie or series | IMDb id |
@@ -159,6 +163,8 @@ Your library is plain notes and works offline. The plugin goes online when you s
 | `Share current note` | Opens the share card |
 | `Push current note to AniList` | Sends progress, status, and score |
 | `Pull progress from AniList` | Updates notes from your AniList list |
+| `Push current note to MyAnimeList` | Sends progress, status, and score |
+| `Pull progress from MyAnimeList` | Updates notes from your MyAnimeList list |
 
 ## Support
 

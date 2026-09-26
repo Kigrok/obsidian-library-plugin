@@ -4,16 +4,20 @@ import { tr } from '../i18n'
 export class PromptModal extends Modal {
 	private placeholder: string
 	private onSubmit: (value: string) => void
+	private title: string
+	private button: string
 
-	constructor(app: App, placeholder: string, onSubmit: (value: string) => void) {
+	constructor(app: App, placeholder: string, onSubmit: (value: string) => void, title?: string, button?: string) {
 		super(app)
 		this.placeholder = placeholder
 		this.onSubmit = onSubmit
+		this.title = title ?? tr('modal.manualTitle')
+		this.button = button ?? tr('modal.manualCreate')
 	}
 
 	onOpen(): void {
 		const { contentEl } = this
-		this.setTitle(tr('modal.manualTitle'))
+		this.setTitle(this.title)
 		const input = contentEl.createEl('input', { type: 'text', cls: 'library-prompt-input' })
 		input.placeholder = this.placeholder
 		input.focus()
@@ -33,7 +37,7 @@ export class PromptModal extends Modal {
 		})
 
 		new Setting(contentEl).addButton((b) =>
-			b.setButtonText(tr('modal.manualCreate')).setCta().onClick(submit)
+			b.setButtonText(this.button).setCta().onClick(submit)
 		)
 	}
 

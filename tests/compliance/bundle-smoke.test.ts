@@ -652,12 +652,12 @@ describe("built bundle", () => {
 		type Definition = { name?: string; heading?: string; items?: Definition[]; searchable?: boolean };
 		const definitions = tab.getSettingDefinitions() as Definition[];
 		const headings = definitions.filter((d) => d.heading).map((d) => d.heading);
-		expect(headings).toEqual(["AniList sync", "Categories", "Statistics", "Example note"]);
+		expect(headings).toEqual(["AniList sync", "MyAnimeList sync", "Categories", "Statistics", "Example note"]);
 		const names = definitions
 			.flatMap((d) => (d.items ? d.items : [d]))
 			.filter((d) => d.searchable !== false)
 			.map((d) => d.name);
-		for (const name of ["OMDb API key", "TMDB API key (optional)", "Cover property", "AniList access token", "Add category", "Watch time", "Add top"]) {
+		for (const name of ["OMDb API key", "TMDB API key (optional)", "Cover property", "AniList access token", "MyAnimeList Client Secret", "Add category", "Watch time", "Add top"]) {
 			expect(names).toContain(name);
 		}
 		// The descriptions and the YAML sample are not settings to find.

@@ -14,6 +14,8 @@ import { isTemplateFile, rankableProperties, toStr, topLabel } from "./util";
 import { isContentType, type ContentType } from "./providers/types";
 import { tr } from "./i18n";
 import { aniListViewer, anilistAuthUrl } from "./anilistSync";
+import { codeFromInput, exchangeCode, makeVerifier, malAuthUrl, malViewer } from "./malSync";
+import { PromptModal } from "./ui/promptModal";
 
 const TYPE_DEFAULTS: Record<string, string> = {
 	movie: "Movie",
@@ -46,7 +48,9 @@ type TextKey =
 	| "comicVineApiKey"
 	| "coverProperty"
 	| "anilistClientId"
-	| "anilistToken";
+	| "anilistToken"
+	| "malClientId"
+	| "malClientSecret";
 
 // One row of the tab. Both renderers draw from the same rows —
 // getSettingDefinitions() on Obsidian 1.13+, display() before it — so users on
@@ -203,6 +207,14 @@ export class LibrarySettingTab extends PluginSettingTab {
 					{ name: tr("settings.anilist.token"), render: (row) => this.anilistToken(row) },
 				],
 			},
+			{
+				heading: tr("settings.section.mal"),
+				rows: [
+					note(tr("settings.mal.desc")),
+					{ name: tr("settings.mal.clientId"), render: (row) => this.malClientId(row) },
+					{ name: tr("settings.mal.clientSecret"), render: (row) => this.malClientSecret(row) },
+				],
+			},
 			...categories,
 			{ heading: tr("stats.title"), rows: statsRows },
 			{
@@ -262,6 +274,57 @@ export class LibrarySettingTab extends PluginSettingTab {
 			button.setButtonText(tr("settings.anilist.test")).onClick(async () => {
 				const token = this.plugin.settings.anilistToken.trim();
 				const viewer = token ? await aniListViewer(token) : null;
+				new Notice(
+					viewer
+						? tr("settings.anilist.connected", { name: viewer.name })
+						: tr("settings.anilist.invalidToken"),
+				);
+			}),
+		);
+	}
+
+	// Connect opens MAL's consent page and asks for the address the browser lands
+	// on; the verifier lives only as long as that prompt.
+	private malClientId(row: Setting): void {
+		this.textInput(row, "malClientId", tr("settings.anilist.clientId.placeholder"));
+		row.addButton((button) =>
+			button.setButtonText(tr("settings.anilist.connect")).onClick(() => {
+				const id = this.plugin.settings.malClientId.trim();
+				if (!id) {
+					new Notice(tr("settings.mal.needClientId"));
+					return;
+				}
+				const verifier = makeVerifier();
+				window.open(malAuthUrl(id, verifier), "_blank");
+				new PromptModal(
+					this.app,
+					"http://localhost/?code=…",
+					(value) => void this.malConnect(id, codeFromInput(value), verifier),
+					tr("modal.mal.title"),
+					tr("settings.anilist.connect"),
+				).open();
+			}),
+		);
+	}
+
+	private async malConnect(id: string, code: string, verifier: string): Promise<void> {
+		const tokens = await exchangeCode(id, this.plugin.settings.malClientSecret.trim(), code, verifier);
+		if (!tokens) {
+			new Notice(tr("notice.mal.connectFailed"));
+			return;
+		}
+		this.plugin.settings.malTokens = tokens;
+		await this.plugin.saveSettings();
+		const viewer = await malViewer(tokens.access);
+		new Notice(viewer ? tr("settings.anilist.connected", { name: viewer.name }) : tr("notice.mal.connectFailed"));
+	}
+
+	private malClientSecret(row: Setting): void {
+		this.textInput(row, "malClientSecret", "", true);
+		row.addButton((button) =>
+			button.setButtonText(tr("settings.anilist.test")).onClick(async () => {
+				const token = await this.plugin.malToken();
+				const viewer = token ? await malViewer(token) : null;
 				new Notice(
 					viewer
 						? tr("settings.anilist.connected", { name: viewer.name })
