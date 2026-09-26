@@ -7,189 +7,80 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.1-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
 </p>
 
 <p align="center">
-  <b>Organizirajte svoje filmove, serije, knjige i više u vizualnoj galeriji — izravno unutar Obsidiana.</b>
+  Filmovi, serije, knjige, anime, stripovi, igre i glazba kao bilješke u Obsidianu, prikazani kao galerija naslovnica.
   <br />
-  Pretražujte i dodajte naslove unutar aplikacije, automatski dohvaćajte metapodatke, pratite napredak i povežite sve sa svojim grafom.
+  <a href="https://community.obsidian.md/plugins/library">Direktorij dodataka za Obsidian</a>
 </p>
 
-<p align="center">
-  <a href="https://community.obsidian.md/plugins/library">Pogledajte u direktoriju Obsidian Community Plugins</a>
-</p>
+## Značajke
 
----
-
-## Ključne značajke
-
-- **Vizualna mreža kartica** — Posvećena kartica Library prikazuje vašu kolekciju kao galeriju kartica s naslovnim slikama.
-- **Ugrađeno pretraživanje** — Pretražujte i dodajte naslove izravno u aplikaciji: OMDb za filmove i serije, Open Library ili Google Books za knjige, RAWG/Steam za igrice, Deezer za glazbu, AniList za anime, Comic Vine za stripove.
-- **Pametno praćenje serija** — Sezone i ukupni brojevi epizoda automatski se dohvaćaju i održavaju sinkroniziranima.
-- **Pokazatelji napretka** — Vizualne trake napretka na karticama i zaglavlju bilješki pokazuju koliko ste pogledali ili pročitali.
-- **Bogata zaglavlja bilješki** — Svaka bilješka sadržaja dobiva automatski generirano zaglavlje sa svim ključnim metapodacima.
-- **Traileri, kadrovi i sezone** — Bilješke filmova i serija prikazuju ugrađeni YouTube/Vimeo trailer, red kadrova i trajanje; serije dobivaju i popis sezona s brojem epizoda, ocjenama i trailerima po sezoni.
-- **Prilagođene kategorije** — Stvorite kategorije za filmove, serije, anime, stripove, knjige, igrice, glazbu ili bilo što drugo putem ručnog izvora.
-- **Veze grafana** — Žanrovi, autori i glumci spremaju se kao veze u vlastitim svojstvima `Genre`, `Creator` i `Cast`, pa bilješka svakog žanra, autora i glumca skuplja svoje naslove u povratnim vezama, a graf prikazuje sve.
-- **Kartice za dijeljenje** — Pretvorite bilo koju bilješku sadržaja u sliku kartice za dijeljenje (poster, naslov, godina, žanr, IMDb ocjena i vaša ocjena) i objavite je na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky ili Pinterest — podijelite je izravno u aplikacije svog uređaja ili kopirajte/spremite sliku za korištenje bilo gdje.
-- **AniList sinkronizacija** — Pošaljite napredak, status i ocjenu svog animea izravno na svoj AniList račun ili povucite svoju listu natrag u bilješke.
-- **Sortiranje i sažimanje** — Sortirajte kartice po nazivu, godini, ocjeni ili datumu; sažmite bilo koju kategoriju — ostaje sažeta i nakon ponovnog pokretanja.
-- **Statistika** — Stupce birate sami: najbolje ocijenjene naslove bilo koje kategorije ili najčešće vrijednosti bilo kojeg svojstva (žanrovi, autori, glumci…), uz grafikon vremena gledanja.
-- **Otkrivanje duplikata** — Automatski sprječava dodavanje istog naslova dva puta prema URL-u. Ugrađena naredba pronalazi i uklanja postojeće duplikate.
-- **Višejezičnost** — sučelje dodatka prevedeno je na **sve jezike koje Obsidian podržava** (70+), pa se uvijek podudara s jezikom vašeg Obsidiana. Potpuni prijevodi README-a dostupni su za njih 30 (vidi traku jezika na vrhu).
-
----
+- Potražite naslov i dobijte bilješku s posterom, godinom, žanrom, autorima, glumcima i ocjenama.
+- Pregledavajte knjižnicu kao kartice s naslovnicama, grupirane po kategorijama i poredane po nazivu, godini, ocjeni ili datumu.
+- Označite epizode serije ili poglavlja knjige i ocijenite svaku; `Progress` i `My Rating` računaju se iz njih.
+- Bilješke o filmovima i serijama prikazuju trailer, kadrove, trajanje i popis sezona.
+- Žanrovi, autori i glumci su poveznice, pa njihove bilješke skupljaju svaki naslov u povratnim poveznicama i na grafu.
+- Ploča statistike prikazuje ljestvice koje odaberete i ukupno vrijeme gledanja.
+- Podijelite naslov kao sliku na X, Telegramu, Redditu i još šest mreža.
+- Sinkronizirajte napredak animea s AniListom.
+- Sučelje je prevedeno na sve jezike koje Obsidian podržava, a ovaj README na [30 jezika](./).
 
 ## Brzi početak
 
-### 1. Instalacija
+1. Instalirajte **Library** putem Postavke → Community plugins → Browse ili s [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
+2. U Postavke → Library dodajte kategoriju za svaku vrstu sadržaja: Filmovi, Serije, Knjige, Stripovi, Igre, Glazba, Anime, Ručno.
+3. Unesite API ključeve koje trebaju vaši izvori (vidi dolje).
+4. Otvorite karticu Biblioteka s bočne trake, pritisnite **+**, odaberite kategoriju i potražite naslov. Naslov koji je već u knjižnici otvara postojeću bilješku.
 
-Instalirajte **Library** iz [direktorija Obsidian Community Plugins](https://community.obsidian.md/plugins/library) (Postavke > Community plugins > Pretraži > potražite "Library"), ili ga instalirajte ručno putem [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
-
-### 2. Osnovna postavka
-
-1. Idite na **Postavke** > **Library**.
-2. Dodajte svoje **Kategorije** — odaberite unaprijed definirani tip (Movies, Series, Books, Comics, Games, Music, Anime ili Manual) iz padajućeg izbornika i kliknite **Dodaj kategoriju**. Svaka kategorija ima ime za prikaz (prevedeno na vaš jezik), vrijednost `Type` (uvijek engleski, npr. `Movie`), izvor i opcionalnu mapu za pohranu bilješki.
-3. _(Opcionalno)_ Unesite API ključeve za usluge koje koristite: [OMDb](https://www.omdbapi.com/apikey.aspx) za filmove/serije, [RAWG](https://rawg.io/apidocs) za igrice, [Comic Vine](https://comicvine.gamespot.com/api/) za stripove, [TMDB](https://www.themoviedb.org/settings/api) za trailere, kadrove i pojedinosti sezona, [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) za pretraživanje knjiga. Anime (AniList), glazba (Deezer) i Steam ne zahtijevaju ključ.
-
-### 3. Dodajte karticu po naslovu
-
-Više nema ručnog popunjavanja frontmattera — dodajte film, seriju, knjigu, anime ili strip samo pretraživanjem njegovog imena:
-
-1. Otvorite karticu **Library** iz ikone na traci (ili pokrenite `Otvori biblioteku`).
-2. Kliknite gumb **+** u gornjem desnom kutu stranice Library (ili pokrenite `Dodaj sadržaj`).
-3. Odaberite kategoriju, unesite **naslov** u okvir za pretraživanje i odaberite rezultat.
-4. Kartica se trenutno stvara s posterom, godinom, žanrom, stvarateljima i ocjenom automatski popunjenim.
-
-Gumb **Pretraži svoju biblioteku** pored **+** pretražuje naslove koji su već u vašoj biblioteci.
-
-Za **Manual** kategorije jednostavno unesite naslov i sami ispunite naslovnicu, godinu i ostala polja.
-
----
-
-## Statistika
-
-Na vrhu kartice Biblioteka sažimljivi odjeljak **Statistika** prikazuje stupce koje odaberete:
-
-- **Top kategorija** — tri najbolje ocijenjena naslova kategorije, s naslovnicama: *Top filmovi*, *Top knjige* i tako dalje. Poredano po `My Rating`, a bez nje po `Rating IMDB`.
-- **Top svojstava** — tri najčešće vrijednosti svojstva u cijeloj biblioteci: *Top žanrovi*, *Top autori*, *Top glumci* ili bilo koje drugo svojstvo, npr. *Top: Author*. `Sci-Fi`, `sci-fi` i `[[Sci-Fi]]` broje se kao jedna vrijednost.
-- **Vrijeme gledanja** — grafikon sati provedenih uz filmove, serije i anime, izračunat iz polja `Runtime` i `Progress` svake bilješke.
-
-Postavlja se u **Postavke → Library → Statistika**: **Dodaj top** nudi vaše kategorije i svojstva pronađena u bilješkama, ikona koša uklanja stupac, a prekidač skriva grafikon vremena gledanja. Stupci se prikazuju redoslijedom dodavanja; nova kategorija dodaje i svoj top.
-
-Sažete kategorije ostaju sažete i nakon ponovnog pokretanja.
-
----
-
-## Otkrivanje duplikata
-
-Library sprječava duplicirane unose provjerom polja `URL`:
-
-- **Pri dodavanju** — ako bilješka s istim URL-om već postoji, otvara postojeću bilješku umjesto stvaranja duplikata.
-- **Pronađi i ukloni duplikate** — pokrenite ovu naredbu iz palete za skeniranje svih bilješki, grupiranje po URL-u i selektivno uklanjanje duplikata putem modalnog prozora.
-
----
+Vrijednost `Type` kategorije (na primjer `Movie`) određuje koje bilješke joj pripadaju, a njezina mapa gdje završavaju nove bilješke. Oboje je pod **Napredno** u postavkama kategorije.
 
 ## Izvori
 
-Svaka kategorija je vezana za izvor koji pokreće njezino pretraživanje:
+| Kategorija | Izvor | Ključ |
+| --- | --- | --- |
+| Filmovi, serije | OMDb | [Besplatan ključ](https://www.omdbapi.com/apikey.aspx) |
+| Knjige | Google Books + Open Library | Neobavezan [ključ za Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| Igre | RAWG + Steam | [Besplatan ključ za RAWG](https://rawg.io/apidocs); Steamu ne treba |
+| Glazba | Deezer | Nije potreban |
+| Anime | AniList | Nije potreban |
+| Stripovi | Comic Vine | [Besplatan ključ](https://comicvine.gamespot.com/api/) |
+| Sve ostalo | Ručno: polja ispunjavate sami | Nije potreban |
 
-| Izvor             | Vrste sadržaja  | API ključ                                                    |
-| ----------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**          | Filmovi, Serije | Potreban besplatni ključ — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**         | Knjige          | Open Library (bez ključa) + Google Books (opcionalni besplatni ključ). Rezultati se spajaju — Google Books prvi, Open Library ispod. |
-| **Games**          | Igrice          | RAWG (potreban besplatni ključ — [rawg.io/apidocs](https://rawg.io/apidocs)) + Steam (nema). Rezultati se spajaju — RAWG prvi, Steam ispod. |
-| **Deezer**        | Glazba (albumi) | Nema                                                        |
-| **AniList**         | Anime           | Nema — besplatna AniList GraphQL API, ključ nije potreban |
-| **Comic Vine**    | Stripovi        | Potreban besplatni ključ — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Manual**        | Sve ostalo      | Nema — sami unosite naslov i ispunjavate polja              |
+Traileri, kadrovi, trajanje i popisi sezona dolaze s Cinemete bez ključa. [Ključ za TMDB](https://www.themoviedb.org/settings/api) dodaje ocjene sezona i više kadrova.
 
-Bilješke filmova i serija mogu se dodatno obogatiti pomoću **TMDB** (opcionalni besplatni ključ): trailer, kadrovi, trajanje i popis sezona serije dohvaćaju se i zapisuju u frontmatter bilješke.
+## Napredak i ocjene
 
----
+Zaglavlje bilješke serije navodi sezone, a svaka se sezona otvara u svoje epizode, s naslovima ako ih izvor ima. Označite epizodu ili cijelu sezonu kao pogledanu i ocijenite je od 1 do 10. `Progress` broji označene epizode, ocjena sezone je prosjek njezinih ocijenjenih epizoda, a `My Rating` je prosjek ocijenjenih sezona. Sezona bez ocijenjenih epizoda dobiva vlastitu ocjenu.
 
-## Privatnost i korištenje mreže
+Anime radi na isti način, kao jedna sezona bez naslova epizoda.
 
-Library radi **prvenstveno offline**: vaša knjižnica sastoji se od običnih bilješki i radi i bez veze. Dodatak šalje samo podatke navedene u nastavku, i to samo u ovim slučajevima:
+Poglavlja knjige dolaze iz sadržaja izdanja na Open Library. Ako ga nema, **Dodaj poglavlja** u zaglavlju bilješke prima broj poglavlja ili jedan naslov po retku. Od tada `Progress` broji poglavlja umjesto stranica, a pročitane stranice prelaze u isti udio poglavlja.
 
-- **Kada sami nešto učinite:** tražite naslov, osvježavate metapodatke, pokrećete naredbu AniList ili kliknete gumb za dijeljenje.
-- **Kada otvorite bilješku iz knjižnice:** njezini se metapodaci osvježavaju iz izvora prema `Source ID`, najviše jednom svakih 5 minuta po bilješci; bilješka bez `Source ID` traži se po nazivu.
-- **Nakon ažuriranja dodatka ili promjene API ključa:** prolaz u pozadini jednom osvježava bilješke vaše knjižnice iz njihovih izvora, jednu po jednu.
+Bilješke iz starijih verzija zadržavaju napredak. Dok ništa ne označite, prve epizode do broja u `Progress` prikazuju se kao pogledane.
 
-Naslovnice, fotografije i playeri trailera na koje upućuju vaše bilješke učitavaju se s poslužitelja navedenih u nastavku.
+## Statistika
 
-| Usluga | Kada | Što se šalje | Zašto |
-| --- | --- | --- | --- |
-| `www.omdbapi.com` | Pretražujete kategoriju temeljenu na OMDb | Naslov koji unosite i vaš OMDb API ključ | Dohvaćanje metapodataka filma/serije (godina, žanrovi, glumačka postava, ocjena, poster, broj epizoda) |
-| `openlibrary.org` | Pretražujete kategoriju Open Library | Naslov koji unosite | Dohvaćanje metapodataka knjige (autor, godine, teme, ID naslovnice) |
-| `covers.openlibrary.org` | Kartica knjige ima naslovnicu | Open Library ID naslovnice | Učitavanje slike naslovnice |
-| `www.googleapis.com` | Pretražujete kategoriju Google Books | Naslov koji unosite i vaš Google Books ključ | Dohvaćanje metapodataka knjige (autor, godine, kategorije, broj stranica, naslovnica, ISBN) |
-| `api.rawg.io` | Pretražujete kategoriju RAWG igara | Naslov koji unosite i vaš RAWG ključ | Dohvaćanje metapodataka igre (godina, žanrovi, programer, naslovnica) |
-| `api.deezer.com` | Pretražujete kategoriju Deezer glazbe | Album ili izvođač koji unosite | Dohvaćanje metapodataka albuma (izvođač, godina, žanrovi, broj pjesama, naslovnica) |
-| `graphql.anilist.co` | Pretražujete kategoriju animea | Naslov koji unosite | Dohvaćanje metapodataka animea (naslov, godina, žanrovi, epizode, AniList ocjena, studio, poster) |
-| `graphql.anilist.co` | Pokrenete naredbu AniList sinkronizacije | Vaš AniList pristupni token te napredak, status i ocjena bilješke | Čitanje ili ažuriranje vaše AniList anime liste |
-| `anilist.co` | Kliknete **Poveži** u postavkama sinkronizacije s AniListom | Vaš AniList Client ID | Otvaranje AniListove stranice za autorizaciju u pregledniku |
-| `comicvine.gamespot.com` | Pretražujete kategoriju stripova | Naslov koji unosite i vaš Comic Vine ključ | Dohvaćanje metapodataka stripa (naslov, godina, izdavač, broj izdanja, naslovnica) |
-| `store.steampowered.com` | Tražite ili dodajete Steam igru | Upisani naslov ili ID Steam aplikacije | Dohvat metapodataka igre (godina, žanr, izdavač, naslovnica) |
-| `cdn.cloudflare.steamstatic.com` | Kartica Steam igre ima naslovnicu | ID Steam aplikacije | Učitavanje slike naslovnice |
-| `api.themoviedb.org` | Dodajete ili osvježavate bilješku filma/serije s TMDB ključem | IMDb ID bilješke i vaš TMDB ključ | Dohvaćanje trailera, kadrova, trajanja i popisa sezona |
-| `image.tmdb.org` | Bilješka filma/serije ima kadrove | Putanja slike na TMDB-u | Učitavanje kadrova |
-| `v3-cinemeta.strem.io` | Dodajete ili osvježavate bilješku o filmu ili seriji | IMDb ID bilješke | Dohvat trailera, kadrova, trajanja i popisa sezona serije — bez ključa |
-| `images.metahub.space` | Bilješka o filmu ili seriji ima kadrove | IMDb ID bilješke | Učitavanje kadrova (pozadina) |
-| `episodes.metahub.space` | Bilješka o seriji ima kadrove epizoda | IMDb ID serije te brojeve sezone i epizode | Učitavanje kadrova epizoda |
-| `i.ytimg.com` | Bilješka o filmu prikazuje kadrove trailera | ID videozapisa trailera | Učitavanje kadrova trailera |
-| `s4.anilist.co` | Bilješka o animeu ima banner | Putanja na AniList CDN-u | Učitavanje slike bannera |
-| `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Otvarate bilješku s trailerom | ID trailera | Ugrađivanje playera trailera |
-| `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Kliknete gumb za dijeljenje | Opis kartice (naslov, vaša ocjena, poveznica na izvor) | Otvaranje prozora za dijeljenje odabrane mreže s unaprijed ispunjenom objavom — sama slika kartice ostaje lokalna |
+Ploča na vrhu kartice Biblioteka prikazuje stupce odabrane u Postavke → Library → Statistika: tri najbolje ocijenjena naslova kategorije, tri najčešće vrijednosti svojstva (žanrovi, glumci ili bilo koje drugo) i sate provedene uz filmove, serije i anime. Ispod grafikona svaki se dan pojavi jedna usporedba, na primjer: Apollo 11 mogao je letjeti na Mjesec i natrag 8 puta.
 
-Nikakvi drugi podaci ne napuštaju vaš vault. Plugin **nema telemetriju, nema analitiku i nema mehanizam samo-ažuriranja**. API ključevi (OMDb, Google Books, RAWG, Comic Vine, TMDB) pohranjeni su samo u vašim lokalnim postavkama plugin-a i šalju se samo njihovim odgovarajućim uslugama. Slike naslovnica učitavaju se izravno s URL-ova koje vraća svaki izvor.
+## Veze u grafu
 
----
+`Genre`, `Creator` i `Cast` sadrže poveznice poput `[[Christopher Nolan]]`, pa bilješka žanra ili osobe navodi njezine naslove u povratnim poveznicama. Ručno upisana imena postaju poveznice kad se bilješka promijeni, a `Ponovo izgradi veze grafa` pretvara cijelu knjižnicu.
 
-## Frontmatter shema
+## Dijeljenje i AniList
 
-Plugin čita i piše u standardni YAML frontmatter. Bilješke se automatski stvaraju, ali je svako polje uredivo. `Source` i `Source ID` omogućuju pluginu naknadno osvježavanje metapodataka.
+**Podijeli** u zaglavlju bilješke crta karticu s posterom, naslovom, godinom, žanrom, glumcima, ocjenama i vašom ocjenom. Na računalu slika ide u međuspremnik, a odabrana mreža otvara se s opisom, pa sliku samo zalijepite u objavu. Na mobitelu slika ide u sustavni izbornik za dijeljenje. Sliku ili opis možete i kopirati, a sliku spremiti u trezor.
 
-### Movie
+Za sinkronizaciju animea registrirajte klijent na [anilist.co/settings/developer](https://anilist.co/settings/developer) s URL-om preusmjeravanja `https://anilist.co/api/v2/oauth/pin`. Zalijepite Client ID u Postavke → Library → AniList sinkronizacija, kliknite **Poveži** i zalijepite token koji AniList prikaže. `Pošalji trenutnu bilješku na AniList` šalje napredak, status i ocjenu. `Preuzmi napredak s AniLista` ažurira bilješke, nikad ne vraća napredak unatrag i ne dira `My Rating`. Sinkroniziraju se samo bilješke sa `Source: anilist`.
 
-> **Svojstvo naslovnice** — svojstvo frontmattera u kojem je naslovnica može se preimenovati u **Postavke → Library** (npr. u `image`); postojeće bilješke nastavljaju raditi.
+## Frontmatter
 
-```yaml
----
-Type: Movie
-Name: Inception
-Year: 2010
-Genre:
-    - "[[Action]]"
-    - "[[Sci-Fi]]"
-Creator:
-    - "[[Christopher Nolan]]"
-Cast:
-    - "[[Leonardo DiCaprio]]"
-    - "[[Joseph Gordon-Levitt]]"
-    - "[[Elliot Page]]"
-Rating IMDB: 8.8
-Rating RT: 87
-Runtime: 148
-My Rating: 9
-Cover: https://m.media-amazon.com/images/...
-URL: https://www.imdb.com/title/tt1375666/
-Trailer: https://www.youtube.com/watch?v=YoHD9XEInc0
-Gallery:
-    - https://image.tmdb.org/t/p/w780/9e3Dz7H1J0s5cBZLX2yXKxkC7Jg.jpg
-Progress: 1/1
-Complete: true
-Date: 01.03.2026
-Source: omdb
-Source ID: tt1375666
----
-```
-
-### Series
+Svaka kartica je bilješka, a sve što dodatak zna o njoj nalazi se u frontmatteru:
 
 ```yaml
 ---
@@ -198,16 +89,9 @@ Name: Stranger Things
 Year: 2016
 End Year: 2025
 Season: 5
-Genre:
-    - "[[Drama]]"
-    - "[[Fantasy]]"
-    - "[[Horror]]"
-Creator:
-    - "[[The Duffer Brothers]]"
-Cast:
-    - "[[Winona Ryder]]"
-    - "[[David Harbour]]"
-    - "[[Millie Bobby Brown]]"
+Genre: ["[[Drama]]", "[[Horror]]"]
+Creator: ["[[The Duffer Brothers]]"]
+Cast: ["[[Winona Ryder]]", "[[David Harbour]]"]
 Rating IMDB: 8.7
 Rating RT: 91
 Runtime: 42
@@ -215,18 +99,17 @@ My Rating: 9
 Cover: https://m.media-amazon.com/images/...
 URL: https://www.imdb.com/title/tt4574334/
 Trailer: https://www.youtube.com/watch?v=b9EkMc79ZSU
-Gallery:
-    - https://image.tmdb.org/t/p/w780/56v2KjBlU4XaOv9rVYEQypROD7P.jpg
+Gallery: ["https://image.tmdb.org/t/p/w780/56v2KjBlU4XaOv9rVYEQypROD7P.jpg"]
 Seasons:
-    - name: Season 1
-      episodes: 8
-      rating: 8.0
-      trailer: https://www.youtube.com/watch?v=XWxyRG_tckY
-    - name: Season 2
-      episodes: 9
-      rating: 8.1
-      trailer: https://www.youtube.com/watch?v=R1ZXOOLMJ8s
-Progress: 25/42
+  - name: Season 1
+    episodes: 8
+    rating: 8.0
+    episode_list:
+      - title: "Chapter One: The Vanishing of Will Byers"
+        watched: true
+        my_rating: 9
+      # ...još 7 epizoda
+Progress: 8/42
 Complete: false
 Date: 01.03.2026
 Source: omdb
@@ -234,162 +117,54 @@ Source ID: tt4574334
 ---
 ```
 
-> **Automatsko ažuriranje serija:** Pokrenite `Osvježi metapodatke za trenutnu bilješku` (ili jednostavno otvorite bilješku) i plugin ažurira ukupni broj epizoda u `Progress` (npr., `25/42` u `25/50`) i broj `Season`, zadržavajući vaš broj pogledanih netaknutim.
+Kod serije je `Runtime` trajanje jedne epizode. Knjige imaju i `ISBN` te poglavlja drže u `Chapters` s istim poljima `title`, `watched` i `my_rating`; anime ima `Rating AniList` i `Status`. Svojstvo naslovnice može se preimenovati u postavkama, na primjer u `image`.
 
-> **Trailer, kadrovi i sezone:** Uz postavljen TMDB ključ, dodatak automatski popunjava `Trailer`, `Gallery`, `Runtime` i (za serije) `Seasons` — `Runtime` je trajanje filma u minutama ili minute po epizodi za serije. Zaglavlje bilješke tada prikazuje ugrađeni player, red kadrova i popis sezona s brojem epizoda, ocjenama i gumbima trailera po sezoni. Svako polje je obični frontmatter: uredite ga ili obrišite i dodatak će vaše vrijednosti ostaviti na miru pri sljedećem osvježavanju. Svaka nova verzija dodatka pokreće i jedan prolaz kroz biblioteku u pozadini koji dopunjuje nova polja — bilješku po bilješku, bez blokiranja aplikacije.
+Osvježavanje ispunjava samo prazna polja, pa vrijednosti koje uredite ostaju. Ono također ažurira ukupan broj epizoda u `Progress` i dodaje nove sezone i naslove epizoda.
 
-### Book
+## Privatnost i mreža
 
-```yaml
----
-Type: Book
-Name: Dune
-Year: 1965
-Genre:
-    - "[[Science Fiction]]"
-Creator:
-    - "[[Frank Herbert]]"
-Cover: https://covers.openlibrary.org/b/id/...-L.jpg
-ISBN: 9780441013593
-My Rating: 9
-Progress: 412/688
-Complete: false
-Date: 01.03.2026
-Source: openlibrary
-Source ID: /works/OL893415W
----
-```
+Vaša knjižnica su obične bilješke i radi izvanmrežno. Dodatak se spaja na mrežu kad pretražujete, osvježavate, sinkronizirate ili dijelite; kad otvorite bilješku iz knjižnice, najviše jednom u 5 minuta po bilješci; i jednom nakon ažuriranja ili promjene ključa, da ispuni nova polja. Nema telemetrije, analitike ni samoažuriranja. API ključevi ostaju u lokalnim postavkama dodatka i idu samo svojoj usluzi.
 
-### Anime
-
-```yaml
----
-Type: Anime
-Name: Steins;Gate
-Year: 2011
-Genre:
-    - "[[Sci-Fi]]"
-    - "[[Thriller]]"
-Creator:
-    - "[[White Fox]]"
-Rating AniList: 9.1
-Status: FINISHED
-Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
-URL: https://anilist.co/anime/9253
-Progress: 0/24
-Complete: false
-Date: 01.03.2026
-Source: anilist
-Source ID: 9253
----
-```
-
-### Comic
-
-```yaml
----
-Type: Comic
-Name: Watchmen
-Year: 1986
-Genre:
-    - "[[Comics]]"
-Creator:
-    - "[[DC Comics]]"
-Cover: https://comicvine.gamespot.com/a/uploads/...
-URL: https://comicvine.gamespot.com/watchmen/4050-33819/
-Progress: 0/12
-Complete: false
-Date: 01.03.2026
-Source: comicvine
-Source ID: 33819
----
-```
-
----
-
-## Veze grafana
-
-Žanrovi, autori i — kod filmova i serija — glumci spremaju se kao veze u vlastitim svojstvima:
-
-```yaml
-Genre:
-    - "[[Action]]"
-    - "[[Sci-Fi]]"
-Creator:
-    - "[[Christopher Nolan]]"
-Cast:
-    - "[[Leonardo DiCaprio]]"
-```
-
-Tako bilješka svakog žanra, autora i glumca u povratnim vezama prikazuje sve njegove naslove, a graf preko njih povezuje bilješke. Obični nazivi — upisani ručno ili ostavljeni iz ranije verzije — postaju veze pri svakoj promjeni bilješke; veza s aliasom ostaje kakva jest. `Ponovo izgradi veze grafa` pretvara cijelu knjižnicu odjednom. Svojstvo `Related` iz ranijih verzija više se ne koristi i uklanja se iz bilješki.
-
----
-
-## Dijeljenje
-
-Svaka bilješka sadržaja dobiva gumb **Podijeli** u svom zaglavlju (ili pokrenite `Podijeli trenutnu bilješku`). Prikazuje sliku kartice — poster, naslov, godina, žanr, IMDb/AniList ocjena i vaša ocjena — koju možete objaviti bilo gdje:
-
-- **Na mobitelu** — gumb **Podijeli…** otvara nativni izbornik za dijeljenje vašeg uređaja s izravno priloženom slikom kartice, tako da je možete poslati ravno u bilo koju aplikaciju.
-- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — otvara sastavljač mreže s unaprijed ispunjenim opisom (naslov, vaša ocjena, izvorna poveznica i poveznica na ovaj plugin). Slika kartice se istovremeno kopira u vaš međuspremnik, tako da je samo zalijepite (Ctrl/Cmd+V) u objavu.
-- **Kopiraj sliku / Kopiraj tekst / Spremi sliku** — kopirajte prikazanu karticu ili opis u međuspremnik, ili spremite sliku u mapu s privicima vašeg vaulta kako biste je ručno priložili.
-
-Dijeljenje je potpuno lokalno: kartica se crta unutar aplikacije iz vlastitih metapodataka i naslovnice bilješke. Ništa se ne učitava na mrežu — plugin samo otvara URL sastavljača koji odaberete u vašem pregledniku.
-
----
-
-## AniList sinkronizacija
-
-Održavajte napredak svog animea sinkroniziranim sa svojim [AniList](https://anilist.co) računom.
-
-**Postavljanje** — u **Postavke → Library → AniList sinkronizacija**:
-
-1. Registrirajte besplatnog API klijenta na [anilist.co/settings/developer](https://anilist.co/settings/developer), s redirect URL-om postavljenim na `https://anilist.co/api/v2/oauth/pin`.
-2. Zalijepite **Client ID**, kliknite **Poveži** i autorizirajte.
-3. AniList vam prikazuje pristupni token — zalijepite ga u plugin. Kliknite **Testiraj vezu** za potvrdu.
-
-Zatim koristite naredbe:
-
-- **Push current note to AniList** — šalje napredak aktivne anime bilješke (pogledane epizode), status (u gledanju / završeno / planirano) i vašu ocjenu na vašu AniList listu.
-- **Pull progress from AniList** — dohvaća vašu AniList anime listu i ažurira odgovarajuće bilješke. Pull je **samo unaprijed**: nikada ne vraća unatrag bilješku koja je lokalno naprednija ili već završena i ostavlja vašu osobnu `My Rating` netaknutom.
-
-Sinkroniziraju se samo bilješke s `Source: anilist` (dodane putem AniList anime izvora). Vaš token pohranjen je lokalno u postavkama plugina i šalje se samo AniListu.
-
----
+| Poslužitelj | Kada | Što se šalje |
+| --- | --- | --- |
+| `www.omdbapi.com` | Pretraga filmova i serija | Naslov ili IMDb id, OMDb ključ |
+| `openlibrary.org` | Pretraga knjiga; traženje poglavlja kad dodate ili otvorite knjigu | Naslov i autor, ISBN ili id djela |
+| `covers.openlibrary.org` | Naslovnice knjiga | Id naslovnice |
+| `www.googleapis.com` | Pretraga knjiga | Naslov, ključ za Google Books |
+| `api.rawg.io` | Pretraga igara | Naslov, ključ za RAWG |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Pretraga igara i naslovnice | Naslov ili id Steam aplikacije |
+| `api.deezer.com` | Pretraga glazbe | Album ili izvođač |
+| `graphql.anilist.co` | Pretraga animea; sinkronizacija s AniListom | Naslov; vaš token, napredak, status i ocjena |
+| `anilist.co` | Kliknete **Poveži** | Client ID, otvara se u pregledniku |
+| `s4.anilist.co` | Banneri animea | CDN putanja |
+| `comicvine.gamespot.com` | Pretraga stripova | Naslov, ključ za Comic Vine |
+| `v3-cinemeta.strem.io` | Dodavanje ili osvježavanje filma ili serije | IMDb id |
+| `images.metahub.space`, `episodes.metahub.space` | Kadrovi | IMDb id, brojevi sezone i epizode |
+| `api.themoviedb.org`, `image.tmdb.org` | Dodavanje ili osvježavanje filma ili serije, ako postavite ključ za TMDB | IMDb id i ključ za TMDB; putanja slike |
+| `i.ytimg.com` | Kadrovi trailera | Id videa |
+| `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Otvaranje bilješke s trailerom | Id videa |
+| `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Kliknete gumb za dijeljenje | Opis: naslov, vaša ocjena, poveznica na izvor. Slika ostaje na vašem uređaju |
 
 ## Naredbe
 
-| Naredba                              | Opis                                                                     |
-| ------------------------------------ | ------------------------------------------------------------------------ |
-| `Otvori biblioteku`                       | Otvorite karticu galerije Library.                                       |
-| `Dodaj sadržaj`                        | Pretražite izvor i stvorite bilješku sadržaja (ili unesite naslov za Manual). |
-| `Pretraži svoju biblioteku`                | Fuzzy-pretraživanje i otvaranje bilo koje bilješke koja je već u vašoj biblioteci. |
-| `Osvježi metapodatke za trenutnu bilješku`  | Ponovo dohvaća metapodatke za aktivnu bilješku; ažurira ukupne brojeve epizoda serija. |
-| `Ponovo izgradi veze grafa`                | Pretvara `Genre`, `Creator` i `Cast` u veze u svim bilješkama knjižnice. |
-| `Pronađi i ukloni duplikate`           | Skenira sve bilješke po URL-u, prikazuje duplikate i uklanja odabrane.    |
-| `Podijeli trenutnu bilješku`                 | Prikazuje bilješku kao sliku kartice i dijeli je na X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky ili Pinterest. |
-| `Pošalji trenutnu bilješku na AniList`       | Šalje napredak, status i ocjenu aktivne anime bilješke na vaš AniList račun. |
-| `Preuzmi napredak s AniLista`         | Dohvaća vašu AniList listu i ažurira odgovarajuće bilješke (samo unaprijed). |
-| `Osvježi metapodatke za sve bilješke` | Dohvati metapodatke svih bilješki u biblioteci — jednu po jednu, u pozadini. |
+| Naredba | Što radi |
+| --- | --- |
+| `Otvori biblioteku` | Otvara karticu Biblioteka |
+| `Dodaj sadržaj` | Pretražuje izvor i stvara bilješku |
+| `Pretraži svoju biblioteku` | Pronalazi i otvara bilješku iz knjižnice |
+| `Osvježi metapodatke za trenutnu bilješku` | Ponovno dohvaća aktivnu bilješku |
+| `Osvježi metapodatke za sve bilješke` | Ponovno dohvaća svaku bilješku iz knjižnice, jednu po jednu |
+| `Ponovo izgradi veze grafa` | Pretvara `Genre`, `Creator` i `Cast` u poveznice |
+| `Pronađi i ukloni duplikate` | Navodi bilješke s istim URL-om i uklanja odabrane |
+| `Podijeli trenutnu bilješku` | Otvara karticu za dijeljenje |
+| `Pošalji trenutnu bilješku na AniList` | Šalje napredak, status i ocjenu |
+| `Preuzmi napredak s AniLista` | Ažurira bilješke iz vašeg AniList popisa |
 
----
+## Podrška
 
-## Doprinos i podrška
+Pogreške prijavite u [Issues](https://github.com/Kigrok/obsidian-library-plugin/issues), a ideje predložite u [Discussions](https://github.com/Kigrok/obsidian-library-plugin/discussions). Dodatak je objavljen pod [MIT licencom](../LICENSE).
 
-- **Pronašli ste grešku?** Otvorite [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues).
-- **Imate ideju za značajku?** Pokrenite [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions).
-- **Sviđa vam se plugin?** Razmislite o zvjezdici repozitorija kako biste pokazali svoju podršku!
-
----
-
-## Licencija
-
-[MIT License](LICENSE) — slobodno za korištenje, izmjenu i dijeljenje.
-
----
-
-## Hvala vam
-
-Ako vam se ovaj plugin čini korisnim, razmislite o podršci njegovom razvoju:
+Ako vam je dodatak koristan, možete ga podržati:
 
 | | Mreža | Adresa |
 | --- | --- | --- |
@@ -399,5 +174,3 @@ Ako vam se ovaj plugin čini korisnim, razmislite o podršci njegovom razvoju:
 | <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
 | <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
 | <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
-
----

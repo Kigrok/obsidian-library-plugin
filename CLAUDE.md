@@ -1,94 +1,55 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code (claude.ai/code) in this repo.
 
-`AGENTS.md` in this repo is the long-form version of the same guidance — read it for the
-full list of easy-to-violate constraints (frontmatter contract, enrichment pass, i18n,
-version bumping). This file is the short map.
+`AGENTS.md` = long-form version of same guidance — read for full list of easy-to-violate constraints (frontmatter contract, enrichment pass, i18n, version bumping). This file = short map.
 
 ## Commands
 
 - `npm run dev` — esbuild watch build, writes `main.js` in place.
-- `npm run build` — `tsc -noEmit -skipLibCheck` + minified `main.js`. Required gate before a PR.
+- `npm run build` — `tsc -noEmit -skipLibCheck` + minified `main.js`. Required gate before PR.
 - `npm run lint` — eslint on `src/**/*.ts` and `tests/**/*.ts`.
 - `npm test` / `npm run test:watch` — vitest over `tests/**/*.test.ts` in jsdom.
 - Single test file: `npx vitest run tests/unit/util.test.ts`
 - Single test by name: `npx vitest run -t "progress parsing"`
-- `npm version <x.y.z>` — syncs `manifest.json` + `versions.json` and stages them. Never
-  hand-edit the three version fields.
+- `npm version <x.y.z>` — syncs `manifest.json` + `versions.json`, stages them. Never hand-edit three version fields.
 
-The working directory **is** the installed plugin folder inside an Obsidian vault, so a dev
-build is live after a plugin reload in Obsidian.
+Working dir **is** installed plugin folder inside Obsidian vault → dev build live after plugin reload in Obsidian.
 
 ## Architecture
 
-Single Obsidian plugin bundled from `src/main.ts` to CJS `main.js` (esbuild, `target: es2020`,
-`obsidian`/electron/codemirror external).
+Single Obsidian plugin bundled from `src/main.ts` to CJS `main.js` (esbuild, `target: es2020`, `obsidian`/electron/codemirror external).
 
-**Data model.** There is no database. A "card" is a vault note; all state lives in its
-frontmatter (`Source`, `Source ID`, `Progress` as `watched/total`, `Date` as `dd.mm.yyyy`,
-`My Rating`, `Rating IMDB`, plus optional `Trailer`/`Gallery`/`Seasons`/`Runtime`/`Cast`). Notes are
-grouped into categories by their `Type` value; category definitions (name, Type value, folder)
-live in plugin settings, not in code.
+**Data model.** No database. "Card" = vault note; all state in frontmatter (`Source`, `Source ID`, `Progress` as `watched/total`, `Date` as `dd.mm.yyyy`, `My Rating`, `Rating IMDB`, optional `Trailer`/`Gallery`/`Seasons`/`Chapters`/`Runtime`/`Cast`). Notes grouped into categories by `Type` value; category definitions (name, Type value, folder) live in plugin settings, not code.
 
-**Providers** (`src/providers/`). Each implements `ContentProvider` (`search` + `fetch`) from
-`types.ts` and is registered per `ContentType` in `ProviderRegistry` (`registry.ts`) from
-`main.ts`. Two sources for the same medium are merged behind an aggregator
-(`bookAggregator.ts`, `gameAggregator.ts`) that tags results with `{__pid, __raw}` so refresh
-can route back — never register a second category for the same medium.
+**Providers** (`src/providers/`). Each implements `ContentProvider` (`search` + `fetch`) from `types.ts`, registered per `ContentType` in `ProviderRegistry` (`registry.ts`) from `main.ts`. Two sources for same medium merged behind aggregator (`bookAggregator.ts`, `gameAggregator.ts`) that tags results with `{__pid, __raw}` so refresh routes back — never register second category for same medium.
 
-**Enrichers** are a separate interface (`MetadataEnricher`, keyed by IMDb id) injected into
-`OmdbProvider` in priority order: `tmdb.ts` (optional, needs a key) then `cinemeta.ts`
-(keyless default). They fill trailer/gallery/seasons/runtime. They are *not* providers.
+**Enrichers** = separate interface (`MetadataEnricher`, keyed by IMDb id) injected into `OmdbProvider` in priority order: `tmdb.ts` (optional, needs key) then `cinemeta.ts` (keyless default). Fill trailer/gallery/seasons/runtime. *Not* providers.
 
-**`src/main.ts`** is the plugin class: commands, note creation/refresh, duplicate detection,
-AniList sync wiring, and `scheduleEnrich` — the background pass that backfills new frontmatter
-fields into existing notes after a release (marks stored in `settings.enrichMarks`, cleared when
-the API-key signature changes).
+**`src/main.ts`** = plugin class: commands, note creation/refresh, duplicate detection, AniList sync wiring, `scheduleEnrich` — background pass backfilling new frontmatter fields into existing notes after release (marks in `settings.enrichMarks`, cleared when API-key signature changes).
 
-**`src/view.ts`** is the whole UI surface: one `ItemView` that renders the statistics section
-plus one grid section per category, driven by a debounced `render()` reading the vault's
-metadata cache. Sort state, folded sections and the statistics layout persist through settings, not
-module scope.
+**`src/view.ts`** = whole UI surface: one `ItemView` rendering statistics section + one grid section per category, driven by debounced `render()` reading vault metadata cache. Sort state, folded sections, statistics layout persist via settings, not module scope.
 
-**`src/constants.ts`** is almost entirely the `I18N` table (one block per Obsidian UI language) plus
-`DEFAULT_SETTINGS`. `tr()` in `src/i18n.ts` resolves Obsidian's language subtag through
-`localeMap`. Every user-facing string goes through `tr()` and must be added to **all** locale
-blocks, each in its own script (`tests/unit/i18n.test.ts` checks both).
+**`src/constants.ts`** = almost entirely `I18N` table (one block per Obsidian UI language) + `DEFAULT_SETTINGS`. `tr()` in `src/i18n.ts` resolves Obsidian language subtag via `localeMap`. Every user-facing string goes through `tr()`, must be added to **all** locale blocks, each in own script (`tests/unit/i18n.test.ts` checks both).
 
-Leaf modules: `util.ts` (frontmatter parsing, runtime math), `share.ts` (canvas-rendered share
-card + intent URLs), `trailer.ts` (embed URL normalization), `anilistSync.ts` (GraphQL progress
-push/pull), `src/ui/*` (modals and the lightbox).
+Leaf modules: `util.ts` (frontmatter parsing, runtime math), `episodes.ts` (episode/chapter ticks, ratings, season merge), `facts.ts` (watch-time comparisons), `share.ts` (canvas-rendered share card + intent URLs), `trailer.ts` (embed URL normalization), `anilistSync.ts` (GraphQL progress push/pull), `src/ui/*` (modals, lightbox).
 
 ## Hard constraints
 
-- **ES2017 is the type ceiling** (`tsconfig.json` `lib`). `Object.fromEntries`,
-  `Array.prototype.flat`, `String.prototype.trimEnd` fail the build. Use a loop or regex.
+- **ES2017 = type ceiling** (`tsconfig.json` `lib`). `Object.fromEntries`, `Array.prototype.flat`, `String.prototype.trimEnd` fail build. Use loop or regex.
 - **All network calls use `requestUrl` from `obsidian`, never global `fetch`** — mobile target.
-- **The Obsidian API ceiling is `minAppVersion` 1.8.7**, but the `obsidian` dep is `latest`, so
-  the typings accept APIs that do not exist there. Check the docs version, not the typings.
-- **Renaming a frontmatter field is a breaking change** — it silently breaks refresh, statistics
-  and AniList sync on existing notes.
-- **`Genre`, `Creator` and `Cast` hold `[[links]]`** (`LINK_FIELDS`, written through `toLinks()`, shown
-  through `linkLabel()`); `syncLinkFields` removes the `Related` property older versions wrote.
-- **Frontmatter is untrusted**: values that become `href`/`src` go through `safeUrl()`; file and
-  link names through `sanitizeFilename()` / `sanitizeLink()` (all in `src/util.ts`).
-- **Counts use `trCount(key, n)`** with `<key>1/2/5` locale keys (it fills `{count}`), never
-  hand-written plural rules or `note(s)`.
-- **Settings are defined once** in `sections()` (`src/settings.ts`), rendered by `getSettingDefinitions()`
-  on 1.13+ and by `display()` before it. Guard 1.13-only calls with `requireApiVersion("1.13.0")` —
-  a string literal, or the review lint reports an error.
-- **DOM injected into Obsidian's views** (note header, lightbox) is removed in `onunload`.
-- **`main.js` is generated and gitignored** — never edit or commit it.
+- **Obsidian API ceiling = `minAppVersion` 1.8.7**, but `obsidian` dep is `latest` → typings accept APIs missing there. Check docs version, not typings.
+- **Renaming frontmatter field = breaking change** — silently breaks refresh, statistics, AniList sync on existing notes.
+- **`Genre`, `Creator`, `Cast` hold `[[links]]`** (`LINK_FIELDS`, written via `toLinks()`, shown via `linkLabel()`); `syncLinkFields` removes `Related` property older versions wrote.
+- **Frontmatter untrusted**: values becoming `href`/`src` go through `safeUrl()`; file/link names through `sanitizeFilename()` / `sanitizeLink()` (all in `src/util.ts`).
+- **Counts use `trCount(key, n)`** with `<key>1/2/5` locale keys (fills `{count}`), never hand-written plural rules or `note(s)`.
+- **Settings defined once** in `sections()` (`src/settings.ts`), rendered by `getSettingDefinitions()` on 1.13+ and by `display()` before. Guard 1.13-only calls with `requireApiVersion("1.13.0")` — string literal, else review lint errors.
+- **DOM injected into Obsidian views** (note header, lightbox) removed in `onunload`.
+- **`main.js` generated + gitignored** — never edit or commit.
 - Tabs for indentation; strict TypeScript, no `any`.
-- Conventional Commits with the version in the subject, e.g. `feat: 2.2.1 — AniList progress sync`.
-- User-facing changes usually also mean updating the 30 translated READMEs under `readme/`.
+- Conventional Commits with version in subject, e.g. `feat: 2.2.1 — AniList progress sync`.
+- User-facing changes usually also mean updating 30 translated READMEs under `readme/`.
 
 ## Tests
 
-`tests/unit/` covers pure helpers and providers. `tests/compliance/` guards the Obsidian
-submission rules (manifest, versions, license, source hygiene, README privacy table) and ends
-with a bundle smoke test that rebuilds `src/main.ts`, evaluates it against
-`tests/stubs/obsidian.ts` (the npm `obsidian` package is types-only, so `vitest.config.ts`
-aliases it), and asserts no timer survives `onunload`. `tests/tsconfig.json` raises `lib` to
-ES2020 — the ES2017 ceiling applies to `src/` only.
+`tests/unit/` covers pure helpers + providers. `tests/compliance/` guards Obsidian submission rules (manifest, versions, license, source hygiene, README privacy table), ends with bundle smoke test: rebuilds `src/main.ts`, evaluates against `tests/stubs/obsidian.ts` (npm `obsidian` package types-only, so `vitest.config.ts` aliases it), asserts no timer survives `onunload`. `tests/tsconfig.json` raises `lib` to ES2020 — ES2017 ceiling applies to `src/` only.

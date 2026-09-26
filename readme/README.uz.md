@@ -4,190 +4,83 @@
   <img src="../banner.png" alt="Obsidian Library Banner" width="100%">
 </p>
 
-<h1 align="center">Kutubxona</h1>
+<h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.1-blue" alt="Versiya">
-  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Yuklamalar">
-  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian versiyasi">
-  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="Litsenziya">
+  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
+  <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
+  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
 </p>
 
 <p align="center">
-  <b>Filmlaringizni, seriallaringizni, kitoblaringizni va boshqalarni vizual galeriyaga joylashtiring — to'g'ridan-to'g'ri Obsidian ichida.</b>
+  Filmlar, seriallar, kitoblar, anime, komikslar, o'yinlar va musiqa Obsidian qaydlari sifatida, muqovali kartochkalar galereyasida.
   <br />
-  Ilova ichida nomlarni qidiring va qo'shing, metadatalarni avtomatik yuklang, taraqqiyotni kuzating va hamma narsani grafikingizga bog'lang.
+  <a href="https://community.obsidian.md/plugins/library">Obsidian plaginlar katalogi</a>
 </p>
 
-<p align="center">
-  <a href="https://community.obsidian.md/plugins/library">Obsidian Jamiyat Plaginlar katalogida ko'ring</a>
-</p>
+## Imkoniyatlar
 
----
+- Asarni nomi bo'yicha qidiring va posteri, yili, janri, mualliflari, aktyorlari va reytinglari to'ldirilgan qayd oling.
+- Kutubxona toifalarga ajratilgan va nomi, yili, reytingi yoki sanasi bo'yicha saralangan muqovali kartochkalar ko'rinishida.
+- Serial qismlarini yoki kitob boblarini belgilang va har birini baholang; `Progress` va `My Rating` ular asosida hisoblanadi.
+- Film va serial qaydlarida treyler, kadrlar, davomiylik va mavsumlar ro'yxati bor.
+- Janrlar, mualliflar va aktyorlar havola sifatida saqlanadi, shuning uchun ularning qaydlari barcha asarlarni orqa havolalarda va grafda to'playdi.
+- Statistika paneli siz tanlagan toplarni va umumiy tomosha vaqtini ko'rsatadi.
+- Asarni kartochka-rasm ko'rinishida X, Telegram, Reddit va yana oltita tarmoqqa ulashing.
+- Anime progressi AniList bilan sinxronlanadi.
+- Interfeys Obsidian qo'llab-quvvatlaydigan barcha tillarga tarjima qilingan. Bu README [30 tilda](./) mavjud.
 
-## Asosiy Xususiyatlar
+## Tez boshlash
 
-- **Vizual Karta Tarmog'i** — Maxsus Kutubxona yorlig'i yig'mingizni muqova san'at kartalari galeriyasi sifatida ko'rsatadi.
-- **Ichki Qidiruv** — Ilova ichida nomlarni qidiring va qo'shing: filmlar va seriallar uchun OMDb, kitoblar uchun Open Library yoki Google Books, o'yinlar uchun RAWG/Steam, musiqi uchun Deezer, anime uchun AniList, komikslar uchun Comic Vine.
-- **Aqlli Serial Kuzatuvi** — Mavsumlar va epizodlar soni avtomatik yuklanadi va sinxronlanadi.
-- **Taraqqiyot Ko'rsatkichlari** — Kartalarda va eslatma sarlavhalarida vizual taraqqiyot paneli qancha ko'rgan yoki o'qiganingizni ko'rsatadi.
-- **Boy Eslatma Sarlavhalari** — Har bir kontent eslatmasi barcha asosiy metadatalar bilan avtomatik yaratilgan sarlavha oladi.
-- **Treylerlar, kadrlar va mavsumlar** — Film va serial eslatmalari ichiga joylashtirilgan YouTube/Vimeo treyleri, kadrlar qatori va davomiylikni ko‘rsatadi; seriallarga epizod soni, baholar va mavsum treylerlari bilan mavsumlar ro‘yxati ham qo‘shiladi.
-- **Maxsus Kategoriyalar** — Filmlar, Seriallar, Anime, Komikslar, Kitoblar, O'yinlar, Musiqi yoki qo'lda manba orqali boshqa narsalar uchun kategoriyalar yarating.
-- **Grafik Bog'lanishlari** — Janrlar, yaratuvchilar va aktyorlar o'zlarining `Genre`, `Creator` va `Cast` xususiyatlarida havola sifatida saqlanadi, shuning uchun har bir janr, yaratuvchi va aktyor eslatmasi o'z asarlarini teskari havolalarda to'playdi, graf esa hammasini ko'rsatadi.
-- **Ulashish Kartalari** — Istalgan kontent eslatmasini ulashsa bo'ladigan karta surati (poster, sarlavha, yil, janr, IMDb bahosi va sizning reytingingiz)ga aylantiring va uni X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky yoki Pinterest ga joylang — uni to'g'ridan-to'g'ri qurilmangiz ilovalariga ulashing yoki rasmni istalgan joyda ishlatish uchun nusxalang/saqlang.
-- **AniList Sinxronizatsiyasi** — Anime taraqqiyotingizni, holatingizni va reytingingizni to'g'ridan-to'g'ri AniList hisobingizga yuboring yoki ro'yxatingizni eslatmalaringizga qaytarib torting.
-- **Saralash & Yig'ilish** — Kartalarni nomi, yili, reytingi yoki sanasi bo'yicha saralang; istalgan kategoriyani yig'ing — qayta ishga tushirilgandan keyin ham yig'ilgan holda qoladi.
-- **Statistika** — Ustunlarni o'zingiz tanlaysiz: istalgan kategoriyaning eng yuqori baholangan asarlari yoki istalgan xususiyatning eng ko'p uchraydigan qiymatlari (janrlar, yaratuvchilar, aktyorlar…), shuningdek ko'rish vaqti diagrammasi.
-- **Takroriy Topish** — URL bo'yicha bir xil nomni qo'shishni avtomatik to'xtatadi. Ichki buyruq mavjud takroriy topadi va o'chiradi.
-- **Ko'p Tilli** — plagin interfeysi **Obsidian qo'llab-quvvatlaydigan barcha tillarga** (70+) tarjima qilingan, shuning uchun u doimo Obsidian tilingizga mos keladi. README ning to'liq tarjimalari ulardan 30 tasi uchun mavjud (yuqoridagi tillar paneliga qarang).
+1. **Library** plaginini Sozlamalar → Tashqi plaginlar → Ko'rish orqali yoki [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases) sahifasidan o'rnating.
+2. Sozlamalar → Library bo'limida har bir kontent turi uchun toifa qo'shing: Filmlar, Seriallar, Kitoblar, Komikslar, Oʻyinlar, Musiqa, Anime, Qoʻlda.
+3. Manbalaringizga kerakli API kalitlarini kiriting (quyida qarang).
+4. Yon paneldan «Kutubxona» yorlig'ini oching, **+** tugmasini bosing, toifani tanlang va asarni qidiring. Agar u kutubxonada allaqachon bo'lsa, mavjud qayd ochiladi.
 
----
-
-## Tez Boshlash
-
-### 1. O'rnatish
-
-**Kutubxona**ni [Obsidian Jamiyat Plaginlar katalogidan](https://community.obsidian.md/plugins/library) o'rnating (Sozlamalar > Jamiyat plaginlari > Ko'rish > "Kutubxona" qidiring) yoki [GitHub Chiqarishlaridan](https://github.com/Kigrok/obsidian-library-plugin/releases) qo'lda o'rnating.
-
-### 2. Asosiy Sozlash
-
-1. **Sozlamalar** > **Kutubxona**ga o'ting.
-2. **Kategoriyalaringizni** qo'shing — ochiladigan menyudan oldindan belgilangan turini (Filmlar, Seriallar, Kitoblar, Komikslar, O'yinlar, Musiqi, Anime yoki Qo'lda) tanlang va **Kategoriya qo'shing** tugmasini bosing. Har bir kategoriyada tilingizga tarjima qilingan ko'rsatilgan nom, `Type` qiymati (har doim inglizcha, masalan `Movie`), manba va eslatmalarni saqlash uchun ixtiyoriy papka mavjud.
-3. _(Ixtiyoriy)_ Ishlatgan xizmatlaringiz uchun API kalitlarini kiriting: filmlar/seriallar uchun [OMDb](https://www.omdbapi.com/apikey.aspx), o'yinlar uchun [RAWG](https://rawg.io/apidocs), komikslar uchun [Comic Vine](https://comicvine.gamespot.com/api/), [TMDB](https://www.themoviedb.org/settings/api) treyler, kadrlar va mavsum ma’lumotlari uchun, [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) kitob qidiruvi uchun. Anime (AniList), musiqa (Deezer) va Steam kalit talab qilmaydi.
-
-### 3. Nom Bilan Qo'shish
-
-Oldingi ma'lumotni qo'lda to'ldirishga hojat yo'q — faqat nomini qidirib film, serial, kitab, anime yoki komiks qo'shing:
-
-1. Lent belgisidan **Kutubxona** yorlig'ini oching (yoki `Kutubxonani ochish` buyrug'ini ishga tushiring).
-2. Kutubxona sahifasining yuqori o'ng burchagidagi **+** tugmasini bosing (yoki `Kontent qo'shish` buyrug'ini ishga tushiring).
-3. Kategoriyani tanlang, **nomni** qidiruv maydoniga kiriting va natijani tanlang.
-4. Karta darhol poster, yil, janr, yaratuvchilar va reyting avtomatik to'ldirilgan holda yaratiladi.
-
-**+** yonidagi **Qidirish** tugmasi kutubxoningizda mavjud nomlarni qidiradi.
-
-**Qo'lda** Kategoriyalar uchun faqat nom kiriting va muqovani, yilni va boshqa maydonlarni o'zingiz to'ldiring.
-
----
-
-## Statistika
-
-Kutubxona yorlig'ining yuqorisidagi yig'iladigan **Statistika** bo'limi siz tanlagan ustunlarni ko'rsatadi:
-
-- **Kategoriya toplari** — kategoriyaning eng yuqori baholangan uchta asari, muqovalari bilan: *Top filmlar*, *Top kitoblar* va hokazo. Saralash `My Rating` bo'yicha, u bo'lmasa `Rating IMDB` bo'yicha.
-- **Xususiyat toplari** — butun kutubxonada xususiyatning eng ko'p uchraydigan uchta qiymati: *Top janrlar*, *Top yaratuvchilar*, *Top aktyorlar* yoki istalgan boshqa xususiyat, masalan *Top: Author*. `Sci-Fi`, `sci-fi` va `[[Sci-Fi]]` bitta qiymat sifatida sanaladi.
-- **Koʻrish vaqti** — filmlar, seriallar va animega sarflangan soatlar diagrammasi, har bir eslatmaning `Runtime` va `Progress` maydonlaridan hisoblanadi.
-
-Buni **Sozlamalar → Library → Statistika** bo'limida sozlang: **Top qo'shish** kategoriyalaringizni va eslatmalarda topilgan xususiyatlarni ko'rsatadi, axlat qutisi belgisi ustunni olib tashlaydi, kalit esa ko'rish vaqti diagrammasini yashiradi. Ustunlar qo'shilgan tartibda ko'rinadi; yangi kategoriya o'z topini ham qo'shadi.
-
-Yig'ilgan kategoriyalar qayta ishga tushirilgandan keyin ham yig'ilgan holda qoladi.
-
----
-
-## Takroriy Topish
-
-Kutubxona `URL` maydonini tekshirish orqali takroriy yozuvlarni oldini oladi:
-
-- **Qo'shishda** — bir xil URL ga ega yozuv allaqachon mavjud bo'lsa, takroriy yaratish o'rniga mavjud yozuvni ochadi.
-- **Takroriy Topish va O'chirish** — bu buyruqni palitradan ishga tushirib, barcha yozuvlarni skanerlang, URL bo'yicha guruhlang va modal orqali tanlangan takroriy o'chiring.
-
----
+Toifaning `Type` qiymati (masalan, `Movie`) qaysi qaydlar unga tegishli ekanini, jild esa yangi qaydlar qayerga tushishini belgilaydi. Ikkala sozlama ham toifa yonidagi **Kengaytirilgan** tugmasi bilan ochiladi.
 
 ## Manbalar
 
-Har bir kategoriya uning qidiruvini ta'minlaydigan manbaga bog'langan:
+| Toifa | Manba | Kalit |
+| --- | --- | --- |
+| Filmlar, seriallar | OMDb | [Bepul kalit](https://www.omdbapi.com/apikey.aspx) |
+| Kitoblar | Google Books + Open Library | Ixtiyoriy [Google Books kaliti](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| O'yinlar | RAWG + Steam | [Bepul RAWG kaliti](https://rawg.io/apidocs); Steam uchun kalit kerak emas |
+| Musiqa | Deezer | Kerak emas |
+| Anime | AniList | Kerak emas |
+| Komikslar | Comic Vine | [Bepul kalit](https://comicvine.gamespot.com/api/) |
+| Qolgan hammasi | Qo'lda: maydonlarni o'zingiz to'ldirasiz | Kerak emas |
 
-| Manba           | Kontent turlari   | API kaliti                                                      |
-| ---------------- | --------------- | ----------------------------------------------------------- |
-| **OMDb**         | Filmlar, Seriallar  | Bepul kalit talab qilinadi — [omdbapi.com](https://www.omdbapi.com/apikey.aspx) |
-| **Books**        | Kitoblar           | Open Library (kalit yo'q) + Google Books (ixtiyoriy bepul kalit). Natijalar birlashtirilgan — Google Books birinchi, Open Library pastda. |
-| **Games**         | O'yinlar           | RAWG (bepul kalit talab qilinadi — [rawg.io/apidocs](https://rawg.io/apidocs)) + Steam (yo'q). Natijalar birlashtirilgan — RAWG birinchi, Steam pastda. |
-| **Deezer**       | Musiqi (albomlar)  | Yo'q                                                        |
-| **AniList**        | Anime           | Yo'q — bepul AniList GraphQL API, kalit kerak emas       |
-| **Comic Vine**   | Komikslar          | Bepul kalit talab qilinadi — [comicvine.gamespot.com/api](https://comicvine.gamespot.com/api/) |
-| **Qo'lda**       | Boshqa narsalar   | Yo'q — siz nom kiritsangiz va maydonlarni o'zingiz to'ldirasiz          |
+Treylerlar, kadrlar, davomiylik va mavsumlar ro'yxati Cinemeta'dan kalitsiz keladi. [TMDB kaliti](https://www.themoviedb.org/settings/api) mavsum baholari va ko'proq kadr qo'shadi.
 
-Film va serial eslatmalarini **TMDB** (majburiy bo‘lmagan bepul kalit) bilan boyitish mumkin: treyler, kadrlar, davomiylik va serialning mavsumlar ro‘yxati olinib, eslatma frontmatteriga yoziladi.
+## Progress va baholar
 
----
+Serial qaydining sarlavhasida mavsumlar ro'yxati bor va har bir mavsum qismlar ro'yxatiga ochiladi, manbada bo'lsa, nomlari bilan. Qismni yoki butun mavsumni ko'rilgan deb belgilang va 1 dan 10 gacha baho qo'ying. `Progress` belgilangan qismlarni sanaydi, mavsum bahosi baholangan qismlarning o'rtachasiga, `My Rating` esa baholangan mavsumlarning o'rtachasiga teng. Baholangan qismi yo'q mavsumga baho to'g'ridan-to'g'ri qo'yiladi.
 
-## Maxfiylik & Tarmoq Ishlatilishi
+Anime ham xuddi shunday, qism nomlarisiz bitta mavsum sifatida ishlaydi.
 
-Library **birinchi navbatda oflayn** ishlaydi: kutubxonangiz oddiy eslatmalardan iborat va ulanishsiz ham ishlaydi. Plagin faqat quyida sanab o'tilgan ma'lumotlarni va faqat quyidagi hollarda yuboradi:
+Kitob boblari Open Library'dagi nashr mundarijasidan olinadi. Mundarija topilmasa, qayd sarlavhasidagi **Bob qo'shish** tugmasi boblar sonini yoki har qatorda bitta bob nomini qabul qiladi. Shundan so'ng `Progress` sahifalarni emas, boblarni sanaydi, o'qilgan sahifalar esa boblarning xuddi shu ulushiga o'tadi.
 
-- **O'zingiz harakat qilganingizda:** nom qidirganingizda, metama'lumotlarni yangilaganingizda, AniList buyrug'ini ishga tushirganingizda yoki ulashish tugmasini bosganingizda.
-- **Kutubxona eslatmasini ochganingizda:** uning metama'lumotlari manbasidan `Source ID` orqali yangilanadi, har bir eslatma uchun 5 daqiqada ko'pi bilan bir marta; `Source ID` bo'lmagan eslatma nomi bo'yicha qidiriladi.
-- **Plagin yangilangandan yoki API kaliti o'zgartirilgandan keyin:** fon jarayoni kutubxona eslatmalaringizni manbalaridan bir marta, birma-bir yangilaydi.
+Eski versiyalardagi qaydlar progressini saqlaydi. Hech narsa belgilamaguningizcha, `Progress` sonigacha bo'lgan birinchi qismlar ko'rilgan deb ko'rsatiladi.
 
-Eslatmalaringiz havola qilgan muqova rasmlari, kadrlar va treyler pleyerlari quyida sanab o'tilgan xostlardan yuklanadi.
+## Statistika
 
-| Xizmat | Qachon | Nima yuboriladi | Nega |
-| --- | --- | --- | --- |
-| `www.omdbapi.com` | OMDb asosidagi kategoriyani qidirganingizda | Siz kiritgan nom va OMDb API kalitingiz | Film/serial metadatasini yuklash (yil, janr, aktyorlar, reyting, poster, epizodlar soni) |
-| `openlibrary.org` | Open Library kategoriyasini qidirganingizda | Siz kiritgan nom | Kitab metadatasini yuklash (muallif, yil, mavzular, muqova id) |
-| `covers.openlibrary.org` | Kitab kartasining muqovasi bo'lsa | Open Library muqova id si | Muqova rasmini yuklash |
-| `www.googleapis.com` | Google Books kategoriyasini qidirganingizda | Siz kiritgan nom va Google Books kalitingiz | Kitab metadatasini yuklash (muallif, yil, kategoriyalar, sahifalar soni, muqova, ISBN) |
-| `api.rawg.io` | RAWG o'yin kategoriyasini qidirganingizda | Siz kiritgan nom va RAWG kalitingiz | O'yin metadatasini yuklash (yil, janr, ishlab chiqaruvchi, muqova) |
-| `api.deezer.com` | Deezer musiqi kategoriyasini qidirganingizda | Siz kiritgan albom yoki ijrochi | Albom metadatasini yuklash (ijrochi, yil, janr, treklar soni, muqova) |
-| `graphql.anilist.co` | Anime kategoriyasini qidirganingizda | Siz kiritgan nom | Anime metadatasini yuklash (nom, yil, janr, epizodlar, AniList bali, studiya, poster) |
-| `graphql.anilist.co` | AniList sinxronizatsiya buyrug'ini ishga tushirganingizda | AniList kirish tokeningiz va eslatmaning taraqqiyoti, holati va reytingi | AniList anime ro'yxatingizni o'qish yoki yangilash |
-| `anilist.co` | AniList sinxronizatsiya sozlamalarida **Ulanish** tugmasini bosasiz | AniList Client ID raqamingiz | Brauzerda AniList avtorizatsiya sahifasini ochish |
-| `comicvine.gamespot.com` | Komiks kategoriyasini qidirganingizda | Siz kiritgan nom va Comic Vine kalitingiz | Komiks metadatasini yuklash (nom, yil, nashriyot, sonlar soni, muqova) |
-| `store.steampowered.com` | Steam o‘yinini qidirasiz yoki qo‘shasiz | Siz kiritgan nom yoki Steam ilova IDsi | O‘yin metadatasini olish (yil, janr, ishlab chiquvchi, muqova) |
-| `cdn.cloudflare.steamstatic.com` | Steam o‘yin kartasida muqova bo‘lsa | Steam ilova IDsi | Muqova rasmini yuklash |
-| `api.themoviedb.org` | TMDB kaliti bilan film/serial eslatmasini qo‘shasiz yoki yangilaysiz | Eslatmaning IMDb ID raqami va TMDB kalitingiz | Treyler, kadrlar, davomiylik va mavsumlar ro‘yxatini olish |
-| `image.tmdb.org` | Film/serial eslatmasida kadrlar bor | TMDB rasm yo‘li | Kadrlarni yuklash |
-| `v3-cinemeta.strem.io` | Film/serial eslatmasini qo‘shasiz yoki yangilaysiz | Eslatmaning IMDb IDsi | Treyler, kadrlar, davomiylik va serialning mavsum ro‘yxatini olish — kalit shart emas |
-| `images.metahub.space` | Film/serial eslatmasida kadrlar bor | Eslatmaning IMDb IDsi | Kadr (fon) rasmlarini yuklash |
-| `episodes.metahub.space` | Serial eslatmasida epizod kadrlari bor | Serialning IMDb IDsi hamda mavsum va epizod raqamlari | Epizod kadr rasmlarini yuklash |
-| `i.ytimg.com` | Film eslatmasida treyler kadrlari ko‘rsatiladi | Treyler video IDsi | Treyler kadr rasmlarini yuklash |
-| `s4.anilist.co` | Anime eslatmasida banner bor | AniList CDN yo‘li | Banner rasmini yuklash |
-| `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Treylerli eslatmani ochasiz | Treyler ID raqami | Treyler pleyerini joylashtirish |
-| `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Ulashish tugmasini bosasiz | Kartochka izohi (sarlavha, bahoyingiz, manba havolasi) | Tanlangan tarmoqning ulashish oynasini tayyor post bilan ochish — kartochka rasmining o‘zi lokal qoladi |
+«Kutubxona» yorlig'ining yuqorisidagi panel Sozlamalar → Library → Statistika bo'limida tanlangan ustunlarni ko'rsatadi: toifaning eng yuqori baholangan uchta asari, xususiyatning eng ko'p uchraydigan uchta qiymati (janrlar, aktyorlar yoki boshqa istalgani) va filmlar, seriallar hamda animega sarflangan soatlar. Diagramma ostida kuniga bitta taqqoslash chiqadi, masalan: Apollon 11 Oyga 8 marta borib kelishi mumkin edi.
 
-Boshqa hech qanday ma'lumot sizning vaultingizdan chiqmaydi. Plaginda **telemetriya, analitika va o'zini yangilash mexanizmi yo'q**. API kalitlari (OMDb, Google Books, RAWG, Comic Vine, TMDB) faqat mahalliy plagin sozlamalarida saqlanadi va faqat tegishli xizmatlarga yuboriladi. Muqova rasmlari to'g'ridan-to'g'ri har bir manbaning qaytargan URL laridan yuklanadi.
+## Graf bog'lanishlari
 
----
+`Genre`, `Creator` va `Cast` `[[Christopher Nolan]]` kabi havolalarni saqlaydi, shuning uchun janr yoki shaxs qaydi uning asarlarini orqa havolalarda ko'rsatadi. Qo'lda yozilgan ismlar qayd o'zgarganda havolaga aylanadi, `Graf havolalarini qayta qurish` esa butun kutubxonani birdaniga o'zgartiradi.
 
-## Oldingi Ma'lumot Sxemasi
+## Ulashish va AniList
 
-### Film
+Qayd sarlavhasidagi **Ulashish** tugmasi poster, nom, yil, janr, aktyorlar, reytinglar va sizning bahoyingiz bilan kartochka chizadi. Kompyuterda rasm almashish buferiga nusxalanadi, tanlangan tarmoq esa tayyor yozuv bilan ochiladi, sizga rasmni postga qo'yish qoladi. Telefonda rasm tizimning «Ulashish» menyusiga yuboriladi. Rasm yoki yozuvni nusxalash, rasmni esa omborga saqlash ham mumkin.
 
-> **Muqova xossasi** — muqovani saqlaydigan frontmatter xossasini **Sozlamalar → Library** bo‘limida o‘zgartirish mumkin (masalan, `image`); mavjud eslatmalar ishlashda davom etadi.
+Animeni sinxronlash uchun [anilist.co/settings/developer](https://anilist.co/settings/developer) sahifasida redirect URL `https://anilist.co/api/v2/oauth/pin` bo'lgan klient ro'yxatdan o'tkazing. Client ID'ni Sozlamalar → Library → AniList sinxronizatsiyasi bo'limiga qo'ying, **Ulanish** tugmasini bosing va AniList ko'rsatgan tokenni qo'ying. `Joriy eslatmani AniList ga yuborish` progress, holat va bahoni yuboradi. `AniList dan jarayonni yuklash` qaydlarni yangilaydi, progressni hech qachon orqaga qaytarmaydi va `My Rating`ga tegmaydi. Faqat `Source: anilist` bo'lgan qaydlar sinxronlanadi.
 
-```yaml
----
-Type: Movie
-Name: Inception
-Year: 2010
-Genre:
-    - "[[Action]]"
-    - "[[Sci-Fi]]"
-Creator:
-    - "[[Christopher Nolan]]"
-Cast:
-    - "[[Leonardo DiCaprio]]"
-    - "[[Joseph Gordon-Levitt]]"
-    - "[[Elliot Page]]"
-Rating IMDB: 8.8
-Rating RT: 87
-Runtime: 148
-My Rating: 9
-Cover: https://m.media-amazon.com/images/...
-URL: https://www.imdb.com/title/tt1375666/
-Trailer: https://www.youtube.com/watch?v=YoHD9XEInc0
-Gallery:
-    - https://image.tmdb.org/t/p/w780/9e3Dz7H1J0s5cBZLX2yXKxkC7Jg.jpg
-Progress: 1/1
-Complete: true
-Date: 01.03.2026
-Source: omdb
-Source ID: tt1375666
----
-```
+## Frontmatter
 
-### Serial
+Har bir kartochka oddiy qayd va plagin u haqida biladigan hamma narsa frontmatter ichida saqlanadi:
 
 ```yaml
 ---
@@ -196,16 +89,9 @@ Name: Stranger Things
 Year: 2016
 End Year: 2025
 Season: 5
-Genre:
-    - "[[Drama]]"
-    - "[[Fantasy]]"
-    - "[[Horror]]"
-Creator:
-    - "[[The Duffer Brothers]]"
-Cast:
-    - "[[Winona Ryder]]"
-    - "[[David Harbour]]"
-    - "[[Millie Bobby Brown]]"
+Genre: ["[[Drama]]", "[[Horror]]"]
+Creator: ["[[The Duffer Brothers]]"]
+Cast: ["[[Winona Ryder]]", "[[David Harbour]]"]
 Rating IMDB: 8.7
 Rating RT: 91
 Runtime: 42
@@ -213,18 +99,17 @@ My Rating: 9
 Cover: https://m.media-amazon.com/images/...
 URL: https://www.imdb.com/title/tt4574334/
 Trailer: https://www.youtube.com/watch?v=b9EkMc79ZSU
-Gallery:
-    - https://image.tmdb.org/t/p/w780/56v2KjBlU4XaOv9rVYEQypROD7P.jpg
+Gallery: ["https://image.tmdb.org/t/p/w780/56v2KjBlU4XaOv9rVYEQypROD7P.jpg"]
 Seasons:
-    - name: Season 1
-      episodes: 8
-      rating: 8.0
-      trailer: https://www.youtube.com/watch?v=XWxyRG_tckY
-    - name: Season 2
-      episodes: 9
-      rating: 8.1
-      trailer: https://www.youtube.com/watch?v=R1ZXOOLMJ8s
-Progress: 25/42
+  - name: Season 1
+    episodes: 8
+    rating: 8.0
+    episode_list:
+      - title: "Chapter One: The Vanishing of Will Byers"
+        watched: true
+        my_rating: 9
+      # ...yana 7 qism
+Progress: 8/42
 Complete: false
 Date: 01.03.2026
 Source: omdb
@@ -232,162 +117,54 @@ Source ID: tt4574334
 ---
 ```
 
-> **Serial avtomatik yangilanishi:** `Joriy eslatma uchun metadatani yangilash` buyrug'ini ishga tushiring (yoki faqat eslatmani oching) va plugin `Progress` dagi umumiy epizod sonini (masalan `25/42` dan `25/50` ga) va `Season` sonini yangilaydi, ko'rgan soningiz o'zgarmaydi.
+Serialda `Runtime` bitta qismning davomiyligini bildiradi. Kitoblarda `ISBN` bor, boblar esa xuddi shunday `title`, `watched` va `my_rating` maydonlari bilan `Chapters` ichida saqlanadi; animeda `Rating AniList` va `Status` bor. Muqova xususiyati nomini sozlamalarda o'zgartirish mumkin, masalan `image` ga.
 
-> **Treyler, kadrlar va mavsumlar:** TMDB kaliti kiritilgan bo‘lsa, plagin `Trailer`, `Gallery`, `Runtime` va (seriallar uchun) `Seasons` maydonlarini avtomatik to‘ldiradi — `Runtime` filmning daqiqalardagi uzunligi yoki serialda bir epizodga ketadigan daqiqalar. Shunda eslatma sarlavhasida ichiga joylashtirilgan pleyer, kadrlar qatori va epizod soni, baholar va mavsum treyleri tugmalari bilan mavsumlar ro‘yxati ko‘rinadi. Har bir maydon — oddiy frontmatter: uni tahrirlang yoki o‘chiring, plagin keyingi yangilashda qiymatlaringizga tegmaydi. Har bir yangi plagin versiyasida kutubxona fonda bir marta aylanib chiqiladi va yangi qo‘shilgan maydonlar birma-bir to‘ldiriladi.
+Metama'lumotlarni yangilash faqat bo'sh maydonlarni to'ldiradi, shuning uchun tuzatishlaringiz saqlanib qoladi. U, shuningdek, `Progress` dagi umumiy qismlar sonini yangilaydi va yangi mavsumlar hamda qism nomlarini qo'shadi.
 
-### Kitab
+## Maxfiylik va tarmoq
 
-```yaml
----
-Type: Book
-Name: Dune
-Year: 1965
-Genre:
-    - "[[Science Fiction]]"
-Creator:
-    - "[[Frank Herbert]]"
-Cover: https://covers.openlibrary.org/b/id/...-L.jpg
-ISBN: 9780441013593
-My Rating: 9
-Progress: 412/688
-Complete: false
-Date: 01.03.2026
-Source: openlibrary
-Source ID: /works/OL893415W
----
-```
+Kutubxona oddiy qaydlardan iborat va oflayn ishlaydi. Plagin tarmoqqa siz qidirganingizda, yangilaganingizda, sinxronlaganingizda yoki ulashganingizda; kutubxona qaydini ochganingizda, lekin har bir qayd uchun 5 daqiqada bir martadan ko'p emas; va plagin yangilangandan yoki kalit o'zgargandan keyin yangi maydonlarni to'ldirish uchun bir marta chiqadi. Telemetriya, analitika va o'z-o'zini yangilash yo'q. API kalitlari plaginning mahalliy sozlamalarida saqlanadi va faqat o'z xizmatiga yuboriladi.
 
-### Anime
-
-```yaml
----
-Type: Anime
-Name: Steins;Gate
-Year: 2011
-Genre:
-    - "[[Sci-Fi]]"
-    - "[[Thriller]]"
-Creator:
-    - "[[White Fox]]"
-Rating AniList: 9.1
-Status: FINISHED
-Cover: https://s4.anilist.co/file/anilistcdn/media/anime/cover/...
-URL: https://anilist.co/anime/9253
-Progress: 0/24
-Complete: false
-Date: 01.03.2026
-Source: anilist
-Source ID: 9253
----
-```
-
-### Komiks
-
-```yaml
----
-Type: Comic
-Name: Watchmen
-Year: 1986
-Genre:
-    - "[[Comics]]"
-Creator:
-    - "[[DC Comics]]"
-Cover: https://comicvine.gamespot.com/a/uploads/...
-URL: https://comicvine.gamespot.com/watchmen/4050-33819/
-Progress: 0/12
-Complete: false
-Date: 01.03.2026
-Source: comicvine
-Source ID: 33819
----
-```
-
----
-
-## Grafik Bog'lanishlari
-
-Janrlar, yaratuvchilar va filmlar hamda seriallarda aktyorlar o'z xususiyatlarida havola sifatida saqlanadi:
-
-```yaml
-Genre:
-    - "[[Action]]"
-    - "[[Sci-Fi]]"
-Creator:
-    - "[[Christopher Nolan]]"
-Cast:
-    - "[[Leonardo DiCaprio]]"
-```
-
-Shunday qilib, har bir janr, yaratuvchi va aktyor eslatmasining teskari havolalarida uning barcha asarlari ko'rinadi, graf esa eslatmalarni ular orqali bog'laydi. Oddiy nomlar — qo'lda yozilgan yoki oldingi versiyadan qolgan — eslatma har safar o'zgarganda havolaga aylanadi; taxallusli havola o'zgarishsiz qoladi. `Graf havolalarini qayta qurish` butun kutubxonani birdaniga o'zgartiradi. Oldingi versiyalardagi `Related` xususiyati endi ishlatilmaydi va eslatmalardan olib tashlanadi.
-
----
-
-## Ulashish
-
-Har bir kontent eslatmasi sarlavhasida **Ulashish** tugmasini oladi (yoki `Joriy eslatmani ulashish` buyrug'ini ishga tushiring). U karta suratini chizadi — poster, sarlavha, yil, janr, IMDb/AniList bahosi va sizning reytingingiz — uni istalgan joyda joylashingiz mumkin:
-
-- **Mobil qurilmada** — **Ulashish…** tugmasi qurilmangizning tizim ulashish oynasini karta surati to'g'ridan-to'g'ri biriktirilgan holda ochadi, shunda uni istalgan ilovaga bevosita yuborishingiz mumkin.
-- **X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky, Pinterest** — tarmoq muharririni oldindan to'ldirilgan izoh bilan ochadi (sarlavha, sizning reytingingiz, manba havolasi va ushbu plaginga havola). Karta surati ayni vaqtda vaqtinchalik xotiraga nusxalanadi, shuning uchun uni postga joylashingiz (Ctrl/Cmd+V) kifoya.
-- **Rasmni nusxalash / Matnni nusxalash / Rasmni saqlash** — tayyor kartani yoki izohni vaqtinchalik xotiraga nusxalang, yoki qo'lda biriktirish uchun rasmni xazinangizning ilova papkasiga saqlang.
-
-Ulashish to'liq mahalliy: karta ilova ichida eslatmaning o'z metadatalari va muqovasidan chiziladi. Hech narsa yuklanmaydi — plagin faqat siz tanlagan muharrir URL manzilini brauzeringizda ochadi.
-
----
-
-## AniList Sinxronizatsiyasi
-
-Anime taraqqiyotingizni [AniList](https://anilist.co) hisobingiz bilan sinxron saqlang.
-
-**Sozlash** — **Sozlamalar → Kutubxona → AniList sinxronizatsiyasi** bo'limida:
-
-1. [anilist.co/settings/developer](https://anilist.co/settings/developer) manzilida bepul API klientni ro'yxatdan o'tkazing, yo'naltirish URL manzilini `https://anilist.co/api/v2/oauth/pin` ga o'rnating.
-2. **Client ID**ni joylang, **Ulanish** tugmasini bosing va ruxsat bering.
-3. AniList sizga kirish tokenini ko'rsatadi — uni plaginga joylang. Tasdiqlash uchun **Ulanishni tekshirish** tugmasini bosing.
-
-Keyin buyruqlardan foydalaning:
-
-- `Joriy eslatmani AniList ga yuborish` — faol anime eslatmasining taraqqiyotini (ko'rilgan epizodlar), holatini (ko'rilmoqda / tugallangan / rejalashtirilgan) va reytingingizni AniList ro'yxatingizga yuboradi.
-- `AniList dan jarayonni yuklash` — AniList anime ro'yxatingizni yuklab oladi va mos keladigan eslatmalarni yangilaydi. Torib olish **faqat oldinga** yo'naltirilgan: u mahalliy jihatdan oldinroqda bo'lgan yoki allaqachon tugallangan eslatmani hech qachon orqaga qaytarmaydi va shaxsiy `My Rating` ingizga tegmaydi.
-
-Faqat `Source: anilist` ga ega eslatmalar (AniList anime manbasi orqali qo'shilgan) sinxronlanadi. Tokeningiz plagin sozlamalarida mahalliy saqlanadi va faqat AniList ga yuboriladi.
-
----
+| Xost | Qachon | Nima yuboriladi |
+| --- | --- | --- |
+| `www.omdbapi.com` | Film va serial qidirish | Nom yoki IMDb id, OMDb kaliti |
+| `openlibrary.org` | Kitob qidirish; kitob qo'shilganda yoki ochilganda boblarni qidirish | Nom va muallif, ISBN yoki asar id |
+| `covers.openlibrary.org` | Kitob muqovalari | Muqova id |
+| `www.googleapis.com` | Kitob qidirish | Nom, Google Books kaliti |
+| `api.rawg.io` | O'yin qidirish | Nom, RAWG kaliti |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | O'yin qidirish va muqovalar | Nom yoki Steam app id |
+| `api.deezer.com` | Musiqa qidirish | Albom yoki ijrochi |
+| `graphql.anilist.co` | Anime qidirish; AniList sinxronlash | Nom; tokeningiz, progress, holat va baho |
+| `anilist.co` | Siz **Ulanish** tugmasini bosasiz | Client ID, brauzerda ochiladi |
+| `s4.anilist.co` | Anime bannerlari | CDN yo'li |
+| `comicvine.gamespot.com` | Komiks qidirish | Nom, Comic Vine kaliti |
+| `v3-cinemeta.strem.io` | Film yoki serial qo'shish yoki yangilash | IMDb id |
+| `images.metahub.space`, `episodes.metahub.space` | Kadrlar | IMDb id, mavsum va qism raqamlari |
+| `api.themoviedb.org`, `image.tmdb.org` | TMDB kaliti o'rnatilgan bo'lsa, film yoki serial qo'shish yoki yangilash | IMDb id va TMDB kaliti; rasm yo'li |
+| `i.ytimg.com` | Treyler kadrlari | Video id |
+| `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Treyleri bor qaydni ochish | Video id |
+| `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Siz ulashish tugmasini bosasiz | Yozuv: nom, sizning bahoyingiz, manba havolasi. Rasm qurilmangizda qoladi |
 
 ## Buyruqlar
 
-| Buyruq                              | Tavsif                                                              |
-| ------------------------------------ | ----------------------------------------------------------------------- |
-| `Kutubxonani ochish`                       | Kutubxona galeriya yorlig'ini oching.                                           |
-| `Kontent qo'shish`                        | Manbani qidiring va kontent eslatma yarating (yoki Qo'lda nom kiriting). |
-| `Kutubxonangizda qidirish`                | Kutubxoningizdagi mavjud istalgan eslatmani xira qidiring va oching.                 |
-| `Joriy eslatma uchun metadatani yangilash`  | Faol eslatma uchun metadatalarni qayta yuklang; serial epizodlar sonini yangilaydi.   |
-| `Graf havolalarini qayta qurish`                | Barcha kontent eslatmalarida `Genre`, `Creator` va `Cast` qiymatlarini havolaga aylantiradi. |
-| `Takrorlanishlarni topish va o'chirish`           | Barcha eslatmalarni URL bo'yicha skanerlang, takroriy ko'rsating va tanlanganlarni o'chiring.       |
-| `Joriy eslatmani ulashish`                 | Eslatmani karta surati sifatida chizib, uni X, Telegram, Reddit, WhatsApp, Facebook, LinkedIn, VK, Bluesky yoki Pinterest da ulashing. |
-| `Joriy eslatmani AniList ga yuborish`        | Faol anime eslatmasining taraqqiyoti, holati va reytingini AniList hisobingizga yuboring. |
-| `AniList dan jarayonni yuklash`          | AniList ro'yxatingizni yuklab oling va mos keladigan eslatmalarni yangilang (faqat oldinga). |
-| `Barcha eslatmalar uchun metadatani yangilash` | Kutubxonadagi barcha eslatmalar metadatasini fonda birma-bir olish. |
+| Buyruq | Nima qiladi |
+| --- | --- |
+| `Kutubxonani ochish` | «Kutubxona» yorlig'ini ochadi |
+| `Kontent qo'shish` | Manbadan qidirib, qayd yaratadi |
+| `Kutubxonangizda qidirish` | Kutubxona qaydini topib, ochadi |
+| `Joriy eslatma uchun metadatani yangilash` | Faol qayd ma'lumotlarini qayta yuklaydi |
+| `Barcha eslatmalar uchun metadatani yangilash` | Kutubxonaning barcha qaydlarini birma-bir yuklaydi |
+| `Graf havolalarini qayta qurish` | `Genre`, `Creator` va `Cast` ni havolaga aylantiradi |
+| `Takrorlanishlarni topish va o'chirish` | URL bir xil qaydlarni ko'rsatadi va tanlanganlarini o'chiradi |
+| `Joriy eslatmani ulashish` | Ulashish kartochkasini ochadi |
+| `Joriy eslatmani AniList ga yuborish` | Progress, holat va bahoni yuboradi |
+| `AniList dan jarayonni yuklash` | Qaydlarni AniList ro'yxatingizdan yangilaydi |
 
----
+## Yordam
 
-## Hissa qo'shish va Qo'llab-quvvatlash
+Xatolar haqida [Issues](https://github.com/Kigrok/obsidian-library-plugin/issues) bo'limiga, g'oyalarni [Discussions](https://github.com/Kigrok/obsidian-library-plugin/discussions) bo'limiga yozing. Plagin [MIT litsenziyasi](../LICENSE) asosida tarqatiladi.
 
-- **Xato topdingiz mi?** [Issue](https://github.com/Kigrok/obsidian-library-plugin/issues) oching.
-- **Xususiyat g'oyangiz bormi?** [Discussion](https://github.com/Kigrok/obsidian-library-plugin/discussions) boshlang.
-- **Plagini yaxshi ko'rdingizmi?** Qo'llab-quvvatlashni ko'rsatish uchun repositoryni yulduzlashni ko'rib chiqing!
-
----
-
-## Litsenziya
-
-[MIT License](LICENSE) — bepul foydalanish, o‘zgartirish va tarqatish mumkin.
-
----
-
-## Raxmat
-
-Agar bu plugin foydali bo'lsa, uning rivojlanishini qo'llab-quvvatlashni ko'rib chiqing:
+Plagin foydali bo'lsa, uni qo'llab-quvvatlashingiz mumkin:
 
 | | Tarmoq | Manzil |
 | --- | --- | --- |
@@ -397,5 +174,3 @@ Agar bu plugin foydali bo'lsa, uning rivojlanishini qo'llab-quvvatlashni ko'rib 
 | <img src="https://img.shields.io/badge/Bitcoin-F7931A?style=flat&logo=bitcoin&logoColor=white" alt="BTC"> | **BTC** | `bc1q4pdlj35uev8r0rgncpmn999n3jvj472pppds6r` |
 | <img src="https://img.shields.io/badge/TON-0098EA?style=flat&logo=ton&logoColor=white" alt="TON"> | **TON** | `UQCphscY14j0AiRY1lGPciQjd9_XcRbUDyPLDxG4O1unEpgM` |
 | <img src="https://img.shields.io/badge/Tron-EB0029?style=flat&logo=tron&logoColor=white" alt="Tron"> | **Tron** | `TYhmDLfx7aGHL1ikmNN3t72oGB3DjBjydR` |
-
----
