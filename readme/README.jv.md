@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Goleki judhul lan entuk cathetan sing wis diisi poster, taun, genre, pangripta, pemain lan rating.
 - Deleng perpustakaan minangka kertu sampul, diklompokake miturut kategori lan diurutake miturut jeneng, taun, rating utawa tanggal.
 - Centhang episode seri utawa bab buku lan wenehi biji saben siji; `Progress` lan `My Rating` diitung saka kuwi.
-- Cathetan film lan seri nampilake trailer, gambar, durasi lan dhaptar musim.
+- Cathetan film, serial, anime lan game nuduhake trailer lan gambar; film lan serial uga dawane lan dhaptar musim.
+- Ing ngisor saben cathetan ana judhul sing padha sing durung sampeyan duwe; sepisan klik nambahake.
+- Impor game Steam sampeyan bebarengan jam dolanan.
 - Genre, pangripta lan aktor iku pranala, mula cathetane nglumpukake saben judhul ing backlink lan graf.
 - Panel statistik nampilake dhaptar paling dhuwur sing sampeyan pilih lan total wektu nonton.
 - Bagi judhul minangka gambar kertu menyang X, Telegram, Reddit lan enem jaringan liyane.
@@ -53,6 +55,10 @@ Nilai `Type` kategori (umpamane `Movie`) nemtokake cathetan endi sing kalebu, la
 | Liyane | Manual: sampeyan ngisi kolom dhewe | Ora perlu |
 
 Trailer, gambar, durasi lan dhaptar musim teka saka Cinemeta tanpa kunci. [Kunci TMDB](https://www.themoviedb.org/settings/api) nambahi rating musim lan luwih akeh gambar.
+
+Kanggo nggawa game sampeyan, isi [kunci Steam Web API](https://steamcommunity.com/dev/apikey) lan profil Steam ing setelan, banjur jalanake `Impor pustaka Steam`. Printah iki nggawe cathetan saben game kanthi `Playtime` ing jam; yen dijalanake maneh, nambahake game anyar lan nganyari jam. Rincian game ing profil kudu umum.
+
+Cathetan game oleh gambar layar lan trailer. Trailer saka YouTube liwat IGDB yen sampeyan ngisi Twitch Client ID lan Client Secret (gawe aplikasi ing [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)), yen ora saka Wikidata yen ana, yen ora trailer Steam game kasebut.
 
 ## Kemajuan lan rating
 
@@ -123,6 +129,17 @@ Kanggo seri, `Runtime` yaiku durasi siji episode. Buku uga nduweni `ISBN` lan ny
 
 Nyegerake mung ngisi kolom sing kosong, mula nilai sing sampeyan owahi tetep ana. Uga nganyari total episode ing `Progress` lan nambahi musim lan judhul episode anyar.
 
+## Rekomendasi
+
+Ing ngisor sirah saben cathetan ana baris judhul sing padha sing durung sampeyan duwe:
+
+- anime: rekomendasi pangguna AniList;
+- film lan serial: rekomendasi TMDB yen ana kunci TMDB, yen ora judhul paling dhuwur bijine kanthi genre sing padha saka Cinemeta;
+- game: seri liyane lan game paling apik ing genre saka RAWG (butuh kunci RAWG);
+- buku: buku sing paling akeh diwaca ing Open Library kanthi rong genre pisanan sing padha.
+
+Klik sampul kanggo nambahake judhul. Komik lan musik ora duwe rekomendasi. Pateni baris ing Settings → Library → Tampilake rekomendasi.
+
 ## Privasi lan jaringan
 
 Perpustakaan sampeyan mung cathetan biasa lan bisa mlaku offline. Plugin mung online nalika sampeyan nggoleki, nyegerake, nyinkronake utawa nuduhake; nalika mbukak cathetan perpustakaan, paling akeh sepisan saben 5 menit kanggo saben cathetan; lan sepisan sawise nganyari utawa ngganti kunci, kanggo ngisi kolom anyar. Ora ana telemetri, analitik utawa nganyari dhewe. Kunci API tetep ing setelan lokal plugin lan mung dikirim menyang layanane dhewe.
@@ -130,22 +147,28 @@ Perpustakaan sampeyan mung cathetan biasa lan bisa mlaku offline. Plugin mung on
 | Host | Kapan | Apa sing dikirim |
 | --- | --- | --- |
 | `www.omdbapi.com` | Nggoleki film lan seri | Judhul utawa IMDb id, kunci OMDb |
-| `openlibrary.org` | Nggoleki buku; nggoleki bab nalika nambah utawa mbukak buku | Judhul lan pangarang, ISBN utawa id karya |
+| `openlibrary.org` | Nggoleki buku; nggoleki bab nalika nambah utawa mbukak buku; rekomendasi nalika mbukak cathetan | Judhul lan pangarang, ISBN utawa id karya; genre |
 | `covers.openlibrary.org` | Sampul buku | Id sampul |
 | `www.googleapis.com` | Nggoleki buku | Judhul, kunci Google Books |
-| `api.rawg.io` | Nggoleki game | Judhul, kunci RAWG |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Nggoleki game lan sampul | Judhul utawa id aplikasi Steam |
+| `api.rawg.io` | Nggoleki lan nyegerake game; rekomendasi nalika mbukak cathetan | Judhul utawa id RAWG, genre, kunci RAWG |
+| `media.rawg.io` | Sampul lan gambar layar game | Dalan gambar |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Nggoleki game, sampul, trailer lan gambar layar | Judhul utawa id aplikasi Steam |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Muter trailer Steam; gambar layar game | Dalan video utawa gambar |
+| `api.steampowered.com` | Sampeyan njalanake `Impor pustaka Steam` | Kunci Steam Web API, SteamID utawa jeneng profil |
+| `id.twitch.tv`, `api.igdb.com` | Nambah utawa nyegerake game, yen kunci Twitch disetel | Twitch Client ID lan rahasia; Steam app id utawa jeneng game |
+| `www.wikidata.org` | Nambah utawa nyegerake game saka Steam | Steam app id |
 | `api.deezer.com` | Nggoleki musik | Album utawa artis |
-| `graphql.anilist.co` | Nggoleki anime; sinkronisasi AniList; id MyAnimeList kanggo sinkronisasi | Judhul; token, kemajuan, status lan biji sampeyan; id AniList |
+| `graphql.anilist.co` | Nggoleki anime; sinkronisasi AniList; id MyAnimeList kanggo sinkronisasi; rekomendasi nalika mbukak cathetan | Judhul; token, kemajuan, status lan biji sampeyan; id AniList |
 | `anilist.co` | Sampeyan ngeklik **Sambungake** | Client ID, dibukak ing browser |
 | `myanimelist.net` | Sampeyan klik **Sambungake** kanggo MyAnimeList; nganyari token | Client ID lan rahasia, kode otorisasi, token refresh |
 | `api.myanimelist.net` | Sinkronisasi MyAnimeList | Token sampeyan, kemajuan, status lan biji |
 | `s4.anilist.co` | Banner anime | Path CDN |
 | `comicvine.gamespot.com` | Nggoleki komik | Judhul, kunci Comic Vine |
-| `v3-cinemeta.strem.io` | Nambah utawa nyegerake film utawa seri | IMDb id |
+| `v3-cinemeta.strem.io` | Nambah utawa nyegerake film utawa seri; rekomendasi nalika mbukak cathetan, tanpa kunci TMDB | IMDb id; genre |
 | `images.metahub.space`, `episodes.metahub.space` | Gambar | IMDb id, nomer musim lan episode |
-| `api.themoviedb.org`, `image.tmdb.org` | Nambah utawa nyegerake film utawa seri, yen kunci TMDB disetel | IMDb id lan kunci TMDB; path gambar |
+| `api.themoviedb.org`, `image.tmdb.org` | Nambah utawa nyegerake film utawa serial, lan rekomendasi nalika mbukak cathetan, yen kunci TMDB disetel | IMDb id lan kunci TMDB; path gambar |
 | `i.ytimg.com` | Gambar trailer | Id video |
+| Server gambar layanan streaming, liwat AniList | Gambar episode anime | Dalan gambar |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Mbukak cathetan sing ana trailer | Id video |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Sampeyan ngeklik tombol bagi | Katrangan: judhul, biji sampeyan, pranala sumber. Gambar tetep ing piranti sampeyan |
 
@@ -165,6 +188,7 @@ Perpustakaan sampeyan mung cathetan biasa lan bisa mlaku offline. Plugin mung on
 | `Tarik kemajuan saka AniList` | Nganyari cathetan saka dhaptar AniList sampeyan |
 | `Kirim cathetan saiki menyang MyAnimeList` | Ngirim kemajuan, status lan biji |
 | `Tarik kemajuan saka MyAnimeList` | Nganyari cathetan saka dhaptar MyAnimeList sampeyan |
+| `Impor pustaka Steam` | Nggawe cathetan kanggo saben game sing diduweni lan nganyari `Playtime` |
 
 ## Dhukungan
 

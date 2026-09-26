@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Maghanap ng pamagat at makakuha ng talang may poster, taon, genre, mga lumikha, cast, at mga rating.
 - Tingnan ang library bilang mga cover card, naka-grupo ayon sa kategorya at nakaayos ayon sa pangalan, taon, rating, o petsa.
 - Markahan ang mga episode ng serye o ang mga kabanata ng libro at i-rate ang bawat isa; kinukuwenta mula rito ang `Progress` at `My Rating`.
-- Ipinapakita ng mga tala ng pelikula at serye ang trailer, mga still, haba, at listahan ng mga season.
+- May trailer at mga larawan ang mga tala ng pelikula, serye, anime, at laro; may haba at listahan ng season din ang mga pelikula at serye.
+- Sa ilalim ng bawat tala may mga katulad na pamagat na wala ka pa; isang click lang para idagdag.
+- I-import ang iyong mga laro sa Steam kasama ang oras ng paglalaro.
 - Mga link ang genre, mga lumikha, at mga aktor, kaya tinitipon ng kanilang mga tala ang bawat pamagat sa backlinks at sa graph.
 - Ipinapakita ng panel ng estadistika ang mga top list na pinili mo at ang kabuuang oras ng panonood.
 - Ibahagi ang isang pamagat bilang larawan ng card sa X, Telegram, Reddit, at anim pang network.
@@ -53,6 +55,10 @@ Tinutukoy ng `Type` value ng kategorya (halimbawa `Movie`) kung aling mga tala a
 | Lahat ng iba pa | Manwal: ikaw ang pupuno sa mga field | Hindi kailangan |
 
 Galing sa Cinemeta nang walang key ang mga trailer, still, haba, at listahan ng season. Nagdadagdag ang [TMDB key](https://www.themoviedb.org/settings/api) ng mga rating ng season at mas maraming still.
+
+Para maipasok ang iyong mga laro, ilagay sa mga setting ang isang [Steam Web API key](https://steamcommunity.com/dev/apikey) at ang iyong Steam profile, saka patakbuhin ang `I-import ang Steam library`. Gumagawa ito ng tala para sa bawat laro na may `Playtime` sa oras; kapag pinatakbo ulit, nagdadagdag ito ng bagong laro at ina-update ang oras. Dapat pampubliko ang mga detalye ng laro sa profile.
+
+May mga screenshot at trailer ang mga tala ng laro. Galing sa YouTube sa pamamagitan ng IGDB ang trailer kung maglalagay ka ng Twitch Client ID at Client Secret (gumawa ng application sa [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)), kung hindi ay mula sa Wikidata kung mayroon, kung hindi ay ang Steam trailer ng laro.
 
 ## Progreso at mga rating
 
@@ -123,6 +129,17 @@ Sa serye, ang `Runtime` ay ang haba ng isang episode. May `ISBN` din ang mga lib
 
 Pinupunan lang ng refresh ang mga bakanteng field, kaya nananatili ang mga value na inedit mo. Ina-update din nito ang kabuuang bilang ng episode sa `Progress` at nagdadagdag ng mga bagong season at pamagat ng episode.
 
+## Mga rekomendasyon
+
+Sa ilalim ng header ng bawat tala may hanay ng mga katulad na pamagat na wala ka pa:
+
+- anime: mga rekomendasyon ng mga user ng AniList;
+- pelikula at serye: mga rekomendasyon ng TMDB kung may TMDB key, kung wala ay ang pinakamataas na rating na pamagat sa parehong genre mula sa Cinemeta;
+- laro: ang iba pang bahagi ng serye at ang pinakamahusay na laro ng genre mula sa RAWG (kailangan ang RAWG key);
+- aklat: ang pinakamaraming nagbabasang aklat sa Open Library na may parehong unang dalawang genre ng tala.
+
+I-click ang pabalat para idagdag ang pamagat. Walang rekomendasyon ang komiks at musika. I-off ang hanay sa Settings → Library → Ipakita ang mga rekomendasyon.
+
 ## Privacy at paggamit ng network
 
 Ang iyong library ay mga karaniwang tala at gumagana offline. Nag-o-online lang ang plugin kapag naghahanap, nagre-refresh, nagsi-sync, o nagbabahagi ka; kapag nagbukas ka ng tala sa library, pinakamadalas isang beses bawat 5 minuto sa bawat tala; at isang beses pagkatapos ng update o pagpapalit ng key, para punan ang mga bagong field. Walang telemetry, analytics, o self-update. Nananatili ang mga API key sa lokal na setting ng plugin at ipinapadala lang sa sarili nilang serbisyo.
@@ -130,22 +147,28 @@ Ang iyong library ay mga karaniwang tala at gumagana offline. Nag-o-online lang 
 | Host | Kailan | Ano ang ipinapadala |
 | --- | --- | --- |
 | `www.omdbapi.com` | Paghahanap ng pelikula at serye | Pamagat o IMDb id, OMDb key |
-| `openlibrary.org` | Paghahanap ng libro; paghahanap ng kabanata kapag nagdagdag o nagbukas ng libro | Pamagat at may-akda, ISBN, o id ng akda |
+| `openlibrary.org` | Paghahanap ng libro; paghahanap ng kabanata kapag nagdagdag o nagbukas ng libro; mga rekomendasyon kapag binuksan ang tala | Pamagat at may-akda, ISBN, o id ng akda; mga genre |
 | `covers.openlibrary.org` | Mga cover ng libro | Id ng cover |
 | `www.googleapis.com` | Paghahanap ng libro | Pamagat, Google Books key |
-| `api.rawg.io` | Paghahanap ng laro | Pamagat, RAWG key |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Paghahanap ng laro at mga cover | Pamagat o Steam app id |
+| `api.rawg.io` | Paghahanap at pag-refresh ng laro; mga rekomendasyon kapag binuksan ang tala | Pamagat o RAWG id, genre, RAWG key |
+| `media.rawg.io` | Mga pabalat at screenshot ng laro | Path ng larawan |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Paghahanap ng laro, pabalat, trailer, at screenshot | Pamagat o Steam app id |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Pag-play ng Steam trailer; mga screenshot ng laro | Path ng video o larawan |
+| `api.steampowered.com` | Pinatakbo mo ang `I-import ang Steam library` | Steam Web API key, ang iyong SteamID o pangalan ng profile |
+| `id.twitch.tv`, `api.igdb.com` | Pagdaragdag o pag-refresh ng laro, kung may Twitch keys | Twitch Client ID at secret; Steam app id o pangalan ng laro |
+| `www.wikidata.org` | Pagdaragdag o pag-refresh ng laro mula sa Steam | Steam app id |
 | `api.deezer.com` | Paghahanap ng musika | Album o artist |
-| `graphql.anilist.co` | Paghahanap ng anime; AniList sync; mga id ng MyAnimeList para sa sync | Pamagat; ang iyong token, progreso, status, at score; mga id ng AniList |
+| `graphql.anilist.co` | Paghahanap ng anime; AniList sync; mga id ng MyAnimeList para sa sync; mga rekomendasyon kapag binuksan ang tala | Pamagat; ang iyong token, progreso, status, at score; mga id ng AniList |
 | `anilist.co` | Nag-click ka ng **Ikonekta** | Client ID, binubuksan sa iyong browser |
 | `myanimelist.net` | Iki-click mo ang **Ikonekta** para sa MyAnimeList; pag-renew ng token | Client ID at secret, authorization code, refresh token |
 | `api.myanimelist.net` | Pag-sync sa MyAnimeList | Ang iyong token, progreso, status, at score |
 | `s4.anilist.co` | Mga banner ng anime | CDN path |
 | `comicvine.gamespot.com` | Paghahanap ng komiks | Pamagat, Comic Vine key |
-| `v3-cinemeta.strem.io` | Pagdagdag o pag-refresh ng pelikula o serye | IMDb id |
+| `v3-cinemeta.strem.io` | Pagdagdag o pag-refresh ng pelikula o serye; mga rekomendasyon kapag binuksan ang tala, kung walang TMDB key | IMDb id; genre |
 | `images.metahub.space`, `episodes.metahub.space` | Mga still | IMDb id, numero ng season at episode |
-| `api.themoviedb.org`, `image.tmdb.org` | Pagdagdag o pag-refresh ng pelikula o serye, kung may TMDB key | IMDb id at TMDB key; path ng larawan |
+| `api.themoviedb.org`, `image.tmdb.org` | Pagdaragdag o pag-refresh ng pelikula o serye, at mga rekomendasyon kapag binuksan ang tala, kung may TMDB key | IMDb id at TMDB key; path ng larawan |
 | `i.ytimg.com` | Mga still ng trailer | Id ng video |
+| Mga image server ng streaming service, sa pamamagitan ng AniList | Mga larawan ng episode ng anime | Path ng larawan |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Pagbukas ng talang may trailer | Id ng video |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Nag-click ka ng share button | Ang caption: pamagat, iyong score, link ng source. Nananatili sa iyong device ang larawan |
 
@@ -165,6 +188,7 @@ Ang iyong library ay mga karaniwang tala at gumagana offline. Nag-o-online lang 
 | `Kunin ang progreso mula sa AniList` | Ina-update ang mga tala mula sa iyong AniList list |
 | `I-push ang kasalukuyang tala sa MyAnimeList` | Ipinapadala ang progreso, status, at score |
 | `Kunin ang progreso mula sa MyAnimeList` | Ina-update ang mga tala mula sa iyong MyAnimeList list |
+| `I-import ang Steam library` | Gumagawa ng tala para sa bawat larong pag-aari mo at ina-update ang `Playtime` |
 
 ## Suporta
 

@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Potražite naslov i dobijte bilješku s posterom, godinom, žanrom, autorima, glumcima i ocjenama.
 - Pregledavajte knjižnicu kao kartice s naslovnicama, grupirane po kategorijama i poredane po nazivu, godini, ocjeni ili datumu.
 - Označite epizode serije ili poglavlja knjige i ocijenite svaku; `Progress` i `My Rating` računaju se iz njih.
-- Bilješke o filmovima i serijama prikazuju trailer, kadrove, trajanje i popis sezona.
+- Bilješke o filmovima, serijama, animeu i igrama prikazuju trailer i kadrove; filmovi i serije još i trajanje i popis sezona.
+- Ispod svake bilješke su slični naslovi koje još nemate; jedan klik dodaje naslov.
+- Uvoz igara sa Steama zajedno s odigranim satima.
 - Žanrovi, autori i glumci su poveznice, pa njihove bilješke skupljaju svaki naslov u povratnim poveznicama i na grafu.
 - Ploča statistike prikazuje ljestvice koje odaberete i ukupno vrijeme gledanja.
 - Podijelite naslov kao sliku na X, Telegramu, Redditu i još šest mreža.
@@ -53,6 +55,10 @@ Vrijednost `Type` kategorije (na primjer `Movie`) određuje koje bilješke joj p
 | Sve ostalo | Ručno: polja ispunjavate sami | Nije potreban |
 
 Traileri, kadrovi, trajanje i popisi sezona dolaze s Cinemete bez ključa. [Ključ za TMDB](https://www.themoviedb.org/settings/api) dodaje ocjene sezona i više kadrova.
+
+Da biste dodali svoje igre, u postavkama unesite [ključ za Steam Web API](https://steamcommunity.com/dev/apikey) i Steam profil, a zatim pokrenite `Uvezi Steam knjižnicu`. Naredba stvara bilješku za svaku igru s `Playtime` u satima; ponovno pokrenuta dodaje nove igre i ažurira sate. Detalji igara u profilu moraju biti javni.
+
+Bilješke o igrama dobivaju snimke zaslona i trailer. Trailer je YouTube video iz IGDB-a ako unesete Twitch Client ID i Client Secret (aplikaciju izradite na [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)), inače iz Wikidata ako ga ima, inače Steam trailer igre.
 
 ## Napredak i ocjene
 
@@ -123,6 +129,17 @@ Kod serije je `Runtime` trajanje jedne epizode. Knjige imaju i `ISBN` te poglavl
 
 Osvježavanje ispunjava samo prazna polja, pa vrijednosti koje uredite ostaju. Ono također ažurira ukupan broj epizoda u `Progress` i dodaje nove sezone i naslove epizoda.
 
+## Preporuke
+
+Ispod zaglavlja svake bilješke je niz sličnih naslova koje još nemate:
+
+- anime: preporuke korisnika AniLista;
+- filmovi i serije: preporuke TMDB-a uz TMDB ključ, inače najbolje ocijenjeni naslovi istih žanrova iz Cinemete;
+- igre: ostatak serijala i najbolje igre žanra iz RAWG-a (treba RAWG ključ);
+- knjige: najčitanije knjige na Open Libraryju s istim prvim dvama žanrovima.
+
+Kliknite omot da biste dodali naslov. Stripovi i glazba nemaju preporuka. Niz isključite u Postavke → Library → Prikaži preporuke.
+
 ## Privatnost i mreža
 
 Vaša knjižnica su obične bilješke i radi izvanmrežno. Dodatak se spaja na mrežu kad pretražujete, osvježavate, sinkronizirate ili dijelite; kad otvorite bilješku iz knjižnice, najviše jednom u 5 minuta po bilješci; i jednom nakon ažuriranja ili promjene ključa, da ispuni nova polja. Nema telemetrije, analitike ni samoažuriranja. API ključevi ostaju u lokalnim postavkama dodatka i idu samo svojoj usluzi.
@@ -130,22 +147,28 @@ Vaša knjižnica su obične bilješke i radi izvanmrežno. Dodatak se spaja na m
 | Poslužitelj | Kada | Što se šalje |
 | --- | --- | --- |
 | `www.omdbapi.com` | Pretraga filmova i serija | Naslov ili IMDb id, OMDb ključ |
-| `openlibrary.org` | Pretraga knjiga; traženje poglavlja kad dodate ili otvorite knjigu | Naslov i autor, ISBN ili id djela |
+| `openlibrary.org` | Pretraga knjiga; traženje poglavlja kad dodate ili otvorite knjigu; preporuke pri otvaranju bilješke | Naslov i autor, ISBN ili id djela; žanrovi |
 | `covers.openlibrary.org` | Naslovnice knjiga | Id naslovnice |
 | `www.googleapis.com` | Pretraga knjiga | Naslov, ključ za Google Books |
-| `api.rawg.io` | Pretraga igara | Naslov, ključ za RAWG |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Pretraga igara i naslovnice | Naslov ili id Steam aplikacije |
+| `api.rawg.io` | Pretraga i osvježavanje igara; preporuke pri otvaranju bilješke | Naslov ili RAWG id, žanr, RAWG ključ |
+| `media.rawg.io` | Omoti i snimke zaslona igara | Putanja slike |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Pretraga igara, omoti, traileri i snimke zaslona | Naslov ili id Steam aplikacije |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Reprodukcija Steam trailera; snimke zaslona igara | Putanja videa ili slike |
+| `api.steampowered.com` | Pokrećete `Uvezi Steam knjižnicu` | Ključ za Steam Web API, vaš SteamID ili naziv profila |
+| `id.twitch.tv`, `api.igdb.com` | Dodavanje ili osvježavanje igre, ako postavite Twitch ključeve | Twitch Client ID i tajna; Steam app id ili naziv igre |
+| `www.wikidata.org` | Dodavanje ili osvježavanje igre sa Steama | Steam app id |
 | `api.deezer.com` | Pretraga glazbe | Album ili izvođač |
-| `graphql.anilist.co` | Pretraga animea; sinkronizacija s AniListom; id-jevi MyAnimeLista za sinkronizaciju | Naslov; vaš token, napredak, status i ocjena; id-jevi AniLista |
+| `graphql.anilist.co` | Pretraga animea; sinkronizacija s AniListom; id-jevi MyAnimeLista za sinkronizaciju; preporuke pri otvaranju bilješke | Naslov; vaš token, napredak, status i ocjena; id-jevi AniLista |
 | `anilist.co` | Kliknete **Poveži** | Client ID, otvara se u pregledniku |
 | `myanimelist.net` | Kliknete **Poveži** za MyAnimeList; obnova tokena | Client ID i tajna, autorizacijski kod, token za obnovu |
 | `api.myanimelist.net` | Sinkronizacija s MyAnimeListom | Vaš token, napredak, status i ocjena |
 | `s4.anilist.co` | Banneri animea | CDN putanja |
 | `comicvine.gamespot.com` | Pretraga stripova | Naslov, ključ za Comic Vine |
-| `v3-cinemeta.strem.io` | Dodavanje ili osvježavanje filma ili serije | IMDb id |
+| `v3-cinemeta.strem.io` | Dodavanje ili osvježavanje filma ili serije; preporuke pri otvaranju bilješke, bez TMDB ključa | IMDb id; žanr |
 | `images.metahub.space`, `episodes.metahub.space` | Kadrovi | IMDb id, brojevi sezone i epizode |
-| `api.themoviedb.org`, `image.tmdb.org` | Dodavanje ili osvježavanje filma ili serije, ako postavite ključ za TMDB | IMDb id i ključ za TMDB; putanja slike |
+| `api.themoviedb.org`, `image.tmdb.org` | Dodavanje ili osvježavanje filma ili serije i preporuke pri otvaranju bilješke, ako postavite TMDB ključ | IMDb id i ključ za TMDB; putanja slike |
 | `i.ytimg.com` | Kadrovi trailera | Id videa |
+| Poslužitelji slika streaming servisa, preko AniLista | Kadrovi epizoda animea | Putanja slike |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Otvaranje bilješke s trailerom | Id videa |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Kliknete gumb za dijeljenje | Opis: naslov, vaša ocjena, poveznica na izvor. Slika ostaje na vašem uređaju |
 
@@ -165,6 +188,7 @@ Vaša knjižnica su obične bilješke i radi izvanmrežno. Dodatak se spaja na m
 | `Preuzmi napredak s AniLista` | Ažurira bilješke iz vašeg AniList popisa |
 | `Pošalji trenutnu bilješku na MyAnimeList` | Šalje napredak, status i ocjenu |
 | `Preuzmi napredak s MyAnimeLista` | Ažurira bilješke iz vašeg MyAnimeList popisa |
+| `Uvezi Steam knjižnicu` | Stvara bilješku za svaku kupljenu igru i ažurira `Playtime` |
 
 ## Podrška
 

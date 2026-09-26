@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Caută un titlu și primești o notă cu posterul, anul, genul, creatorii, distribuția și evaluările completate.
 - Răsfoiește biblioteca drept carduri cu coperți, grupate pe categorii și sortate după nume, an, evaluare sau dată.
 - Bifează episoadele unui serial sau capitolele unei cărți și notează fiecare; `Progress` și `My Rating` se calculează din ele.
-- Notele de filme și seriale arată un trailer, cadre, durata și lista sezoanelor.
+- Notițele despre filme, seriale, anime și jocuri arată un trailer și cadre; filmele și serialele arată și durata și lista sezoanelor.
+- Sub fiecare notiță apar titluri asemănătoare pe care nu le ai încă; un clic adaugă unul.
+- Importă jocurile din Steam cu orele jucate.
 - Genurile, creatorii și actorii sunt linkuri, așa că notele lor adună fiecare titlu în referințe și în graf.
 - Panoul de statistici arată topurile alese de tine și timpul total de vizionare.
 - Distribuie un titlu ca imagine-card pe X, Telegram, Reddit și alte șase rețele.
@@ -53,6 +55,10 @@ Valoarea `Type` a unei categorii (de exemplu `Movie`) stabilește ce note îi ap
 | Orice altceva | Manual: completezi tu câmpurile | Niciuna |
 
 Trailerele, cadrele, durata și listele de sezoane vin de la Cinemeta fără cheie. O [cheie TMDB](https://www.themoviedb.org/settings/api) adaugă evaluările sezoanelor și mai multe cadre.
+
+Ca să îți aduci jocurile, introdu în setări o [cheie Steam Web API](https://steamcommunity.com/dev/apikey) și profilul Steam, apoi rulează `Importă biblioteca Steam`. Comanda creează o notiță pentru fiecare joc, cu `Playtime` în ore; rulată din nou, adaugă jocurile noi și actualizează orele. Detaliile jocurilor din profil trebuie să fie publice.
+
+Notițele despre jocuri primesc capturi de ecran și un trailer. Trailerul este un video YouTube din IGDB dacă adaugi un Twitch Client ID și un Client Secret (creează o aplicație pe [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)), altfel din Wikidata dacă are unul, altfel trailerul Steam al jocului.
 
 ## Progres și note
 
@@ -123,6 +129,17 @@ La un serial, `Runtime` este durata unui episod. Cărțile adaugă `ISBN` și p�
 
 O reîmprospătare completează doar câmpurile goale, deci valorile pe care le editezi rămân. Ea actualizează și totalul de episoade din `Progress` și adaugă sezoane și titluri de episoade noi.
 
+## Recomandări
+
+Sub antetul fiecărei notițe, un rând de titluri asemănătoare pe care nu le ai încă:
+
+- anime: recomandările utilizatorilor AniList;
+- filme și seriale: recomandările TMDB cu o cheie TMDB, altfel titlurile cel mai bine notate din aceleași genuri, din Cinemeta;
+- jocuri: restul seriei și cele mai bune jocuri ale genului din RAWG (necesită cheia RAWG);
+- cărți: cele mai citite cărți de pe Open Library cu aceleași prime două genuri.
+
+Apasă pe o copertă ca să adaugi titlul. Benzile desenate și muzica nu au recomandări. Dezactivează rândul din Setări → Library → Arată recomandări.
+
 ## Confidențialitate și rețea
 
 Biblioteca ta este formată din note simple și funcționează offline. Pluginul se conectează când cauți, reîmprospătezi, sincronizezi sau distribui; când deschizi o notă din bibliotecă, cel mult o dată la 5 minute pentru fiecare notă; și o dată după o actualizare sau o schimbare de cheie, ca să completeze câmpurile noi. Nu are telemetrie, analiză sau auto-actualizare. Cheile API rămân în setările locale ale pluginului și merg doar la serviciul lor.
@@ -130,22 +147,28 @@ Biblioteca ta este formată din note simple și funcționează offline. Pluginul
 | Gazdă | Când | Ce se trimite |
 | --- | --- | --- |
 | `www.omdbapi.com` | Căutare de filme și seriale | Titlu sau id IMDb, cheie OMDb |
-| `openlibrary.org` | Căutare de cărți; căutarea capitolelor când adaugi sau deschizi o carte | Titlu și autor, ISBN sau id-ul operei |
+| `openlibrary.org` | Căutare de cărți; căutarea capitolelor când adaugi sau deschizi o carte; recomandări la deschiderea unei notițe | Titlu și autor, ISBN sau id-ul operei; genuri |
 | `covers.openlibrary.org` | Coperți de cărți | Id-ul copertei |
 | `www.googleapis.com` | Căutare de cărți | Titlu, cheie Google Books |
-| `api.rawg.io` | Căutare de jocuri | Titlu, cheie RAWG |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Căutare de jocuri și coperți | Titlu sau id de aplicație Steam |
+| `api.rawg.io` | Căutarea și actualizarea jocurilor; recomandări la deschiderea unei notițe | Titlu sau id RAWG, gen, cheie RAWG |
+| `media.rawg.io` | Coperte și capturi de ecran ale jocurilor | Calea imaginii |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Căutarea jocurilor, coperte, trailere și capturi de ecran | Titlu sau id de aplicație Steam |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Redarea unui trailer Steam; capturi de ecran ale jocurilor | Calea videoclipului sau a imaginii |
+| `api.steampowered.com` | Rulezi `Importă biblioteca Steam` | Cheia Steam Web API, SteamID-ul sau numele profilului |
+| `id.twitch.tv`, `api.igdb.com` | Adăugarea sau actualizarea unui joc, dacă setezi cheile Twitch | Twitch Client ID și secret; id-ul aplicației Steam sau numele jocului |
+| `www.wikidata.org` | Adăugarea sau actualizarea unui joc din Steam | Id-ul aplicației Steam |
 | `api.deezer.com` | Căutare de muzică | Album sau artist |
-| `graphql.anilist.co` | Căutare anime; sincronizare AniList; id-uri MyAnimeList pentru sincronizare | Titlu; tokenul tău, progresul, starea și nota; id-uri AniList |
+| `graphql.anilist.co` | Căutare anime; sincronizare AniList; id-uri MyAnimeList pentru sincronizare; recomandări la deschiderea unei notițe | Titlu; tokenul tău, progresul, starea și nota; id-uri AniList |
 | `anilist.co` | Apeși **Conectează** | Client ID, deschis în browser |
 | `myanimelist.net` | Apeși **Conectează** pentru MyAnimeList; reînnoirea tokenului | Client ID și secret, cod de autorizare, token de reînnoire |
 | `api.myanimelist.net` | Sincronizare MyAnimeList | Tokenul tău, progresul, starea și nota |
 | `s4.anilist.co` | Bannere anime | Cale CDN |
 | `comicvine.gamespot.com` | Căutare de benzi desenate | Titlu, cheie Comic Vine |
-| `v3-cinemeta.strem.io` | Adăugarea sau reîmprospătarea unui film sau serial | Id IMDb |
+| `v3-cinemeta.strem.io` | Adăugarea sau reîmprospătarea unui film sau serial; recomandări la deschiderea unei notițe, fără cheie TMDB | Id IMDb; gen |
 | `images.metahub.space`, `episodes.metahub.space` | Cadre | Id IMDb, numerele sezonului și episodului |
-| `api.themoviedb.org`, `image.tmdb.org` | Adăugarea sau reîmprospătarea unui film sau serial, dacă ai setat o cheie TMDB | Id IMDb și cheie TMDB; calea imaginii |
+| `api.themoviedb.org`, `image.tmdb.org` | Adăugarea sau actualizarea unui film ori serial și recomandări la deschiderea unei notițe, dacă setezi o cheie TMDB | Id IMDb și cheie TMDB; calea imaginii |
 | `i.ytimg.com` | Cadre din trailere | Id-ul videoclipului |
+| Serverele de imagini ale serviciilor de streaming, prin AniList | Cadre din episoadele anime | Calea imaginii |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Deschiderea unei note cu trailer | Id-ul videoclipului |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Apeși un buton de distribuire | Descrierea: titlu, nota ta, link spre sursă. Imaginea rămâne pe dispozitivul tău |
 
@@ -165,6 +188,7 @@ Biblioteca ta este formată din note simple și funcționează offline. Pluginul
 | `Descarcă progresul din AniList` | Actualizează notele din lista ta AniList |
 | `Trimite nota curentă în MyAnimeList` | Trimite progresul, starea și nota |
 | `Descarcă progresul din MyAnimeList` | Actualizează notele din lista ta MyAnimeList |
+| `Importă biblioteca Steam` | Creează o notiță pentru fiecare joc deținut și actualizează `Playtime` |
 
 ## Asistență
 

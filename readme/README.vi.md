@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Tìm một tựa và nhận ghi chú đã điền sẵn áp phích, năm, thể loại, người sáng tạo, diễn viên và điểm đánh giá.
 - Xem thư viện dưới dạng thẻ bìa, nhóm theo danh mục và sắp xếp theo tên, năm, điểm hoặc ngày.
 - Đánh dấu các tập của series hoặc các chương của sách và chấm điểm từng mục; `Progress` và `My Rating` được tính từ đó.
-- Ghi chú phim và series hiển thị trailer, ảnh tĩnh, thời lượng và danh sách mùa.
+- Ghi chú phim, series, anime và game có trailer và ảnh; phim và series còn có thời lượng và danh sách mùa.
+- Dưới mỗi ghi chú có các tựa tương tự mà bạn chưa có; một cú nhấp là thêm được.
+- Nhập game từ Steam kèm số giờ đã chơi.
 - Thể loại, người sáng tạo và diễn viên là liên kết, nên ghi chú của họ gom mọi tựa trong liên kết đến và biểu đồ.
 - Bảng thống kê hiển thị các bảng xếp hạng bạn chọn và tổng thời gian xem.
 - Chia sẻ một tựa dưới dạng ảnh thẻ lên X, Telegram, Reddit và sáu mạng khác.
@@ -53,6 +55,10 @@ Giá trị `Type` của danh mục (ví dụ `Movie`) quyết định ghi chú n
 | Mọi thứ khác | Thủ công: bạn tự điền các trường | Không cần |
 
 Trailer, ảnh tĩnh, thời lượng và danh sách mùa đến từ Cinemeta mà không cần khóa. [Khóa TMDB](https://www.themoviedb.org/settings/api) thêm điểm của từng mùa và nhiều ảnh tĩnh hơn.
+
+Để đưa game của bạn vào, nhập [khóa Steam Web API](https://steamcommunity.com/dev/apikey) và hồ sơ Steam trong cài đặt, rồi chạy `Nhập thư viện Steam`. Lệnh tạo một ghi chú cho mỗi game với `Playtime` tính bằng giờ; chạy lại sẽ thêm game mới và cập nhật số giờ. Chi tiết game của hồ sơ phải công khai.
+
+Ghi chú game có ảnh chụp màn hình và trailer. Trailer là video YouTube từ IGDB nếu bạn nhập Twitch Client ID và Client Secret (tạo ứng dụng tại [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)), nếu không thì từ Wikidata khi có, nếu không nữa thì dùng trailer Steam của game.
 
 ## Tiến độ và điểm
 
@@ -123,6 +129,17 @@ Với series, `Runtime` là thời lượng một tập. Sách có thêm `ISBN` 
 
 Làm mới chỉ điền các trường trống, nên các giá trị bạn đã sửa vẫn giữ nguyên. Nó cũng cập nhật tổng số tập trong `Progress` và thêm mùa mới cùng tên tập.
 
+## Gợi ý
+
+Dưới phần đầu của mỗi ghi chú là một hàng các tựa tương tự bạn chưa có:
+
+- anime: gợi ý của người dùng AniList;
+- phim và series: gợi ý của TMDB nếu có khóa TMDB, nếu không là các tựa được chấm cao nhất cùng thể loại từ Cinemeta;
+- game: các phần khác trong loạt và game hay nhất của thể loại từ RAWG (cần khóa RAWG);
+- sách: sách được đọc nhiều nhất trên Open Library có cùng hai thể loại đầu với ghi chú.
+
+Nhấp vào bìa để thêm tựa. Truyện tranh và nhạc không có gợi ý. Tắt hàng này tại đặt → Library → Hiện gợi ý.
+
 ## Quyền riêng tư và sử dụng mạng
 
 Thư viện của bạn là các ghi chú thông thường và hoạt động ngoại tuyến. Plugin chỉ kết nối mạng khi bạn tìm kiếm, làm mới, đồng bộ hoặc chia sẻ; khi bạn mở một ghi chú trong thư viện, tối đa 5 phút một lần cho mỗi ghi chú; và một lần sau khi cập nhật hoặc đổi khóa, để điền các trường mới. Không có đo lường từ xa, phân tích hay tự cập nhật. Khóa API nằm trong cài đặt cục bộ của plugin và chỉ được gửi đến dịch vụ của chính nó.
@@ -130,22 +147,28 @@ Thư viện của bạn là các ghi chú thông thường và hoạt động ng
 | Máy chủ | Khi nào | Gửi gì |
 | --- | --- | --- |
 | `www.omdbapi.com` | Tìm phim và series | Tên hoặc IMDb id, khóa OMDb |
-| `openlibrary.org` | Tìm sách; tìm chương khi bạn thêm hoặc mở sách | Tên và tác giả, ISBN hoặc id tác phẩm |
+| `openlibrary.org` | Tìm sách; tìm chương khi bạn thêm hoặc mở sách; gợi ý khi mở ghi chú | Tên và tác giả, ISBN hoặc id tác phẩm; thể loại |
 | `covers.openlibrary.org` | Bìa sách | Id bìa |
 | `www.googleapis.com` | Tìm sách | Tên, khóa Google Books |
-| `api.rawg.io` | Tìm trò chơi | Tên, khóa RAWG |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Tìm trò chơi và ảnh bìa | Tên hoặc id ứng dụng Steam |
+| `api.rawg.io` | Tìm và làm mới game; gợi ý khi mở ghi chú | Tên hoặc id RAWG, thể loại, khóa RAWG |
+| `media.rawg.io` | Bìa và ảnh chụp màn hình game | Đường dẫn ảnh |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Tìm game, bìa, trailer và ảnh chụp màn hình | Tên hoặc id ứng dụng Steam |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Phát trailer Steam; ảnh chụp màn hình game | Đường dẫn video hoặc ảnh |
+| `api.steampowered.com` | Bạn chạy `Nhập thư viện Steam` | Khóa Steam Web API, SteamID hoặc tên hồ sơ |
+| `id.twitch.tv`, `api.igdb.com` | Thêm hoặc làm mới game, nếu đặt khóa Twitch | Twitch Client ID và secret; Steam app id hoặc tên game |
+| `www.wikidata.org` | Thêm hoặc làm mới game từ Steam | Steam app id |
 | `api.deezer.com` | Tìm nhạc | Album hoặc nghệ sĩ |
-| `graphql.anilist.co` | Tìm anime; đồng bộ AniList; id MyAnimeList để đồng bộ | Tên; token của bạn, tiến độ, trạng thái và điểm; id AniList |
+| `graphql.anilist.co` | Tìm anime; đồng bộ AniList; id MyAnimeList để đồng bộ; gợi ý khi mở ghi chú | Tên; token của bạn, tiến độ, trạng thái và điểm; id AniList |
 | `anilist.co` | Bạn nhấn **Kết nối** | Client ID, mở trong trình duyệt |
 | `myanimelist.net` | Bạn bấm **Kết nối** cho MyAnimeList; làm mới token | Client ID và secret, mã ủy quyền, refresh token |
 | `api.myanimelist.net` | Đồng bộ MyAnimeList | Token của bạn, tiến độ, trạng thái và điểm |
 | `s4.anilist.co` | Banner anime | Đường dẫn CDN |
 | `comicvine.gamespot.com` | Tìm truyện tranh | Tên, khóa Comic Vine |
-| `v3-cinemeta.strem.io` | Thêm hoặc làm mới phim hay series | IMDb id |
+| `v3-cinemeta.strem.io` | Thêm hoặc làm mới phim hay series; gợi ý khi mở ghi chú, nếu không có khóa TMDB | IMDb id; thể loại |
 | `images.metahub.space`, `episodes.metahub.space` | Ảnh tĩnh | IMDb id, số mùa và số tập |
-| `api.themoviedb.org`, `image.tmdb.org` | Thêm hoặc làm mới phim hay series, nếu bạn đặt khóa TMDB | IMDb id và khóa TMDB; đường dẫn ảnh |
+| `api.themoviedb.org`, `image.tmdb.org` | Thêm hoặc làm mới phim hay series, và gợi ý khi mở ghi chú, nếu đặt khóa TMDB | IMDb id và khóa TMDB; đường dẫn ảnh |
 | `i.ytimg.com` | Ảnh tĩnh từ trailer | Id video |
+| Máy chủ ảnh của dịch vụ streaming, qua AniList | Ảnh các tập anime | Đường dẫn ảnh |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Mở ghi chú có trailer | Id video |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Bạn nhấn nút chia sẻ | Chú thích: tên, điểm của bạn, liên kết nguồn. Ảnh vẫn ở trên thiết bị của bạn |
 
@@ -165,6 +188,7 @@ Thư viện của bạn là các ghi chú thông thường và hoạt động ng
 | `Lấy tiến độ từ AniList` | Cập nhật ghi chú từ danh sách AniList của bạn |
 | `Đẩy ghi chú hiện tại lên MyAnimeList` | Gửi tiến độ, trạng thái và điểm |
 | `Lấy tiến độ từ MyAnimeList` | Cập nhật ghi chú từ danh sách MyAnimeList của bạn |
+| `Nhập thư viện Steam` | Tạo ghi chú cho mỗi game bạn sở hữu và cập nhật `Playtime` |
 
 ## Hỗ trợ
 

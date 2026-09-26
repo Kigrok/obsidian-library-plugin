@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Zoek een titel en krijg een notitie met poster, jaar, genre, makers, cast en beoordelingen ingevuld.
 - Blader door de bibliotheek als covers, gegroepeerd per categorie en gesorteerd op naam, jaar, beoordeling of datum.
 - Vink afleveringen van een serie of hoofdstukken van een boek af en beoordeel ze stuk voor stuk; `Progress` en `My Rating` worden daaruit berekend.
-- Notities van films en series tonen een trailer, stills, speelduur en de lijst met seizoenen.
+- Notities van films, series, anime en games tonen een trailer en stills; films en series ook de speelduur en de seizoenslijst.
+- Onder elke notitie staan vergelijkbare titels die je nog niet hebt; één klik voegt er een toe.
+- Importeer je Steam-games met de gespeelde uren.
 - Genres, makers en acteurs zijn links, dus hun notities verzamelen elke titel in de terugverwijzingen en in de graaf.
 - Het statistiekenpaneel toont de toplijsten die je kiest en je totale kijktijd.
 - Deel een titel als kaartafbeelding op X, Telegram, Reddit en zes andere netwerken.
@@ -53,6 +55,10 @@ De `Type`-waarde van een categorie (bijvoorbeeld `Movie`) bepaalt welke notities
 | Al het andere | Handmatig: je vult de velden zelf in | Geen |
 
 Trailers, stills, speelduur en seizoenslijsten komen zonder sleutel van Cinemeta. Een [TMDB-sleutel](https://www.themoviedb.org/settings/api) voegt seizoensbeoordelingen en meer stills toe.
+
+Om je eigen games binnen te halen, vul je in de instellingen een [Steam Web API-sleutel](https://steamcommunity.com/dev/apikey) en je Steam-profiel in en voer je `Steam-bibliotheek importeren` uit. Het maakt per game een notitie met `Playtime` in uren; opnieuw uitgevoerd voegt het nieuwe games toe en werkt het de uren bij. De gamegegevens van het profiel moeten openbaar zijn.
+
+Gamenotities krijgen screenshots en een trailer. De trailer is een YouTube-video uit IGDB als je een Twitch Client ID en Client Secret invult (maak een applicatie op [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)), anders uit Wikidata als die er een heeft, anders de Steam-trailer van de game.
 
 ## Voortgang en beoordelingen
 
@@ -123,6 +129,17 @@ Bij een serie is `Runtime` de duur van één aflevering. Boeken hebben daarnaast
 
 Een verversing vult alleen lege velden, dus waarden die je bewerkt blijven staan. Ze werkt ook het totaal aantal afleveringen in `Progress` bij en voegt nieuwe seizoenen en afleveringstitels toe.
 
+## Aanbevelingen
+
+Onder de kop van elke notitie staat een rij vergelijkbare titels die je nog niet hebt:
+
+- anime: aanbevelingen van AniList-gebruikers;
+- films en series: de aanbevelingen van TMDB met een TMDB-sleutel, anders de best beoordeelde titels van dezelfde genres uit Cinemeta;
+- games: de rest van de serie en de beste games van het genre uit RAWG (RAWG-sleutel nodig);
+- boeken: de meest gelezen boeken op Open Library met dezelfde eerste twee genres.
+
+Klik op een cover om de titel toe te voegen. Strips en muziek hebben geen aanbevelingen. Zet de rij uit via Instellingen → Library → Aanbevelingen tonen.
+
 ## Privacy en netwerkgebruik
 
 Je bibliotheek bestaat uit gewone notities en werkt offline. De plugin gaat online als je zoekt, ververst, synchroniseert of deelt; als je een bibliotheeknotitie opent, hooguit eens per 5 minuten per notitie; en één keer na een update of een sleutelwijziging, om nieuwe velden te vullen. Er is geen telemetrie, geen analytics en geen zelfupdate. API-sleutels blijven in je lokale plugininstellingen en gaan alleen naar hun eigen dienst.
@@ -130,22 +147,28 @@ Je bibliotheek bestaat uit gewone notities en werkt offline. De plugin gaat onli
 | Host | Wanneer | Wat wordt verstuurd |
 | --- | --- | --- |
 | `www.omdbapi.com` | Films en series zoeken | Titel of IMDb-id, OMDb-sleutel |
-| `openlibrary.org` | Boeken zoeken; hoofdstukken opzoeken als je een boek toevoegt of opent | Titel en auteur, ISBN of werk-id |
+| `openlibrary.org` | Boeken zoeken; hoofdstukken opzoeken als je een boek toevoegt of opent; aanbevelingen bij het openen van een notitie | Titel en auteur, ISBN of werk-id; genres |
 | `covers.openlibrary.org` | Boekcovers | Cover-id |
 | `www.googleapis.com` | Boeken zoeken | Titel, Google Books-sleutel |
-| `api.rawg.io` | Games zoeken | Titel, RAWG-sleutel |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Games zoeken en covers | Titel of Steam-app-id |
+| `api.rawg.io` | Games zoeken en verversen; aanbevelingen bij het openen van een notitie | Titel of RAWG-id, genre, RAWG-sleutel |
+| `media.rawg.io` | Gamecovers en screenshots | Afbeeldingspad |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Games zoeken, covers, trailers en screenshots | Titel of Steam-app-id |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Een Steam-trailer afspelen; gamescreenshots | Video- of afbeeldingspad |
+| `api.steampowered.com` | Je voert `Steam-bibliotheek importeren` uit | Steam Web API-sleutel, je SteamID of profielnaam |
+| `id.twitch.tv`, `api.igdb.com` | Een game toevoegen of verversen, als je Twitch-sleutels hebt ingesteld | Twitch Client ID en secret; Steam-app-id of naam van de game |
+| `www.wikidata.org` | Een game uit Steam toevoegen of verversen | Steam-app-id |
 | `api.deezer.com` | Muziek zoeken | Album of artiest |
-| `graphql.anilist.co` | Anime zoeken; AniList-synchronisatie; MyAnimeList-id's voor synchronisatie | Titel; je token, voortgang, status en score; AniList-id's |
+| `graphql.anilist.co` | Anime zoeken; AniList-synchronisatie; MyAnimeList-id's voor synchronisatie; aanbevelingen bij het openen van een notitie | Titel; je token, voortgang, status en score; AniList-id's |
 | `anilist.co` | Je klikt op **Verbinden** | Client ID, geopend in je browser |
 | `myanimelist.net` | Je klikt op **Verbinden** voor MyAnimeList; token vernieuwen | Client ID en secret, autorisatiecode, refresh-token |
 | `api.myanimelist.net` | MyAnimeList-synchronisatie | Je token, voortgang, status en score |
 | `s4.anilist.co` | Anime-banners | CDN-pad |
 | `comicvine.gamespot.com` | Strips zoeken | Titel, Comic Vine-sleutel |
-| `v3-cinemeta.strem.io` | Een film of serie toevoegen of verversen | IMDb-id |
+| `v3-cinemeta.strem.io` | Een film of serie toevoegen of verversen; aanbevelingen bij het openen van een notitie, zonder TMDB-sleutel | IMDb-id; genre |
 | `images.metahub.space`, `episodes.metahub.space` | Stills | IMDb-id, seizoens- en afleveringsnummer |
-| `api.themoviedb.org`, `image.tmdb.org` | Een film of serie toevoegen of verversen, als je een TMDB-sleutel hebt ingesteld | IMDb-id en TMDB-sleutel; afbeeldingspad |
+| `api.themoviedb.org`, `image.tmdb.org` | Een film of serie toevoegen of verversen, en aanbevelingen bij het openen van een notitie, als je een TMDB-sleutel hebt ingesteld | IMDb-id en TMDB-sleutel; afbeeldingspad |
 | `i.ytimg.com` | Trailerstills | Video-id |
+| Afbeeldingsservers van streamingdiensten, via AniList | Stills van anime-afleveringen | Afbeeldingspad |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Een notitie met trailer openen | Video-id |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Je klikt op een deelknop | Het bijschrift: titel, jouw score, bronlink. De afbeelding blijft op je apparaat |
 
@@ -165,6 +188,7 @@ Je bibliotheek bestaat uit gewone notities en werkt offline. De plugin gaat onli
 | `Voortgang ophalen van AniList` | Werkt notities bij vanuit je AniList-lijst |
 | `Huidige notitie naar MyAnimeList sturen` | Stuurt voortgang, status en score |
 | `Voortgang ophalen van MyAnimeList` | Werkt notities bij vanuit je MyAnimeList-lijst |
+| `Steam-bibliotheek importeren` | Maakt een notitie voor elke gekochte game en werkt `Playtime` bij |
 
 ## Ondersteuning
 

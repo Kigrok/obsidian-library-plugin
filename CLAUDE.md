@@ -32,7 +32,7 @@ Single Obsidian plugin bundled from `src/main.ts` to CJS `main.js` (esbuild, `ta
 
 **`src/constants.ts`** = almost entirely `I18N` table (one block per Obsidian UI language) + `DEFAULT_SETTINGS`. `tr()` in `src/i18n.ts` resolves Obsidian language subtag via `localeMap`. Every user-facing string goes through `tr()`, must be added to **all** locale blocks, each in own script (`tests/unit/i18n.test.ts` checks both).
 
-Leaf modules: `util.ts` (frontmatter parsing, runtime math), `episodes.ts` (episode/chapter ticks, ratings, season merge), `facts.ts` (watch-time comparisons), `share.ts` (canvas-rendered share card + intent URLs), `trailer.ts` (embed URL normalization), `anilistSync.ts` (GraphQL progress push/pull), `src/ui/*` (modals, lightbox).
+Leaf modules: `util.ts` (frontmatter parsing, runtime math), `episodes.ts` (episode/chapter ticks, ratings, season merge), `facts.ts` (watch-time comparisons), `share.ts` (canvas-rendered share card + intent URLs), `trailer.ts` (embed URL normalization), `anilistSync.ts` (GraphQL progress push/pull), `malSync.ts` (MyAnimeList OAuth PKCE + push/pull, MAL id via AniList `idMal`), `steamLibrary.ts` (owned-games import), `recommendations.ts` (similar titles per source, fetched on note open, cached per session), `providers/gameTrailer.ts` (game YouTube trailer: IGDB with Twitch keys, then Wikidata, else Steam HLS stream), `src/ui/*` (modals, lightbox).
 
 ## Hard constraints
 
@@ -51,6 +51,8 @@ Leaf modules: `util.ts` (frontmatter parsing, runtime math), `episodes.ts` (epis
 - User-facing changes usually also mean updating 30 translated READMEs under `readme/`.
 
 ## Tests
+
+`tests/` and `vitest.config.ts` are local-only (gitignored); CI runs lint + build only, so run `npm test` before every release.
 
 `tests/unit/` covers pure helpers + providers. `tests/compliance/` guards Obsidian submission rules (manifest, versions, license, source hygiene, README privacy table), ends with bundle smoke test: rebuilds `src/main.ts`, evaluates against `tests/stubs/obsidian.ts` (npm `obsidian` package types-only, so `vitest.config.ts` aliases it), asserts no timer survives `onunload`. `tests/tsconfig.json` raises `lib` to ES2020 — ES2017 ceiling applies to `src/` only.
 

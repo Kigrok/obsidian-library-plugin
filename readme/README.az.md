@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Əsəri adı ilə axtarın və posteri, ili, janrı, müəllifləri, aktyorları və reytinqləri doldurulmuş qeyd alın.
 - Kitabxana kateqoriyalara bölünmüş, ad, il, reytinq və ya tarixə görə sıralanmış üz qabıqlı kartlar kimi görünür.
 - Serialın seriyalarını və ya kitabın fəsillərini işarələyin və hər birini qiymətləndirin; `Progress` və `My Rating` onlara görə hesablanır.
-- Film və serial qeydlərində treyler, kadrlar, müddət və mövsümlərin siyahısı var.
+- Film, serial, anime və oyun qeydlərində treyler və kadrlar var, film və seriallarda isə müddət və mövsüm siyahısı da var.
+- Hər qeydin altında sizdə hələ olmayan oxşar əsərlər var; bir kliklə əlavə olunur.
+- Alınmış oyunları oynanılan saatlarla Steam-dən idxal etmək.
 - Janrlar, müəlliflər və aktyorlar keçid kimi saxlanılır, buna görə onların qeydləri bütün əsərləri geri keçidlərdə və qrafda toplayır.
 - Statistika paneli seçdiyiniz topları və ümumi baxış vaxtını göstərir.
 - Əsəri kart şəkli kimi X, Telegram, Reddit və daha altı şəbəkədə paylaşın.
@@ -53,6 +55,10 @@ Kateqoriyanın `Type` dəyəri (məsələn, `Movie`) hansı qeydlərin ona aid o
 | Qalan hər şey | Əl ilə: sahələri özünüz doldurursunuz | Lazım deyil |
 
 Treylerlər, kadrlar, müddət və mövsüm siyahıları Cinemeta-dan açarsız gəlir. [TMDB açarı](https://www.themoviedb.org/settings/api) mövsüm qiymətlərini və daha çox kadr əlavə edir.
+
+Oyunlarınızı əlavə etmək üçün ayarlarda [Steam Web API açarını](https://steamcommunity.com/dev/apikey) və Steam profilini göstərin, sonra `Steam kitabxanasını idxal et` əmrini işə salın. Əmr hər oyun üçün `Playtime` saatları ilə qeyd yaradır, yenidən işə salındıqda yeni oyunları əlavə edir və saatları yeniləyir. Profildəki oyun məlumatları açıq olmalıdır.
+
+Oyun qeydlərində skrinşotlar və treyler var. Treyler Twitch Client ID və Client Secret göstərilibsə IGDB vasitəsilə YouTube-dan götürülür (tətbiq [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps) ünvanında yaradılır), əks halda Wikidata-dan, əks halda Steam çarxı göstərilir.
 
 ## İrəliləyiş və qiymətlər
 
@@ -123,6 +129,17 @@ Serialda `Runtime` bir seriyanın müddətidir. Kitablarda `ISBN` var, fəsillə
 
 Metaməlumatların yenilənməsi yalnız boş sahələri doldurur, buna görə düzəlişləriniz qalır. O, həmçinin `Progress`-dəki ümumi seriya sayını yeniləyir və yeni mövsümləri və seriya adlarını əlavə edir.
 
+## Tövsiyələr
+
+Hər qeydin başlığının altında sizdə hələ olmayan oxşar əsərlər lenti var:
+
+- anime: AniList istifadəçilərinin tövsiyələri;
+- filmlər və seriallar: TMDB açarı varsa TMDB tövsiyələri, əks halda Cinemeta-dan eyni janrların ən yüksək qiymətli filmləri;
+- oyunlar: RAWG-dən seriyanın digər hissələri və janrın ən yaxşı oyunları (RAWG açarı lazımdır);
+- kitablar: ilk iki janrı eyni olan Open Library-də ən çox oxunan kitablar.
+
+Əsəri əlavə etmək üçün üz qabığına klikləyin. Komikslər və musiqi üçün tövsiyə yoxdur. Lenti Settings → Library → Tövsiyələri göstər ilə söndürmək olar.
+
 ## Məxfilik və şəbəkə
 
 Kitabxana adi qeydlərdən ibarətdir və oflayn işləyir. Plagin şəbəkəyə siz axtaranda, yeniləyəndə, sinxronlaşdıranda və ya paylaşanda; kitabxana qeydini açanda, lakin hər qeyd üçün 5 dəqiqədə bir dəfədən tez olmayaraq; və plagin yeniləndikdən və ya açar dəyişdikdən sonra yeni sahələri doldurmaq üçün bir dəfə çıxır. Telemetriya, analitika və özünüyeniləmə yoxdur. API açarları plaginin yerli ayarlarında saxlanılır və yalnız öz xidmətinə göndərilir.
@@ -130,22 +147,28 @@ Kitabxana adi qeydlərdən ibarətdir və oflayn işləyir. Plagin şəbəkəyə
 | Host | Nə vaxt | Nə göndərilir |
 | --- | --- | --- |
 | `www.omdbapi.com` | Film və serial axtarışı | Ad və ya IMDb id, OMDb açarı |
-| `openlibrary.org` | Kitab axtarışı; kitab əlavə edəndə və ya açanda fəsillərin axtarışı | Ad və müəllif, ISBN və ya əsər id |
+| `openlibrary.org` | Kitab axtarışı; kitab əlavə edəndə və ya açanda fəsillərin axtarışı; qeyd açılanda tövsiyələr | Ad və müəllif, ISBN və ya əsər id; janrlar |
 | `covers.openlibrary.org` | Kitab üz qabıqları | Üz qabığı id |
 | `www.googleapis.com` | Kitab axtarışı | Ad, Google Books açarı |
-| `api.rawg.io` | Oyun axtarışı | Ad, RAWG açarı |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Oyun axtarışı və üz qabıqları | Ad və ya Steam app id |
+| `api.rawg.io` | Oyun axtarışı və yenilənməsi; qeyd açılanda tövsiyələr | Ad və ya RAWG id, janr, RAWG açarı |
+| `media.rawg.io` | Oyun üz qabıqları və skrinşotları | Şəkil yolu |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Oyun axtarışı, üz qabıqları, treylerlər və skrinşotlar | Ad və ya Steam app id |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Steam treylerinin oynadılması; oyun skrinşotları | Video və ya şəkil yolu |
+| `api.steampowered.com` | Siz `Steam kitabxanasını idxal et` əmrini işə salırsınız | Steam Web API açarı, SteamID və ya profil adı |
+| `id.twitch.tv`, `api.igdb.com` | Twitch açarları təyin olunubsa, oyun əlavə etmək və ya yeniləmək | Twitch Client ID və sirr; oyunun Steam app id-si və ya adı |
+| `www.wikidata.org` | Steam-dən oyun əlavə etmək və ya yeniləmək | Steam app id |
 | `api.deezer.com` | Musiqi axtarışı | Albom və ya ifaçı |
-| `graphql.anilist.co` | Anime axtarışı; AniList sinxronlaşdırması; sinxronlaşdırma üçün MyAnimeList id | Ad; tokeniniz, irəliləyiş, status və qiymət; AniList id |
+| `graphql.anilist.co` | Anime axtarışı; AniList sinxronlaşdırması; sinxronlaşdırma üçün MyAnimeList id; qeyd açılanda tövsiyələr | Ad; tokeniniz, irəliləyiş, status və qiymət; AniList id |
 | `anilist.co` | Siz **Qoşul** düyməsini basırsınız | Client ID, brauzerdə açılır |
 | `myanimelist.net` | Siz MyAnimeList üçün **Qoşul** düyməsini basırsınız; tokenin yenilənməsi | Client ID və sirr, avtorizasiya kodu, yeniləmə tokeni |
 | `api.myanimelist.net` | MyAnimeList sinxronlaşdırması | Tokeniniz, irəliləyiş, status və qiymət |
 | `s4.anilist.co` | Anime bannerləri | CDN yolu |
 | `comicvine.gamespot.com` | Komiks axtarışı | Ad, Comic Vine açarı |
-| `v3-cinemeta.strem.io` | Film və ya serial əlavə etmək və ya yeniləmək | IMDb id |
+| `v3-cinemeta.strem.io` | Film və ya serial əlavə etmək və ya yeniləmək; TMDB açarı yoxdursa, qeyd açılanda tövsiyələr | IMDb id; janr |
 | `images.metahub.space`, `episodes.metahub.space` | Kadrlar | IMDb id, mövsüm və seriya nömrələri |
-| `api.themoviedb.org`, `image.tmdb.org` | TMDB açarı təyin olunubsa, film və ya serial əlavə etmək və ya yeniləmək | IMDb id və TMDB açarı; şəkil yolu |
+| `api.themoviedb.org`, `image.tmdb.org` | TMDB açarı təyin olunubsa, film və ya serial əlavə etmək, yeniləmək və qeyd açılanda tövsiyələr | IMDb id və TMDB açarı; şəkil yolu |
 | `i.ytimg.com` | Treyler kadrları | Video id |
+| Strim xidmətlərinin şəkil serverləri, AniList vasitəsilə | Anime seriyalarının kadrları | Şəkil yolu |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Treyleri olan qeydi açmaq | Video id |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Siz paylaşma düyməsini basırsınız | Mətn: ad, sizin qiymətiniz, mənbə keçidi. Şəkil cihazınızda qalır |
 
@@ -165,6 +188,7 @@ Kitabxana adi qeydlərdən ibarətdir və oflayn işləyir. Plagin şəbəkəyə
 | `AniList-dən irəliləyişi yüklə` | Qeydləri AniList siyahınızdan yeniləyir |
 | `Cari qeydi MyAnimeList-ə göndər` | İrəliləyişi, statusu və qiyməti göndərir |
 | `MyAnimeList-dən irəliləyişi yüklə` | Qeydləri MyAnimeList siyahınızdan yeniləyir |
+| `Steam kitabxanasını idxal et` | Alınmış hər oyun üçün qeyd yaradır və `Playtime`-ı yeniləyir |
 
 ## Dəstək
 

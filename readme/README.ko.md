@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - 제목을 검색하면 포스터, 연도, 장르, 제작자, 출연진, 평점이 채워진 노트가 생깁니다.
 - 라이브러리를 표지 카드로 보고, 카테고리별로 묶어 이름, 연도, 평점, 날짜순으로 정렬합니다.
 - 시리즈의 에피소드나 책의 장을 체크하고 하나씩 평가하세요. `Progress`와 `My Rating`은 여기서 계산됩니다.
-- 영화와 시리즈 노트에는 예고편, 스틸 이미지, 러닝타임, 시즌 목록이 표시됩니다.
+- 영화, 시리즈, 애니메이션, 게임 노트에는 예고편과 스틸이 있고, 영화와 시리즈에는 상영 시간과 시즌 목록도 있습니다.
+- 각 노트 아래에 아직 없는 비슷한 작품이 나오며, 클릭 한 번으로 추가합니다.
+- Steam 게임을 플레이 시간과 함께 가져옵니다.
 - 장르, 제작자, 배우는 링크이므로 각자의 노트가 모든 작품을 백링크와 그래프 뷰에 모읍니다.
 - 통계 패널은 선택한 순위 목록과 총 시청 시간을 보여줍니다.
 - 작품을 카드 이미지로 만들어 X, Telegram, Reddit 외 6개 네트워크에 공유하세요.
@@ -53,6 +55,10 @@
 | 그 밖의 모든 것 | 수동: 항목을 직접 입력 | 필요 없음 |
 
 예고편, 스틸 이미지, 러닝타임, 시즌 목록은 키 없이 Cinemeta에서 가져옵니다. [TMDB 키](https://www.themoviedb.org/settings/api)를 넣으면 시즌 평점과 스틸 이미지가 더해집니다.
+
+내 게임을 가져오려면 설정에 [Steam Web API 키](https://steamcommunity.com/dev/apikey)와 Steam 프로필을 넣고 `Steam 라이브러리 가져오기`를 실행하세요. 게임마다 시간 단위 `Playtime`이 담긴 노트를 만들고, 다시 실행하면 새 게임을 추가하고 시간을 갱신합니다. 프로필의 게임 세부 정보가 공개여야 합니다.
+
+게임 노트에는 스크린샷과 예고편이 붙습니다. Twitch Client ID와 Client Secret을 넣으면 예고편은 IGDB를 거쳐 YouTube에서 가져오고([dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)에서 애플리케이션 생성), 없으면 Wikidata에 있을 때 거기서, 그것도 없으면 게임의 Steam 예고편을 씁니다.
 
 ## 진행 상황과 평점
 
@@ -123,6 +129,17 @@ Source ID: tt4574334
 
 새로 고침은 빈 필드만 채우므로 직접 고친 값은 그대로 남습니다. 또한 `Progress`의 전체 에피소드 수를 갱신하고 새 시즌과 에피소드 제목을 추가합니다.
 
+## 추천
+
+각 노트 헤더 아래에 아직 없는 비슷한 작품이 한 줄로 나옵니다.
+
+- 애니메이션: AniList 사용자 추천
+- 영화와 시리즈: TMDB 키가 있으면 TMDB 추천, 없으면 Cinemeta에서 같은 장르의 평점 높은 작품
+- 게임: RAWG의 같은 시리즈 작품과 장르 명작(RAWG 키 필요)
+- 책: 노트의 첫 두 장르가 같은, Open Library에서 가장 많이 읽힌 책
+
+표지를 누르면 작품을 추가합니다. 만화와 음악에는 추천이 없습니다. 줄은 설정 → Library → 추천 표시에서 끌 수 있습니다.
+
 ## 개인정보와 네트워크 사용
 
 라이브러리는 평범한 노트이며 오프라인에서도 작동합니다. 플러그인은 검색, 새로 고침, 동기화, 공유를 할 때, 라이브러리 노트를 열 때(노트마다 최대 5분에 한 번), 그리고 업데이트나 키 변경 후 새 필드를 채울 때 한 번만 네트워크를 사용합니다. 원격 측정, 분석, 자동 업데이트는 없습니다. API 키는 로컬 플러그인 설정에 저장되며 해당 서비스에만 전송됩니다.
@@ -130,22 +147,28 @@ Source ID: tt4574334
 | 호스트 | 시점 | 전송 내용 |
 | --- | --- | --- |
 | `www.omdbapi.com` | 영화와 시리즈 검색 | 제목 또는 IMDb ID, OMDb 키 |
-| `openlibrary.org` | 책 검색, 책을 추가하거나 열 때 장 검색 | 제목과 저자, ISBN 또는 작품 ID |
+| `openlibrary.org` | 책 검색, 책을 추가하거나 열 때 장 검색; 노트를 열 때 추천 | 제목과 저자, ISBN 또는 작품 ID; 장르 |
 | `covers.openlibrary.org` | 책 표지 | 표지 ID |
 | `www.googleapis.com` | 책 검색 | 제목, Google Books 키 |
-| `api.rawg.io` | 게임 검색 | 제목, RAWG 키 |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | 게임 검색과 표지 | 제목 또는 Steam 앱 ID |
+| `api.rawg.io` | 게임 검색과 새로 고침; 노트를 열 때 추천 | 제목 또는 RAWG ID, 장르, RAWG 키 |
+| `media.rawg.io` | 게임 표지와 스크린샷 | 이미지 경로 |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | 게임 검색, 표지, 예고편, 스크린샷 | 제목 또는 Steam 앱 ID |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Steam 예고편 재생; 게임 스크린샷 | 동영상 또는 이미지 경로 |
+| `api.steampowered.com` | `Steam 라이브러리 가져오기`를 실행할 때 | Steam Web API 키, SteamID 또는 프로필 이름 |
+| `id.twitch.tv`, `api.igdb.com` | Twitch 키를 설정했을 때 게임 추가·새로 고침 | Twitch Client ID와 시크릿; 게임의 Steam app id 또는 이름 |
+| `www.wikidata.org` | Steam 게임 추가·새로 고침 | Steam app id |
 | `api.deezer.com` | 음악 검색 | 앨범 또는 아티스트 |
-| `graphql.anilist.co` | 애니메이션 검색, AniList 동기화; 동기화용 MyAnimeList ID | 제목, 토큰과 진행 상황, 상태, 점수; AniList ID |
+| `graphql.anilist.co` | 애니메이션 검색, AniList 동기화; 동기화용 MyAnimeList ID; 노트를 열 때 추천 | 제목, 토큰과 진행 상황, 상태, 점수; AniList ID |
 | `anilist.co` | **연결**를 누를 때 | Client ID, 브라우저에서 열림 |
 | `myanimelist.net` | MyAnimeList의 **연결**를 누를 때, 토큰 갱신 | Client ID와 시크릿, 인증 코드, 리프레시 토큰 |
 | `api.myanimelist.net` | MyAnimeList 동기화 | 토큰, 진행 상황, 상태, 점수 |
 | `s4.anilist.co` | 애니메이션 배너 | CDN 경로 |
 | `comicvine.gamespot.com` | 만화 검색 | 제목, Comic Vine 키 |
-| `v3-cinemeta.strem.io` | 영화나 시리즈 추가 또는 새로 고침 | IMDb ID |
+| `v3-cinemeta.strem.io` | 영화나 시리즈 추가 또는 새로 고침; TMDB 키가 없을 때 노트를 열면 추천 | IMDb ID; 장르 |
 | `images.metahub.space`, `episodes.metahub.space` | 스틸 이미지 | IMDb ID, 시즌과 에피소드 번호 |
-| `api.themoviedb.org`, `image.tmdb.org` | TMDB 키를 설정한 경우 영화나 시리즈 추가 또는 새로 고침 | IMDb ID와 TMDB 키, 이미지 경로 |
+| `api.themoviedb.org`, `image.tmdb.org` | TMDB 키를 설정했을 때 영화나 시리즈 추가·새로 고침과 노트를 열 때 추천 | IMDb ID와 TMDB 키, 이미지 경로 |
 | `i.ytimg.com` | 예고편 스틸 이미지 | 동영상 ID |
+| 스트리밍 서비스의 이미지 서버(AniList 경유) | 애니메이션 에피소드 스틸 | 이미지 경로 |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | 예고편이 있는 노트 열기 | 동영상 ID |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | 공유 버튼을 누를 때 | 캡션: 제목, 내 점수, 소스 링크. 이미지는 기기에 남습니다 |
 
@@ -165,6 +188,7 @@ Source ID: tt4574334
 | `AniList에서 진행률 가져오기` | AniList 목록에서 노트 업데이트 |
 | `현재 노트를 MyAnimeList에 업로드` | 진행 상황, 상태, 점수 보내기 |
 | `MyAnimeList에서 진행률 가져오기` | MyAnimeList 목록에서 노트 업데이트 |
+| `Steam 라이브러리 가져오기` | 보유한 게임마다 노트를 만들고 `Playtime`을 갱신합니다 |
 
 ## 지원
 

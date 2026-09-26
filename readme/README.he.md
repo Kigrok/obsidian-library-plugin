@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - חפשו כותר וקבלו פתק עם פוסטר, שנה, ז'אנר, יוצרים, שחקנים ודירוגים.
 - עיינו בספרייה ככרטיסי עטיפה, מקובצים לפי קטגוריה וממוינים לפי שם, שנה, דירוג או תאריך.
 - סמנו פרקי סדרה או פרקי ספר ודרגו כל אחד; `Progress` ו-`My Rating` מחושבים מהם.
-- פתקי סרטים וסדרות מציגים טריילר, תמונות, משך ורשימת עונות.
+- פתקי סרטים, סדרות, אנימה ומשחקים מציגים טריילר ותמונות; סרטים וסדרות גם את האורך ואת רשימת העונות.
+- מתחת לכל פתק מופיעים כותרים דומים שעוד אין לכם; לחיצה אחת מוסיפה כותר.
+- ייבוא המשחקים שלכם מ־Steam כולל שעות המשחק.
 - ז'אנרים, יוצרים ושחקנים הם קישורים, ולכן הפתקים שלהם אוספים כל כותר בקישורים הנכנסים ובתצוגת הגרף.
 - לוח הסטטיסטיקות מציג את רשימות המובילים שבחרתם ואת זמן הצפייה הכולל.
 - שתפו כותר כתמונת כרטיס ב-X, ב-Telegram, ב-Reddit ובשש רשתות נוספות.
@@ -53,6 +55,10 @@
 | כל השאר | ידני: אתם ממלאים את השדות | לא נדרש |
 
 טריילרים, תמונות, משך ורשימות עונות מגיעים מ-Cinemeta בלי מפתח. [מפתח TMDB](https://www.themoviedb.org/settings/api) מוסיף דירוגי עונות ועוד תמונות.
+
+כדי להביא את המשחקים שלכם, הזינו בהגדרות [מפתח Steam Web API](https://steamcommunity.com/dev/apikey) ואת פרופיל ה־Steam, ואז הריצו `ייבוא ספריית Steam`. הפקודה יוצרת פתק לכל משחק עם `Playtime` בשעות, ובהרצה נוספת מוסיפה משחקים חדשים ומעדכנת את השעות. פרטי המשחקים בפרופיל חייבים להיות ציבוריים.
+
+פתקי משחקים מקבלים צילומי מסך וטריילר. הטריילר הוא סרטון YouTube מ־IGDB אם מזינים Twitch Client ID ו־Client Secret (יוצרים אפליקציה ב־[dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)), אחרת מ־Wikidata אם יש שם, אחרת הטריילר של המשחק ב־Steam.
 
 ## התקדמות ודירוגים
 
@@ -123,6 +129,17 @@ Source ID: tt4574334
 
 רענון ממלא רק שדות ריקים, כך שהערכים שערכתם נשמרים. הוא גם מעדכן את סך הפרקים ב-`Progress` ומוסיף עונות ושמות פרקים חדשים.
 
+## המלצות
+
+מתחת לכותרת של כל פתק יש שורה של כותרים דומים שעוד אין לכם:
+
+- אנימה: ההמלצות של משתמשי AniList;
+- סרטים וסדרות: ההמלצות של TMDB עם מפתח TMDB, אחרת הכותרים המדורגים ביותר מאותם ז'אנרים ב־Cinemeta;
+- משחקים: שאר הסדרה והמשחקים הטובים של הז'אנר מ־RAWG (נדרש מפתח RAWG);
+- ספרים: הספרים הנקראים ביותר ב־Open Library שחולקים את שני הז'אנרים הראשונים של הפתק.
+
+לחצו על עטיפה כדי להוסיף את הכותר. לקומיקס ולמוזיקה אין המלצות. אפשר לכבות את השורה בהגדרות ← Library ← הצגת המלצות.
+
 ## פרטיות ושימוש ברשת
 
 הספרייה שלכם היא פתקים רגילים ועובדת בלי חיבור. התוסף מתחבר לרשת כשאתם מחפשים, מרעננים, מסנכרנים או משתפים; כשאתם פותחים פתק מהספרייה, לכל היותר פעם ב-5 דקות לכל פתק; ופעם אחת אחרי עדכון או החלפת מפתח, כדי למלא שדות חדשים. אין טלמטריה, אין אנליטיקה ואין עדכון עצמי. מפתחות ה-API נשארים בהגדרות המקומיות של התוסף ונשלחים רק לשירות שלהם.
@@ -130,22 +147,28 @@ Source ID: tt4574334
 | שרת | מתי | מה נשלח |
 | --- | --- | --- |
 | `www.omdbapi.com` | חיפוש סרטים וסדרות | שם או מזהה IMDb, מפתח OMDb |
-| `openlibrary.org` | חיפוש ספרים; חיפוש פרקים כשמוסיפים או פותחים ספר | שם ומחבר, ISBN או מזהה יצירה |
+| `openlibrary.org` | חיפוש ספרים; חיפוש פרקים כשמוסיפים או פותחים ספר; המלצות בפתיחת פתק | שם ומחבר, ISBN או מזהה יצירה; ז'אנרים |
 | `covers.openlibrary.org` | עטיפות ספרים | מזהה עטיפה |
 | `www.googleapis.com` | חיפוש ספרים | שם, מפתח Google Books |
-| `api.rawg.io` | חיפוש משחקים | שם, מפתח RAWG |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | חיפוש משחקים ועטיפות | שם או מזהה אפליקציה ב-Steam |
+| `api.rawg.io` | חיפוש ורענון משחקים; המלצות בפתיחת פתק | שם או מזהה RAWG, ז'אנר, מפתח RAWG |
+| `media.rawg.io` | עטיפות וצילומי מסך של משחקים | נתיב התמונה |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | חיפוש משחקים, עטיפות, טריילרים וצילומי מסך | שם או מזהה אפליקציה ב-Steam |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | ניגון טריילר מ־Steam; צילומי מסך של משחקים | נתיב הסרטון או התמונה |
+| `api.steampowered.com` | מריצים את `ייבוא ספריית Steam` | מפתח Steam Web API, ה־SteamID או שם הפרופיל |
+| `id.twitch.tv`, `api.igdb.com` | הוספה או רענון של משחק, אם הוגדרו מפתחות Twitch | Twitch Client ID וסוד; מזהה האפליקציה ב־Steam או שם המשחק |
+| `www.wikidata.org` | הוספה או רענון של משחק מ־Steam | מזהה האפליקציה ב־Steam |
 | `api.deezer.com` | חיפוש מוזיקה | אלבום או אמן |
-| `graphql.anilist.co` | חיפוש אנימה; סנכרון AniList; מזהי MyAnimeList לסנכרון | שם; הטוקן שלכם, התקדמות, סטטוס וציון; מזהי AniList |
+| `graphql.anilist.co` | חיפוש אנימה; סנכרון AniList; מזהי MyAnimeList לסנכרון; המלצות בפתיחת פתק | שם; הטוקן שלכם, התקדמות, סטטוס וציון; מזהי AniList |
 | `anilist.co` | אתם לוחצים על **התחבר** | Client ID, נפתח בדפדפן |
 | `myanimelist.net` | לוחצים על **התחבר** עבור MyAnimeList; חידוש אסימון | Client ID וסוד, קוד הרשאה, אסימון רענון |
 | `api.myanimelist.net` | סנכרון MyAnimeList | האסימון שלכם, התקדמות, סטטוס וציון |
 | `s4.anilist.co` | באנרים של אנימה | נתיב CDN |
 | `comicvine.gamespot.com` | חיפוש קומיקס | שם, מפתח Comic Vine |
-| `v3-cinemeta.strem.io` | הוספה או רענון של סרט או סדרה | מזהה IMDb |
+| `v3-cinemeta.strem.io` | הוספה או רענון של סרט או סדרה; המלצות בפתיחת פתק, בלי מפתח TMDB | מזהה IMDb; ז'אנר |
 | `images.metahub.space`, `episodes.metahub.space` | תמונות | מזהה IMDb, מספרי עונה ופרק |
-| `api.themoviedb.org`, `image.tmdb.org` | הוספה או רענון של סרט או סדרה, אם הגדרתם מפתח TMDB | מזהה IMDb ומפתח TMDB; נתיב התמונה |
+| `api.themoviedb.org`, `image.tmdb.org` | הוספה או רענון של סרט או סדרה, והמלצות בפתיחת פתק, אם הוגדר מפתח TMDB | מזהה IMDb ומפתח TMDB; נתיב התמונה |
 | `i.ytimg.com` | תמונות מטריילרים | מזהה הסרטון |
+| שרתי התמונות של שירותי סטרימינג, דרך AniList | תמונות מפרקי אנימה | נתיב התמונה |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | פתיחת פתק עם טריילר | מזהה הסרטון |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | אתם לוחצים על כפתור שיתוף | הכיתוב: שם, הציון שלכם, קישור למקור. התמונה נשארת במכשיר שלכם |
 
@@ -165,6 +188,7 @@ Source ID: tt4574334
 | `משוך התקדמות מ-AniList` | מעדכנת פתקים מרשימת ה-AniList שלכם |
 | `שלח את הפתק הנוכחי ל-MyAnimeList` | שולחת התקדמות, סטטוס וציון |
 | `משוך התקדמות מ-MyAnimeList` | מעדכנת פתקים מרשימת ה-MyAnimeList שלכם |
+| `ייבוא ספריית Steam` | יוצרת פתק לכל משחק שבבעלותכם ומעדכנת את `Playtime` |
 
 ## תמיכה
 
