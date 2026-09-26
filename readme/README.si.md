@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 ඇනිමෙ සමමුහුර්ත කිරීමට [anilist.co/settings/developer](https://anilist.co/settings/developer) හි redirect URL `https://anilist.co/api/v2/oauth/pin` සමඟ සේවාලාභියෙකු ලියාපදිංචි කරන්න. Client ID සැකසුම් → Library → AniList සමමුහුර්තකරණය හි අලවා, **සම්බන්ධ කරන්න** ඔබා, AniList පෙන්වන ටෝකනය අලවන්න. `වත්මන් සටහන AniList වෙත යවන්න` ප්‍රගතිය, තත්ත්වය සහ ලකුණ යවයි. `AniList වෙතින් ප්‍රගතිය ලබා ගන්න` ඔබේ සටහන් යාවත්කාලීන කරයි, ප්‍රගතිය කිසිවිටෙක පසුපසට නොගෙන `My Rating` වෙනස් නොකරයි. සමමුහුර්ත වන්නේ `Source: anilist` ඇති සටහන් පමණි.
 
+එම සටහන් MyAnimeList සමඟ ද සමමුහුර්ත වේ. [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) හි යළි-යොමු URL `http://localhost` සහිත සේවාදායකයක් සාදා, එහි Client ID (ඇත්නම් Client Secret ද) සැකසුම් → Library → MyAnimeList සමමුහුර්තකරණය හි අලවා, **සම්බන්ධ කරන්න** ඔබා, බ්‍රව්සරය විවෘත කරන ලිපිනය අලවන්න. ප්ලගිනය එක් එක් මාතෘකාවේ MyAnimeList ඇතුළත් කිරීම AniList හරහා සොයා ගන්නා අතර ටෝකනය තනිවම අලුත් කරයි. `වත්මන් සටහන MyAnimeList වෙත යවන්න` සහ `MyAnimeList වෙතින් ප්‍රගතිය ලබා ගන්න` ඒවායේ AniList සමානයන් මෙන් ක්‍රියා කරයි.
+
 ## Frontmatter
 
 සෑම කාඩ්පතක්ම සටහනක් වන අතර, ප්ලගිනය ඒ ගැන දන්නා සියල්ල frontmatter තුළ ඇත:
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | ක්‍රීඩා සෙවීම | මාතෘකාව, RAWG යතුර |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | ක්‍රීඩා සෙවීම සහ කවර | මාතෘකාව හෝ Steam යෙදුම් id |
 | `api.deezer.com` | සංගීත සෙවීම | ඇල්බමය හෝ කලාකරුවා |
-| `graphql.anilist.co` | ඇනිමෙ සෙවීම; AniList සමමුහුර්තය | මාතෘකාව; ඔබේ ටෝකනය, ප්‍රගතිය, තත්ත්වය සහ ලකුණ |
+| `graphql.anilist.co` | ඇනිමෙ සෙවීම; AniList සමමුහුර්තය; සමමුහුර්තකරණය සඳහා MyAnimeList id | මාතෘකාව; ඔබේ ටෝකනය, ප්‍රගතිය, තත්ත්වය සහ ලකුණ; AniList id |
 | `anilist.co` | ඔබ **සම්බන්ධ කරන්න** ඔබයි | Client ID, ඔබේ බ්‍රවුසරයේ විවෘත වේ |
+| `myanimelist.net` | ඔබ MyAnimeList සඳහා **සම්බන්ධ කරන්න** ඔබයි; ටෝකන අලුත් කිරීම | Client ID සහ රහස, අවසර කේතය, නැවුම් කිරීමේ ටෝකනය |
+| `api.myanimelist.net` | MyAnimeList සමමුහුර්තකරණය | ඔබේ ටෝකනය, ප්‍රගතිය, තත්ත්වය සහ ලකුණු |
 | `s4.anilist.co` | ඇනිමෙ බැනර් | CDN මාර්ගය |
 | `comicvine.gamespot.com` | කොමික් සෙවීම | මාතෘකාව, Comic Vine යතුර |
 | `v3-cinemeta.strem.io` | චිත්‍රපටයක් හෝ කතාමාලාවක් එක් කිරීම හෝ යළි ප්‍රබෝධනය | IMDb id |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `වත්මන් සටහන බෙදාගන්න` | බෙදාගැනීමේ කාඩ්පත විවෘත කරයි |
 | `වත්මන් සටහන AniList වෙත යවන්න` | ප්‍රගතිය, තත්ත්වය සහ ලකුණ යවයි |
 | `AniList වෙතින් ප්‍රගතිය ලබා ගන්න` | ඔබේ AniList ලැයිස්තුවෙන් සටහන් යාවත්කාලීන කරයි |
+| `වත්මන් සටහන MyAnimeList වෙත යවන්න` | ප්‍රගතිය, තත්ත්වය සහ ලකුණ යවයි |
+| `MyAnimeList වෙතින් ප්‍රගතිය ලබා ගන්න` | ඔබේ MyAnimeList ලැයිස්තුවෙන් සටහන් යාවත්කාලීන කරයි |
 
 ## සහාය
 

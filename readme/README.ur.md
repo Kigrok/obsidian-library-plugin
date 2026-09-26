@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 اینیمے ہم آہنگ کرنے کے لیے [anilist.co/settings/developer](https://anilist.co/settings/developer) پر ری ڈائریکٹ URL `https://anilist.co/api/v2/oauth/pin` کے ساتھ ایک کلائنٹ رجسٹر کریں۔ Client ID کو Settings → Library → AniList سنک میں پیسٹ کریں، **جوڑیں** پر کلک کریں اور AniList کا دکھایا ہوا ٹوکن پیسٹ کریں۔ `موجودہ نوٹ AniList پر بھیجیں` پیش رفت، حیثیت اور اسکور بھیجتا ہے۔ `AniList سے پیش رفت حاصل کریں` آپ کے نوٹس اپ ڈیٹ کرتا ہے، پیش رفت کبھی پیچھے نہیں کرتا اور `My Rating` کو نہیں چھیڑتا۔ صرف `Source: anilist` والے نوٹس ہم آہنگ ہوتے ہیں۔
 
+یہی نوٹس MyAnimeList کے ساتھ بھی ہم آہنگ ہوتے ہیں۔ [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) پر ری ڈائریکٹ URL `http://localhost` کے ساتھ کلائنٹ بنائیں، اس کا Client ID (اور اگر ہو تو Client Secret) Settings → Library → MyAnimeList سنک میں چسپاں کریں، **جوڑیں** دبائیں اور وہ پتا چسپاں کریں جو براؤزر کھولے۔ پلگ ان ہر عنوان کا MyAnimeList اندراج AniList کے ذریعے ڈھونڈتا ہے اور ٹوکن خود تازہ کرتا ہے۔ `موجودہ نوٹ MyAnimeList پر بھیجیں` اور `MyAnimeList سے پیش رفت حاصل کریں` اپنے AniList ہم منصبوں کی طرح کام کرتی ہیں۔
+
 ## Frontmatter
 
 ہر کارڈ ایک نوٹ ہے، اور پلگ ان اس کے بارے میں جو کچھ جانتا ہے وہ frontmatter میں ہے:
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | گیم کی تلاش | عنوان، RAWG کلید |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | گیم کی تلاش اور سرورق | عنوان یا Steam ایپ id |
 | `api.deezer.com` | موسیقی کی تلاش | البم یا فنکار |
-| `graphql.anilist.co` | اینیمے کی تلاش؛ AniList ہم آہنگی | عنوان؛ آپ کا ٹوکن، پیش رفت، حیثیت اور اسکور |
+| `graphql.anilist.co` | اینیمے کی تلاش؛ AniList ہم آہنگی; ہم آہنگی کے لیے MyAnimeList آئی ڈیز | عنوان؛ آپ کا ٹوکن، پیش رفت، حیثیت اور اسکور; AniList آئی ڈیز |
 | `anilist.co` | آپ **جوڑیں** پر کلک کرتے ہیں | Client ID، آپ کے براؤزر میں کھلتا ہے |
+| `myanimelist.net` | آپ MyAnimeList کے لیے **جوڑیں** دباتے ہیں؛ ٹوکن کی تجدید | Client ID اور راز، اجازت کوڈ، تجدیدی ٹوکن |
+| `api.myanimelist.net` | MyAnimeList ہم آہنگی | آپ کا ٹوکن، پیش رفت، حیثیت اور اسکور |
 | `s4.anilist.co` | اینیمے بینرز | CDN راستہ |
 | `comicvine.gamespot.com` | کامکس کی تلاش | عنوان، Comic Vine کلید |
 | `v3-cinemeta.strem.io` | فلم یا سیریز شامل کرنا یا ریفریش کرنا | IMDb id |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `موجودہ نوٹ شیئر کریں` | شیئر کارڈ کھولتی ہے |
 | `موجودہ نوٹ AniList پر بھیجیں` | پیش رفت، حیثیت اور اسکور بھیجتی ہے |
 | `AniList سے پیش رفت حاصل کریں` | آپ کی AniList فہرست سے نوٹس اپ ڈیٹ کرتی ہے |
+| `موجودہ نوٹ MyAnimeList پر بھیجیں` | پیش رفت، حیثیت اور اسکور بھیجتی ہے |
+| `MyAnimeList سے پیش رفت حاصل کریں` | آپ کی MyAnimeList فہرست سے نوٹس اپ ڈیٹ کرتی ہے |
 
 ## معاونت
 

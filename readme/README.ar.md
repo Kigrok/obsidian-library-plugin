@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 لمزامنة الأنمي، سجّل عميلًا في [anilist.co/settings/developer](https://anilist.co/settings/developer) مع رابط إعادة التوجيه `https://anilist.co/api/v2/oauth/pin`. الصق Client ID في الإعدادات ← Library ← مزامنة AniList، واضغط **اتصال**، ثم الصق الرمز الذي يعرضه AniList. يرسل `دفع الملاحظة الحالية إلى AniList` التقدم والحالة والتقييم. ويحدّث `سحب التقدّم من AniList` ملاحظاتك دون أن يعيد التقدم إلى الوراء ولا يمس `My Rating`. تُزامَن فقط الملاحظات التي فيها `Source: anilist`.
 
+تتزامن الملاحظات نفسها مع MyAnimeList أيضًا. أنشئ عميلًا على [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) مع عنوان إعادة التوجيه `http://localhost`، والصق Client ID الخاص به (وClient Secret إن وُجد) في الإعدادات ← Library ← مزامنة MyAnimeList، وانقر **اتصال**، ثم الصق العنوان الذي يفتحه المتصفح. يجد الملحق إدخال MyAnimeList لكل عنوان عبر AniList ويجدد الرمز بنفسه. يعمل `دفع الملاحظة الحالية إلى MyAnimeList` و`سحب التقدّم من MyAnimeList` مثل نظيريهما في AniList.
+
 ## Frontmatter
 
 كل بطاقة ملاحظة، وكل ما تعرفه الإضافة عنها موجود في الـ frontmatter:
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | البحث عن الألعاب | العنوان، ومفتاح RAWG |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | البحث عن الألعاب وأغلفتها | العنوان أو معرّف تطبيق Steam |
 | `api.deezer.com` | البحث عن الموسيقى | الألبوم أو الفنان |
-| `graphql.anilist.co` | البحث عن الأنمي؛ مزامنة AniList | العنوان؛ رمزك والتقدم والحالة والتقييم |
+| `graphql.anilist.co` | البحث عن الأنمي؛ مزامنة AniList; معرّفات MyAnimeList للمزامنة | العنوان؛ رمزك والتقدم والحالة والتقييم; معرّفات AniList |
 | `anilist.co` | تضغط **اتصال** | Client ID، يُفتح في متصفحك |
+| `myanimelist.net` | تنقر **اتصال** في MyAnimeList؛ تجديد الرمز | Client ID والسر، رمز التفويض، رمز التجديد |
+| `api.myanimelist.net` | مزامنة MyAnimeList | رمزك، والتقدم، والحالة، والتقييم |
 | `s4.anilist.co` | لافتات الأنمي | مسار CDN |
 | `comicvine.gamespot.com` | البحث عن القصص المصورة | العنوان، ومفتاح Comic Vine |
 | `v3-cinemeta.strem.io` | إضافة فيلم أو مسلسل أو تحديثه | معرّف IMDb |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `مشاركة الملاحظة الحالية` | يفتح بطاقة المشاركة |
 | `دفع الملاحظة الحالية إلى AniList` | يرسل التقدم والحالة والتقييم |
 | `سحب التقدّم من AniList` | يحدّث الملاحظات من قائمتك في AniList |
+| `دفع الملاحظة الحالية إلى MyAnimeList` | يرسل التقدم والحالة والتقييم |
+| `سحب التقدّم من MyAnimeList` | يحدّث الملاحظات من قائمتك في MyAnimeList |
 
 ## الدعم
 

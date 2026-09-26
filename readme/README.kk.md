@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 Анимені синхрондау үшін [anilist.co/settings/developer](https://anilist.co/settings/developer) бетінде redirect URL `https://anilist.co/api/v2/oauth/pin` болатын клиент тіркеңіз. Client ID-ді Settings → Library → AniList синхрондау бөліміне қойып, **Қосылу** батырмасын басыңыз да, AniList көрсеткен токенді қойыңыз. `Ағымдағы жазбаны AniList-ке жіберу` прогресті, күйді және бағаны жібереді. `AniList-тен прогресті жүктеу` жазбаларды жаңартады, прогресті ешқашан артқа қайтармайды және `My Rating` өрісіне тимейді. Тек `Source: anilist` бар жазбалар синхрондалады.
 
+Сол жазбалар MyAnimeList-пен де синхрондалады. [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) бетінде redirect URL `http://localhost` болатын клиент жасап, оның Client ID-ін (бар болса, Client Secret-ін) Settings → Library → MyAnimeList синхрондау бөліміне қойыңыз, **Қосылу** батырмасын басып, браузер ашқан мекенжайды қойыңыз. Плагин әр туындының MyAnimeList жазбасын AniList арқылы табады және токенді өзі жаңартады. `Ағымдағы жазбаны MyAnimeList-ке жіберу` және `MyAnimeList-тен прогресті жүктеу` AniList командалары сияқты жұмыс істейді.
+
 ## Frontmatter
 
 Әр карточка кәдімгі жазба, ал плагин ол туралы білетіннің бәрі frontmatter ішінде сақталады:
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | Ойын іздеу | Атау, RAWG кілті |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Ойын іздеу және мұқабалар | Атау немесе Steam app id |
 | `api.deezer.com` | Музыка іздеу | Альбом немесе орындаушы |
-| `graphql.anilist.co` | Аниме іздеу; AniList синхрондау | Атау; сіздің токеніңіз, прогресс, күй және баға |
+| `graphql.anilist.co` | Аниме іздеу; AniList синхрондау; синхрондауға арналған MyAnimeList id | Атау; сіздің токеніңіз, прогресс, күй және баға; AniList id |
 | `anilist.co` | Сіз **Қосылу** батырмасын басасыз | Client ID, браузерде ашылады |
+| `myanimelist.net` | Сіз MyAnimeList үшін **Қосылу** батырмасын басасыз; токенді жаңарту | Client ID мен құпия, авторизация коды, жаңарту токені |
+| `api.myanimelist.net` | MyAnimeList синхрондау | Сіздің токеніңіз, прогресс, күй және баға |
 | `s4.anilist.co` | Аниме баннерлері | CDN жолы |
 | `comicvine.gamespot.com` | Комикс іздеу | Атау, Comic Vine кілті |
 | `v3-cinemeta.strem.io` | Фильм немесе сериал қосу не жаңарту | IMDb id |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `Ағымдағы жазбамен бөлісу` | Бөлісу карточкасын ашады |
 | `Ағымдағы жазбаны AniList-ке жіберу` | Прогрессті, күйді және бағаны жібереді |
 | `AniList-тен прогресті жүктеу` | Жазбаларды AniList тізіміңізден жаңартады |
+| `Ағымдағы жазбаны MyAnimeList-ке жіберу` | Прогрессті, күйді және бағаны жібереді |
+| `MyAnimeList-тен прогресті жүктеу` | Жазбаларды MyAnimeList тізіміңізден жаңартады |
 
 ## Қолдау
 

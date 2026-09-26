@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Not başlığındaki **Paylaş**; afiş, başlık, yıl, tür, oyuncular, puanla
 
 Animeyi eşitlemek için [anilist.co/settings/developer](https://anilist.co/settings/developer) adresinde yönlendirme URL'si `https://anilist.co/api/v2/oauth/pin` olan bir istemci kaydedin. Client ID'yi Ayarlar → Library → AniList senkronizasyonu bölümüne yapıştırın, **Bağlan** düğmesine tıklayın ve AniList'in gösterdiği belirteci yapıştırın. `Geçerli notu AniList'e gönder` ilerlemeyi, durumu ve puanı gönderir. `İlerlemeyi AniList'ten çek` notlarınızı günceller, ilerlemeyi asla geri almaz ve `My Rating` alanına dokunmaz. Yalnızca `Source: anilist` olan notlar eşitlenir.
 
+Aynı notlar MyAnimeList ile de eşitlenir. [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) adresinde yönlendirme URL'si `http://localhost` olan bir istemci oluşturun, Client ID'sini (varsa Client Secret'ını) Ayarlar → Library → MyAnimeList senkronizasyonu bölümüne yapıştırın, **Bağlan** düğmesine basın ve tarayıcının açtığı adresi yapıştırın. Eklenti her yapımın MyAnimeList kaydını AniList üzerinden bulur ve belirteci kendisi yeniler. `Geçerli notu MyAnimeList'e gönder` ve `İlerlemeyi MyAnimeList'ten çek`, AniList karşılıkları gibi çalışır.
+
 ## Frontmatter
 
 Her kart bir nottur ve eklentinin onun hakkında bildiği her şey frontmatter'dadır:
@@ -134,8 +136,10 @@ Kütüphaneniz sade notlardan oluşur ve çevrimdışı çalışır. Eklenti; ar
 | `api.rawg.io` | Oyun arama | Başlık, RAWG anahtarı |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Oyun arama ve kapaklar | Başlık veya Steam uygulama kimliği |
 | `api.deezer.com` | Müzik arama | Albüm veya sanatçı |
-| `graphql.anilist.co` | Anime arama; AniList eşitleme | Başlık; belirteciniz, ilerleme, durum ve puan |
+| `graphql.anilist.co` | Anime arama; AniList eşitleme; eşitleme için MyAnimeList kimlikleri | Başlık; belirteciniz, ilerleme, durum ve puan; AniList kimlikleri |
 | `anilist.co` | **Bağlan** düğmesine tıklarsınız | Client ID, tarayıcınızda açılır |
+| `myanimelist.net` | MyAnimeList için **Bağlan** düğmesine basarsınız; belirteç yenileme | Client ID ve gizli anahtar, yetkilendirme kodu, yenileme belirteci |
+| `api.myanimelist.net` | MyAnimeList eşitleme | Belirteciniz, ilerleme, durum ve puan |
 | `s4.anilist.co` | Anime afişleri | CDN yolu |
 | `comicvine.gamespot.com` | Çizgi roman arama | Başlık, Comic Vine anahtarı |
 | `v3-cinemeta.strem.io` | Film veya dizi ekleme ya da yenileme | IMDb kimliği |
@@ -159,6 +163,8 @@ Kütüphaneniz sade notlardan oluşur ve çevrimdışı çalışır. Eklenti; ar
 | `Geçerli notu paylaş` | Paylaşım kartını açar |
 | `Geçerli notu AniList'e gönder` | İlerlemeyi, durumu ve puanı gönderir |
 | `İlerlemeyi AniList'ten çek` | Notları AniList listenizden günceller |
+| `Geçerli notu MyAnimeList'e gönder` | İlerlemeyi, durumu ve puanı gönderir |
+| `İlerlemeyi MyAnimeList'ten çek` | Notları MyAnimeList listenizden günceller |
 
 ## Destek
 

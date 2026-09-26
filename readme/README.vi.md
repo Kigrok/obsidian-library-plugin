@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Nút **Chia sẻ** ở phần đầu ghi chú vẽ một thẻ có áp phích, t
 
 Để đồng bộ anime, hãy đăng ký một client tại [anilist.co/settings/developer](https://anilist.co/settings/developer) với URL chuyển hướng `https://anilist.co/api/v2/oauth/pin`. Dán Client ID vào Cài đặt → Library → Đồng bộ AniList, nhấn **Kết nối** rồi dán token mà AniList hiển thị. `Đẩy ghi chú hiện tại lên AniList` gửi tiến độ, trạng thái và điểm. `Lấy tiến độ từ AniList` cập nhật ghi chú của bạn, không bao giờ lùi tiến độ và không động đến `My Rating`. Chỉ các ghi chú có `Source: anilist` mới được đồng bộ.
 
+Các ghi chú này cũng đồng bộ với MyAnimeList. Tạo một ứng dụng tại [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) với URL chuyển hướng `http://localhost`, dán Client ID (và Client Secret nếu có) vào Cài đặt → Library → Đồng bộ MyAnimeList, bấm **Kết nối** rồi dán địa chỉ mà trình duyệt mở ra. Plugin tìm mục MyAnimeList của từng tựa qua AniList và tự làm mới token. `Đẩy ghi chú hiện tại lên MyAnimeList` và `Lấy tiến độ từ MyAnimeList` hoạt động giống các lệnh tương ứng của AniList.
+
 ## Frontmatter
 
 Mỗi thẻ là một ghi chú, và mọi thứ plugin biết về nó nằm trong frontmatter:
@@ -134,8 +136,10 @@ Thư viện của bạn là các ghi chú thông thường và hoạt động ng
 | `api.rawg.io` | Tìm trò chơi | Tên, khóa RAWG |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Tìm trò chơi và ảnh bìa | Tên hoặc id ứng dụng Steam |
 | `api.deezer.com` | Tìm nhạc | Album hoặc nghệ sĩ |
-| `graphql.anilist.co` | Tìm anime; đồng bộ AniList | Tên; token của bạn, tiến độ, trạng thái và điểm |
+| `graphql.anilist.co` | Tìm anime; đồng bộ AniList; id MyAnimeList để đồng bộ | Tên; token của bạn, tiến độ, trạng thái và điểm; id AniList |
 | `anilist.co` | Bạn nhấn **Kết nối** | Client ID, mở trong trình duyệt |
+| `myanimelist.net` | Bạn bấm **Kết nối** cho MyAnimeList; làm mới token | Client ID và secret, mã ủy quyền, refresh token |
+| `api.myanimelist.net` | Đồng bộ MyAnimeList | Token của bạn, tiến độ, trạng thái và điểm |
 | `s4.anilist.co` | Banner anime | Đường dẫn CDN |
 | `comicvine.gamespot.com` | Tìm truyện tranh | Tên, khóa Comic Vine |
 | `v3-cinemeta.strem.io` | Thêm hoặc làm mới phim hay series | IMDb id |
@@ -159,6 +163,8 @@ Thư viện của bạn là các ghi chú thông thường và hoạt động ng
 | `Chia sẻ ghi chú hiện tại` | Mở thẻ chia sẻ |
 | `Đẩy ghi chú hiện tại lên AniList` | Gửi tiến độ, trạng thái và điểm |
 | `Lấy tiến độ từ AniList` | Cập nhật ghi chú từ danh sách AniList của bạn |
+| `Đẩy ghi chú hiện tại lên MyAnimeList` | Gửi tiến độ, trạng thái và điểm |
+| `Lấy tiến độ từ MyAnimeList` | Cập nhật ghi chú từ danh sách MyAnimeList của bạn |
 
 ## Hỗ trợ
 

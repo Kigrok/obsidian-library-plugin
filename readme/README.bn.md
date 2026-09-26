@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 অ্যানিমে সিঙ্ক করতে [anilist.co/settings/developer](https://anilist.co/settings/developer)-এ রিডাইরেক্ট URL `https://anilist.co/api/v2/oauth/pin` দিয়ে একটি ক্লায়েন্ট নিবন্ধন করুন। Client ID সেটিংস → Library → AniList সিঙ্ক-এ পেস্ট করুন, **সংযুক্ত করুন** চাপুন আর AniList যে টোকেন দেখায় তা পেস্ট করুন। `বর্তমান নোট AniList-এ পাঠান` অগ্রগতি, অবস্থা আর স্কোর পাঠায়। `AniList থেকে অগ্রগতি আনুন` আপনার নোট আপডেট করে, অগ্রগতি কখনো পিছিয়ে দেয় না আর `My Rating` ছোঁয় না। শুধু `Source: anilist` থাকা নোটগুলো সিঙ্ক হয়।
 
+একই নোটগুলো MyAnimeList-এর সঙ্গেও সিঙ্ক হয়। [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig)-এ রিডাইরেক্ট URL `http://localhost` দিয়ে একটি ক্লায়েন্ট তৈরি করুন, এর Client ID (আর থাকলে Client Secret) সেটিংস → Library → MyAnimeList সিঙ্ক-এ পেস্ট করুন, **সংযুক্ত করুন** চাপুন এবং ব্রাউজার যে ঠিকানা খোলে সেটি পেস্ট করুন। প্লাগইন প্রতিটি শিরোনামের MyAnimeList এন্ট্রি AniList দিয়ে খুঁজে নেয় এবং টোকেন নিজেই নবায়ন করে। `বর্তমান নোট MyAnimeList-এ পাঠান` ও `MyAnimeList থেকে অগ্রগতি আনুন` তাদের AniList সমকক্ষের মতো কাজ করে।
+
 ## Frontmatter
 
 প্রতিটি কার্ড একটি নোট, আর প্লাগইন সেটি সম্পর্কে যা জানে সবই frontmatter-এ থাকে:
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | গেম খোঁজা | শিরোনাম, RAWG কী |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | গেম খোঁজা ও প্রচ্ছদ | শিরোনাম বা Steam অ্যাপ id |
 | `api.deezer.com` | গান খোঁজা | অ্যালবাম বা শিল্পী |
-| `graphql.anilist.co` | অ্যানিমে খোঁজা; AniList সিঙ্ক | শিরোনাম; আপনার টোকেন, অগ্রগতি, অবস্থা ও স্কোর |
+| `graphql.anilist.co` | অ্যানিমে খোঁজা; AniList সিঙ্ক; সিঙ্কের জন্য MyAnimeList আইডি | শিরোনাম; আপনার টোকেন, অগ্রগতি, অবস্থা ও স্কোর; AniList আইডি |
 | `anilist.co` | আপনি **সংযুক্ত করুন** চাপেন | Client ID, আপনার ব্রাউজারে খোলে |
+| `myanimelist.net` | আপনি MyAnimeList-এর জন্য **সংযুক্ত করুন** চাপেন; টোকেন নবায়ন | Client ID ও সিক্রেট, অনুমোদন কোড, রিফ্রেশ টোকেন |
+| `api.myanimelist.net` | MyAnimeList সিঙ্ক | আপনার টোকেন, অগ্রগতি, অবস্থা ও স্কোর |
 | `s4.anilist.co` | অ্যানিমের ব্যানার | CDN পাথ |
 | `comicvine.gamespot.com` | কমিকস খোঁজা | শিরোনাম, Comic Vine কী |
 | `v3-cinemeta.strem.io` | সিনেমা বা সিরিজ যোগ বা রিফ্রেশ করা | IMDb id |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `বর্তমান নোট শেয়ার করুন` | শেয়ার কার্ড খোলে |
 | `বর্তমান নোট AniList-এ পাঠান` | অগ্রগতি, অবস্থা আর স্কোর পাঠায় |
 | `AniList থেকে অগ্রগতি আনুন` | আপনার AniList তালিকা থেকে নোট আপডেট করে |
+| `বর্তমান নোট MyAnimeList-এ পাঠান` | অগ্রগতি, অবস্থা আর স্কোর পাঠায় |
+| `MyAnimeList থেকে অগ্রগতি আনুন` | আপনার MyAnimeList তালিকা থেকে নোট আপডেট করে |
 
 ## সহায়তা
 

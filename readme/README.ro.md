@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Panoul din partea de sus a filei Bibliotecă arată coloanele alese în Setări 
 
 Pentru sincronizarea anime, înregistrează un client la [anilist.co/settings/developer](https://anilist.co/settings/developer) cu URL-ul de redirecționare `https://anilist.co/api/v2/oauth/pin`. Lipește Client ID în Setări → Library → Sincronizare AniList, apasă **Conectează** și lipește tokenul afișat de AniList. `Trimite nota curentă în AniList` trimite progresul, starea și nota. `Descarcă progresul din AniList` actualizează notele, nu dă niciodată progresul înapoi și nu atinge `My Rating`. Se sincronizează doar notele cu `Source: anilist`.
 
+Aceleași notițe se sincronizează și cu MyAnimeList. Creează un client pe [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) cu URL-ul de redirecționare `http://localhost`, lipește Client ID-ul (și Client Secret-ul, dacă există) în Setări → Library → Sincronizare MyAnimeList, apasă **Conectează** și lipește adresa deschisă de browser. Pluginul găsește intrarea MyAnimeList a fiecărui titlu prin AniList și reînnoiește singur tokenul. `Trimite nota curentă în MyAnimeList` și `Descarcă progresul din MyAnimeList` funcționează ca echivalentele lor pentru AniList.
+
 ## Frontmatter
 
 Fiecare card este o notă, iar tot ce știe pluginul despre el se află în frontmatter:
@@ -134,8 +136,10 @@ Biblioteca ta este formată din note simple și funcționează offline. Pluginul
 | `api.rawg.io` | Căutare de jocuri | Titlu, cheie RAWG |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Căutare de jocuri și coperți | Titlu sau id de aplicație Steam |
 | `api.deezer.com` | Căutare de muzică | Album sau artist |
-| `graphql.anilist.co` | Căutare anime; sincronizare AniList | Titlu; tokenul tău, progresul, starea și nota |
+| `graphql.anilist.co` | Căutare anime; sincronizare AniList; id-uri MyAnimeList pentru sincronizare | Titlu; tokenul tău, progresul, starea și nota; id-uri AniList |
 | `anilist.co` | Apeși **Conectează** | Client ID, deschis în browser |
+| `myanimelist.net` | Apeși **Conectează** pentru MyAnimeList; reînnoirea tokenului | Client ID și secret, cod de autorizare, token de reînnoire |
+| `api.myanimelist.net` | Sincronizare MyAnimeList | Tokenul tău, progresul, starea și nota |
 | `s4.anilist.co` | Bannere anime | Cale CDN |
 | `comicvine.gamespot.com` | Căutare de benzi desenate | Titlu, cheie Comic Vine |
 | `v3-cinemeta.strem.io` | Adăugarea sau reîmprospătarea unui film sau serial | Id IMDb |
@@ -159,6 +163,8 @@ Biblioteca ta este formată din note simple și funcționează offline. Pluginul
 | `Distribuie nota curentă` | Deschide cardul de distribuire |
 | `Trimite nota curentă în AniList` | Trimite progresul, starea și nota |
 | `Descarcă progresul din AniList` | Actualizează notele din lista ta AniList |
+| `Trimite nota curentă în MyAnimeList` | Trimite progresul, starea și nota |
+| `Descarcă progresul din MyAnimeList` | Actualizează notele din lista ta MyAnimeList |
 
 ## Asistență
 

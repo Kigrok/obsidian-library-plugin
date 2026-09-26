@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Qeyd başlığındakı **Paylaş** düyməsi poster, ad, il, janr, aktyorlar, re
 
 Animeni sinxronlaşdırmaq üçün [anilist.co/settings/developer](https://anilist.co/settings/developer) səhifəsində redirect URL `https://anilist.co/api/v2/oauth/pin` olan klient qeydiyyatdan keçirin. Client ID-ni Settings → Library → AniList sinxronizasiyası bölməsinə yapışdırın, **Qoşul** düyməsini basın və AniList-in göstərdiyi tokeni yapışdırın. `Cari qeydi AniList-ə göndər` irəliləyişi, statusu və qiyməti göndərir. `AniList-dən irəliləyişi yüklə` qeydləri yeniləyir, irəliləyişi heç vaxt geri qaytarmır və `My Rating`-ə toxunmur. Yalnız `Source: anilist` olan qeydlər sinxronlaşır.
 
+Eyni qeydlər MyAnimeList ilə də sinxronlaşır. [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) səhifəsində redirect URL `http://localhost` olan klient yaradın, onun Client ID-sini (varsa, Client Secret-i) Settings → Library → MyAnimeList sinxronizasiyası bölməsinə yapışdırın, **Qoşul** düyməsini basın və brauzerin açdığı ünvanı yapışdırın. Plagin hər əsərin MyAnimeList qeydini AniList vasitəsilə tapır və tokeni özü yeniləyir. `Cari qeydi MyAnimeList-ə göndər` və `MyAnimeList-dən irəliləyişi yüklə` AniList əmrləri kimi işləyir.
+
 ## Frontmatter
 
 Hər kart adi qeyddir və plaginin onun haqqında bildiyi hər şey frontmatter-də saxlanılır:
@@ -134,8 +136,10 @@ Kitabxana adi qeydlərdən ibarətdir və oflayn işləyir. Plagin şəbəkəyə
 | `api.rawg.io` | Oyun axtarışı | Ad, RAWG açarı |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Oyun axtarışı və üz qabıqları | Ad və ya Steam app id |
 | `api.deezer.com` | Musiqi axtarışı | Albom və ya ifaçı |
-| `graphql.anilist.co` | Anime axtarışı; AniList sinxronlaşdırması | Ad; tokeniniz, irəliləyiş, status və qiymət |
+| `graphql.anilist.co` | Anime axtarışı; AniList sinxronlaşdırması; sinxronlaşdırma üçün MyAnimeList id | Ad; tokeniniz, irəliləyiş, status və qiymət; AniList id |
 | `anilist.co` | Siz **Qoşul** düyməsini basırsınız | Client ID, brauzerdə açılır |
+| `myanimelist.net` | Siz MyAnimeList üçün **Qoşul** düyməsini basırsınız; tokenin yenilənməsi | Client ID və sirr, avtorizasiya kodu, yeniləmə tokeni |
+| `api.myanimelist.net` | MyAnimeList sinxronlaşdırması | Tokeniniz, irəliləyiş, status və qiymət |
 | `s4.anilist.co` | Anime bannerləri | CDN yolu |
 | `comicvine.gamespot.com` | Komiks axtarışı | Ad, Comic Vine açarı |
 | `v3-cinemeta.strem.io` | Film və ya serial əlavə etmək və ya yeniləmək | IMDb id |
@@ -159,6 +163,8 @@ Kitabxana adi qeydlərdən ibarətdir və oflayn işləyir. Plagin şəbəkəyə
 | `Cari qeydi paylaş` | Paylaşma kartını açır |
 | `Cari qeydi AniList-ə göndər` | İrəliləyişi, statusu və qiyməti göndərir |
 | `AniList-dən irəliləyişi yüklə` | Qeydləri AniList siyahınızdan yeniləyir |
+| `Cari qeydi MyAnimeList-ə göndər` | İrəliləyişi, statusu və qiyməti göndərir |
+| `MyAnimeList-dən irəliləyişi yüklə` | Qeydləri MyAnimeList siyahınızdan yeniləyir |
 
 ## Dəstək
 

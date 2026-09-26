@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Panel u góry karty Biblioteka pokazuje kolumny wybrane w Ustawienia → Library
 
 Aby synchronizować anime, zarejestruj klienta na [anilist.co/settings/developer](https://anilist.co/settings/developer) z adresem przekierowania `https://anilist.co/api/v2/oauth/pin`. Wklej Client ID w Ustawienia → Library → Synchronizacja z AniList, kliknij **Połącz** i wklej token, który pokaże AniList. `Wyślij bieżącą notatkę do AniList` wysyła postęp, status i ocenę. `Pobierz postęp z AniList` aktualizuje notatki, nigdy nie cofa postępu i nie rusza `My Rating`. Synchronizują się tylko notatki z `Source: anilist`.
 
+Te same notatki synchronizują się z MyAnimeList. Utwórz klienta na [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) z adresem przekierowania `http://localhost`, wklej jego Client ID (i Client Secret, jeśli go ma) w Ustawienia → Library → Synchronizacja z MyAnimeList, kliknij **Połącz** i wklej adres otwarty przez przeglądarkę. Wpis MyAnimeList dla każdego tytułu wtyczka znajduje przez AniList i sama odnawia token. `Wyślij bieżącą notatkę do MyAnimeList` i `Pobierz postęp z MyAnimeList` działają jak ich odpowiedniki dla AniList.
+
 ## Frontmatter
 
 Każda karta to notatka, a wszystko, co wtyczka o niej wie, jest we frontmatterze:
@@ -134,8 +136,10 @@ Twoja biblioteka to zwykłe notatki i działa offline. Wtyczka łączy się z si
 | `api.rawg.io` | Wyszukiwanie gier | Tytuł, klucz RAWG |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Wyszukiwanie gier i okładki | Tytuł lub id aplikacji Steam |
 | `api.deezer.com` | Wyszukiwanie muzyki | Album lub wykonawca |
-| `graphql.anilist.co` | Wyszukiwanie anime; synchronizacja z AniList | Tytuł; twój token, postęp, status i ocena |
+| `graphql.anilist.co` | Wyszukiwanie anime; synchronizacja z AniList; id MyAnimeList do synchronizacji | Tytuł; twój token, postęp, status i ocena; id AniList |
 | `anilist.co` | Klikasz **Połącz** | Client ID, otwierany w przeglądarce |
+| `myanimelist.net` | Klikasz **Połącz** dla MyAnimeList; odnawianie tokenu | Client ID i sekret, kod autoryzacji, token odświeżania |
+| `api.myanimelist.net` | Synchronizacja z MyAnimeList | Twój token, postęp, status i ocena |
 | `s4.anilist.co` | Banery anime | Ścieżka CDN |
 | `comicvine.gamespot.com` | Wyszukiwanie komiksów | Tytuł, klucz Comic Vine |
 | `v3-cinemeta.strem.io` | Dodanie lub odświeżenie filmu albo serialu | Id IMDb |
@@ -159,6 +163,8 @@ Twoja biblioteka to zwykłe notatki i działa offline. Wtyczka łączy się z si
 | `Udostępnij bieżącą notatkę` | Otwiera kartę do udostępnienia |
 | `Wyślij bieżącą notatkę do AniList` | Wysyła postęp, status i ocenę |
 | `Pobierz postęp z AniList` | Aktualizuje notatki z twojej listy AniList |
+| `Wyślij bieżącą notatkę do MyAnimeList` | Wysyła postęp, status i ocenę |
+| `Pobierz postęp z MyAnimeList` | Aktualizuje notatki z twojej listy MyAnimeList |
 
 ## Wsparcie
 

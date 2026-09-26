@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Das Panel oben im Tab „Bibliothek“ zeigt die Spalten, die du unter Einstellu
 
 Zum Synchronisieren registrierst du einen Client unter [anilist.co/settings/developer](https://anilist.co/settings/developer) mit der Redirect-URL `https://anilist.co/api/v2/oauth/pin`. Füge die Client ID unter Einstellungen → Library → AniList-Synchronisierung ein, klicke auf **Verbinden** und füge das Token ein, das AniList anzeigt. `Aktuelle Notiz zu AniList übertragen` sendet Fortschritt, Status und Wertung. `Fortschritt von AniList abrufen` aktualisiert deine Notizen, setzt Fortschritt nie zurück und lässt `My Rating` unverändert. Nur Notizen mit `Source: anilist` werden synchronisiert.
 
+Dieselben Notizen lassen sich mit MyAnimeList synchronisieren. Lege unter [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) einen Client mit der Redirect-URL `http://localhost` an, füge seine Client ID (und das Client Secret, falls vorhanden) unter Einstellungen → Library → MyAnimeList-Synchronisierung ein, klicke auf **Verbinden** und füge die Adresse ein, die dein Browser öffnet. Den MyAnimeList-Eintrag jedes Titels findet das Plugin über AniList, und den Token erneuert es selbst. `Aktuelle Notiz zu MyAnimeList übertragen` und `Fortschritt von MyAnimeList abrufen` arbeiten wie ihre AniList-Gegenstücke.
+
 ## Frontmatter
 
 Jede Karte ist eine Notiz, und alles, was das Plugin über sie weiß, steht im Frontmatter:
@@ -134,8 +136,10 @@ Deine Bibliothek besteht aus einfachen Notizen und funktioniert offline. Das Plu
 | `api.rawg.io` | Spielesuche | Titel, RAWG-Schlüssel |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Spielesuche und Cover | Titel oder Steam-App-ID |
 | `api.deezer.com` | Musiksuche | Album oder Künstler |
-| `graphql.anilist.co` | Anime-Suche; AniList-Synchronisierung | Titel; dein Token, Fortschritt, Status und Wertung |
+| `graphql.anilist.co` | Anime-Suche; AniList-Synchronisierung; MyAnimeList-IDs für die Synchronisierung | Titel; dein Token, Fortschritt, Status und Wertung; AniList-IDs |
 | `anilist.co` | Du klickst auf **Verbinden** | Client ID, im Browser geöffnet |
+| `myanimelist.net` | Du klickst bei MyAnimeList auf **Verbinden**; Token-Erneuerung | Client ID und Secret, Autorisierungscode, Refresh-Token |
+| `api.myanimelist.net` | MyAnimeList-Synchronisierung | Dein Token, Fortschritt, Status und Wertung |
 | `s4.anilist.co` | Anime-Banner | CDN-Pfad |
 | `comicvine.gamespot.com` | Comicsuche | Titel, Comic-Vine-Schlüssel |
 | `v3-cinemeta.strem.io` | Hinzufügen oder Aktualisieren eines Films oder einer Serie | IMDb-ID |
@@ -159,6 +163,8 @@ Deine Bibliothek besteht aus einfachen Notizen und funktioniert offline. Das Plu
 | `Aktuelle Notiz teilen` | Öffnet die Teilen-Karte |
 | `Aktuelle Notiz zu AniList übertragen` | Sendet Fortschritt, Status und Wertung |
 | `Fortschritt von AniList abrufen` | Aktualisiert Notizen aus deiner AniList-Liste |
+| `Aktuelle Notiz zu MyAnimeList übertragen` | Sendet Fortschritt, Status und Wertung |
+| `Fortschritt von MyAnimeList abrufen` | Aktualisiert Notizen aus deiner MyAnimeList-Liste |
 
 ## Support
 

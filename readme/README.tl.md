@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Gumuguhit ang **Ibahagi** sa header ng tala ng card na may poster, pamagat, taon
 
 Para i-sync ang anime, magrehistro ng client sa [anilist.co/settings/developer](https://anilist.co/settings/developer) na may redirect URL na `https://anilist.co/api/v2/oauth/pin`. I-paste ang Client ID sa Settings → Library → AniList sync, i-click ang **Ikonekta**, at i-paste ang token na ipinapakita ng AniList. Ipinapadala ng `I-push ang kasalukuyang tala sa AniList` ang progreso, status, at score. Ina-update ng `Kunin ang progreso mula sa AniList` ang iyong mga tala, hindi kailanman ibinabalik ang progreso, at hindi ginagalaw ang `My Rating`. Ang mga tala lang na may `Source: anilist` ang nagsi-sync.
 
+Nagsi-sync din sa MyAnimeList ang parehong mga tala. Gumawa ng client sa [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) na may redirect URL na `http://localhost`, i-paste ang Client ID nito (at Client Secret kung mayroon) sa Settings → Library → MyAnimeList sync, i-click ang **Ikonekta**, at i-paste ang address na bubuksan ng browser. Hinahanap ng plugin ang entry sa MyAnimeList ng bawat pamagat sa pamamagitan ng AniList at kusang nire-renew ang token. Gumagana ang `I-push ang kasalukuyang tala sa MyAnimeList` at `Kunin ang progreso mula sa MyAnimeList` tulad ng mga katapat nila sa AniList.
+
 ## Frontmatter
 
 Ang bawat card ay isang tala, at lahat ng alam ng plugin tungkol dito ay nasa frontmatter:
@@ -134,8 +136,10 @@ Ang iyong library ay mga karaniwang tala at gumagana offline. Nag-o-online lang 
 | `api.rawg.io` | Paghahanap ng laro | Pamagat, RAWG key |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Paghahanap ng laro at mga cover | Pamagat o Steam app id |
 | `api.deezer.com` | Paghahanap ng musika | Album o artist |
-| `graphql.anilist.co` | Paghahanap ng anime; AniList sync | Pamagat; ang iyong token, progreso, status, at score |
+| `graphql.anilist.co` | Paghahanap ng anime; AniList sync; mga id ng MyAnimeList para sa sync | Pamagat; ang iyong token, progreso, status, at score; mga id ng AniList |
 | `anilist.co` | Nag-click ka ng **Ikonekta** | Client ID, binubuksan sa iyong browser |
+| `myanimelist.net` | Iki-click mo ang **Ikonekta** para sa MyAnimeList; pag-renew ng token | Client ID at secret, authorization code, refresh token |
+| `api.myanimelist.net` | Pag-sync sa MyAnimeList | Ang iyong token, progreso, status, at score |
 | `s4.anilist.co` | Mga banner ng anime | CDN path |
 | `comicvine.gamespot.com` | Paghahanap ng komiks | Pamagat, Comic Vine key |
 | `v3-cinemeta.strem.io` | Pagdagdag o pag-refresh ng pelikula o serye | IMDb id |
@@ -159,6 +163,8 @@ Ang iyong library ay mga karaniwang tala at gumagana offline. Nag-o-online lang 
 | `Ibahagi ang kasalukuyang tala` | Binubuksan ang share card |
 | `I-push ang kasalukuyang tala sa AniList` | Ipinapadala ang progreso, status, at score |
 | `Kunin ang progreso mula sa AniList` | Ina-update ang mga tala mula sa iyong AniList list |
+| `I-push ang kasalukuyang tala sa MyAnimeList` | Ipinapadala ang progreso, status, at score |
+| `Kunin ang progreso mula sa MyAnimeList` | Ina-update ang mga tala mula sa iyong MyAnimeList list |
 
 ## Suporta
 

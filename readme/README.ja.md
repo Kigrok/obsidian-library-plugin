@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 アニメを同期するには、[anilist.co/settings/developer](https://anilist.co/settings/developer) でリダイレクト URL `https://anilist.co/api/v2/oauth/pin` のクライアントを登録します。Client ID を 設定 → Library → AniList 同期 に貼り付けて **接続** をクリックし、AniList に表示されるトークンを貼り付けます。`現在のノートを AniList に送信` は進捗、ステータス、スコアを送信します。`AniList から進捗を取得` はノートを更新しますが、進捗を戻すことはなく、`My Rating` も変更しません。同期されるのは `Source: anilist` のノートだけです。
 
+同じノートは MyAnimeList とも同期できます。[myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) でリダイレクト URL を `http://localhost` にしたクライアントを作成し、Client ID（あれば Client Secret も）を 設定 → Library → MyAnimeList 同期 に貼り付けて **接続** を押し、ブラウザが開いたアドレスを貼り付けます。各作品の MyAnimeList のエントリは AniList 経由で見つけ、トークンは自動で更新します。`現在のノートを MyAnimeList に送信` と `MyAnimeList から進捗を取得` は AniList 用のコマンドと同じように動きます。
+
 ## フロントマター
 
 カードはそれぞれ 1 つのノートで、プラグインが持つ情報はすべてフロントマターにあります：
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | ゲームの検索 | タイトル、RAWG キー |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | ゲームの検索とカバー | タイトルまたは Steam アプリ ID |
 | `api.deezer.com` | 音楽の検索 | アルバムまたはアーティスト |
-| `graphql.anilist.co` | アニメの検索、AniList 同期 | タイトル、トークン・進捗・ステータス・スコア |
+| `graphql.anilist.co` | アニメの検索、AniList 同期; 同期用の MyAnimeList ID | タイトル、トークン・進捗・ステータス・スコア; AniList ID |
 | `anilist.co` | **接続** をクリックしたとき | Client ID（ブラウザで開きます） |
+| `myanimelist.net` | MyAnimeList の **接続** を押したとき、トークン更新時 | Client ID とシークレット、認可コード、リフレッシュトークン |
+| `api.myanimelist.net` | MyAnimeList 同期 | トークン、進捗、ステータス、スコア |
 | `s4.anilist.co` | アニメのバナー | CDN パス |
 | `comicvine.gamespot.com` | 漫画の検索 | タイトル、Comic Vine キー |
 | `v3-cinemeta.strem.io` | 映画・ドラマの追加または更新 | IMDb ID |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `現在のノートを共有` | 共有カードを開く |
 | `現在のノートを AniList に送信` | 進捗、ステータス、スコアを送信 |
 | `AniList から進捗を取得` | AniList のリストからノートを更新 |
+| `現在のノートを MyAnimeList に送信` | 進捗、ステータス、スコアを送信 |
+| `MyAnimeList から進捗を取得` | MyAnimeList のリストからノートを更新 |
 
 ## サポート
 

@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 برای همگام‌سازی انیمه، یک کلاینت در [anilist.co/settings/developer](https://anilist.co/settings/developer) با نشانی بازگشت `https://anilist.co/api/v2/oauth/pin` ثبت کنید. Client ID را در تنظیمات ← Library ← همگام‌سازی AniList جای‌گذاری کنید، روی **اتصال** بزنید و توکنی را که AniList نشان می‌دهد جای‌گذاری کنید. `ارسال یادداشت فعلی به AniList` پیشرفت، وضعیت و امتیاز را می‌فرستد. `دریافت پیشرفت از AniList` یادداشت‌هایتان را به‌روز می‌کند، هرگز پیشرفت را عقب نمی‌برد و به `My Rating` دست نمی‌زند. فقط یادداشت‌های دارای `Source: anilist` همگام می‌شوند.
 
+همین یادداشت‌ها با MyAnimeList هم همگام می‌شوند. در [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) یک کلاینت با نشانی بازگشت `http://localhost` بسازید، Client ID آن را (و اگر دارد Client Secret را) در تنظیمات ← Library ← همگام‌سازی MyAnimeList وارد کنید، روی **اتصال** بزنید و نشانی‌ای را که مرورگر باز می‌کند وارد کنید. افزونه مدخل MyAnimeList هر عنوان را از طریق AniList پیدا می‌کند و توکن را خودش تازه می‌کند. `ارسال یادداشت فعلی به MyAnimeList` و `دریافت پیشرفت از MyAnimeList` مثل همتاهای AniList کار می‌کنند.
+
 ## Frontmatter
 
 هر کارت یک یادداشت است و هر چه افزونه دربارهٔ آن می‌داند در frontmatter است:
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | جست‌وجوی بازی | عنوان، کلید RAWG |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | جست‌وجوی بازی و جلدها | عنوان یا شناسهٔ برنامهٔ Steam |
 | `api.deezer.com` | جست‌وجوی موسیقی | آلبوم یا هنرمند |
-| `graphql.anilist.co` | جست‌وجوی انیمه؛ همگام‌سازی AniList | عنوان؛ توکن شما، پیشرفت، وضعیت و امتیاز |
+| `graphql.anilist.co` | جست‌وجوی انیمه؛ همگام‌سازی AniList; شناسه‌های MyAnimeList برای همگام‌سازی | عنوان؛ توکن شما، پیشرفت، وضعیت و امتیاز; شناسه‌های AniList |
 | `anilist.co` | روی **اتصال** می‌زنید | Client ID، در مرورگر باز می‌شود |
+| `myanimelist.net` | روی **اتصال** برای MyAnimeList می‌زنید؛ تازه‌سازی توکن | Client ID و رمز، کد مجوز، توکن تازه‌سازی |
+| `api.myanimelist.net` | همگام‌سازی MyAnimeList | توکن شما، پیشرفت، وضعیت و امتیاز |
 | `s4.anilist.co` | بنرهای انیمه | مسیر CDN |
 | `comicvine.gamespot.com` | جست‌وجوی کمیک | عنوان، کلید Comic Vine |
 | `v3-cinemeta.strem.io` | افزودن یا به‌روزرسانی فیلم یا سریال | شناسهٔ IMDb |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `اشتراک‌گذاری یادداشت فعلی` | کارت هم‌رسانی را باز می‌کند |
 | `ارسال یادداشت فعلی به AniList` | پیشرفت، وضعیت و امتیاز را می‌فرستد |
 | `دریافت پیشرفت از AniList` | یادداشت‌ها را از فهرست AniList شما به‌روز می‌کند |
+| `ارسال یادداشت فعلی به MyAnimeList` | پیشرفت، وضعیت و امتیاز را می‌فرستد |
+| `دریافت پیشرفت از MyAnimeList` | یادداشت‌ها را از فهرست MyAnimeList شما به‌روز می‌کند |
 
 ## پشتیبانی
 

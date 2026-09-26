@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Het paneel bovenaan het tabblad Bibliotheek toont de kolommen die je kiest in In
 
 Registreer voor anime-synchronisatie een client op [anilist.co/settings/developer](https://anilist.co/settings/developer) met de redirect-URL `https://anilist.co/api/v2/oauth/pin`. Plak de Client ID in Instellingen → Library → AniList-synchronisatie, klik op **Verbinden** en plak het token dat AniList toont. `Huidige notitie naar AniList sturen` stuurt voortgang, status en score. `Voortgang ophalen van AniList` werkt je notities bij, zet voortgang nooit terug en laat `My Rating` met rust. Alleen notities met `Source: anilist` worden gesynchroniseerd.
 
+Dezelfde notities synchroniseren ook met MyAnimeList. Maak op [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) een client met de redirect-URL `http://localhost`, plak de Client ID (en het Client Secret, als dat er is) in Instellingen → Library → MyAnimeList-synchronisatie, klik op **Verbinden** en plak het adres dat je browser opent. De plugin vindt het MyAnimeList-item van elke titel via AniList en vernieuwt het token zelf. `Huidige notitie naar MyAnimeList sturen` en `Voortgang ophalen van MyAnimeList` werken zoals hun AniList-tegenhangers.
+
 ## Frontmatter
 
 Elke kaart is een notitie, en alles wat de plugin erover weet staat in de frontmatter:
@@ -134,8 +136,10 @@ Je bibliotheek bestaat uit gewone notities en werkt offline. De plugin gaat onli
 | `api.rawg.io` | Games zoeken | Titel, RAWG-sleutel |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Games zoeken en covers | Titel of Steam-app-id |
 | `api.deezer.com` | Muziek zoeken | Album of artiest |
-| `graphql.anilist.co` | Anime zoeken; AniList-synchronisatie | Titel; je token, voortgang, status en score |
+| `graphql.anilist.co` | Anime zoeken; AniList-synchronisatie; MyAnimeList-id's voor synchronisatie | Titel; je token, voortgang, status en score; AniList-id's |
 | `anilist.co` | Je klikt op **Verbinden** | Client ID, geopend in je browser |
+| `myanimelist.net` | Je klikt op **Verbinden** voor MyAnimeList; token vernieuwen | Client ID en secret, autorisatiecode, refresh-token |
+| `api.myanimelist.net` | MyAnimeList-synchronisatie | Je token, voortgang, status en score |
 | `s4.anilist.co` | Anime-banners | CDN-pad |
 | `comicvine.gamespot.com` | Strips zoeken | Titel, Comic Vine-sleutel |
 | `v3-cinemeta.strem.io` | Een film of serie toevoegen of verversen | IMDb-id |
@@ -159,6 +163,8 @@ Je bibliotheek bestaat uit gewone notities en werkt offline. De plugin gaat onli
 | `Deel huidige notitie` | Opent de deelkaart |
 | `Huidige notitie naar AniList sturen` | Stuurt voortgang, status en score |
 | `Voortgang ophalen van AniList` | Werkt notities bij vanuit je AniList-lijst |
+| `Huidige notitie naar MyAnimeList sturen` | Stuurt voortgang, status en score |
+| `Voortgang ophalen van MyAnimeList` | Werkt notities bij vanuit je MyAnimeList-lijst |
 
 ## Ondersteuning
 

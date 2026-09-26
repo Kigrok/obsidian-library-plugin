@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 要同步动画，请在 [anilist.co/settings/developer](https://anilist.co/settings/developer) 注册一个客户端，重定向 URL 设为 `https://anilist.co/api/v2/oauth/pin`。把 Client ID 粘贴到 设置 → Library → AniList 同步，点击 **连接**，再粘贴 AniList 显示的令牌。`将当前笔记推送到 AniList` 会发送进度、状态和评分。`从 AniList 拉取进度` 会更新你的笔记，但从不回退进度，也不改动 `My Rating`。只有带 `Source: anilist` 的笔记会同步。
 
+这些笔记也可以同步到 MyAnimeList。在 [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) 创建一个客户端，重定向地址填 `http://localhost`，把它的 Client ID（如有 Client Secret 也一起）粘贴到 设置 → Library → MyAnimeList 同步，点击 **连接**，然后粘贴浏览器打开的地址。插件通过 AniList 找到每部作品在 MyAnimeList 上的条目，并自动续期令牌。`将当前笔记推送到 MyAnimeList` 和 `从 MyAnimeList 拉取进度` 的用法与 AniList 的对应命令相同。
+
 ## Frontmatter
 
 每张卡片都是一篇笔记，插件知道的一切都在 frontmatter 中：
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | 搜索游戏 | 标题、RAWG 密钥 |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | 搜索游戏和封面 | 标题或 Steam 应用 ID |
 | `api.deezer.com` | 搜索音乐 | 专辑或艺术家 |
-| `graphql.anilist.co` | 搜索动画；AniList 同步 | 标题；你的令牌、进度、状态和评分 |
+| `graphql.anilist.co` | 搜索动画；AniList 同步; 用于同步的 MyAnimeList ID | 标题；你的令牌、进度、状态和评分; AniList ID |
 | `anilist.co` | 你点击 **连接** 时 | Client ID，在浏览器中打开 |
+| `myanimelist.net` | 为 MyAnimeList 点击 **连接** 时；令牌续期 | Client ID 和密钥、授权码、刷新令牌 |
+| `api.myanimelist.net` | MyAnimeList 同步 | 你的令牌、进度、状态和评分 |
 | `s4.anilist.co` | 动画横幅 | CDN 路径 |
 | `comicvine.gamespot.com` | 搜索漫画 | 标题、Comic Vine 密钥 |
 | `v3-cinemeta.strem.io` | 添加或刷新电影、剧集 | IMDb ID |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `分享当前笔记` | 打开分享卡片 |
 | `将当前笔记推送到 AniList` | 发送进度、状态和评分 |
 | `从 AniList 拉取进度` | 根据你的 AniList 列表更新笔记 |
+| `将当前笔记推送到 MyAnimeList` | 发送进度、状态和评分 |
+| `从 MyAnimeList 拉取进度` | 根据你的 MyAnimeList 列表更新笔记 |
 
 ## 支持
 

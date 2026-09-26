@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Il pannello in cima alla scheda Libreria mostra le colonne scelte in Impostazion
 
 Per sincronizzare gli anime, registra un client su [anilist.co/settings/developer](https://anilist.co/settings/developer) con l'URL di reindirizzamento `https://anilist.co/api/v2/oauth/pin`. Incolla il Client ID in Impostazioni → Library → Sincronizzazione AniList, fai clic su **Connetti** e incolla il token che AniList ti mostra. `Invia la nota corrente ad AniList` invia progressi, stato e voto. `Recupera i progressi da AniList` aggiorna le tue note, non fa mai tornare indietro i progressi e lascia stare `My Rating`. Si sincronizzano solo le note con `Source: anilist`.
 
+Le stesse note si sincronizzano con MyAnimeList. Crea un client su [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) con l'URL di reindirizzamento `http://localhost`, incolla il suo Client ID (e il Client Secret, se presente) in Impostazioni → Library → Sincronizzazione MyAnimeList, fai clic su **Connetti** e incolla l'indirizzo che apre il browser. Il plugin trova la voce MyAnimeList di ogni titolo tramite AniList e rinnova il token da solo. `Invia la nota corrente ad MyAnimeList` e `Recupera i progressi da MyAnimeList` funzionano come i loro equivalenti AniList.
+
 ## Frontmatter
 
 Ogni titolo è una nota, e tutto ciò che il plugin ne sa è nel frontmatter:
@@ -134,8 +136,10 @@ La tua libreria è fatta di semplici note e funziona offline. Il plugin va onlin
 | `api.rawg.io` | Ricerca di giochi | Titolo, chiave RAWG |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Ricerca di giochi e copertine | Titolo o id dell'app Steam |
 | `api.deezer.com` | Ricerca di musica | Album o artista |
-| `graphql.anilist.co` | Ricerca di anime; sincronizzazione AniList | Titolo; il tuo token, progressi, stato e voto |
+| `graphql.anilist.co` | Ricerca di anime; sincronizzazione AniList; id MyAnimeList per la sincronizzazione | Titolo; il tuo token, progressi, stato e voto; id AniList |
 | `anilist.co` | Fai clic su **Connetti** | Client ID, aperto nel browser |
+| `myanimelist.net` | Fai clic su **Connetti** per MyAnimeList; rinnovo del token | Client ID e segreto, codice di autorizzazione, token di rinnovo |
+| `api.myanimelist.net` | Sincronizzazione MyAnimeList | Il tuo token, progressi, stato e voto |
 | `s4.anilist.co` | Banner degli anime | Percorso CDN |
 | `comicvine.gamespot.com` | Ricerca di fumetti | Titolo, chiave Comic Vine |
 | `v3-cinemeta.strem.io` | Aggiunta o aggiornamento di un film o di una serie | Id IMDb |
@@ -159,6 +163,8 @@ La tua libreria è fatta di semplici note e funziona offline. Il plugin va onlin
 | `Condividi la nota corrente` | Apre l'immagine da condividere |
 | `Invia la nota corrente ad AniList` | Invia progressi, stato e voto |
 | `Recupera i progressi da AniList` | Aggiorna le note dalla tua lista AniList |
+| `Invia la nota corrente ad MyAnimeList` | Invia progressi, stato e voto |
+| `Recupera i progressi da MyAnimeList` | Aggiorna le note dalla tua lista MyAnimeList |
 
 ## Supporto
 

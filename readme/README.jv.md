@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Panel ing dhuwur tab "Pustaka" nampilake kolom sing sampeyan pilih ing Settings 
 
 Kanggo nyinkronake anime, daftarake klien ing [anilist.co/settings/developer](https://anilist.co/settings/developer) karo redirect URL `https://anilist.co/api/v2/oauth/pin`. Tempel Client ID ing Settings → Library → Sinkronisasi AniList, klik **Sambungake**, banjur tempel token sing ditampilake AniList. `Kirim cathetan saiki menyang AniList` ngirim kemajuan, status lan biji. `Tarik kemajuan saka AniList` nganyari cathetan sampeyan, ora tau mundurake kemajuan lan ora ngowahi `My Rating`. Mung cathetan sing nduweni `Source: anilist` sing disinkronake.
 
+Cathetan sing padha uga bisa sinkron karo MyAnimeList. Gawe klien ing [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) nganggo URL pangalihan `http://localhost`, tempel Client ID-ne (lan Client Secret yen ana) ing Settings → Library → Sinkronisasi MyAnimeList, klik **Sambungake**, banjur tempel alamat sing dibukak browser. Plugin nggoleki entri MyAnimeList saben judhul liwat AniList lan nganyari token dhewe. `Kirim cathetan saiki menyang MyAnimeList` lan `Tarik kemajuan saka MyAnimeList` makarya kaya pasangane kanggo AniList.
+
 ## Frontmatter
 
 Saben kertu iku cathetan, lan kabeh sing dingerteni plugin ana ing frontmatter:
@@ -134,8 +136,10 @@ Perpustakaan sampeyan mung cathetan biasa lan bisa mlaku offline. Plugin mung on
 | `api.rawg.io` | Nggoleki game | Judhul, kunci RAWG |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Nggoleki game lan sampul | Judhul utawa id aplikasi Steam |
 | `api.deezer.com` | Nggoleki musik | Album utawa artis |
-| `graphql.anilist.co` | Nggoleki anime; sinkronisasi AniList | Judhul; token, kemajuan, status lan biji sampeyan |
+| `graphql.anilist.co` | Nggoleki anime; sinkronisasi AniList; id MyAnimeList kanggo sinkronisasi | Judhul; token, kemajuan, status lan biji sampeyan; id AniList |
 | `anilist.co` | Sampeyan ngeklik **Sambungake** | Client ID, dibukak ing browser |
+| `myanimelist.net` | Sampeyan klik **Sambungake** kanggo MyAnimeList; nganyari token | Client ID lan rahasia, kode otorisasi, token refresh |
+| `api.myanimelist.net` | Sinkronisasi MyAnimeList | Token sampeyan, kemajuan, status lan biji |
 | `s4.anilist.co` | Banner anime | Path CDN |
 | `comicvine.gamespot.com` | Nggoleki komik | Judhul, kunci Comic Vine |
 | `v3-cinemeta.strem.io` | Nambah utawa nyegerake film utawa seri | IMDb id |
@@ -159,6 +163,8 @@ Perpustakaan sampeyan mung cathetan biasa lan bisa mlaku offline. Plugin mung on
 | `Bagi cathetan iki` | Mbukak kertu bagi |
 | `Kirim cathetan saiki menyang AniList` | Ngirim kemajuan, status lan biji |
 | `Tarik kemajuan saka AniList` | Nganyari cathetan saka dhaptar AniList sampeyan |
+| `Kirim cathetan saiki menyang MyAnimeList` | Ngirim kemajuan, status lan biji |
+| `Tarik kemajuan saka MyAnimeList` | Nganyari cathetan saka dhaptar MyAnimeList sampeyan |
 
 ## Dhukungan
 

@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Panel v horní části karty Knihovna ukazuje sloupce vybrané v Nastavení → 
 
 Pro synchronizaci anime zaregistrujte klienta na [anilist.co/settings/developer](https://anilist.co/settings/developer) s adresou přesměrování `https://anilist.co/api/v2/oauth/pin`. Vložte Client ID do Nastavení → Library → Synchronizace s AniList, klikněte na **Připojit** a vložte token, který AniList zobrazí. `Odeslat aktuální poznámku do AniList` odešle postup, stav a hodnocení. `Načíst postup z AniList` aktualizuje poznámky, nikdy nevrací postup zpět a nesahá na `My Rating`. Synchronizují se jen poznámky se `Source: anilist`.
 
+Stejné poznámky se synchronizují s MyAnimeList. Vytvořte klienta na [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) s adresou přesměrování `http://localhost`, vložte jeho Client ID (a Client Secret, pokud ho má) do Nastavení → Library → Synchronizace s MyAnimeList, klikněte na **Připojit** a vložte adresu, kterou otevře prohlížeč. Záznam MyAnimeList každého titulu plugin najde přes AniList a token obnovuje sám. `Odeslat aktuální poznámku do MyAnimeList` a `Načíst postup z MyAnimeList` fungují jako jejich protějšky pro AniList.
+
 ## Frontmatter
 
 Každá karta je poznámka a vše, co o ní plugin ví, je ve frontmatteru:
@@ -134,8 +136,10 @@ Vaše knihovna jsou obyčejné poznámky a funguje offline. Plugin jde online, k
 | `api.rawg.io` | Hledání her | Název, klíč RAWG |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Hledání her a obálky | Název nebo id aplikace Steam |
 | `api.deezer.com` | Hledání hudby | Album nebo interpret |
-| `graphql.anilist.co` | Hledání anime; synchronizace s AniList | Název; váš token, postup, stav a hodnocení |
+| `graphql.anilist.co` | Hledání anime; synchronizace s AniList; id MyAnimeList pro synchronizaci | Název; váš token, postup, stav a hodnocení; id AniList |
 | `anilist.co` | Kliknete na **Připojit** | Client ID, otevřené v prohlížeči |
+| `myanimelist.net` | Kliknete na **Připojit** u MyAnimeList; obnovení tokenu | Client ID a tajný klíč, autorizační kód, obnovovací token |
+| `api.myanimelist.net` | Synchronizace s MyAnimeList | Váš token, postup, stav a hodnocení |
 | `s4.anilist.co` | Bannery anime | Cesta CDN |
 | `comicvine.gamespot.com` | Hledání komiksů | Název, klíč Comic Vine |
 | `v3-cinemeta.strem.io` | Přidání nebo obnovení filmu či seriálu | IMDb id |
@@ -159,6 +163,8 @@ Vaše knihovna jsou obyčejné poznámky a funguje offline. Plugin jde online, k
 | `Sdílet aktuální poznámku` | Otevře kartu ke sdílení |
 | `Odeslat aktuální poznámku do AniList` | Odešle postup, stav a hodnocení |
 | `Načíst postup z AniList` | Aktualizuje poznámky z vašeho seznamu AniList |
+| `Odeslat aktuální poznámku do MyAnimeList` | Odešle postup, stav a hodnocení |
+| `Načíst postup z MyAnimeList` | Aktualizuje poznámky z vašeho seznamu MyAnimeList |
 
 ## Podpora
 

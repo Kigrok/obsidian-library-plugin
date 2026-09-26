@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 애니메이션을 동기화하려면 [anilist.co/settings/developer](https://anilist.co/settings/developer)에서 리디렉션 URL을 `https://anilist.co/api/v2/oauth/pin`으로 한 클라이언트를 등록하세요. Client ID를 설정 → Library → AniList 동기화에 붙여 넣고 **연결**를 누른 뒤, AniList가 보여주는 토큰을 붙여 넣습니다. `현재 노트를 AniList에 업로드`는 진행 상황, 상태, 점수를 보냅니다. `AniList에서 진행률 가져오기`은 노트를 업데이트하지만 진행 상황을 되돌리지 않고 `My Rating`도 건드리지 않습니다. `Source: anilist`인 노트만 동기화됩니다.
 
+같은 노트를 MyAnimeList와도 동기화할 수 있습니다. [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig)에서 리디렉션 URL이 `http://localhost`인 클라이언트를 만들고, Client ID(있다면 Client Secret도)를 설정 → Library → MyAnimeList 동기화에 붙여 넣은 뒤 **연결**를 누르고 브라우저가 연 주소를 붙여 넣으세요. 플러그인은 각 작품의 MyAnimeList 항목을 AniList를 통해 찾고 토큰을 스스로 갱신합니다. `현재 노트를 MyAnimeList에 업로드`와 `MyAnimeList에서 진행률 가져오기`은 AniList 명령과 같은 방식으로 동작합니다.
+
 ## 프런트매터
 
 카드 하나가 노트 하나이며, 플러그인이 아는 모든 정보는 프런트매터에 있습니다:
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | 게임 검색 | 제목, RAWG 키 |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | 게임 검색과 표지 | 제목 또는 Steam 앱 ID |
 | `api.deezer.com` | 음악 검색 | 앨범 또는 아티스트 |
-| `graphql.anilist.co` | 애니메이션 검색, AniList 동기화 | 제목, 토큰과 진행 상황, 상태, 점수 |
+| `graphql.anilist.co` | 애니메이션 검색, AniList 동기화; 동기화용 MyAnimeList ID | 제목, 토큰과 진행 상황, 상태, 점수; AniList ID |
 | `anilist.co` | **연결**를 누를 때 | Client ID, 브라우저에서 열림 |
+| `myanimelist.net` | MyAnimeList의 **연결**를 누를 때, 토큰 갱신 | Client ID와 시크릿, 인증 코드, 리프레시 토큰 |
+| `api.myanimelist.net` | MyAnimeList 동기화 | 토큰, 진행 상황, 상태, 점수 |
 | `s4.anilist.co` | 애니메이션 배너 | CDN 경로 |
 | `comicvine.gamespot.com` | 만화 검색 | 제목, Comic Vine 키 |
 | `v3-cinemeta.strem.io` | 영화나 시리즈 추가 또는 새로 고침 | IMDb ID |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `현재 노트 공유` | 공유 카드 열기 |
 | `현재 노트를 AniList에 업로드` | 진행 상황, 상태, 점수 보내기 |
 | `AniList에서 진행률 가져오기` | AniList 목록에서 노트 업데이트 |
+| `현재 노트를 MyAnimeList에 업로드` | 진행 상황, 상태, 점수 보내기 |
+| `MyAnimeList에서 진행률 가져오기` | MyAnimeList 목록에서 노트 업데이트 |
 
 ## 지원
 

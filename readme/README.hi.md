@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 एनीमे सिंक करने के लिए [anilist.co/settings/developer](https://anilist.co/settings/developer) पर रीडायरेक्ट URL `https://anilist.co/api/v2/oauth/pin` के साथ एक क्लाइंट रजिस्टर करें। Client ID को Settings → Library → AniList सिंक में पेस्ट करें, **कनेक्ट करें** पर क्लिक करें और AniList का दिखाया टोकन पेस्ट करें। `मौजूदा नोट को AniList पर भेजें` प्रगति, स्थिति और स्कोर भेजता है। `AniList से प्रगति प्राप्त करें` आपके नोट्स अपडेट करता है, प्रगति को कभी पीछे नहीं करता और `My Rating` को नहीं छूता। सिर्फ़ `Source: anilist` वाले नोट्स सिंक होते हैं।
 
+यही नोट्स MyAnimeList के साथ भी सिंक होते हैं। [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) पर रीडायरेक्ट URL `http://localhost` वाला क्लाइंट बनाएँ, उसका Client ID (और हो तो Client Secret) Settings → Library → MyAnimeList सिंक में चिपकाएँ, **कनेक्ट करें** दबाएँ और ब्राउज़र जो पता खोले उसे चिपकाएँ। प्लगइन हर शीर्षक की MyAnimeList प्रविष्टि AniList से ढूँढता है और टोकन खुद नवीनीकृत करता है। `मौजूदा नोट को MyAnimeList पर भेजें` और `MyAnimeList से प्रगति प्राप्त करें` अपने AniList जोड़ीदारों की तरह काम करते हैं।
+
 ## Frontmatter
 
 हर कार्ड एक नोट है, और प्लगइन उसके बारे में जो कुछ जानता है वह frontmatter में है:
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | गेम खोज | शीर्षक, RAWG कुंजी |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | गेम खोज और कवर | शीर्षक या Steam ऐप id |
 | `api.deezer.com` | संगीत खोज | एल्बम या कलाकार |
-| `graphql.anilist.co` | एनीमे खोज; AniList सिंक | शीर्षक; आपका टोकन, प्रगति, स्थिति और स्कोर |
+| `graphql.anilist.co` | एनीमे खोज; AniList सिंक; सिंक के लिए MyAnimeList आईडी | शीर्षक; आपका टोकन, प्रगति, स्थिति और स्कोर; AniList आईडी |
 | `anilist.co` | आप **कनेक्ट करें** पर क्लिक करते हैं | Client ID, आपके ब्राउज़र में खुलता है |
+| `myanimelist.net` | आप MyAnimeList के लिए **कनेक्ट करें** दबाते हैं; टोकन नवीनीकरण | Client ID और सीक्रेट, प्राधिकरण कोड, रीफ़्रेश टोकन |
+| `api.myanimelist.net` | MyAnimeList सिंक | आपका टोकन, प्रगति, स्थिति और स्कोर |
 | `s4.anilist.co` | एनीमे बैनर | CDN पथ |
 | `comicvine.gamespot.com` | कॉमिक्स खोज | शीर्षक, Comic Vine कुंजी |
 | `v3-cinemeta.strem.io` | फ़िल्म या सीरीज़ जोड़ना या रिफ़्रेश करना | IMDb id |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `मौजूदा नोट शेयर करें` | शेयर कार्ड खोलता है |
 | `मौजूदा नोट को AniList पर भेजें` | प्रगति, स्थिति और स्कोर भेजता है |
 | `AniList से प्रगति प्राप्त करें` | आपकी AniList सूची से नोट्स अपडेट करता है |
+| `मौजूदा नोट को MyAnimeList पर भेजें` | प्रगति, स्थिति और स्कोर भेजता है |
+| `MyAnimeList से प्रगति प्राप्त करें` | आपकी MyAnimeList सूची से नोट्स अपडेट करता है |
 
 ## सहायता
 

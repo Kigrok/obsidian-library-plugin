@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 หากต้องการซิงก์อนิเมะ ให้ลงทะเบียนไคลเอนต์ที่ [anilist.co/settings/developer](https://anilist.co/settings/developer) พร้อม redirect URL `https://anilist.co/api/v2/oauth/pin` วาง Client ID ใน การตั้งค่า → Library → การซิงก์ AniList คลิก **เชื่อมต่อ** แล้ววางโทเค็นที่ AniList แสดง `ส่งโน้ตปัจจุบันไปยัง AniList` ส่งความคืบหน้า สถานะ และคะแนน `ดึงความคืบหน้าจาก AniList` อัปเดตโน้ตของคุณ ไม่เคยถอยความคืบหน้า และไม่แตะ `My Rating` เฉพาะโน้ตที่มี `Source: anilist` เท่านั้นที่ซิงก์
 
+โน้ตชุดเดียวกันซิงก์กับ MyAnimeList ได้ด้วย สร้างไคลเอนต์ที่ [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) โดยใช้ redirect URL `http://localhost` วาง Client ID (และ Client Secret ถ้ามี) ใน การตั้งค่า → Library → การซิงก์ MyAnimeList กด **เชื่อมต่อ** แล้ววางที่อยู่ที่เบราว์เซอร์เปิดขึ้นมา ปลั๊กอินจะหารายการ MyAnimeList ของแต่ละเรื่องผ่าน AniList และต่ออายุโทเค็นเอง `ส่งโน้ตปัจจุบันไปยัง MyAnimeList` และ `ดึงความคืบหน้าจาก MyAnimeList` ทำงานเหมือนคำสั่งของ AniList
+
 ## Frontmatter
 
 การ์ดแต่ละใบคือโน้ต และทุกอย่างที่ปลั๊กอินรู้เกี่ยวกับมันอยู่ใน frontmatter:
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | ค้นหาเกม | ชื่อเรื่อง, คีย์ RAWG |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | ค้นหาเกมและปก | ชื่อเรื่องหรือ id แอป Steam |
 | `api.deezer.com` | ค้นหาเพลง | อัลบั้มหรือศิลปิน |
-| `graphql.anilist.co` | ค้นหาอนิเมะ; ซิงก์ AniList | ชื่อเรื่อง; โทเค็นของคุณ ความคืบหน้า สถานะ และคะแนน |
+| `graphql.anilist.co` | ค้นหาอนิเมะ; ซิงก์ AniList; id ของ MyAnimeList สำหรับซิงก์ | ชื่อเรื่อง; โทเค็นของคุณ ความคืบหน้า สถานะ และคะแนน; id ของ AniList |
 | `anilist.co` | คุณคลิก **เชื่อมต่อ** | Client ID เปิดในเบราว์เซอร์ของคุณ |
+| `myanimelist.net` | คุณกด **เชื่อมต่อ** สำหรับ MyAnimeList; ต่ออายุโทเค็น | Client ID และ secret, โค้ดยืนยันสิทธิ์, refresh token |
+| `api.myanimelist.net` | การซิงก์ MyAnimeList | โทเค็นของคุณ ความคืบหน้า สถานะ และคะแนน |
 | `s4.anilist.co` | แบนเนอร์อนิเมะ | พาธ CDN |
 | `comicvine.gamespot.com` | ค้นหาการ์ตูน | ชื่อเรื่อง, คีย์ Comic Vine |
 | `v3-cinemeta.strem.io` | เพิ่มหรือรีเฟรชภาพยนตร์หรือซีรีส์ | IMDb id |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `แชร์โน้ตปัจจุบัน` | เปิดการ์ดสำหรับแชร์ |
 | `ส่งโน้ตปัจจุบันไปยัง AniList` | ส่งความคืบหน้า สถานะ และคะแนน |
 | `ดึงความคืบหน้าจาก AniList` | อัปเดตโน้ตจากรายการ AniList ของคุณ |
+| `ส่งโน้ตปัจจุบันไปยัง MyAnimeList` | ส่งความคืบหน้า สถานะ และคะแนน |
+| `ดึงความคืบหน้าจาก MyAnimeList` | อัปเดตโน้ตจากรายการ MyAnimeList ของคุณ |
 
 ## การสนับสนุน
 

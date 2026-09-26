@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 כדי לסנכרן אנימה, רשמו לקוח ב-[anilist.co/settings/developer](https://anilist.co/settings/developer) עם כתובת ההפניה `https://anilist.co/api/v2/oauth/pin`. הדביקו את ה-Client ID ב-הגדרות ← Library ← סנכרון AniList, לחצו על **התחבר** והדביקו את הטוקן ש-AniList מציג. `שלח את הפתק הנוכחי ל-AniList` שולח התקדמות, סטטוס וציון. `משוך התקדמות מ-AniList` מעדכן את הפתקים שלכם, אף פעם לא מחזיר התקדמות אחורה ולא נוגע ב-`My Rating`. רק פתקים עם `Source: anilist` מסונכרנים.
 
+אותם פתקים מסתנכרנים גם עם MyAnimeList. צרו לקוח ב־[myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) עם כתובת ההפניה `http://localhost`, הדביקו את ה־Client ID שלו (ואת ה־Client Secret, אם יש) בהגדרות ← Library ← סנכרון MyAnimeList, לחצו על **התחבר** והדביקו את הכתובת שהדפדפן פותח. התוסף מוצא את הרשומה ב־MyAnimeList של כל כותר דרך AniList ומחדש את האסימון בעצמו. `שלח את הפתק הנוכחי ל-MyAnimeList` ו־`משוך התקדמות מ-MyAnimeList` פועלות כמו המקבילות שלהן ל־AniList.
+
 ## Frontmatter
 
 כל כרטיס הוא פתק, וכל מה שהתוסף יודע עליו נמצא ב-frontmatter:
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | חיפוש משחקים | שם, מפתח RAWG |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | חיפוש משחקים ועטיפות | שם או מזהה אפליקציה ב-Steam |
 | `api.deezer.com` | חיפוש מוזיקה | אלבום או אמן |
-| `graphql.anilist.co` | חיפוש אנימה; סנכרון AniList | שם; הטוקן שלכם, התקדמות, סטטוס וציון |
+| `graphql.anilist.co` | חיפוש אנימה; סנכרון AniList; מזהי MyAnimeList לסנכרון | שם; הטוקן שלכם, התקדמות, סטטוס וציון; מזהי AniList |
 | `anilist.co` | אתם לוחצים על **התחבר** | Client ID, נפתח בדפדפן |
+| `myanimelist.net` | לוחצים על **התחבר** עבור MyAnimeList; חידוש אסימון | Client ID וסוד, קוד הרשאה, אסימון רענון |
+| `api.myanimelist.net` | סנכרון MyAnimeList | האסימון שלכם, התקדמות, סטטוס וציון |
 | `s4.anilist.co` | באנרים של אנימה | נתיב CDN |
 | `comicvine.gamespot.com` | חיפוש קומיקס | שם, מפתח Comic Vine |
 | `v3-cinemeta.strem.io` | הוספה או רענון של סרט או סדרה | מזהה IMDb |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `שתף את הפתק הנוכחי` | פותחת את כרטיס השיתוף |
 | `שלח את הפתק הנוכחי ל-AniList` | שולחת התקדמות, סטטוס וציון |
 | `משוך התקדמות מ-AniList` | מעדכנת פתקים מרשימת ה-AniList שלכם |
+| `שלח את הפתק הנוכחי ל-MyAnimeList` | שולחת התקדמות, סטטוס וציון |
+| `משוך התקדמות מ-MyAnimeList` | מעדכנת פתקים מרשימת ה-MyAnimeList שלכם |
 
 ## תמיכה
 

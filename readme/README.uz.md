@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Qayd sarlavhasidagi **Ulashish** tugmasi poster, nom, yil, janr, aktyorlar, reyt
 
 Animeni sinxronlash uchun [anilist.co/settings/developer](https://anilist.co/settings/developer) sahifasida redirect URL `https://anilist.co/api/v2/oauth/pin` bo'lgan klient ro'yxatdan o'tkazing. Client ID'ni Sozlamalar → Library → AniList sinxronizatsiyasi bo'limiga qo'ying, **Ulanish** tugmasini bosing va AniList ko'rsatgan tokenni qo'ying. `Joriy eslatmani AniList ga yuborish` progress, holat va bahoni yuboradi. `AniList dan jarayonni yuklash` qaydlarni yangilaydi, progressni hech qachon orqaga qaytarmaydi va `My Rating`ga tegmaydi. Faqat `Source: anilist` bo'lgan qaydlar sinxronlanadi.
 
+Shu qaydlar MyAnimeList bilan ham sinxronlanadi. [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) sahifasida redirect URL `http://localhost` bo'lgan klient yarating, uning Client ID'sini (bo'lsa, Client Secret'ini) Sozlamalar → Library → MyAnimeList sinxronizatsiyasi bo'limiga qo'ying, **Ulanish** tugmasini bosing va brauzer ochgan manzilni qo'ying. Plagin har bir asarning MyAnimeList yozuvini AniList orqali topadi va tokenni o'zi yangilaydi. `Joriy eslatmani MyAnimeList ga yuborish` va `MyAnimeList dan jarayonni yuklash` AniList buyruqlari kabi ishlaydi.
+
 ## Frontmatter
 
 Har bir kartochka oddiy qayd va plagin u haqida biladigan hamma narsa frontmatter ichida saqlanadi:
@@ -134,8 +136,10 @@ Kutubxona oddiy qaydlardan iborat va oflayn ishlaydi. Plagin tarmoqqa siz qidirg
 | `api.rawg.io` | O'yin qidirish | Nom, RAWG kaliti |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | O'yin qidirish va muqovalar | Nom yoki Steam app id |
 | `api.deezer.com` | Musiqa qidirish | Albom yoki ijrochi |
-| `graphql.anilist.co` | Anime qidirish; AniList sinxronlash | Nom; tokeningiz, progress, holat va baho |
+| `graphql.anilist.co` | Anime qidirish; AniList sinxronlash; sinxronlash uchun MyAnimeList id | Nom; tokeningiz, progress, holat va baho; AniList id |
 | `anilist.co` | Siz **Ulanish** tugmasini bosasiz | Client ID, brauzerda ochiladi |
+| `myanimelist.net` | Siz MyAnimeList uchun **Ulanish** tugmasini bosasiz; tokenni yangilash | Client ID va sir, avtorizatsiya kodi, yangilash tokeni |
+| `api.myanimelist.net` | MyAnimeList sinxronlash | Tokeningiz, progress, holat va baho |
 | `s4.anilist.co` | Anime bannerlari | CDN yo'li |
 | `comicvine.gamespot.com` | Komiks qidirish | Nom, Comic Vine kaliti |
 | `v3-cinemeta.strem.io` | Film yoki serial qo'shish yoki yangilash | IMDb id |
@@ -159,6 +163,8 @@ Kutubxona oddiy qaydlardan iborat va oflayn ishlaydi. Plagin tarmoqqa siz qidirg
 | `Joriy eslatmani ulashish` | Ulashish kartochkasini ochadi |
 | `Joriy eslatmani AniList ga yuborish` | Progress, holat va bahoni yuboradi |
 | `AniList dan jarayonni yuklash` | Qaydlarni AniList ro'yxatingizdan yangilaydi |
+| `Joriy eslatmani MyAnimeList ga yuborish` | Progress, holat va bahoni yuboradi |
+| `MyAnimeList dan jarayonni yuklash` | Qaydlarni MyAnimeList ro'yxatingizdan yangilaydi |
 
 ## Yordam
 

@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@
 
 Щоб синхронізувати аніме, зареєструйте клієнт на [anilist.co/settings/developer](https://anilist.co/settings/developer) з redirect URL `https://anilist.co/api/v2/oauth/pin`. Вставте Client ID у Налаштування → Library → Синхронізація з AniList, натисніть **Підключити** і вставте токен, який покаже AniList. `Надіслати поточну нотатку до AniList` надсилає прогрес, статус і оцінку. `Завантажити прогрес з AniList` оновлює нотатки, ніколи не повертає прогрес назад і не чіпає `My Rating`. Синхронізуються лише нотатки з `Source: anilist`.
 
+Ті самі нотатки синхронізуються з MyAnimeList. Створіть клієнт на [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) з redirect URL `http://localhost`, вставте його Client ID (і Client Secret, якщо він є) у Налаштування → Library → Синхронізація з MyAnimeList, натисніть **Підключити** і вставте адресу, яку відкриє браузер. Запис MyAnimeList для кожного тайтлу плагін знаходить через AniList і сам оновлює токен. `Надіслати поточну нотатку до MyAnimeList` і `Завантажити прогрес з MyAnimeList` працюють так само, як команди для AniList.
+
 ## Frontmatter
 
 Кожна картка — звичайна нотатка, і все, що плагін про неї знає, зберігається у frontmatter:
@@ -134,8 +136,10 @@ Source ID: tt4574334
 | `api.rawg.io` | Пошук ігор | Назва, ключ RAWG |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Пошук ігор і обкладинки | Назва або Steam app id |
 | `api.deezer.com` | Пошук музики | Альбом або виконавець |
-| `graphql.anilist.co` | Пошук аніме; синхронізація з AniList | Назва; ваш токен, прогрес, статус і оцінка |
+| `graphql.anilist.co` | Пошук аніме; синхронізація з AniList; id MyAnimeList для синхронізації | Назва; ваш токен, прогрес, статус і оцінка; id AniList |
 | `anilist.co` | Ви натискаєте **Підключити** | Client ID, відкривається в браузері |
+| `myanimelist.net` | Ви натискаєте **Підключити** для MyAnimeList; оновлення токена | Client ID і секрет, код авторизації, токен оновлення |
+| `api.myanimelist.net` | Синхронізація з MyAnimeList | Ваш токен, прогрес, статус і оцінка |
 | `s4.anilist.co` | Банери аніме | Шлях на CDN |
 | `comicvine.gamespot.com` | Пошук коміксів | Назва, ключ Comic Vine |
 | `v3-cinemeta.strem.io` | Додавання або оновлення фільму чи серіалу | IMDb id |
@@ -159,6 +163,8 @@ Source ID: tt4574334
 | `Поділитися поточною нотаткою` | Відкриває картку для поширення |
 | `Надіслати поточну нотатку до AniList` | Надсилає прогрес, статус і оцінку |
 | `Завантажити прогрес з AniList` | Оновлює нотатки з вашого списку AniList |
+| `Надіслати поточну нотатку до MyAnimeList` | Надсилає прогрес, статус і оцінку |
+| `Завантажити прогрес з MyAnimeList` | Оновлює нотатки з вашого списку MyAnimeList |
 
 ## Підтримка
 

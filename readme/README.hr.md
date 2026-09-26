@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.2-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -78,6 +78,8 @@ Ploča na vrhu kartice Biblioteka prikazuje stupce odabrane u Postavke → Libra
 
 Za sinkronizaciju animea registrirajte klijent na [anilist.co/settings/developer](https://anilist.co/settings/developer) s URL-om preusmjeravanja `https://anilist.co/api/v2/oauth/pin`. Zalijepite Client ID u Postavke → Library → AniList sinkronizacija, kliknite **Poveži** i zalijepite token koji AniList prikaže. `Pošalji trenutnu bilješku na AniList` šalje napredak, status i ocjenu. `Preuzmi napredak s AniLista` ažurira bilješke, nikad ne vraća napredak unatrag i ne dira `My Rating`. Sinkroniziraju se samo bilješke sa `Source: anilist`.
 
+Iste se bilješke sinkroniziraju s MyAnimeListom. Izradite klijent na [myanimelist.net/apiconfig](https://myanimelist.net/apiconfig) s adresom preusmjeravanja `http://localhost`, zalijepite njegov Client ID (i Client Secret, ako ga ima) u Postavke → Library → MyAnimeList sinkronizacija, kliknite **Poveži** i zalijepite adresu koju otvori preglednik. Zapis MyAnimeLista za svaki naslov dodatak pronalazi preko AniLista i sam obnavlja token. `Pošalji trenutnu bilješku na MyAnimeList` i `Preuzmi napredak s MyAnimeLista` rade kao njihovi parnjaci za AniList.
+
 ## Frontmatter
 
 Svaka kartica je bilješka, a sve što dodatak zna o njoj nalazi se u frontmatteru:
@@ -134,8 +136,10 @@ Vaša knjižnica su obične bilješke i radi izvanmrežno. Dodatak se spaja na m
 | `api.rawg.io` | Pretraga igara | Naslov, ključ za RAWG |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Pretraga igara i naslovnice | Naslov ili id Steam aplikacije |
 | `api.deezer.com` | Pretraga glazbe | Album ili izvođač |
-| `graphql.anilist.co` | Pretraga animea; sinkronizacija s AniListom | Naslov; vaš token, napredak, status i ocjena |
+| `graphql.anilist.co` | Pretraga animea; sinkronizacija s AniListom; id-jevi MyAnimeLista za sinkronizaciju | Naslov; vaš token, napredak, status i ocjena; id-jevi AniLista |
 | `anilist.co` | Kliknete **Poveži** | Client ID, otvara se u pregledniku |
+| `myanimelist.net` | Kliknete **Poveži** za MyAnimeList; obnova tokena | Client ID i tajna, autorizacijski kod, token za obnovu |
+| `api.myanimelist.net` | Sinkronizacija s MyAnimeListom | Vaš token, napredak, status i ocjena |
 | `s4.anilist.co` | Banneri animea | CDN putanja |
 | `comicvine.gamespot.com` | Pretraga stripova | Naslov, ključ za Comic Vine |
 | `v3-cinemeta.strem.io` | Dodavanje ili osvježavanje filma ili serije | IMDb id |
@@ -159,6 +163,8 @@ Vaša knjižnica su obične bilješke i radi izvanmrežno. Dodatak se spaja na m
 | `Podijeli trenutnu bilješku` | Otvara karticu za dijeljenje |
 | `Pošalji trenutnu bilješku na AniList` | Šalje napredak, status i ocjenu |
 | `Preuzmi napredak s AniLista` | Ažurira bilješke iz vašeg AniList popisa |
+| `Pošalji trenutnu bilješku na MyAnimeList` | Šalje napredak, status i ocjenu |
+| `Preuzmi napredak s MyAnimeLista` | Ažurira bilješke iz vašeg MyAnimeList popisa |
 
 ## Podrška
 
