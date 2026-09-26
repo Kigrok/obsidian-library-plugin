@@ -22,6 +22,7 @@ import { AnimeProvider } from './providers/anime'
 import { ComicsProvider } from './providers/comics'
 import { SteamProvider } from './providers/steam'
 import { TmdbEnricher } from './providers/tmdb'
+import { MalProvider } from './providers/mal'
 import { isContentType } from './providers/types'
 import type { ContentProvider, NormalizedMetadata, SearchResult } from './providers/types'
 import { PickTypeModal } from './ui/pickTypeModal'
@@ -31,7 +32,8 @@ import { PromptModal } from './ui/promptModal'
 import { DuplicateRemovalModal, type DuplicateGroup } from './ui/duplicateModal'
 import { ShareModal, shareTargetFromFile } from './ui/shareModal'
 import { aniListViewer, fetchList, listStatus, pushEntry, type AniListEntry } from './anilistSync'
-import { fetchMalList, isExpired, malIdsFor, malStatus, pushMalEntry, refreshTokens, type MalEntry } from './malSync'
+import { malIdsFor, malListStatus, malStatus, fetchMalList, pushMalEntry, type MalEntry } from './malSync'
+import { MalTokenManager } from './malTokenManager'
 import { LibraryView, LIBRARY_VIEW_TYPE } from './view'
 import { createEmbedPlayer, toEmbed } from './trailer'
 import { applyEpisodeChange, followProgress, hasChapters, mergeSeasons, seasonsOf, setChapters, type EpisodeChange, type TrackKind } from './episodes'
@@ -77,8 +79,6 @@ export default class LibraryPlugin extends Plugin {
 	private bannerTimer: number | null = null
 	private bannerRetries = 0
 	private isRefreshing = false
-	// One MyAnimeList token refresh at a time; concurrent callers share it.
-	private malRefreshing: Promise<string | null> | null = null
 	private refreshCooldowns = new Map<string, number>()
 	private syncingLinks = new Set<string>()
 	private linkTimers = new Map<string, number>()
@@ -94,9 +94,11 @@ export default class LibraryPlugin extends Plugin {
 	private openSeasons = new Map<string, Set<number>>()
 	// Books whose table of contents was looked up this session.
 	private chapterLookups = new Set<string>()
+	private malTokenManager!: MalTokenManager
 
 	async onload(): Promise<void> {
 		await this.loadSettings()
+		this.malTokenManager = new MalTokenManager(this)
 		const googleBooks = new GoogleBooksProvider(() => this.settings.googleBooksApiKey)
 		const openLibrary = new OpenLibraryProvider()
 		const tmdb = new TmdbEnricher(() => this.settings.tmdbApiKey)
@@ -113,6 +115,7 @@ export default class LibraryPlugin extends Plugin {
 		this.registry.register(new DeezerProvider())
 		this.registry.register(new AnimeProvider())
 		this.registry.register(new ComicsProvider(() => this.settings.comicVineApiKey))
+		this.registry.register(new MalProvider(this))
 		this.addSettingTab(new LibrarySettingTab(this.app, this))
 
 		this.registerView(LIBRARY_VIEW_TYPE, (leaf) => new LibraryView(leaf, this))
@@ -251,7 +254,8 @@ export default class LibraryPlugin extends Plugin {
 			checkCallback: (checking: boolean) => {
 				const file = this.app.workspace.getActiveFile()
 				const fm = file ? this.app.metadataCache.getFileCache(file)?.frontmatter : undefined
-				if (!fm || toStr(fm.Source) !== 'anilist' || !toStr(fm['Source ID'])) return false
+				const source = fm ? toStr(fm.Source) : ''
+				if (!fm || (source !== 'anilist' && source !== 'mal') || !toStr(fm['Source ID'])) return false
 				if (!checking) void this.malPushCurrent()
 				return true
 			}
@@ -654,63 +658,89 @@ export default class LibraryPlugin extends Plugin {
 		return updated
 	}
 
-	// A valid MyAnimeList access token, refreshed when it is about to expire.
-	async malToken(): Promise<string | null> {
-		const tokens = this.settings.malTokens
-		if (!tokens) return null
-		if (!isExpired(tokens)) return tokens.access
-		if (!this.malRefreshing) this.malRefreshing = this.refreshMalToken(tokens.refresh)
-		return this.malRefreshing
-	}
-
-	private async refreshMalToken(refresh: string): Promise<string | null> {
-		try {
-			const next = await refreshTokens(this.settings.malClientId.trim(), this.settings.malClientSecret.trim(), refresh)
-			if (!next) return null
-			this.settings.malTokens = next
-			await this.saveSettings()
-			return next.access
-		} finally {
-			this.malRefreshing = null
-		}
-	}
-
 	private async malPushCurrent(): Promise<void> {
-		const token = await this.malToken()
+		const token = await this.malTokenManager.getValidAccessToken()
 		if (!token) { new Notice(tr('notice.mal.noToken')); return }
 		const file = this.app.workspace.getActiveFile()
 		const fm = file ? this.app.metadataCache.getFileCache(file)?.frontmatter : undefined
-		const mediaId = fm ? Number(toStr(fm['Source ID'])) : NaN
-		if (!file || !fm || toStr(fm.Source) !== 'anilist' || !Number.isFinite(mediaId)) {
-			new Notice(tr('notice.anilist.notAnime'))
+		const source = fm ? toStr(fm.Source) : ''
+		const sourceId = fm ? toStr(fm['Source ID']) : ''
+		if (!file || !fm || (source !== 'anilist' && source !== 'mal') || !sourceId) {
+			new Notice(tr('notice.mal.notAnime'))
 			return
 		}
-		const ids = await malIdsFor([mediaId])
-		if (!ids) { new Notice(tr('notice.mal.pushFailed')); return }
-		const malId = ids.get(mediaId)
-		if (!malId) { new Notice(tr('notice.mal.noMalId')); return }
 		const watched = parseWatched(fm.Progress)
 		const rating = Number(toStr(fm['My Rating']))
-		const ok = await pushMalEntry(token, malId, watched, malStatus(fm.Complete === true, watched),
-			Number.isFinite(rating) ? rating : null)
+		const score = Number.isFinite(rating) && rating > 0 ? Math.min(10, Math.round(rating)) : null
+		let malId = Number(sourceId)
+		if (source === 'anilist') {
+			const ids = await malIdsFor([malId])
+			if (!ids) { new Notice(tr('notice.mal.pushFailed')); return }
+			malId = ids.get(malId) ?? NaN
+			if (!Number.isFinite(malId)) { new Notice(tr('notice.mal.noMalId')); return }
+		}
+		const status = source === 'anilist'
+			? malStatus(fm.Complete === true, watched)
+			: malListStatus(fm.Complete === true, watched)
+		const ok = await pushMalEntry(token, malId, watched, status, score)
 		new Notice(ok
 			? tr('notice.mal.pushed', { name: toStr(fm.Name) || file.basename })
 			: tr('notice.mal.pushFailed'))
 	}
 
 	private async malPull(): Promise<void> {
-		const token = await this.malToken()
+		const token = await this.malTokenManager.getValidAccessToken()
 		if (!token) { new Notice(tr('notice.mal.noToken')); return }
 		new Notice(tr('notice.mal.pulling'))
 		const entries = await fetchMalList(token)
-		const ids = entries && await malIdsFor(this.anilistNotes().map(n => n.id))
-		if (!entries || !ids) {
+		if (!entries) {
 			new Notice(tr('notice.mal.pullFailed'))
 			return
 		}
 		const byMal = new Map<number, MalEntry>()
-		for (const e of entries) byMal.set(e.malId, e)
-		const updated = await this.applyPulled(id => {
+		for (const entry of entries) byMal.set(entry.malId, entry)
+
+		let updated = 0
+		for (const file of this.app.vault.getMarkdownFiles()) {
+			if (isTemplateFile(file.path)) continue
+			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+			if (!fm || toStr(fm.Source) !== 'mal') continue
+			const entry = byMal.get(Number(toStr(fm['Source ID'])))
+			if (!entry) continue
+
+			const localWatched = parseWatched(fm.Progress)
+			const localComplete = fm.Complete === true
+			const localScore = Number(fm['My Rating']) || 0
+			const newWatched = Math.max(localWatched, entry.progress)
+			const newComplete = localComplete || entry.status === 'completed'
+			const newScore = entry.score ?? localScore
+			if (newWatched === localWatched && newComplete === localComplete && newScore === localScore) continue
+
+			const match = toStr(fm.Progress).match(progressPattern)
+			const noteTotal = match ? Number(match[2]) : 0
+			const total = String(Math.max(noteTotal, newWatched, 1))
+			try {
+				await this.app.fileManager.processFrontMatter(file, (current) => {
+					Object.assign(current, {
+						Progress: `${String(newWatched)}/${total}`,
+						Complete: newComplete,
+						'My Rating': newScore
+					})
+					followProgress(current as Record<string, unknown>)
+				})
+				updated++
+			} catch (e) {
+				console.error('Library: MAL pull error', file.path, e)
+			}
+		}
+
+		const anilistNotes = this.anilistNotes()
+		const ids = anilistNotes.length > 0 ? await malIdsFor(anilistNotes.map((note) => note.id)) : new Map<number, number>()
+		if (!ids) {
+			new Notice(tr('notice.mal.pullFailed'))
+			return
+		}
+		updated += await this.applyPulled((id) => {
 			const malId = ids.get(id)
 			const entry = malId === undefined ? undefined : byMal.get(malId)
 			return entry && { progress: entry.progress, complete: entry.status === 'completed' }

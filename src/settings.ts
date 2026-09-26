@@ -14,8 +14,9 @@ import { isTemplateFile, rankableProperties, toStr, topLabel } from "./util";
 import { isContentType, type ContentType } from "./providers/types";
 import { tr } from "./i18n";
 import { aniListViewer, anilistAuthUrl } from "./anilistSync";
-import { codeFromInput, exchangeCode, makeVerifier, malAuthUrl, malViewer } from "./malSync";
-import { PromptModal } from "./ui/promptModal";
+import { MalTokenManager } from "./malTokenManager";
+import { MalAuthModal } from "./ui/malAuthModal";
+import { generatePKCEAsync, malAuthUrl } from "./malSync";
 
 const TYPE_DEFAULTS: Record<string, string> = {
 	movie: "Movie",
@@ -25,6 +26,7 @@ const TYPE_DEFAULTS: Record<string, string> = {
 	game: "Game",
 	music: "Music",
 	anime: "Anime",
+	"anime-mal": "Anime",
 	manual: "Manual",
 };
 
@@ -87,10 +89,13 @@ export class LibrarySettingTab extends PluginSettingTab {
 	private plugin: LibraryPlugin;
 	// Categories whose Type value and folder rows are unfolded; screen state only.
 	private expanded = new Set<ICategory>();
+	private malTokenManager: MalTokenManager;
+	private pkceVerifier = "";
 
 	constructor(app: App, plugin: LibraryPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
+		this.malTokenManager = new MalTokenManager(plugin);
 	}
 
 	// Obsidian 1.13+: renders these and indexes them for the settings search.
@@ -213,6 +218,7 @@ export class LibrarySettingTab extends PluginSettingTab {
 					note(tr("settings.mal.desc")),
 					{ name: tr("settings.mal.clientId"), render: (row) => this.malClientId(row) },
 					{ name: tr("settings.mal.clientSecret"), render: (row) => this.malClientSecret(row) },
+					{ name: tr("settings.mal.tokenStatus"), render: (row) => this.malTokenStatus(row) },
 				],
 			},
 			...categories,
@@ -283,53 +289,85 @@ export class LibrarySettingTab extends PluginSettingTab {
 		);
 	}
 
-	// Connect opens MAL's consent page and asks for the address the browser lands
-	// on; the verifier lives only as long as that prompt.
 	private malClientId(row: Setting): void {
-		this.textInput(row, "malClientId", tr("settings.anilist.clientId.placeholder"));
+		this.textInput(row, "malClientId", tr("settings.mal.clientId.placeholder"));
 		row.addButton((button) =>
-			button.setButtonText(tr("settings.anilist.connect")).onClick(() => {
+			button.setButtonText(tr("settings.mal.connect")).onClick(async () => {
 				const id = this.plugin.settings.malClientId.trim();
-				if (!id) {
+				const secret = this.plugin.settings.malClientSecret.trim();
+				if (!id || !secret) {
 					new Notice(tr("settings.mal.needClientId"));
 					return;
 				}
-				const verifier = makeVerifier();
-				window.open(malAuthUrl(id, verifier), "_blank");
-				new PromptModal(
-					this.app,
-					"http://localhost/?code=…",
-					(value) => void this.malConnect(id, codeFromInput(value), verifier),
-					tr("modal.mal.title"),
-					tr("settings.anilist.connect"),
-				).open();
+				try {
+					const { verifier, challenge } = await generatePKCEAsync();
+					this.pkceVerifier = verifier;
+					window.open(malAuthUrl(id, challenge), "_blank");
+					new Notice("Opening MAL auth... After login + allow, copy the full redirect URL from browser.");
+					window.setTimeout(() => {
+						new MalAuthModal(this.app, this.plugin, this.malTokenManager, this.pkceVerifier, () => {
+							this.display();
+						}).open();
+					}, 500);
+				} catch {
+					new Notice("Failed to generate pkce challenge");
+				}
 			}),
 		);
 	}
 
-	private async malConnect(id: string, code: string, verifier: string): Promise<void> {
-		const tokens = await exchangeCode(id, this.plugin.settings.malClientSecret.trim(), code, verifier);
-		if (!tokens) {
-			new Notice(tr("notice.mal.connectFailed"));
-			return;
-		}
-		this.plugin.settings.malTokens = tokens;
-		await this.plugin.saveSettings();
-		const viewer = await malViewer(tokens.access);
-		new Notice(viewer ? tr("settings.anilist.connected", { name: viewer.name }) : tr("notice.mal.connectFailed"));
+	private malClientSecret(row: Setting): void {
+		this.textInput(row, "malClientSecret", tr("settings.mal.clientSecret.placeholder"), true);
 	}
 
-	private malClientSecret(row: Setting): void {
-		this.textInput(row, "malClientSecret", "", true);
+	private malTokenStatus(row: Setting): void {
+		const tokens = this.plugin.settings.malTokens;
+		const daysLeft = this.malTokenManager.getDaysUntilExpiry(tokens);
+		const statusText = daysLeft !== null && daysLeft >= 0
+			? tr("settings.mal.tokenStatus", { days: daysLeft })
+			: tr("settings.mal.tokenExpired");
+		row.setDesc(statusText);
 		row.addButton((button) =>
-			button.setButtonText(tr("settings.anilist.test")).onClick(async () => {
-				const token = await this.plugin.malToken();
-				const viewer = token ? await malViewer(token) : null;
+			button.setButtonText(tr("settings.mal.refreshNow")).onClick(async () => {
+				button.setButtonText(tr("settings.mal.refreshing"));
+				button.setDisabled(true);
+				try {
+					const newToken = await this.malTokenManager.getValidAccessToken();
+					if (newToken) {
+						new Notice(tr("settings.mal.refreshSuccess"));
+						this.display();
+					} else {
+						new Notice(tr("settings.mal.refreshFailed", { error: "No refresh token available" }));
+					}
+				} catch (e) {
+					const errorMsg = e instanceof Error ? e.message : String(e);
+					new Notice(tr("settings.mal.refreshFailed", { error: errorMsg }));
+				} finally {
+					button.setButtonText(tr("settings.mal.refreshNow"));
+					button.setDisabled(false);
+				}
+			}),
+		);
+		row.addButton((button) =>
+			button.setButtonText(tr("settings.mal.test")).onClick(async () => {
+				const token = await this.malTokenManager.getValidAccessToken();
+				if (!token) {
+					new Notice(tr("settings.mal.invalidToken"));
+					return;
+				}
+				const viewer = await this.malTokenManager.testConnection(token);
 				new Notice(
 					viewer
-						? tr("settings.anilist.connected", { name: viewer.name })
-						: tr("settings.anilist.invalidToken"),
+						? tr("settings.mal.connected", { name: viewer.name })
+						: tr("settings.mal.invalidToken"),
 				);
+			}),
+		);
+		row.addButton((button) =>
+			button.setButtonText("Clear Tokens").setWarning().onClick(() => {
+				this.malTokenManager.clearTokens();
+				void this.plugin.saveSettings();
+				this.display();
 			}),
 		);
 	}
@@ -456,6 +494,7 @@ export class LibrarySettingTab extends PluginSettingTab {
 						game: tr("settings.default.game"),
 						music: tr("settings.default.music"),
 						anime: tr("settings.default.anime"),
+						"anime-mal": tr("settings.default.anime-mal"),
 						manual: tr("settings.default.manual"),
 					};
 					const contentType: ContentType = isContentType(addValue) ? addValue : "movie";
@@ -528,6 +567,7 @@ export class LibrarySettingTab extends PluginSettingTab {
 			["game", tr("settings.default.game") + " — RAWG + Steam"],
 			["music", tr("settings.default.music") + " — Deezer"],
 			["anime", tr("settings.default.anime") + " — AniList"],
+			["anime-mal", tr("settings.default.anime-mal") + " — MyAnimeList"],
 			["manual", tr("settings.category.manual")],
 		];
 		for (const [value, label] of options) d.addOption(value, label);
