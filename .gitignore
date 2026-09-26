@@ -25,3 +25,6 @@ data.json
 graphify-out/
 .qoder/
 .scratch/
+tests/
+vitest.config.ts
+docs/agents/
