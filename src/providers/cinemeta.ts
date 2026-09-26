@@ -131,24 +131,30 @@ export class CinemetaEnricher implements MetadataEnricher {
 	}
 
 	private seasonsOf(meta: CinemetaMeta): SeasonEntry[] {
-		const counts: Record<number, number> = {}
+		const bySeason: Record<number, CinemetaVideo[]> = {}
 		const order: number[] = []
 		for (const video of meta.videos ?? []) {
 			// season 0 is Cinemeta's bucket for specials.
 			const number = video.season
 			if (typeof number !== 'number' || number <= 0) continue
-			if (counts[number] === undefined) {
-				counts[number] = 0
+			if (bySeason[number] === undefined) {
+				bySeason[number] = []
 				order.push(number)
 			}
-			counts[number] += 1
+			bySeason[number].push(video)
 		}
 		order.sort((a, b) => a - b)
-		return order.map((number) => ({
-			name: `Season ${String(number)}`,
-			episodes: counts[number] ?? 0,
-			rating: null,
-			trailer: null
-		}))
+		return order.map((number) => {
+			const episodes = (bySeason[number] ?? []).slice().sort((a, b) => (a.number ?? 0) - (b.number ?? 0))
+			const titles = episodes.map((video) => ({ title: (video.name ?? '').trim() }))
+			return {
+				name: `Season ${String(number)}`,
+				episodes: episodes.length,
+				rating: null,
+				trailer: null,
+				// Titles only when the source has them: blank rows add nothing to the note.
+				...(titles.some((t) => t.title) ? { episode_list: titles } : {})
+			}
+		})
 	}
 }

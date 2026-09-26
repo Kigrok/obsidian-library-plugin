@@ -24,6 +24,11 @@ interface TmdbMovieDetails {
 	runtime?: number
 }
 
+interface TmdbSeasonDetails {
+	episodes?: Array<{ name?: string; episode_number?: number }>
+	videos?: TmdbVideosResponse
+}
+
 interface TmdbSeason {
 	name?: string
 	season_number?: number
@@ -138,7 +143,12 @@ export class TmdbEnricher implements MetadataEnricher {
 			// season_number 0 is TMDB's bucket for specials.
 			if (typeof number !== 'number' || number <= 0) continue
 			if (list.length >= TmdbEnricher.MAX_SEASONS) break
-			const videos = await this.get<TmdbVideosResponse>(`/tv/${String(tvId)}/season/${String(number)}/videos`)
+			// One request per season brings its episodes and its videos.
+			const details = await this.get<TmdbSeasonDetails>(`/tv/${String(tvId)}/season/${String(number)}`, {
+				append_to_response: 'videos'
+			})
+			const videos = details?.videos ?? null
+			const episodes = (details?.episodes ?? []).slice().sort((a, b) => (a.episode_number ?? 0) - (b.episode_number ?? 0))
 			list.push({
 				name: season.name?.trim() || `Season ${String(number)}`,
 				episodes: typeof season.episode_count === 'number' ? season.episode_count : 0,
@@ -146,7 +156,8 @@ export class TmdbEnricher implements MetadataEnricher {
 					typeof season.vote_average === 'number' && season.vote_average > 0
 						? Math.round(season.vote_average * 10) / 10
 						: null,
-				trailer: this.trailerOf(videos)
+				trailer: this.trailerOf(videos),
+				...(episodes.length > 0 ? { episode_list: episodes.map((e) => ({ title: (e.name ?? '').trim() })) } : {})
 			})
 		}
 		return list

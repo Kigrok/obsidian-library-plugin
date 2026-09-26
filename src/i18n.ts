@@ -48,3 +48,13 @@ export function trCount(key: string, count: number): string {
 	// Where "few" exists, "other" is the genitive plural (5 děl, 10 kūrinių).
 	return tr(key + (hasFew ? '5' : '2'), vars)
 }
+
+// A number in the reader's grouping and decimal mark (12 345, 12,345, 0,9),
+// in the same Latin digits as every other number the plugin prints.
+export function formatNumber(value: number, options?: Intl.NumberFormatOptions): string {
+	try {
+		return value.toLocaleString(getLanguage() + '-u-nu-latn', options)
+	} catch {
+		return String(value)
+	}
+}

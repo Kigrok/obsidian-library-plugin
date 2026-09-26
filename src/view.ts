@@ -2,6 +2,7 @@ import { ItemView, WorkspaceLeaf, TFile, setIcon } from 'obsidian'
 import type LibraryPlugin from './main'
 import { RATING_RT_ICON, type ICategory, type IStatsTop } from './constants'
 import { tr, trCount } from './i18n'
+import { comparisonOfTheDay, comparisonText } from './facts'
 import {
 	toStr,
 	toStrArray,
@@ -277,6 +278,15 @@ export class LibraryView extends ItemView {
 				text: tr('stats.noDuration', { count: String(undated) })
 			})
 		}
+
+		// The same total in other terms, one comparison a day, laid out like the legend.
+		const comparison = comparisonOfTheDay(total)
+		if (!comparison) return
+		const facts = col.createDiv({ cls: 'library-time-facts' })
+		facts.createDiv({ cls: 'library-time-facts-title', text: tr('fact.title') })
+		const row = facts.createDiv({ cls: 'library-time-item' })
+		setIcon(row.createSpan({ cls: 'library-time-icon' }), comparison.icon)
+		row.createSpan({ cls: 'library-time-name', text: comparisonText(comparison) })
 	}
 
 	private renderStats(root: HTMLElement): void {

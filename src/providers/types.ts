@@ -36,6 +36,8 @@ export interface SeasonEntry {
 	episodes: number
 	rating: number | null
 	trailer: string | null
+	// Episode titles in order, when the source has them (src/episodes.ts).
+	episode_list?: Array<{ title: string }>
 }
 
 // Fills the fields a provider cannot serve itself (trailer, stills, seasons).

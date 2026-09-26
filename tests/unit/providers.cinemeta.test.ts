@@ -41,10 +41,12 @@ describe("CinemetaEnricher", () => {
 				number: i + 1,
 				thumbnail: `s1e${String(i + 1)}.jpg`,
 			})),
+			// Listed out of order: the episode list follows the episode numbers.
 			...Array.from({ length: 4 }, (_, i) => ({
 				season: 2,
-				number: i + 1,
-				thumbnail: `s2e${String(i + 1)}.jpg`,
+				number: 4 - i,
+				name: `Chapter ${String(4 - i)}`,
+				thumbnail: `s2e${String(4 - i)}.jpg`,
 			})),
 		];
 		stubRequest({
@@ -62,7 +64,13 @@ describe("CinemetaEnricher", () => {
 
 		expect(fields.Seasons).toEqual([
 			{ name: "Season 1", episodes: 6, rating: null, trailer: null },
-			{ name: "Season 2", episodes: 4, rating: null, trailer: null },
+			{
+				name: "Season 2",
+				episodes: 4,
+				rating: null,
+				trailer: null,
+				episode_list: [{ title: "Chapter 1" }, { title: "Chapter 2" }, { title: "Chapter 3" }, { title: "Chapter 4" }],
+			},
 		]);
 		expect(fields.Runtime).toBe(49);
 		const gallery = fields.Gallery as string[];

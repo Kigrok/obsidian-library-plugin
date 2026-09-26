@@ -117,6 +117,17 @@ define(Node.prototype, "createSpan", function (
 		createEl: (tag: string, info?: unknown) => HTMLElement;
 	}).createEl("span", info);
 });
+define(Node.prototype, "createSvg", function (
+	this: Node,
+	tag: string,
+	info?: { cls?: string | string[]; attr?: Record<string, string | number> },
+) {
+	const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+	for (const cls of [info?.cls ?? []].flat()) el.classList.add(cls);
+	for (const [key, value] of Object.entries(info?.attr ?? {})) el.setAttribute(key, String(value));
+	this.appendChild(el);
+	return el;
+});
 define(Element.prototype, "setText", function (
 	this: HTMLElement,
 	value: string | DocumentFragment,

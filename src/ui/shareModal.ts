@@ -1,4 +1,4 @@
-import { App, Modal, Notice, Platform, TFile, setIcon } from 'obsidian'
+import { App, Modal, Notice, Platform, TFile } from 'obsidian'
 import { tr } from '../i18n'
 import { toStr } from '../util'
 import {
@@ -12,24 +12,35 @@ import {
 	shareIntent,
 	type ShareText
 } from '../share'
+import { NETWORK_MARKS } from './shareIcons'
 
 interface Network {
 	id: string
 	label: string
-	icon: string
 }
 
 const NETWORKS: Network[] = [
-	{ id: 'x', label: 'X', icon: 'twitter' },
-	{ id: 'telegram', label: 'Telegram', icon: 'send' },
-	{ id: 'reddit', label: 'Reddit', icon: 'message-circle' },
-	{ id: 'whatsapp', label: 'WhatsApp', icon: 'message-square' },
-	{ id: 'facebook', label: 'Facebook', icon: 'facebook' },
-	{ id: 'linkedin', label: 'LinkedIn', icon: 'linkedin' },
-	{ id: 'vk', label: 'VK', icon: 'share-2' },
-	{ id: 'bluesky', label: 'Bluesky', icon: 'cloud' },
-	{ id: 'pinterest', label: 'Pinterest', icon: 'pin' }
+	{ id: 'x', label: 'X' },
+	{ id: 'telegram', label: 'Telegram' },
+	{ id: 'reddit', label: 'Reddit' },
+	{ id: 'whatsapp', label: 'WhatsApp' },
+	{ id: 'facebook', label: 'Facebook' },
+	{ id: 'linkedin', label: 'LinkedIn' },
+	{ id: 'vk', label: 'VK' },
+	{ id: 'bluesky', label: 'Bluesky' },
+	{ id: 'pinterest', label: 'Pinterest' }
 ]
+
+// The network's own mark, in the button's text color.
+function drawMark(parent: HTMLElement, id: string): void {
+	const paths = NETWORK_MARKS[id]
+	if (!paths) return
+	const svg = parent.createSvg('svg', {
+		cls: 'library-share-btn-icon',
+		attr: { viewBox: '0 0 24 24', fill: 'currentColor', 'aria-hidden': 'true' }
+	})
+	for (const d of paths) svg.createSvg('path', { attr: { d } })
+}
 
 export class ShareModal extends Modal {
 	private fm: Record<string, unknown>
@@ -72,8 +83,8 @@ export class ShareModal extends Modal {
 
 		const netRow = contentEl.createDiv({ cls: 'library-share-networks' })
 		for (const net of NETWORKS) {
-			const btn = netRow.createEl('button', { cls: 'library-share-btn', attr: { 'aria-label': net.label } })
-			setIcon(btn.createSpan({ cls: 'library-share-btn-icon' }), net.icon)
+			const btn = netRow.createEl('button', { cls: 'library-share-btn', attr: { 'aria-label': net.label, 'data-network': net.id } })
+			drawMark(btn, net.id)
 			btn.createSpan({ text: net.label })
 			btn.addEventListener('click', () => { void this.openNetwork(net) })
 		}

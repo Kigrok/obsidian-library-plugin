@@ -11,7 +11,7 @@ import { tr, trCount } from './i18n'
 import { LibrarySettingTab } from './settings'
 import { ProviderRegistry } from './providers/registry'
 import { OmdbProvider } from './providers/omdb'
-import { OpenLibraryProvider } from './providers/openlibrary'
+import { OpenLibraryProvider, findChapters } from './providers/openlibrary'
 import { GoogleBooksProvider } from './providers/googlebooks'
 import { BookAggregatorProvider } from './providers/bookAggregator'
 import { CinemetaEnricher } from './providers/cinemeta'
@@ -32,7 +32,9 @@ import { DuplicateRemovalModal, type DuplicateGroup } from './ui/duplicateModal'
 import { ShareModal, shareTargetFromFile } from './ui/shareModal'
 import { aniListViewer, fetchList, listStatus, pushEntry, type AniListEntry } from './anilistSync'
 import { LibraryView, LIBRARY_VIEW_TYPE } from './view'
-import { createEmbedPlayer, normalizeSeasons, toEmbed } from './trailer'
+import { createEmbedPlayer, toEmbed } from './trailer'
+import { applyEpisodeChange, followProgress, hasChapters, mergeSeasons, seasonsOf, setChapters, type EpisodeChange, type TrackKind } from './episodes'
+import { ChaptersModal } from './ui/chaptersModal'
 import { TrailerModal } from './ui/trailerModal'
 import { Lightbox } from './ui/lightbox'
 import {
@@ -85,6 +87,10 @@ export default class LibraryPlugin extends Plugin {
 	private unloaded = false
 	private keySignature = ''
 	private lightbox: Lightbox | null = null
+	// Seasons unfolded into their episodes, per note; screen state only.
+	private openSeasons = new Map<string, Set<number>>()
+	// Books whose table of contents was looked up this session.
+	private chapterLookups = new Set<string>()
 
 	async onload(): Promise<void> {
 		await this.loadSettings()
@@ -501,6 +507,8 @@ export default class LibraryPlugin extends Plugin {
 		try {
 			await this.app.fileManager.processFrontMatter(file, (current) => {
 				Object.assign(current, { Progress: `${String(total)}/${String(total)}` })
+				const kind = this.trackKind(fm)
+				if (kind) followProgress(current as Record<string, unknown>, kind)
 			})
 		} finally {
 			this.syncingLinks.delete(file.path)
@@ -596,6 +604,7 @@ export default class LibraryPlugin extends Plugin {
 						Progress: `${String(newWatched)}/${total}`,
 						Complete: newComplete
 					})
+					followProgress(current as Record<string, unknown>)
 				})
 				updated++
 			} catch (e) {
@@ -947,7 +956,8 @@ export default class LibraryPlugin extends Plugin {
 			// For the cover, any known cover property counts as present so a renamed
 			// property does not duplicate the value into a second field.
 			const present = key === 'Cover' ? coverValue(current, this.coverProperty()) : current[target]
-			if (isEmptyValue(present)) current[target] = LINK_FIELDS.indexOf(key) >= 0 ? toLinks(value) : value
+			if (key === 'Seasons' && !isEmptyValue(present)) current[target] = mergeSeasons(present, value)
+			else if (isEmptyValue(present)) current[target] = LINK_FIELDS.indexOf(key) >= 0 ? toLinks(value) : value
 			// A junk runtime stored by an earlier pass must not shadow the
 			// trustworthy value that arrives behind it.
 			else if (key === 'Runtime' && plausibleRuntime(present) === null && plausibleRuntime(value) !== null) current[target] = value
@@ -955,7 +965,7 @@ export default class LibraryPlugin extends Plugin {
 		if (typeof meta.fields.Season === 'number' && meta.fields.Season > Number(current.Season || 0)) {
 			current.Season = meta.fields.Season
 		}
-		if (meta.progressTotal) {
+		if (meta.progressTotal && !hasChapters(current)) {
 			const watched = parseWatched(current.Progress)
 			current.Progress = `${String(watched)}/${String(meta.progressTotal)}`
 		}
@@ -1133,7 +1143,7 @@ export default class LibraryPlugin extends Plugin {
 		wrap.classList.add('note-header-wrap')
 		wrap.appendChild(header)
 		this.buildMediaBlock(wrap, fm, name)
-		this.buildSeasonsBlock(wrap, fm)
+		this.buildSeasonsBlock(wrap, fm, file)
 		return wrap
 	}
 
@@ -1198,33 +1208,73 @@ export default class LibraryPlugin extends Plugin {
 		wrap.appendChild(media)
 	}
 
-	private buildSeasonsBlock(wrap: HTMLElement, fm: Record<string, unknown>): void {
-		const seasons = normalizeSeasons(fm.Seasons)
+	// The season list of a series or anime note: each season ticks off and
+	// rates as a whole, and unfolds into its episodes to tick and rate one by one.
+	// Which list a note tracks: seasons of episodes, or a book's chapters.
+	private trackKind(fm: Record<string, unknown>): TrackKind | null {
+		const contentType = this.settings.categories.find(c => c.typeValue === toStr(fm.Type))?.contentType
+		if (contentType === 'series' || contentType === 'anime' || contentType === 'book') return contentType
+		return null
+	}
+
+	private buildSeasonsBlock(wrap: HTMLElement, fm: Record<string, unknown>, file: TFile): void {
+		// A template is copied into new notes: nothing may be ticked or looked up in it.
+		if (isTemplateFile(file.path)) return
+		const kind = this.trackKind(fm)
+		const trackable = kind !== null
+		const book = kind === 'book'
+		const seasons = seasonsOf(fm, kind ?? 'series')
+		if (book && seasons.length === 0) {
+			// Open Library notes are never refetched, so an opened book looks
+			// its table of contents up by itself, once per session.
+			if (!this.chapterLookups.has(file.path)) {
+				this.chapterLookups.add(file.path)
+				void this.lookUpChapters(file, fm).then((titles) => {
+					if (titles.length > 0) void this.addChapters(file, titles)
+				})
+			}
+			// Found nothing: the chapters are typed in.
+			const add = createEl('button')
+			add.classList.add('note-header-add-chapters')
+			add.setText(tr('header.addChapters'))
+			add.addEventListener('click', (e) => {
+				e.preventDefault()
+				void this.findOrTypeChapters(file, fm)
+			})
+			wrap.appendChild(add)
+			return
+		}
 		if (seasons.length === 0) return
+		const open = this.openSeasons.get(file.path) ?? new Set<number>()
+		this.openSeasons.set(file.path, open)
+		const change = (c: EpisodeChange): void => { if (kind) void this.changeEpisodes(file, c, kind) }
 
 		const block = createDiv()
 		block.classList.add('note-header-seasons')
-		for (const season of seasons) {
+		seasons.forEach((season, index) => {
 			const row = createDiv()
 			row.classList.add('note-header-season')
+			if (trackable) row.appendChild(this.watchedBox(season.watched, (watched) => change({ season: index, watched })))
 
 			const name = createDiv()
 			name.classList.add('note-header-season-name')
 			// Providers name untitled seasons "Season N" in English.
-			name.setText(season.name.replace(/^Season (\d+)$/, (_, n: string) => tr('header.season', { number: n })))
+			name.setText(book ? tr('header.chapters') : season.name.replace(/^Season (\d+)$/, (_, n: string) => tr('header.season', { number: n })))
 			row.appendChild(name)
 
-			if (season.episodes !== null) {
+			if (season.episodes.length > 0) {
 				const episodes = createDiv()
 				episodes.classList.add('note-header-season-episodes')
-				episodes.setText(trCount('header.episodes', season.episodes))
+				const seen = season.episodes.filter(e => e.watched).length
+				const total = book ? String(season.episodes.length) : trCount('header.episodes', season.episodes.length)
+				episodes.setText(trackable && seen > 0 && !season.watched ? `${String(seen)} / ${total}` : total)
 				row.appendChild(episodes)
 			}
 
-			if (season.rating !== null) {
+			if (season.sourceRating !== null) {
 				const rating = createDiv()
 				rating.classList.add('note-header-season-rating')
-				rating.setText(String(season.rating))
+				rating.setText(String(season.sourceRating))
 				row.appendChild(rating)
 			}
 
@@ -1240,9 +1290,116 @@ export default class LibraryPlugin extends Plugin {
 				row.appendChild(button)
 			}
 
+			if (trackable) {
+				// Rated through its episodes, the season shows their average and
+				// takes no hand-typed rating. A book's own rating is My Rating.
+				if (!book) row.appendChild(this.ratingInput(season.rating, season.ratedByEpisodes, (rating) => change({ season: index, rating })))
+				const toggle = createEl('button')
+				toggle.classList.add('note-header-season-toggle', 'clickable-icon')
+				toggle.setAttribute('aria-label', tr('header.episodeList'))
+				toggle.setAttribute('aria-expanded', open.has(index) ? 'true' : 'false')
+				setIcon(toggle, open.has(index) ? 'chevron-up' : 'chevron-down')
+				toggle.addEventListener('click', (e) => {
+					e.preventDefault()
+					if (open.has(index)) open.delete(index)
+					else open.add(index)
+					this.refreshBanner()
+				})
+				row.appendChild(toggle)
+			}
 			block.appendChild(row)
-		}
+
+			if (!trackable || !open.has(index)) return
+			const list = createDiv()
+			list.classList.add('note-header-episodes')
+			season.episodes.forEach((episode, e) => {
+				const item = createDiv()
+				item.classList.add('note-header-episode')
+				item.appendChild(this.watchedBox(episode.watched, (watched) => change({ season: index, episode: e, watched })))
+				const label = createDiv()
+				label.classList.add('note-header-episode-name')
+				const number = String(e + 1)
+				label.setText(episode.title ? `${number}. ${episode.title}` : tr(book ? 'header.chapter' : 'header.episode', { number }))
+				item.appendChild(label)
+				item.appendChild(this.ratingInput(episode.rating, false, (rating) => change({ season: index, episode: e, rating })))
+				list.appendChild(item)
+			})
+			block.appendChild(list)
+		})
 		wrap.appendChild(block)
+	}
+
+	private watchedBox(checked: boolean, onChange: (watched: boolean) => void): HTMLElement {
+		const box = createEl('input')
+		box.type = 'checkbox'
+		box.checked = checked
+		box.classList.add('note-header-watched')
+		box.setAttribute('aria-label', tr('header.watched'))
+		box.addEventListener('click', (e) => e.stopPropagation())
+		box.addEventListener('change', () => onChange(box.checked))
+		return box
+	}
+
+	// A 1–10 score; blank clears it.
+	private ratingInput(value: number | null, computed: boolean, onChange: (rating: number | null) => void): HTMLElement {
+		const input = createEl('input')
+		input.type = 'number'
+		input.min = '1'
+		input.max = '10'
+		input.step = '0.1'
+		input.placeholder = '—'
+		input.classList.add('note-header-my-rating')
+		input.setAttribute('aria-label', tr('header.myRating'))
+		if (value !== null) input.value = String(value)
+		input.disabled = computed
+		input.addEventListener('change', () => {
+			const n = Number(input.value)
+			onChange(input.value.trim() === '' || !Number.isFinite(n) ? null : Math.max(1, Math.min(10, n)))
+		})
+		return input
+	}
+
+	private async changeEpisodes(file: TFile, change: EpisodeChange, kind: TrackKind): Promise<void> {
+		try {
+			await this.app.fileManager.processFrontMatter(file, (fm) => {
+				applyEpisodeChange(fm as Record<string, unknown>, change, kind)
+			})
+		} catch (e) {
+			console.error('Library: episode update error', file.path, e)
+		}
+	}
+
+	// Looks the table of contents up first; the chapters are typed in when
+	// no edition lists them.
+	private lookUpChapters(file: TFile, fm: Record<string, unknown>): Promise<string[]> {
+		const sourceId = toStr(fm['Source ID'])
+		return findChapters({
+			isbn: toStr(fm.ISBN),
+			work: sourceId.startsWith('/works/') ? sourceId : '',
+			title: toStr(fm.Name) || file.basename,
+			author: toStrArray(fm.Creator || fm.Author).map(linkLabel)[0] ?? ''
+		})
+	}
+
+	private async findOrTypeChapters(file: TFile, fm: Record<string, unknown>): Promise<void> {
+		new Notice(tr('notice.searching'))
+		const titles = await this.lookUpChapters(file, fm)
+		if (titles.length > 0) {
+			await this.addChapters(file, titles)
+			return
+		}
+		new Notice(tr('notice.noChapters'))
+		new ChaptersModal(this.app, (chapters) => { void this.addChapters(file, chapters) }).open()
+	}
+
+	private async addChapters(file: TFile, chapters: string[] | number): Promise<void> {
+		try {
+			await this.app.fileManager.processFrontMatter(file, (fm) => {
+				setChapters(fm as Record<string, unknown>, chapters)
+			})
+		} catch (e) {
+			console.error('Library: chapters update error', file.path, e)
+		}
 	}
 
 	private async loadSettings(): Promise<void> {

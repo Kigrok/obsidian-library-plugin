@@ -99,12 +99,15 @@ describe("TmdbEnricher", () => {
 			},
 		});
 		stubRequest({
-			match: "/season/1/videos",
-			json: { results: [{ site: "YouTube", type: "Trailer", key: "s1trailer11" }] },
+			match: "/season/1?",
+			json: {
+				episodes: [{ episode_number: 2, name: "Cat's in the Bag..." }, { episode_number: 1, name: "Pilot" }],
+				videos: { results: [{ site: "YouTube", type: "Trailer", key: "s1trailer11" }] },
+			},
 		});
 		stubRequest({
-			match: "/season/2/videos",
-			json: { results: [] },
+			match: "/season/2?",
+			json: { videos: { results: [] } },
 		});
 
 		const fields = await new TmdbEnricher(() => "key").enrich(
@@ -121,6 +124,7 @@ describe("TmdbEnricher", () => {
 				episodes: 7,
 				rating: 8.3,
 				trailer: "https://www.youtube.com/watch?v=s1trailer11",
+				episode_list: [{ title: "Pilot" }, { title: "Cat's in the Bag..." }],
 			},
 			{
 				name: "Season 2",

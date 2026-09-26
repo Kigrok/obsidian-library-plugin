@@ -376,6 +376,63 @@
 	cursor: pointer;
 }
 
+.note-header-wrap .note-header-watched {
+	margin: 0;
+	flex-shrink: 0;
+	cursor: pointer;
+}
+
+/* The user's own score for a season or an episode. */
+.note-header-wrap .note-header-my-rating {
+	width: 64px;
+	flex-shrink: 0;
+	text-align: center;
+}
+
+.note-header-wrap .note-header-my-rating:disabled {
+	opacity: 0.75;
+	cursor: default;
+}
+
+.note-header-wrap .note-header-season-toggle {
+	flex-shrink: 0;
+}
+
+.note-header-wrap .note-header-episodes {
+	display: flex;
+	flex-direction: column;
+	padding: 2px 0 8px 28px;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.note-header-wrap .note-header-episode {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 3px 0;
+	font-size: 0.9em;
+}
+
+.note-header-wrap .note-header-episode-name {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--text-muted);
+}
+
+.note-header-wrap .note-header-add-chapters {
+	margin-top: 14px;
+	cursor: pointer;
+}
+
+.library-chapters-input {
+	width: 100%;
+	min-height: 160px;
+	resize: vertical;
+}
+
 /* A category's Type value and folder, unfolded under its row. */
 .library-settings-advanced-row {
 	padding-inline-start: var(--size-4-6);
@@ -659,6 +716,40 @@
 	white-space: nowrap;
 }
 
+/* The comparison under the legend reuses its row, with an icon for the dot. */
+.library-time-facts {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-top: 14px;
+}
+
+.library-time-facts-title {
+	font-size: 0.8em;
+	color: var(--text-muted);
+}
+
+/* A whole sentence: it wraps beside the icon instead of dropping below it. */
+.library-time-facts .library-time-item {
+	flex-wrap: nowrap;
+	align-items: flex-start;
+}
+
+.library-time-facts .library-time-icon {
+	margin-top: 2px;
+}
+
+.library-time-icon {
+	display: flex;
+	flex-shrink: 0;
+	color: var(--text-muted);
+}
+
+.library-time-icon svg {
+	width: 14px;
+	height: 14px;
+}
+
 .library-stats-col h3 {
 	margin: 0 0 10px;
 	font-size: 0.9em;
@@ -833,22 +924,46 @@
 	margin-bottom: 14px;
 }
 
-.library-share-btn {
+/* Scoped under the modal: Obsidian's own button:not(.clickable-icon) rule
+   outranks a single class and would paint every button grey. */
+.library-share-modal .library-share-btn {
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
 	padding: 6px 14px;
 	border-radius: 8px;
 	cursor: pointer;
+	color: #ffffff;
+	background-color: var(--library-share-brand, var(--interactive-normal));
+	box-shadow: none;
+}
+
+.library-share-modal .library-share-btn:hover {
+	color: #ffffff;
+	background-color: var(--library-share-brand, var(--interactive-hover));
+	filter: brightness(1.12);
 }
 
 .library-share-btn-icon {
-	display: inline-flex;
-}
-
-.library-share-btn-icon .svg-icon {
 	width: 16px;
 	height: 16px;
+	flex-shrink: 0;
+}
+
+/* Each network in its own brand color. */
+.library-share-btn[data-network="x"] { --library-share-brand: #000000; }
+.library-share-btn[data-network="telegram"] { --library-share-brand: #229ed9; }
+.library-share-btn[data-network="reddit"] { --library-share-brand: #ff4500; }
+.library-share-btn[data-network="whatsapp"] { --library-share-brand: #25d366; }
+.library-share-btn[data-network="facebook"] { --library-share-brand: #0866ff; }
+.library-share-btn[data-network="linkedin"] { --library-share-brand: #0a66c2; }
+.library-share-btn[data-network="vk"] { --library-share-brand: #0077ff; }
+.library-share-btn[data-network="bluesky"] { --library-share-brand: #1185fe; }
+.library-share-btn[data-network="pinterest"] { --library-share-brand: #e60023; }
+
+/* Black on a dark theme needs an edge to read as a button. */
+.theme-dark .library-share-modal .library-share-btn[data-network="x"] {
+	border: 1px solid var(--background-modifier-border-hover);
 }
 
 .library-share-actions {

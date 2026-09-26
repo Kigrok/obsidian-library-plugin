@@ -228,6 +228,20 @@ export async function renderShareCard(app: App, fm: Frontmatter, name: string, c
 		})
 	}
 
+	// The top-billed actors, while they still leave room for the ratings line
+	// above the rating pill.
+	const cast = toStrArray(fm.Cast).map(linkLabel).slice(0, 3).join(', ')
+	const pillTop = posterY + POSTER_H - 96
+	if (cast && y + 48 + 48 <= pillTop) {
+		ctx.fillStyle = '#8a8a9a'
+		ctx.font = '28px sans-serif'
+		y += 8
+		wrap(ctx, `${tr('header.cast')}: ${cast}`, colW, 1).forEach((l) => {
+			ctx.fillText(l, colX, y)
+			y += 40
+		})
+	}
+
 	const ext = shareRatings(fm)
 	if (ext.length > 0) {
 		ctx.fillStyle = '#7a7a8a'

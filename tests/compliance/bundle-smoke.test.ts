@@ -308,7 +308,7 @@ describe("built bundle", () => {
 
 		// 155 minutes for the film, 10 watched episodes of 57 minutes for the
 		// series — the book has no length and gets no slice.
-		const rows = [...view.contentEl.querySelectorAll(".library-time-item")];
+		const rows = [...view.contentEl.querySelectorAll(".library-time-legend .library-time-item")];
 		expect(rows).toHaveLength(2);
 		expect(rows[0]?.querySelector(".library-time-name")?.textContent).toBe("Movies");
 		expect(rows[0]?.querySelector(".library-time-value")?.textContent).toBe(
@@ -321,6 +321,16 @@ describe("built bundle", () => {
 		expect(
 			view.contentEl.querySelector(".library-time-total")?.textContent,
 		).toBe("12 h 5 min");
+		// The same 12 h 5 min in other terms, one comparison a day: Gagarin's
+		// 108-minute orbit six times over, or the Lord of the Rings trilogy once.
+		const facts = [...view.contentEl.querySelectorAll(".library-time-facts .library-time-item")].map(
+			(row) => row.textContent,
+		);
+		expect(facts).toHaveLength(1);
+		expect([
+			"Gagarin could have orbited the Earth 6 times",
+			"You could have watched the whole Lord of the Rings trilogy once",
+		]).toContain(facts[0]);
 
 		// A note whose source never reported a length is called out rather than
 		// quietly missing from the chart.
@@ -399,6 +409,77 @@ describe("built bundle", () => {
 		expect(
 			reopened.contentEl.querySelector(".library-collapse-btn")?.textContent,
 		).toBe("▶");
+	});
+
+	it("ticks and rates episodes from the note header and keeps them through a refresh", async () => {
+		const PluginClass = loadPlugin(code);
+		const stub = obsidianStub.createStubApp();
+		const plugin = new PluginClass(stub.app, manifest);
+		await plugin.onload();
+		const internals = plugin as unknown as {
+			settings: { categories: unknown[] };
+			openSeasons: Map<string, Set<number>>;
+			buildSeasonsBlock(wrap: HTMLElement, fm: Record<string, unknown>, file: unknown): void;
+			applyMetaPatch(current: Record<string, unknown>, meta: { fields: Record<string, unknown>; progressTotal: number | null }): void;
+		};
+		internals.settings.categories = [{ name: "Series", contentType: "series", typeValue: "Series", folder: "" }];
+		const file = new obsidianStub.TFile("Media/Show.md");
+		const note: Record<string, unknown> = {
+			Type: "Series",
+			Progress: "1/3",
+			Seasons: [{ name: "Season 1", episodes: 2 }, { name: "Season 2", episodes: 1 }],
+		};
+		Object.assign(stub.app.fileManager, {
+			processFrontMatter: (_file: unknown, cb: (fm: Record<string, unknown>) => void) => {
+				cb(note);
+				return Promise.resolve();
+			},
+		});
+		const draw = (): HTMLElement => {
+			const wrap = document.createElement("div");
+			internals.buildSeasonsBlock(wrap, note, file);
+			return wrap;
+		};
+
+		// Progress 1/3 before any tick: the first episode counts as watched.
+		internals.openSeasons.set(file.path, new Set([0]));
+		let wrap = draw();
+		const boxes = (): HTMLInputElement[] => [...wrap.querySelectorAll<HTMLInputElement>(".note-header-episode input[type=checkbox]")];
+		expect(boxes().map((b) => b.checked)).toEqual([true, false]);
+
+		const second = boxes()[1];
+		if (!second) throw new Error("no episode checkbox");
+		second.checked = true;
+		second.dispatchEvent(new Event("change"));
+		await vi.advanceTimersByTimeAsync(0);
+		expect(note.Progress).toBe("2/3");
+
+		wrap = draw();
+		const rating = wrap.querySelector<HTMLInputElement>(".note-header-episode .note-header-my-rating");
+		if (!rating) throw new Error("no episode rating");
+		rating.value = "9";
+		rating.dispatchEvent(new Event("change"));
+		await vi.advanceTimersByTimeAsync(0);
+		expect(note["My Rating"]).toBe(9);
+
+		// A refresh adds the source's titles and a new season, and keeps the ticks.
+		internals.applyMetaPatch(note, {
+			fields: {
+				Seasons: [
+					{ name: "Season 1", episodes: 2, episode_list: [{ title: "Pilot" }, { title: "Second" }] },
+					{ name: "Season 2", episodes: 1 },
+					{ name: "Season 3", episodes: 4 },
+				],
+			},
+			progressTotal: 7,
+		});
+		const seasons = note.Seasons as Array<{ episode_list?: Array<{ title?: string; watched?: boolean }> }>;
+		expect(seasons).toHaveLength(3);
+		expect(seasons[0]?.episode_list).toEqual([
+			{ title: "Pilot", watched: true, my_rating: 9 },
+			{ title: "Second", watched: true },
+		]);
+		expect(note.Progress).toBe("2/7");
 	});
 
 	it("fills new metadata across the library in the background, once per version", async () => {

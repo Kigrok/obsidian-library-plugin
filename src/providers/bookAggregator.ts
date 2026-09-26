@@ -1,4 +1,5 @@
 import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
+import { findChapters } from './openlibrary'
 
 interface WrappedRaw {
 	__pid: string
@@ -32,7 +33,24 @@ export class BookAggregatorProvider implements ContentProvider {
 		return !sourceId.startsWith('/')
 	}
 
-	async fetch(sourceId: string, _type: ContentType, raw?: unknown): Promise<NormalizedMetadata | null> {
+	async fetch(sourceId: string, type: ContentType, raw?: unknown): Promise<NormalizedMetadata | null> {
+		const meta = await this.fetchBook(sourceId, type, raw)
+		// Chapters for the reading list, when an edition lists its contents.
+		if (meta) {
+			const text = (value: unknown): string => (typeof value === 'string' || typeof value === 'number' ? String(value) : '')
+			const creator = meta.fields.Creator
+			const titles = await findChapters({
+				isbn: text(meta.fields.ISBN),
+				work: sourceId.startsWith('/works/') ? sourceId : '',
+				title: text(meta.fields.Name),
+				author: text(Array.isArray(creator) ? creator[0] : creator)
+			})
+			if (titles.length >= 2) meta.fields.Chapters = titles.map((title) => ({ title }))
+		}
+		return meta
+	}
+
+	private async fetchBook(sourceId: string, _type: ContentType, raw?: unknown): Promise<NormalizedMetadata | null> {
 		const wrapped = raw as WrappedRaw | undefined
 		if (wrapped && typeof wrapped === 'object') {
 			if (wrapped.__pid === 'googlebooks') return this.google.fetch(sourceId, 'googlebook', wrapped.__raw)
