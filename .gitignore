@@ -24,3 +24,4 @@ data.json
 # Local tooling output
 graphify-out/
 .qoder/
+.scratch/

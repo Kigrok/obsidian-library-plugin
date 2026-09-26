@@ -53,3 +53,17 @@ Leaf modules: `util.ts` (frontmatter parsing, runtime math), `episodes.ts` (epis
 ## Tests
 
 `tests/unit/` covers pure helpers + providers. `tests/compliance/` guards Obsidian submission rules (manifest, versions, license, source hygiene, README privacy table), ends with bundle smoke test: rebuilds `src/main.ts`, evaluates against `tests/stubs/obsidian.ts` (npm `obsidian` package types-only, so `vitest.config.ts` aliases it), asserts no timer survives `onunload`. `tests/tsconfig.json` raises `lib` to ES2020 — ES2017 ceiling applies to `src/` only.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live as local markdown under `.scratch/<feature>/` (gitignored). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five roles: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `CONTEXT.md` + `docs/adr/` at repo root, created lazily. See `docs/agents/domain.md`.
