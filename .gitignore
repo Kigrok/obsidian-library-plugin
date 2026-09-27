@@ -28,3 +28,5 @@ graphify-out/
 tests/
 vitest.config.ts
 docs/agents/
+CLAUDE.md
+AGENTS.md
