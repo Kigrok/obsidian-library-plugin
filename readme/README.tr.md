@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Bir başlık arayın; afişi, yılı, türü, yapımcıları, oyuncuları ve puanları doldurulmuş bir not alın.
 - Kütüphaneye kapak kartları olarak göz atın; kartlar kategoriye göre gruplanır ve ada, yıla, puana veya tarihe göre sıralanır.
 - Dizi bölümlerini veya kitap bölümlerini işaretleyip her birini puanlayın; `Progress` ve `My Rating` bunlardan hesaplanır.
-- Film ve dizi notlarında fragman, kareler, süre ve sezon listesi bulunur.
+- Film, dizi, anime ve oyun notlarında fragman ve kareler var; film ve dizilerde ayrıca süre ve sezon listesi de var.
+- Her notun altında henüz sizde olmayan benzer yapımlar var; tek tıkla eklenir.
+- Steam oyunlarınızı oynama saatleriyle içe aktarın.
 - Türler, yapımcılar ve oyuncular bağlantıdır; bu yüzden notları her başlığı geri bağlantılarda ve grafikte toplar.
 - İstatistik paneli seçtiğiniz listeleri ve toplam izleme sürenizi gösterir.
 - Bir başlığı kart görseli olarak X, Telegram, Reddit ve altı ağda daha paylaşın.
@@ -53,6 +55,10 @@ Bir kategorinin `Type` değeri (örneğin `Movie`) hangi notların ona ait oldu�
 | Geri kalan her şey | Elle: alanları siz doldurursunuz | Gerekmez |
 
 Fragmanlar, kareler, süre ve sezon listeleri anahtarsız olarak Cinemeta'dan gelir. Bir [TMDB anahtarı](https://www.themoviedb.org/settings/api) sezon puanlarını ve daha fazla kareyi ekler.
+
+Oyunlarınızı getirmek için ayarlara bir [Steam Web API anahtarı](https://steamcommunity.com/dev/apikey) ve Steam profilinizi girin, ardından `Steam kütüphanesini içe aktar` komutunu çalıştırın. Her oyun için saat cinsinden `Playtime` içeren bir not oluşturur; yeniden çalıştırıldığında yeni oyunları ekler ve saatleri günceller. Profilin oyun ayrıntıları herkese açık olmalıdır.
+
+Oyun notlarına ekran görüntüleri ve fragman eklenir. Twitch Client ID ve Client Secret girerseniz fragman IGDB üzerinden YouTube'dan gelir (uygulamayı [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps) adresinde oluşturun), yoksa Wikidata'da varsa oradan, yoksa oyunun Steam fragmanı gösterilir.
 
 ## İlerleme ve puanlar
 
@@ -123,6 +129,17 @@ Bir dizide `Runtime` tek bir bölümün süresidir. Kitaplar ayrıca `ISBN` içe
 
 Yenileme yalnızca boş alanları doldurur, bu yüzden düzenlediğiniz değerler kalır. Ayrıca `Progress` içindeki toplam bölüm sayısını günceller ve yeni sezonları ve bölüm adlarını ekler.
 
+## Öneriler
+
+Her notun başlığının altında henüz sizde olmayan benzer yapımların bir sırası var:
+
+- anime: AniList kullanıcılarının önerileri;
+- filmler ve diziler: TMDB anahtarı varsa TMDB önerileri, yoksa Cinemeta'dan aynı türlerin en yüksek puanlı yapımları;
+- oyunlar: RAWG'den serinin diğer oyunları ve türün en iyi oyunları (RAWG anahtarı gerekir);
+- kitaplar: notun ilk iki türünü paylaşan, Open Library'de en çok okunan kitaplar.
+
+Eklemek için bir kapağa tıklayın. Çizgi roman ve müzik için öneri yoktur. Sırayı Ayarlar → Library → Önerileri göster ile kapatabilirsiniz.
+
 ## Gizlilik ve ağ kullanımı
 
 Kütüphaneniz sade notlardan oluşur ve çevrimdışı çalışır. Eklenti; arama, yenileme, eşitleme veya paylaşım yaptığınızda, bir kütüphane notunu açtığınızda (her not için en fazla 5 dakikada bir) ve bir güncellemeden ya da anahtar değişikliğinden sonra yeni alanları doldurmak için bir kez çevrimiçi olur. Telemetri, analiz veya kendi kendini güncelleme yoktur. API anahtarları eklentinin yerel ayarlarında kalır ve yalnızca kendi hizmetine gider.
@@ -130,22 +147,28 @@ Kütüphaneniz sade notlardan oluşur ve çevrimdışı çalışır. Eklenti; ar
 | Sunucu | Ne zaman | Ne gönderilir |
 | --- | --- | --- |
 | `www.omdbapi.com` | Film ve dizi arama | Başlık veya IMDb kimliği, OMDb anahtarı |
-| `openlibrary.org` | Kitap arama; kitap eklediğinizde veya açtığınızda bölüm arama | Başlık ve yazar, ISBN veya eser kimliği |
+| `openlibrary.org` | Kitap arama; kitap eklediğinizde veya açtığınızda bölüm arama; not açıldığında öneriler | Başlık ve yazar, ISBN veya eser kimliği; türler |
 | `covers.openlibrary.org` | Kitap kapakları | Kapak kimliği |
 | `www.googleapis.com` | Kitap arama | Başlık, Google Books anahtarı |
-| `api.rawg.io` | Oyun arama | Başlık, RAWG anahtarı |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Oyun arama ve kapaklar | Başlık veya Steam uygulama kimliği |
+| `api.rawg.io` | Oyun arama ve yenileme; not açıldığında öneriler | Ad veya RAWG kimliği, tür, RAWG anahtarı |
+| `media.rawg.io` | Oyun kapakları ve ekran görüntüleri | Görsel yolu |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Oyun arama, kapaklar, fragmanlar ve ekran görüntüleri | Başlık veya Steam uygulama kimliği |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Steam fragmanı oynatma; oyun ekran görüntüleri | Video veya görsel yolu |
+| `api.steampowered.com` | `Steam kütüphanesini içe aktar` komutunu çalıştırırsınız | Steam Web API anahtarı, SteamID'niz veya profil adınız |
+| `id.twitch.tv`, `api.igdb.com` | Twitch anahtarları ayarlanmışsa oyun ekleme veya yenileme | Twitch Client ID ve gizli anahtar; oyunun Steam app id'si veya adı |
+| `www.wikidata.org` | Steam'den oyun ekleme veya yenileme | Steam app id |
 | `api.deezer.com` | Müzik arama | Albüm veya sanatçı |
-| `graphql.anilist.co` | Anime arama; AniList eşitleme; eşitleme için MyAnimeList kimlikleri | Başlık; belirteciniz, ilerleme, durum ve puan; AniList kimlikleri |
+| `graphql.anilist.co` | Anime arama; AniList eşitleme; eşitleme için MyAnimeList kimlikleri; not açıldığında öneriler | Başlık; belirteciniz, ilerleme, durum ve puan; AniList kimlikleri |
 | `anilist.co` | **Bağlan** düğmesine tıklarsınız | Client ID, tarayıcınızda açılır |
 | `myanimelist.net` | MyAnimeList için **Bağlan** düğmesine basarsınız; belirteç yenileme | Client ID ve gizli anahtar, yetkilendirme kodu, yenileme belirteci |
 | `api.myanimelist.net` | MyAnimeList eşitleme | Belirteciniz, ilerleme, durum ve puan |
 | `s4.anilist.co` | Anime afişleri | CDN yolu |
 | `comicvine.gamespot.com` | Çizgi roman arama | Başlık, Comic Vine anahtarı |
-| `v3-cinemeta.strem.io` | Film veya dizi ekleme ya da yenileme | IMDb kimliği |
+| `v3-cinemeta.strem.io` | Film veya dizi ekleme ya da yenileme; OMDb günlük sınırı dolduğunda film ve dizi arama; TMDB anahtarı yoksa not açıldığında öneriler | Başlık veya IMDb kimliği; tür |
 | `images.metahub.space`, `episodes.metahub.space` | Kareler | IMDb kimliği, sezon ve bölüm numaraları |
-| `api.themoviedb.org`, `image.tmdb.org` | TMDB anahtarı ayarlıysa film veya dizi ekleme ya da yenileme | IMDb kimliği ve TMDB anahtarı; görsel yolu |
+| `api.themoviedb.org`, `image.tmdb.org` | TMDB anahtarı ayarlanmışsa film veya dizi ekleme ya da yenileme ve not açıldığında öneriler | IMDb kimliği ve TMDB anahtarı; görsel yolu |
 | `i.ytimg.com` | Fragman kareleri | Video kimliği |
+| Yayın hizmetlerinin görsel sunucuları, AniList üzerinden | Anime bölüm kareleri | Görsel yolu |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Fragmanlı bir notu açma | Video kimliği |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Bir paylaşım düğmesine tıklarsınız | Açıklama: başlık, puanınız, kaynak bağlantısı. Görsel cihazınızda kalır |
 
@@ -165,6 +188,7 @@ Kütüphaneniz sade notlardan oluşur ve çevrimdışı çalışır. Eklenti; ar
 | `İlerlemeyi AniList'ten çek` | Notları AniList listenizden günceller |
 | `Geçerli notu MyAnimeList'e gönder` | İlerlemeyi, durumu ve puanı gönderir |
 | `İlerlemeyi MyAnimeList'ten çek` | Notları MyAnimeList listenizden günceller |
+| `Steam kütüphanesini içe aktar` | Sahip olunan her oyun için not oluşturur ve `Playtime` değerini günceller |
 
 ## Destek
 

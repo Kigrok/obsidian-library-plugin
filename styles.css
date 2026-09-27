@@ -315,7 +315,8 @@
 	background: var(--background-secondary);
 }
 
-.note-header-player iframe {
+.note-header-player iframe,
+.note-header-player video {
 	display: block;
 	width: 100%;
 	height: 100%;
@@ -998,4 +999,72 @@
 	width: 94vw;
 	height: 88vh;
 	object-fit: contain;
+}
+
+/* Recommendations: a scrolling row of small covers under the note header. */
+.library-recs {
+	margin-top: 16px;
+}
+
+.library-recs-title {
+	margin-bottom: 8px;
+	font-size: 0.8em;
+	color: var(--text-muted);
+}
+
+.library-recs-row {
+	display: flex;
+	gap: 10px;
+	overflow-x: auto;
+	padding-bottom: 6px;
+}
+
+.library-rec {
+	flex: 0 0 96px;
+	cursor: pointer;
+}
+
+.library-rec:focus-visible {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: 2px;
+	border-radius: var(--radius-s);
+}
+
+.library-rec-cover {
+	aspect-ratio: 2 / 3;
+	overflow: hidden;
+	border-radius: var(--radius-s);
+	background: var(--background-secondary);
+}
+
+.library-rec-cover img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 150ms ease;
+}
+
+.library-rec:hover .library-rec-cover img {
+	transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.library-rec-cover img {
+		transition: none;
+	}
+}
+
+.library-rec-title {
+	margin-top: 4px;
+	font-size: 0.8em;
+	line-height: 1.3;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.library-rec-year {
+	font-size: 0.75em;
+	color: var(--text-muted);
 }

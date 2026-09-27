@@ -1,4 +1,5 @@
 import { requestUrl } from 'obsidian'
+import type { GameTrailerFinder } from './gameTrailer'
 import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
 
 interface SteamSearchItem {
@@ -21,16 +22,50 @@ interface SteamAppDetails {
 	publishers?: string[]
 	genres?: { description?: string }[]
 	metacritic?: { score?: number }
+	movies?: { hls_h264?: string; mp4?: { max?: string } }[]
+	screenshots?: { path_full?: string }[]
 }
 
 interface SteamAppDetailsResponse {
 	[appId: string]: { success?: boolean; data?: SteamAppDetails }
 }
 
+const GALLERY_SIZE = 8
+
+// The first store trailer (an HLS stream, or an MP4 on older listings) and the
+// screenshots of an app's store page.
+function steamMedia(app: SteamAppDetails): Record<string, unknown> {
+	const out: Record<string, unknown> = {}
+	const movie = (app.movies ?? []).find(m => m.hls_h264 || m.mp4?.max)
+	const trailer = movie?.hls_h264 ?? movie?.mp4?.max
+	if (trailer) out.Trailer = trailer
+	const shots = (app.screenshots ?? []).map(s => s.path_full).filter((s): s is string => !!s).slice(0, GALLERY_SIZE)
+	if (shots.length > 0) out.Gallery = shots
+	return out
+}
+
+// Trailer and screenshots for a game known by its Steam app id.
+export async function steamMediaFor(appId: number): Promise<Record<string, unknown>> {
+	try {
+		const resp = await requestUrl({ url: `https://store.steampowered.com/api/appdetails?appids=${String(appId)}&l=english`, throw: false })
+		if (resp.status !== 200) return {}
+		const app = (resp.json as SteamAppDetailsResponse)[String(appId)]?.data
+		return app ? steamMedia(app) : {}
+	} catch (e) {
+		console.error('Library: Steam media error', e)
+		return {}
+	}
+}
+
 export class SteamProvider implements ContentProvider {
 	readonly id = 'steam'
 	// Registered through GameAggregatorProvider only; never bound to a registry content type.
 	readonly contentTypes: ContentType[] = ['game']
+	private trailers: GameTrailerFinder
+
+	constructor(trailers: GameTrailerFinder) {
+		this.trailers = trailers
+	}
 
 	private static readonly STORE = 'https://store.steampowered.com'
 	private static readonly CDN = 'https://cdn.cloudflare.steamstatic.com/steam/apps'
@@ -110,6 +145,9 @@ export class SteamProvider implements ContentProvider {
 			// Metacritic is 0-100; the note stores ratings on a 0-10 scale.
 			const score = app.metacritic?.score
 			if (typeof score === 'number' && score > 0) fields['Rating MC'] = Math.round(score) / 10
+			Object.assign(fields, steamMedia(app))
+			const youtube = await this.trailers.youtube(id, app.name ?? '')
+			if (youtube) fields.Trailer = youtube
 			return { fields, progressTotal: null, imdbId: null }
 		} catch (e) {
 			console.error('Library: Steam fetch error', e)

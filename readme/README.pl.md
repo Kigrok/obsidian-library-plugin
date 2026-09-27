@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Wyszukaj tytuł i dostań notatkę z plakatem, rokiem, gatunkiem, twórcami, obsadą i ocenami.
 - Przeglądaj bibliotekę jako karty z okładkami, pogrupowane według kategorii i posortowane według nazwy, roku, oceny lub daty.
 - Odhaczaj odcinki serialu lub rozdziały książki i oceniaj każdy z osobna; `Progress` i `My Rating` są z nich liczone.
-- Notatki o filmach i serialach pokazują zwiastun, kadry, czas trwania i listę sezonów.
+- Notatki o filmach, serialach, anime i grach pokazują zwiastun i kadry; filmy i seriale także czas trwania i listę sezonów.
+- Pod każdą notatką są podobne tytuły, których jeszcze nie masz; jedno kliknięcie dodaje tytuł.
+- Import gier ze Steam razem z przegranymi godzinami.
 - Gatunki, twórcy i aktorzy są linkami, więc ich notatki zbierają każdy tytuł w linkach zwrotnych i na grafie.
 - Panel statystyk pokazuje wybrane przez ciebie rankingi i łączny czas oglądania.
 - Udostępnij tytuł jako obrazek na X, Telegramie, Reddicie i sześciu innych sieciach.
@@ -53,6 +55,10 @@ Wartość `Type` kategorii (na przykład `Movie`) decyduje, które notatki do ni
 | Wszystko inne | Ręcznie: pola wypełniasz sam | Brak |
 
 Zwiastuny, kadry, czas trwania i listy sezonów pochodzą z Cinemeta bez klucza. [Klucz TMDB](https://www.themoviedb.org/settings/api) dodaje oceny sezonów i więcej kadrów.
+
+Aby dodać swoje gry, podaj w ustawieniach [klucz Steam Web API](https://steamcommunity.com/dev/apikey) i profil Steam, a potem uruchom `Importuj bibliotekę Steam`. Polecenie tworzy notatkę dla każdej gry z `Playtime` w godzinach; uruchomione ponownie dodaje nowe gry i aktualizuje godziny. Szczegóły gier w profilu muszą być publiczne.
+
+Notatki o grach dostają zrzuty ekranu i zwiastun. Zwiastun to film z YouTube z IGDB, jeśli podasz Twitch Client ID i Client Secret (aplikację tworzy się na [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)), w przeciwnym razie z Wikidata, jeśli go tam ma, a w ostateczności zwiastun ze Steam.
 
 ## Postęp i oceny
 
@@ -123,6 +129,17 @@ W serialu `Runtime` to długość jednego odcinka. Książki mają dodatkowo `IS
 
 Odświeżenie wypełnia tylko puste pola, więc wartości, które edytujesz, zostają. Aktualizuje też łączną liczbę odcinków w `Progress` i dodaje nowe sezony oraz tytuły odcinków.
 
+## Rekomendacje
+
+Pod nagłówkiem każdej notatki jest pasek podobnych tytułów, których jeszcze nie masz:
+
+- anime: rekomendacje użytkowników AniList;
+- filmy i seriale: rekomendacje TMDB z kluczem TMDB, w przeciwnym razie najlepiej oceniane tytuły tych samych gatunków z Cinemeta;
+- gry: pozostałe części serii i najlepsze gry gatunku z RAWG (potrzebny klucz RAWG);
+- książki: najczęściej czytane książki w Open Library z tymi samymi dwoma pierwszymi gatunkami.
+
+Kliknij okładkę, aby dodać tytuł. Komiksy i muzyka nie mają rekomendacji. Pasek wyłączysz w Ustawienia → Library → Pokazuj rekomendacje.
+
 ## Prywatność i sieć
 
 Twoja biblioteka to zwykłe notatki i działa offline. Wtyczka łączy się z siecią, gdy wyszukujesz, odświeżasz, synchronizujesz lub udostępniasz; gdy otwierasz notatkę z biblioteki, najwyżej raz na 5 minut dla każdej notatki; oraz raz po aktualizacji lub zmianie klucza, żeby wypełnić nowe pola. Nie ma telemetrii, analityki ani samoaktualizacji. Klucze API zostają w lokalnych ustawieniach wtyczki i trafiają tylko do swojej usługi.
@@ -130,22 +147,28 @@ Twoja biblioteka to zwykłe notatki i działa offline. Wtyczka łączy się z si
 | Host | Kiedy | Co jest wysyłane |
 | --- | --- | --- |
 | `www.omdbapi.com` | Wyszukiwanie filmów i seriali | Tytuł lub id IMDb, klucz OMDb |
-| `openlibrary.org` | Wyszukiwanie książek; szukanie rozdziałów przy dodaniu lub otwarciu książki | Tytuł i autor, ISBN lub id dzieła |
+| `openlibrary.org` | Wyszukiwanie książek; szukanie rozdziałów przy dodaniu lub otwarciu książki; rekomendacje po otwarciu notatki | Tytuł i autor, ISBN lub id dzieła; gatunki |
 | `covers.openlibrary.org` | Okładki książek | Id okładki |
 | `www.googleapis.com` | Wyszukiwanie książek | Tytuł, klucz Google Books |
-| `api.rawg.io` | Wyszukiwanie gier | Tytuł, klucz RAWG |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Wyszukiwanie gier i okładki | Tytuł lub id aplikacji Steam |
+| `api.rawg.io` | Wyszukiwanie i odświeżanie gier; rekomendacje po otwarciu notatki | Tytuł lub id RAWG, gatunek, klucz RAWG |
+| `media.rawg.io` | Okładki i zrzuty ekranu gier | Ścieżka obrazu |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Wyszukiwanie gier, okładki, zwiastuny i zrzuty ekranu | Tytuł lub id aplikacji Steam |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Odtwarzanie zwiastuna ze Steam; zrzuty ekranu gier | Ścieżka filmu lub obrazu |
+| `api.steampowered.com` | Uruchamiasz `Importuj bibliotekę Steam` | Klucz Steam Web API, Twój SteamID lub nazwa profilu |
+| `id.twitch.tv`, `api.igdb.com` | Dodawanie lub odświeżanie gry, jeśli ustawisz klucze Twitch | Twitch Client ID i sekret; id aplikacji Steam lub nazwa gry |
+| `www.wikidata.org` | Dodawanie lub odświeżanie gry ze Steam | Id aplikacji Steam |
 | `api.deezer.com` | Wyszukiwanie muzyki | Album lub wykonawca |
-| `graphql.anilist.co` | Wyszukiwanie anime; synchronizacja z AniList; id MyAnimeList do synchronizacji | Tytuł; twój token, postęp, status i ocena; id AniList |
+| `graphql.anilist.co` | Wyszukiwanie anime; synchronizacja z AniList; id MyAnimeList do synchronizacji; rekomendacje po otwarciu notatki | Tytuł; twój token, postęp, status i ocena; id AniList |
 | `anilist.co` | Klikasz **Połącz** | Client ID, otwierany w przeglądarce |
 | `myanimelist.net` | Klikasz **Połącz** dla MyAnimeList; odnawianie tokenu | Client ID i sekret, kod autoryzacji, token odświeżania |
 | `api.myanimelist.net` | Synchronizacja z MyAnimeList | Twój token, postęp, status i ocena |
 | `s4.anilist.co` | Banery anime | Ścieżka CDN |
 | `comicvine.gamespot.com` | Wyszukiwanie komiksów | Tytuł, klucz Comic Vine |
-| `v3-cinemeta.strem.io` | Dodanie lub odświeżenie filmu albo serialu | Id IMDb |
+| `v3-cinemeta.strem.io` | Dodanie lub odświeżenie filmu albo serialu; wyszukiwanie filmów i seriali, gdy dzienny limit OMDb się wyczerpie; rekomendacje po otwarciu notatki, bez klucza TMDB | Tytuł lub id IMDb; gatunek |
 | `images.metahub.space`, `episodes.metahub.space` | Kadry | Id IMDb, numery sezonu i odcinka |
-| `api.themoviedb.org`, `image.tmdb.org` | Dodanie lub odświeżenie filmu albo serialu, jeśli ustawisz klucz TMDB | Id IMDb i klucz TMDB; ścieżka obrazka |
+| `api.themoviedb.org`, `image.tmdb.org` | Dodawanie lub odświeżanie filmu albo serialu i rekomendacje po otwarciu notatki, jeśli ustawisz klucz TMDB | Id IMDb i klucz TMDB; ścieżka obrazka |
 | `i.ytimg.com` | Kadry zwiastunów | Id wideo |
+| Serwery obrazów serwisów streamingowych, przez AniList | Kadry z odcinków anime | Ścieżka obrazu |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Otwarcie notatki ze zwiastunem | Id wideo |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Klikasz przycisk udostępniania | Podpis: tytuł, twoja ocena, link do źródła. Obrazek zostaje na twoim urządzeniu |
 
@@ -165,6 +188,7 @@ Twoja biblioteka to zwykłe notatki i działa offline. Wtyczka łączy się z si
 | `Pobierz postęp z AniList` | Aktualizuje notatki z twojej listy AniList |
 | `Wyślij bieżącą notatkę do MyAnimeList` | Wysyła postęp, status i ocenę |
 | `Pobierz postęp z MyAnimeList` | Aktualizuje notatki z twojej listy MyAnimeList |
+| `Importuj bibliotekę Steam` | Tworzy notatkę dla każdej posiadanej gry i aktualizuje `Playtime` |
 
 ## Wsparcie
 

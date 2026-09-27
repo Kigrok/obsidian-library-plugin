@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Vyhledejte titul a získejte poznámku s plakátem, rokem, žánrem, tvůrci, obsazením a hodnocením.
 - Procházejte knihovnu jako karty s obálkami, seskupené podle kategorií a seřazené podle názvu, roku, hodnocení nebo data.
 - Odškrtávejte díly seriálu nebo kapitoly knihy a hodnoťte každý zvlášť; `Progress` a `My Rating` se z nich počítají.
-- Poznámky k filmům a seriálům ukazují trailer, záběry, délku a seznam řad.
+- Poznámky o filmech, seriálech, anime a hrách ukazují trailer a záběry; filmy a seriály navíc délku a seznam řad.
+- Pod každou poznámkou jsou podobné tituly, které ještě nemáte; jedním kliknutím je přidáte.
+- Import vašich her ze Steamu i s odehranými hodinami.
 - Žánry, tvůrci a herci jsou odkazy, takže jejich poznámky shromažďují každý titul ve zpětných odkazech a v grafu.
 - Panel statistik ukazuje žebříčky, které si vyberete, a celkový čas sledování.
 - Sdílejte titul jako obrázek na X, Telegramu, Redditu a dalších šesti sítích.
@@ -53,6 +55,10 @@ Hodnota `Type` kategorie (například `Movie`) určuje, které poznámky do ní 
 | Vše ostatní | Ručně: pole vyplňujete sami | Žádný |
 
 Trailery, záběry, délka a seznamy řad přicházejí z Cinemeta bez klíče. [Klíč TMDB](https://www.themoviedb.org/settings/api) přidá hodnocení řad a další záběry.
+
+Chcete-li přidat své hry, zadejte v nastavení [klíč Steam Web API](https://steamcommunity.com/dev/apikey) a profil Steam a spusťte `Importovat knihovnu Steam`. Příkaz vytvoří poznámku pro každou hru s `Playtime` v hodinách; při dalším spuštění přidá nové hry a aktualizuje hodiny. Podrobnosti o hrách v profilu musí být veřejné.
+
+Poznámky o hrách dostanou snímky obrazovky a trailer. Trailer je video z YouTube z IGDB, pokud zadáte Twitch Client ID a Client Secret (aplikaci vytvoříte na [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)), jinak z Wikidata, pokud ho uvádí, jinak trailer hry ze Steamu.
 
 ## Postup a hodnocení
 
@@ -123,6 +129,17 @@ U seriálu je `Runtime` délka jednoho dílu. Knihy navíc mají `ISBN` a kapito
 
 Obnovení vyplní jen prázdná pole, takže hodnoty, které upravíte, zůstanou. Také aktualizuje celkový počet dílů v `Progress` a přidá nové řady a názvy dílů.
 
+## Doporučení
+
+Pod záhlavím každé poznámky je řada podobných titulů, které ještě nemáte:
+
+- anime: doporučení uživatelů AniList;
+- filmy a seriály: doporučení TMDB s klíčem TMDB, jinak nejlépe hodnocené tituly stejných žánrů z Cinemeta;
+- hry: zbytek série a nejlepší hry žánru z RAWG (vyžaduje klíč RAWG);
+- knihy: nejčtenější knihy na Open Library se stejnými prvními dvěma žánry.
+
+Kliknutím na obálku titul přidáte. Komiksy a hudba doporučení nemají. Řadu vypnete v Nastavení → Library → Zobrazovat doporučení.
+
 ## Soukromí a síť
 
 Vaše knihovna jsou obyčejné poznámky a funguje offline. Plugin jde online, když vyhledáváte, obnovujete, synchronizujete nebo sdílíte; když otevřete poznámku z knihovny, nejvýše jednou za 5 minut pro každou poznámku; a jednou po aktualizaci nebo změně klíče, aby vyplnil nová pole. Nemá telemetrii, analytiku ani samoaktualizaci. Klíče API zůstávají v místním nastavení pluginu a jdou jen ke své službě.
@@ -130,22 +147,28 @@ Vaše knihovna jsou obyčejné poznámky a funguje offline. Plugin jde online, k
 | Hostitel | Kdy | Co se odesílá |
 | --- | --- | --- |
 | `www.omdbapi.com` | Hledání filmů a seriálů | Název nebo IMDb id, klíč OMDb |
-| `openlibrary.org` | Hledání knih; hledání kapitol při přidání nebo otevření knihy | Název a autor, ISBN nebo id díla |
+| `openlibrary.org` | Hledání knih; hledání kapitol při přidání nebo otevření knihy; doporučení při otevření poznámky | Název a autor, ISBN nebo id díla; žánry |
 | `covers.openlibrary.org` | Obálky knih | Id obálky |
 | `www.googleapis.com` | Hledání knih | Název, klíč Google Books |
-| `api.rawg.io` | Hledání her | Název, klíč RAWG |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Hledání her a obálky | Název nebo id aplikace Steam |
+| `api.rawg.io` | Hledání a obnova her; doporučení při otevření poznámky | Název nebo id RAWG, žánr, klíč RAWG |
+| `media.rawg.io` | Obálky a snímky obrazovky her | Cesta k obrázku |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Hledání her, obálky, trailery a snímky obrazovky | Název nebo id aplikace Steam |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Přehrání traileru ze Steamu; snímky obrazovky her | Cesta k videu nebo obrázku |
+| `api.steampowered.com` | Spustíte `Importovat knihovnu Steam` | Klíč Steam Web API, váš SteamID nebo název profilu |
+| `id.twitch.tv`, `api.igdb.com` | Přidání nebo obnova hry, pokud nastavíte klíče Twitch | Twitch Client ID a tajný klíč; Steam app id nebo název hry |
+| `www.wikidata.org` | Přidání nebo obnova hry ze Steamu | Steam app id |
 | `api.deezer.com` | Hledání hudby | Album nebo interpret |
-| `graphql.anilist.co` | Hledání anime; synchronizace s AniList; id MyAnimeList pro synchronizaci | Název; váš token, postup, stav a hodnocení; id AniList |
+| `graphql.anilist.co` | Hledání anime; synchronizace s AniList; id MyAnimeList pro synchronizaci; doporučení při otevření poznámky | Název; váš token, postup, stav a hodnocení; id AniList |
 | `anilist.co` | Kliknete na **Připojit** | Client ID, otevřené v prohlížeči |
 | `myanimelist.net` | Kliknete na **Připojit** u MyAnimeList; obnovení tokenu | Client ID a tajný klíč, autorizační kód, obnovovací token |
 | `api.myanimelist.net` | Synchronizace s MyAnimeList | Váš token, postup, stav a hodnocení |
 | `s4.anilist.co` | Bannery anime | Cesta CDN |
 | `comicvine.gamespot.com` | Hledání komiksů | Název, klíč Comic Vine |
-| `v3-cinemeta.strem.io` | Přidání nebo obnovení filmu či seriálu | IMDb id |
+| `v3-cinemeta.strem.io` | Přidání nebo obnovení filmu či seriálu; hledání filmů a seriálů, když je vyčerpán denní limit OMDb; doporučení při otevření poznámky, bez klíče TMDB | Název nebo IMDb id; žánr |
 | `images.metahub.space`, `episodes.metahub.space` | Záběry | IMDb id, čísla řady a dílu |
-| `api.themoviedb.org`, `image.tmdb.org` | Přidání nebo obnovení filmu či seriálu, pokud nastavíte klíč TMDB | IMDb id a klíč TMDB; cesta k obrázku |
+| `api.themoviedb.org`, `image.tmdb.org` | Přidání nebo obnova filmu či seriálu a doporučení při otevření poznámky, pokud nastavíte klíč TMDB | IMDb id a klíč TMDB; cesta k obrázku |
 | `i.ytimg.com` | Záběry z trailerů | Id videa |
+| Obrázkové servery streamovacích služeb, přes AniList | Záběry z epizod anime | Cesta k obrázku |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Otevření poznámky s trailerem | Id videa |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Kliknete na tlačítko sdílení | Popisek: název, vaše hodnocení, odkaz na zdroj. Obrázek zůstává ve vašem zařízení |
 
@@ -165,6 +188,7 @@ Vaše knihovna jsou obyčejné poznámky a funguje offline. Plugin jde online, k
 | `Načíst postup z AniList` | Aktualizuje poznámky z vašeho seznamu AniList |
 | `Odeslat aktuální poznámku do MyAnimeList` | Odešle postup, stav a hodnocení |
 | `Načíst postup z MyAnimeList` | Aktualizuje poznámky z vašeho seznamu MyAnimeList |
+| `Importovat knihovnu Steam` | Vytvoří poznámku pro každou vlastněnou hru a aktualizuje `Playtime` |
 
 ## Podpora
 

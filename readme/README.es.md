@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Busca un título y obtén una nota con el póster, el año, el género, los creadores, el reparto y las valoraciones ya rellenados.
 - Explora la biblioteca como tarjetas con portada, agrupadas por categoría y ordenadas por nombre, año, valoración o fecha.
 - Marca los episodios de una serie o los capítulos de un libro y puntúa cada uno; `Progress` y `My Rating` se calculan a partir de ellos.
-- Las notas de películas y series muestran un tráiler, fotogramas, la duración y la lista de temporadas.
+- Las notas de películas, series, anime y juegos muestran un tráiler y fotogramas; las de películas y series, también la duración y la lista de temporadas.
+- Bajo cada nota hay títulos parecidos que aún no tienes; un clic añade uno.
+- Importa tus juegos de Steam con las horas jugadas.
 - Géneros, creadores y actores son enlaces, así que sus notas reúnen cada título en los enlaces entrantes y en el grafo.
 - El panel de estadísticas muestra los rankings que elijas y tu tiempo total de visionado.
 - Comparte un título como imagen en X, Telegram, Reddit y otras seis redes.
@@ -53,6 +55,10 @@ El valor `Type` de una categoría (por ejemplo `Movie`) decide qué notas le per
 | Todo lo demás | Manual: tú rellenas los campos | Ninguna |
 
 Los tráileres, fotogramas, la duración y las listas de temporadas vienen de Cinemeta sin clave. Una [clave de TMDB](https://www.themoviedb.org/settings/api) añade valoraciones de temporadas y más fotogramas.
+
+Para traer tus juegos, indica en los ajustes una [clave de Steam Web API](https://steamcommunity.com/dev/apikey) y tu perfil de Steam, y ejecuta `Importar biblioteca de Steam`. Crea una nota por juego con `Playtime` en horas; al volver a ejecutarlo añade los juegos nuevos y actualiza las horas. Los detalles de juegos del perfil deben ser públicos.
+
+Las notas de juegos reciben capturas y un tráiler. El tráiler es un vídeo de YouTube de IGDB si añades un Twitch Client ID y un Client Secret (crea una aplicación en [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)); si no, de Wikidata cuando lo tiene; si no, el tráiler de Steam del juego.
 
 ## Progreso y puntuaciones
 
@@ -123,6 +129,17 @@ En una serie, `Runtime` es la duración de un episodio. Los libros añaden `ISBN
 
 Una actualización solo rellena los campos vacíos, así que los valores que edites se mantienen. También actualiza el total de episodios en `Progress` y añade temporadas y títulos de episodios nuevos.
 
+## Recomendaciones
+
+Bajo la cabecera de cada nota, una fila de títulos parecidos que aún no tienes:
+
+- anime: las recomendaciones de los usuarios de AniList;
+- películas y series: las recomendaciones de TMDB con una clave de TMDB; si no, los títulos mejor valorados de los mismos géneros en Cinemeta;
+- juegos: el resto de la saga y los mejores juegos del género en RAWG (necesita la clave de RAWG);
+- libros: los libros más leídos de Open Library que comparten los dos primeros géneros de la nota.
+
+Haz clic en una portada para añadir el título. Los cómics y la música no tienen recomendaciones. Desactiva la fila en Preferencias → Library → Mostrar recomendaciones.
+
 ## Privacidad y uso de la red
 
 Tu biblioteca son notas normales y funciona sin conexión. El plugin se conecta cuando buscas, actualizas, sincronizas o compartes; cuando abres una nota de la biblioteca, como mucho una vez cada 5 minutos por nota; y una vez tras una actualización o un cambio de clave, para rellenar los campos nuevos. No tiene telemetría, analíticas ni autoactualización. Las claves de API se quedan en los ajustes locales del plugin y solo van a su propio servicio.
@@ -130,22 +147,28 @@ Tu biblioteca son notas normales y funciona sin conexión. El plugin se conecta 
 | Host | Cuándo | Qué se envía |
 | --- | --- | --- |
 | `www.omdbapi.com` | Búsqueda de películas y series | Título o id de IMDb, clave de OMDb |
-| `openlibrary.org` | Búsqueda de libros; búsqueda de capítulos al añadir o abrir un libro | Título y autor, ISBN o id de la obra |
+| `openlibrary.org` | Búsqueda de libros; búsqueda de capítulos al añadir o abrir un libro; recomendaciones al abrir una nota | Título y autor, ISBN o id de la obra; géneros |
 | `covers.openlibrary.org` | Portadas de libros | Id de la portada |
 | `www.googleapis.com` | Búsqueda de libros | Título, clave de Google Books |
-| `api.rawg.io` | Búsqueda de juegos | Título, clave de RAWG |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Búsqueda de juegos y portadas | Título o id de app de Steam |
+| `api.rawg.io` | Búsqueda y actualización de juegos; recomendaciones al abrir una nota | Título o id de RAWG, género, clave de RAWG |
+| `media.rawg.io` | Portadas y capturas de juegos | Ruta de la imagen |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Búsqueda de juegos, portadas, tráileres y capturas | Título o id de app de Steam |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Reproducir un tráiler de Steam; capturas de juegos | Ruta del vídeo o de la imagen |
+| `api.steampowered.com` | Ejecutas `Importar biblioteca de Steam` | Clave de Steam Web API, tu SteamID o nombre de perfil |
+| `id.twitch.tv`, `api.igdb.com` | Añadir o actualizar un juego, si configuras las claves de Twitch | Twitch Client ID y secreto; id de app de Steam o nombre del juego |
+| `www.wikidata.org` | Añadir o actualizar un juego de Steam | Id de app de Steam |
 | `api.deezer.com` | Búsqueda de música | Álbum o artista |
-| `graphql.anilist.co` | Búsqueda de anime; sincronización con AniList; ids de MyAnimeList para sincronizar | Título; tu token, el progreso, el estado y la puntuación; ids de AniList |
+| `graphql.anilist.co` | Búsqueda de anime; sincronización con AniList; ids de MyAnimeList para sincronizar; recomendaciones al abrir una nota | Título; tu token, el progreso, el estado y la puntuación; ids de AniList |
 | `anilist.co` | Haces clic en **Conectar** | Client ID, abierto en tu navegador |
 | `myanimelist.net` | Haces clic en **Conectar** para MyAnimeList; renovación del token | Client ID y secreto, código de autorización, token de renovación |
 | `api.myanimelist.net` | Sincronización con MyAnimeList | Tu token, el progreso, el estado y la puntuación |
 | `s4.anilist.co` | Banners de anime | Ruta del CDN |
 | `comicvine.gamespot.com` | Búsqueda de cómics | Título, clave de Comic Vine |
-| `v3-cinemeta.strem.io` | Añadir o actualizar una película o serie | Id de IMDb |
+| `v3-cinemeta.strem.io` | Añadir o actualizar una película o serie; búsqueda de películas y series cuando se agota el límite diario de OMDb; recomendaciones al abrir una nota, sin clave de TMDB | Título o id de IMDb; género |
 | `images.metahub.space`, `episodes.metahub.space` | Fotogramas | Id de IMDb, números de temporada y episodio |
-| `api.themoviedb.org`, `image.tmdb.org` | Añadir o actualizar una película o serie, si configuras una clave de TMDB | Id de IMDb y clave de TMDB; ruta de la imagen |
+| `api.themoviedb.org`, `image.tmdb.org` | Añadir o actualizar una película o serie, y recomendaciones al abrir una nota, si configuras una clave de TMDB | Id de IMDb y clave de TMDB; ruta de la imagen |
 | `i.ytimg.com` | Fotogramas de tráileres | Id del vídeo |
+| Servidores de imágenes de servicios de streaming, a través de AniList | Fotogramas de episodios de anime | Ruta de la imagen |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Abrir una nota con tráiler | Id del vídeo |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Haces clic en un botón de compartir | El texto: título, tu puntuación, enlace a la fuente. La imagen se queda en tu dispositivo |
 
@@ -165,6 +188,7 @@ Tu biblioteca son notas normales y funciona sin conexión. El plugin se conecta 
 | `Obtener el progreso desde AniList` | Actualiza las notas desde tu lista de AniList |
 | `Enviar la nota actual a MyAnimeList` | Envía el progreso, el estado y la puntuación |
 | `Obtener el progreso desde MyAnimeList` | Actualiza las notas desde tu lista de MyAnimeList |
+| `Importar biblioteca de Steam` | Crea una nota por cada juego comprado y actualiza `Playtime` |
 
 ## Soporte
 

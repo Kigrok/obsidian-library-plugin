@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Search a title and get a note with the poster, year, genre, creators, cast, and ratings filled in.
 - Browse the library as cover cards, grouped by category and sorted by name, year, rating, or date.
 - Tick the episodes of a series or the chapters of a book and rate each one; `Progress` and `My Rating` are computed from them.
-- Movie and series notes show a trailer, stills, runtime, and the season list.
+- Movie, series, anime, and game notes show a trailer and stills; movies and series also show the runtime and the season list.
+- Each note suggests similar titles you don't have yet, and a click adds one.
+- Import the games you own from Steam, with the hours played.
 - Genres, creators, and actors are links, so their notes collect every title in backlinks and the graph.
 - The statistics panel shows the top lists you pick and your total watch time.
 - Share a title as a card image to X, Telegram, Reddit, and six other networks.
@@ -54,6 +56,10 @@ A category's `Type` value (for example `Movie`) decides which notes belong to it
 
 Trailers, stills, runtime, and season lists come from Cinemeta without a key. A [TMDB key](https://www.themoviedb.org/settings/api) adds season ratings and more stills.
 
+To bring in the games you own, add a [Steam Web API key](https://steamcommunity.com/dev/apikey) and your Steam profile in settings, then run `Import Steam library`. It adds a note per game with `Playtime` in hours, and running it again adds new games and updates the hours. The profile's game details must be public.
+
+Game notes get screenshots and a trailer. The trailer is a YouTube video from IGDB when you add a Twitch Client ID and Client Secret (create an application at [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps)), otherwise from Wikidata when it lists one, otherwise the game's Steam trailer.
+
 ## Progress and ratings
 
 A series note's header lists the seasons, and each season opens into its episodes, with titles where the source has them. Tick an episode or a whole season as watched and score it from 1 to 10. `Progress` counts the ticked episodes, a season's score is the average of its rated episodes, and `My Rating` is the average of the rated seasons. A season with no rated episodes takes a score of its own.
@@ -66,7 +72,7 @@ Notes from older versions keep their progress. Until you tick anything, the firs
 
 ## Statistics
 
-The panel at the top of the Library tab shows the columns you pick in Settings → Library → Statistics: a category's three best-rated titles, a property's three most frequent values (genres, actors, or any other), and the hours spent on movies, series, and anime. Under the chart, one comparison a day puts your watch time in other terms, for example: Apollo 11 could have flown to the Moon and back 8 times.
+The panel at the top of the Library tab shows the columns you pick in Settings → Library → Statistics: a category's three highest-rated titles, a property's three most frequent values (genres, actors, or any other), and the hours spent on movies, series, and anime. Under the chart, one comparison a day puts your watch time in other terms, for example: Apollo 11 could have flown to the Moon and back 8 times.
 
 ## Graph links
 
@@ -123,6 +129,17 @@ For a series, `Runtime` is the length of one episode. Books add `ISBN` and keep 
 
 A refresh fills only empty fields, so the values you edit stay. It also updates the episode total in `Progress` and adds new seasons and episode titles.
 
+## Recommendations
+
+Under each note's header, a row of similar titles you don't have yet:
+
+- anime: AniList's user recommendations;
+- movies and series: TMDB's recommendations with a TMDB key, otherwise the highest-rated titles of the same genres from Cinemeta;
+- games: the rest of the series and the genre's top-rated games from RAWG (needs the RAWG key);
+- books: the most read books on Open Library that share the note's first two genres.
+
+Click a cover to add the title. Comics and music have no recommendations. Turn the row off with Settings → Library → Show recommendations.
+
 ## Privacy and network use
 
 Your library is plain notes and works offline. The plugin goes online when you search, refresh, sync, or share; when you open a library note, at most once every 5 minutes per note; and once after an update or a key change, to fill in new fields. It has no telemetry, analytics, or self-update. API keys stay in your local plugin settings and go only to their own service.
@@ -130,22 +147,28 @@ Your library is plain notes and works offline. The plugin goes online when you s
 | Host | When | What is sent |
 | --- | --- | --- |
 | `www.omdbapi.com` | Movie and series search | Title or IMDb id, OMDb key |
-| `openlibrary.org` | Book search; chapter lookup when you add or open a book | Title and author, ISBN, or work id |
+| `openlibrary.org` | Book search; chapter lookup when you add or open a book; recommendations when a note opens | Title and author, ISBN, or work id; genres |
 | `covers.openlibrary.org` | Book covers | Cover id |
 | `www.googleapis.com` | Book search | Title, Google Books key |
-| `api.rawg.io` | Game search | Title, RAWG key |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Game search and covers | Title or Steam app id |
+| `api.rawg.io` | Game search and refresh; recommendations when a note opens | Title or RAWG id, genre, RAWG key |
+| `media.rawg.io` | Game covers and screenshots | Image path |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Game search, covers, trailers, and screenshots | Title or Steam app id |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Playing a Steam trailer; game screenshots | Video or image path |
+| `api.steampowered.com` | You run `Import Steam library` | Steam Web API key, your SteamID or profile name |
+| `id.twitch.tv`, `api.igdb.com` | Adding or refreshing a game, if you set Twitch keys | Twitch Client ID and secret; the game's Steam app id or name |
+| `www.wikidata.org` | Adding or refreshing a game from Steam | Steam app id |
 | `api.deezer.com` | Music search | Album or artist |
-| `graphql.anilist.co` | Anime search; AniList sync; MyAnimeList ids for sync | Title; your token, progress, status, and score; AniList ids |
+| `graphql.anilist.co` | Anime search; AniList sync; MyAnimeList ids for sync; recommendations when a note opens | Title; your token, progress, status, and score; AniList ids |
 | `anilist.co` | You click **Connect** | Client ID, opened in your browser |
 | `myanimelist.net` | You click **Connect** for MyAnimeList; token refresh | Client ID and secret, authorization code, refresh token |
 | `api.myanimelist.net` | MyAnimeList sync | Your token, progress, status, and score |
 | `s4.anilist.co` | Anime banners | CDN path |
 | `comicvine.gamespot.com` | Comic search | Title, Comic Vine key |
-| `v3-cinemeta.strem.io` | Adding or refreshing a movie or series | IMDb id |
+| `v3-cinemeta.strem.io` | Adding or refreshing a movie or series; movie and series search while OMDb is over its daily limit; recommendations when a note opens, without a TMDB key | Title or IMDb id; genre |
 | `images.metahub.space`, `episodes.metahub.space` | Stills | IMDb id, season and episode numbers |
-| `api.themoviedb.org`, `image.tmdb.org` | Adding or refreshing a movie or series, if you set a TMDB key | IMDb id and TMDB key; image path |
+| `api.themoviedb.org`, `image.tmdb.org` | Adding or refreshing a movie or series, and recommendations when a note opens, if you set a TMDB key | IMDb id and TMDB key; image path |
 | `i.ytimg.com` | Trailer stills | Video id |
+| Image hosts of streaming services, via AniList | Anime episode stills | Image path |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Opening a note with a trailer | Video id |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | You click a share button | The caption: title, your score, source link. The image stays on your device |
 
@@ -165,6 +188,7 @@ Your library is plain notes and works offline. The plugin goes online when you s
 | `Pull progress from AniList` | Updates notes from your AniList list |
 | `Push current note to MyAnimeList` | Sends progress, status, and score |
 | `Pull progress from MyAnimeList` | Updates notes from your MyAnimeList list |
+| `Import Steam library` | Adds a note for each game you own and updates `Playtime` |
 
 ## Support
 

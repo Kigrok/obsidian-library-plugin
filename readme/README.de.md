@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Suche einen Titel und erhalte eine Notiz mit Poster, Jahr, Genre, Machern, Besetzung und Bewertungen.
 - Die Bibliothek erscheint als Cover-Karten, nach Kategorien gruppiert und nach Name, Jahr, Bewertung oder Datum sortiert.
 - Hake Folgen einer Serie oder Kapitel eines Buchs ab und bewerte jede einzeln; `Progress` und `My Rating` werden daraus berechnet.
-- Film- und Seriennotizen zeigen Trailer, Standbilder, Laufzeit und die Staffelliste.
+- Film-, Serien-, Anime- und Spielnotizen zeigen Trailer und Standbilder, Filme und Serien zusätzlich Laufzeit und Staffelliste.
+- Unter jeder Notiz stehen ähnliche Titel, die du noch nicht hast; ein Klick fügt einen hinzu.
+- Importiere deine Steam-Spiele samt Spielzeit.
 - Genres, Macher und Schauspieler sind Links, daher sammeln ihre Notizen jeden Titel in den Rückverweisen und im Graphen.
 - Das Statistik-Panel zeigt die Toplisten deiner Wahl und deine gesamte Sehzeit.
 - Teile einen Titel als Kartenbild auf X, Telegram, Reddit und sechs weiteren Netzwerken.
@@ -53,6 +55,10 @@ Der `Type`-Wert einer Kategorie (zum Beispiel `Movie`) legt fest, welche Notizen
 | Alles andere | Manuell: du füllst die Felder aus | Keiner |
 
 Trailer, Standbilder, Laufzeit und Staffellisten kommen ohne Schlüssel von Cinemeta. Ein [TMDB-Schlüssel](https://www.themoviedb.org/settings/api) ergänzt Staffelbewertungen und mehr Standbilder.
+
+Um deine Spiele zu übernehmen, trage in den Einstellungen einen [Steam-Web-API-Schlüssel](https://steamcommunity.com/dev/apikey) und dein Steam-Profil ein und führe `Steam-Bibliothek importieren` aus. Der Befehl legt für jedes Spiel eine Notiz mit `Playtime` in Stunden an; erneut ausgeführt, ergänzt er neue Spiele und aktualisiert die Stunden. Die Spieldetails des Profils müssen öffentlich sein.
+
+Spielnotizen bekommen Screenshots und einen Trailer. Der Trailer ist ein YouTube-Video aus IGDB, wenn du Twitch Client ID und Client Secret einträgst (Anwendung unter [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps) anlegen), sonst aus Wikidata, falls dort einer steht, sonst der Steam-Trailer des Spiels.
 
 ## Fortschritt und Bewertungen
 
@@ -123,6 +129,17 @@ Bei einer Serie ist `Runtime` die Länge einer Folge. Bücher haben zusätzlich 
 
 Eine Aktualisierung füllt nur leere Felder, deine Änderungen bleiben also erhalten. Außerdem aktualisiert sie die Gesamtzahl der Folgen in `Progress` und ergänzt neue Staffeln und Folgentitel.
 
+## Empfehlungen
+
+Unter dem Kopf jeder Notiz steht eine Reihe ähnlicher Titel, die du noch nicht hast:
+
+- Anime: die Empfehlungen der AniList-Nutzer;
+- Filme und Serien: die TMDB-Empfehlungen mit TMDB-Schlüssel, sonst die bestbewerteten Titel derselben Genres aus Cinemeta;
+- Spiele: der Rest der Reihe und die besten Spiele des Genres aus RAWG (RAWG-Schlüssel nötig);
+- Bücher: die meistgelesenen Bücher bei Open Library mit denselben ersten zwei Genres.
+
+Ein Klick auf ein Cover fügt den Titel hinzu. Comics und Musik haben keine Empfehlungen. Abschalten lässt sich die Reihe unter Einstellungen → Library → Empfehlungen anzeigen.
+
 ## Datenschutz und Netzwerk
 
 Deine Bibliothek besteht aus einfachen Notizen und funktioniert offline. Das Plugin geht online, wenn du suchst, aktualisierst, synchronisierst oder teilst; wenn du eine Bibliotheksnotiz öffnest, höchstens alle 5 Minuten pro Notiz; und einmal nach einem Update oder einer Schlüsseländerung, um neue Felder zu füllen. Es gibt keine Telemetrie, keine Analyse und kein Selbst-Update. API-Schlüssel bleiben in deinen lokalen Plugin-Einstellungen und gehen nur an ihren eigenen Dienst.
@@ -130,22 +147,28 @@ Deine Bibliothek besteht aus einfachen Notizen und funktioniert offline. Das Plu
 | Host | Wann | Was gesendet wird |
 | --- | --- | --- |
 | `www.omdbapi.com` | Film- und Seriensuche | Titel oder IMDb-ID, OMDb-Schlüssel |
-| `openlibrary.org` | Buchsuche; Kapitelsuche, wenn du ein Buch hinzufügst oder öffnest | Titel und Autor, ISBN oder Werk-ID |
+| `openlibrary.org` | Buchsuche; Kapitelsuche, wenn du ein Buch hinzufügst oder öffnest; Empfehlungen beim Öffnen einer Notiz | Titel und Autor, ISBN oder Werk-ID; Genres |
 | `covers.openlibrary.org` | Buchcover | Cover-ID |
 | `www.googleapis.com` | Buchsuche | Titel, Google-Books-Schlüssel |
-| `api.rawg.io` | Spielesuche | Titel, RAWG-Schlüssel |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Spielesuche und Cover | Titel oder Steam-App-ID |
+| `api.rawg.io` | Spielesuche und Aktualisierung; Empfehlungen beim Öffnen einer Notiz | Titel oder RAWG-ID, Genre, RAWG-Schlüssel |
+| `media.rawg.io` | Spielcover und Screenshots | Bildpfad |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Spielesuche, Cover, Trailer und Screenshots | Titel oder Steam-App-ID |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Abspielen eines Steam-Trailers; Spiel-Screenshots | Video- oder Bildpfad |
+| `api.steampowered.com` | Du führst `Steam-Bibliothek importieren` aus | Steam-Web-API-Schlüssel, deine SteamID oder dein Profilname |
+| `id.twitch.tv`, `api.igdb.com` | Hinzufügen oder Aktualisieren eines Spiels, wenn Twitch-Schlüssel gesetzt sind | Twitch Client ID und Secret; Steam-App-ID oder Name des Spiels |
+| `www.wikidata.org` | Hinzufügen oder Aktualisieren eines Spiels aus Steam | Steam-App-ID |
 | `api.deezer.com` | Musiksuche | Album oder Künstler |
-| `graphql.anilist.co` | Anime-Suche; AniList-Synchronisierung; MyAnimeList-IDs für die Synchronisierung | Titel; dein Token, Fortschritt, Status und Wertung; AniList-IDs |
+| `graphql.anilist.co` | Anime-Suche; AniList-Synchronisierung; MyAnimeList-IDs für die Synchronisierung; Empfehlungen beim Öffnen einer Notiz | Titel; dein Token, Fortschritt, Status und Wertung; AniList-IDs |
 | `anilist.co` | Du klickst auf **Verbinden** | Client ID, im Browser geöffnet |
 | `myanimelist.net` | Du klickst bei MyAnimeList auf **Verbinden**; Token-Erneuerung | Client ID und Secret, Autorisierungscode, Refresh-Token |
 | `api.myanimelist.net` | MyAnimeList-Synchronisierung | Dein Token, Fortschritt, Status und Wertung |
 | `s4.anilist.co` | Anime-Banner | CDN-Pfad |
 | `comicvine.gamespot.com` | Comicsuche | Titel, Comic-Vine-Schlüssel |
-| `v3-cinemeta.strem.io` | Hinzufügen oder Aktualisieren eines Films oder einer Serie | IMDb-ID |
+| `v3-cinemeta.strem.io` | Hinzufügen oder Aktualisieren eines Films oder einer Serie; Film- und Seriensuche, solange das Tageslimit von OMDb erreicht ist; Empfehlungen beim Öffnen einer Notiz, ohne TMDB-Schlüssel | Titel oder IMDb-ID; Genre |
 | `images.metahub.space`, `episodes.metahub.space` | Standbilder | IMDb-ID, Staffel- und Folgennummer |
-| `api.themoviedb.org`, `image.tmdb.org` | Hinzufügen oder Aktualisieren eines Films oder einer Serie, wenn ein TMDB-Schlüssel gesetzt ist | IMDb-ID und TMDB-Schlüssel; Bildpfad |
+| `api.themoviedb.org`, `image.tmdb.org` | Hinzufügen oder Aktualisieren eines Films oder einer Serie und Empfehlungen beim Öffnen einer Notiz, wenn ein TMDB-Schlüssel gesetzt ist | IMDb-ID und TMDB-Schlüssel; Bildpfad |
 | `i.ytimg.com` | Trailer-Standbilder | Video-ID |
+| Bildserver von Streamingdiensten, über AniList | Standbilder von Anime-Folgen | Bildpfad |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Öffnen einer Notiz mit Trailer | Video-ID |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Du klickst auf eine Teilen-Schaltfläche | Die Bildunterschrift: Titel, deine Wertung, Quelllink. Das Bild bleibt auf deinem Gerät |
 
@@ -165,6 +188,7 @@ Deine Bibliothek besteht aus einfachen Notizen und funktioniert offline. Das Plu
 | `Fortschritt von AniList abrufen` | Aktualisiert Notizen aus deiner AniList-Liste |
 | `Aktuelle Notiz zu MyAnimeList übertragen` | Sendet Fortschritt, Status und Wertung |
 | `Fortschritt von MyAnimeList abrufen` | Aktualisiert Notizen aus deiner MyAnimeList-Liste |
+| `Steam-Bibliothek importieren` | Legt für jedes gekaufte Spiel eine Notiz an und aktualisiert `Playtime` |
 
 ## Support
 

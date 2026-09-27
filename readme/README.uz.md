@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.3-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -24,7 +24,9 @@
 - Asarni nomi bo'yicha qidiring va posteri, yili, janri, mualliflari, aktyorlari va reytinglari to'ldirilgan qayd oling.
 - Kutubxona toifalarga ajratilgan va nomi, yili, reytingi yoki sanasi bo'yicha saralangan muqovali kartochkalar ko'rinishida.
 - Serial qismlarini yoki kitob boblarini belgilang va har birini baholang; `Progress` va `My Rating` ular asosida hisoblanadi.
-- Film va serial qaydlarida treyler, kadrlar, davomiylik va mavsumlar ro'yxati bor.
+- Film, serial, anime va o'yin qaydlarida treyler va kadrlar bor, film va seriallarda esa davomiylik va mavsumlar ro'yxati ham bor.
+- Har bir qayd ostida sizda hali yo'q o'xshash asarlar bor; bir bosishda qo'shiladi.
+- Sotib olingan o'yinlarni o'ynalgan soatlari bilan Steam'dan import qilish.
 - Janrlar, mualliflar va aktyorlar havola sifatida saqlanadi, shuning uchun ularning qaydlari barcha asarlarni orqa havolalarda va grafda to'playdi.
 - Statistika paneli siz tanlagan toplarni va umumiy tomosha vaqtini ko'rsatadi.
 - Asarni kartochka-rasm ko'rinishida X, Telegram, Reddit va yana oltita tarmoqqa ulashing.
@@ -53,6 +55,10 @@ Toifaning `Type` qiymati (masalan, `Movie`) qaysi qaydlar unga tegishli ekanini,
 | Qolgan hammasi | Qo'lda: maydonlarni o'zingiz to'ldirasiz | Kerak emas |
 
 Treylerlar, kadrlar, davomiylik va mavsumlar ro'yxati Cinemeta'dan kalitsiz keladi. [TMDB kaliti](https://www.themoviedb.org/settings/api) mavsum baholari va ko'proq kadr qo'shadi.
+
+O'yinlaringizni qo'shish uchun sozlamalarda [Steam Web API kalitini](https://steamcommunity.com/dev/apikey) va Steam profilini kiriting, so'ng `Steam kutubxonasini import qilish` buyrug'ini bajaring. U har bir o'yin uchun `Playtime` soatlari bilan qayd yaratadi, qayta ishga tushirilganda yangi o'yinlarni qo'shadi va soatlarni yangilaydi. Profildagi o'yinlar haqidagi ma'lumot ochiq bo'lishi kerak.
+
+O'yin qaydlarida skrinshotlar va treyler bor. Treyler Twitch Client ID va Client Secret kiritilgan bo'lsa IGDB orqali YouTube'dan olinadi (ilova [dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps) sahifasida yaratiladi), aks holda Wikidata'dan, aks holda Steam roligi ko'rsatiladi.
 
 ## Progress va baholar
 
@@ -123,6 +129,17 @@ Serialda `Runtime` bitta qismning davomiyligini bildiradi. Kitoblarda `ISBN` bor
 
 Metama'lumotlarni yangilash faqat bo'sh maydonlarni to'ldiradi, shuning uchun tuzatishlaringiz saqlanib qoladi. U, shuningdek, `Progress` dagi umumiy qismlar sonini yangilaydi va yangi mavsumlar hamda qism nomlarini qo'shadi.
 
+## Tavsiyalar
+
+Har bir qayd sarlavhasi ostida sizda hali yo'q o'xshash asarlar tasmasi bor:
+
+- anime: AniList foydalanuvchilarining tavsiyalari;
+- filmlar va seriallar: TMDB kaliti bo'lsa TMDB tavsiyalari, aks holda Cinemeta'dagi o'sha janrlarning eng yuqori baholanganlari;
+- o'yinlar: RAWG'dagi seriyaning boshqa qismlari va janrning eng yaxshi o'yinlari (RAWG kaliti kerak);
+- kitoblar: dastlabki ikki janri mos keladigan Open Library'dagi eng ko'p o'qilgan kitoblar.
+
+Asarni qo'shish uchun muqovani bosing. Komiks va musiqada tavsiyalar yo'q. Tasmani Sozlamalar → Library → Tavsiyalarni ko'rsatish orqali o'chirish mumkin.
+
 ## Maxfiylik va tarmoq
 
 Kutubxona oddiy qaydlardan iborat va oflayn ishlaydi. Plagin tarmoqqa siz qidirganingizda, yangilaganingizda, sinxronlaganingizda yoki ulashganingizda; kutubxona qaydini ochganingizda, lekin har bir qayd uchun 5 daqiqada bir martadan ko'p emas; va plagin yangilangandan yoki kalit o'zgargandan keyin yangi maydonlarni to'ldirish uchun bir marta chiqadi. Telemetriya, analitika va o'z-o'zini yangilash yo'q. API kalitlari plaginning mahalliy sozlamalarida saqlanadi va faqat o'z xizmatiga yuboriladi.
@@ -130,22 +147,28 @@ Kutubxona oddiy qaydlardan iborat va oflayn ishlaydi. Plagin tarmoqqa siz qidirg
 | Xost | Qachon | Nima yuboriladi |
 | --- | --- | --- |
 | `www.omdbapi.com` | Film va serial qidirish | Nom yoki IMDb id, OMDb kaliti |
-| `openlibrary.org` | Kitob qidirish; kitob qo'shilganda yoki ochilganda boblarni qidirish | Nom va muallif, ISBN yoki asar id |
+| `openlibrary.org` | Kitob qidirish; kitob qo'shilganda yoki ochilganda boblarni qidirish; qayd ochilganda tavsiyalar | Nom va muallif, ISBN yoki asar id; janrlar |
 | `covers.openlibrary.org` | Kitob muqovalari | Muqova id |
 | `www.googleapis.com` | Kitob qidirish | Nom, Google Books kaliti |
-| `api.rawg.io` | O'yin qidirish | Nom, RAWG kaliti |
-| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | O'yin qidirish va muqovalar | Nom yoki Steam app id |
+| `api.rawg.io` | O'yin qidirish va yangilash; qayd ochilganda tavsiyalar | Nom yoki RAWG id, janr, RAWG kaliti |
+| `media.rawg.io` | O'yin muqovalari va skrinshotlari | Rasm yo'li |
+| `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | O'yin qidirish, muqovalar, treylerlar va skrinshotlar | Nom yoki Steam app id |
+| `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Steam treylerini ijro etish; o'yin skrinshotlari | Video yoki rasm yo'li |
+| `api.steampowered.com` | Siz `Steam kutubxonasini import qilish` ni ishga tushirasiz | Steam Web API kaliti, SteamID yoki profil nomi |
+| `id.twitch.tv`, `api.igdb.com` | Twitch kalitlari o'rnatilgan bo'lsa, o'yin qo'shish yoki yangilash | Twitch Client ID va sir; o'yinning Steam app id yoki nomi |
+| `www.wikidata.org` | Steam'dan o'yin qo'shish yoki yangilash | Steam app id |
 | `api.deezer.com` | Musiqa qidirish | Albom yoki ijrochi |
-| `graphql.anilist.co` | Anime qidirish; AniList sinxronlash; sinxronlash uchun MyAnimeList id | Nom; tokeningiz, progress, holat va baho; AniList id |
+| `graphql.anilist.co` | Anime qidirish; AniList sinxronlash; sinxronlash uchun MyAnimeList id; qayd ochilganda tavsiyalar | Nom; tokeningiz, progress, holat va baho; AniList id |
 | `anilist.co` | Siz **Ulanish** tugmasini bosasiz | Client ID, brauzerda ochiladi |
 | `myanimelist.net` | Siz MyAnimeList uchun **Ulanish** tugmasini bosasiz; tokenni yangilash | Client ID va sir, avtorizatsiya kodi, yangilash tokeni |
 | `api.myanimelist.net` | MyAnimeList sinxronlash | Tokeningiz, progress, holat va baho |
 | `s4.anilist.co` | Anime bannerlari | CDN yo'li |
 | `comicvine.gamespot.com` | Komiks qidirish | Nom, Comic Vine kaliti |
-| `v3-cinemeta.strem.io` | Film yoki serial qo'shish yoki yangilash | IMDb id |
+| `v3-cinemeta.strem.io` | Film yoki serial qo'shish yoki yangilash; OMDb kunlik limiti tugaganda film va serial qidirish; TMDB kaliti bo'lmasa, qayd ochilganda tavsiyalar | Nom yoki IMDb id; janr |
 | `images.metahub.space`, `episodes.metahub.space` | Kadrlar | IMDb id, mavsum va qism raqamlari |
-| `api.themoviedb.org`, `image.tmdb.org` | TMDB kaliti o'rnatilgan bo'lsa, film yoki serial qo'shish yoki yangilash | IMDb id va TMDB kaliti; rasm yo'li |
+| `api.themoviedb.org`, `image.tmdb.org` | TMDB kaliti o'rnatilgan bo'lsa, film yoki serial qo'shish yoki yangilash va qayd ochilganda tavsiyalar | IMDb id va TMDB kaliti; rasm yo'li |
 | `i.ytimg.com` | Treyler kadrlari | Video id |
+| Striming xizmatlarining rasm serverlari, AniList orqali | Anime qismlari kadrlari | Rasm yo'li |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `player.vimeo.com`, `www.dailymotion.com` | Treyleri bor qaydni ochish | Video id |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Siz ulashish tugmasini bosasiz | Yozuv: nom, sizning bahoyingiz, manba havolasi. Rasm qurilmangizda qoladi |
 
@@ -165,6 +188,7 @@ Kutubxona oddiy qaydlardan iborat va oflayn ishlaydi. Plagin tarmoqqa siz qidirg
 | `AniList dan jarayonni yuklash` | Qaydlarni AniList ro'yxatingizdan yangilaydi |
 | `Joriy eslatmani MyAnimeList ga yuborish` | Progress, holat va bahoni yuboradi |
 | `MyAnimeList dan jarayonni yuklash` | Qaydlarni MyAnimeList ro'yxatingizdan yangilaydi |
+| `Steam kutubxonasini import qilish` | Har bir sotib olingan o'yin uchun qayd yaratadi va `Playtime` ni yangilaydi |
 
 ## Yordam
 

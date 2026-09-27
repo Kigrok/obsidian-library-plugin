@@ -35,11 +35,9 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
-            - name: Lint and test
-              run: |
-                  npm run lint
-                  npx tsc --noEmit -p tests/tsconfig.json
-                  npm test
+            # Tests stay local (gitignored); CI lints the source that ships.
+            - name: Lint
+              run: npx eslint 'src/**/*.ts'
 
             - name: Build plugin
               run: npm run build
