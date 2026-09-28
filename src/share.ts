@@ -147,6 +147,12 @@ export function shareIntent(network: string, share: ShareText): string {
 	}
 }
 
+// A colour of the open theme, so the card carries the vault's accent; a
+// canvas cannot read CSS variables itself.
+function themeColor(name: string, fallback: string): string {
+	return getComputedStyle(activeDocument.body).getPropertyValue(name).trim() || fallback
+}
+
 // Render a shareable landscape card (poster + title + rating) to a PNG blob.
 export async function renderShareCard(app: App, fm: Frontmatter, name: string, coverProperty = 'Cover'): Promise<Blob | null> {
 	const canvas = createEl('canvas')
@@ -155,9 +161,10 @@ export async function renderShareCard(app: App, fm: Frontmatter, name: string, c
 	const ctx = canvas.getContext('2d')
 	if (!ctx) return null
 
+	const accent = themeColor('--interactive-accent', '#7c6cff')
 	ctx.fillStyle = '#16161c'
 	ctx.fillRect(0, 0, W, H)
-	ctx.fillStyle = '#7c6cff'
+	ctx.fillStyle = accent
 	ctx.fillRect(0, 0, 8, H)
 
 	const posterX = PAD
@@ -255,10 +262,10 @@ export async function renderShareCard(app: App, fm: Frontmatter, name: string, c
 	const rating = ratingRaw ? toStr(ratingRaw).trim() : ''
 	if (rating) {
 		const pillY = posterY + POSTER_H - 96
-		ctx.fillStyle = '#7c6cff'
+		ctx.fillStyle = accent
 		roundRect(ctx, colX, pillY, 260, 84, 42)
 		ctx.fill()
-		ctx.fillStyle = '#ffffff'
+		ctx.fillStyle = themeColor('--text-on-accent', '#ffffff')
 		ctx.font = 'bold 46px sans-serif'
 		ctx.textBaseline = 'middle'
 		ctx.fillText(`★ ${rating} / 10`, colX + 28, pillY + 44)

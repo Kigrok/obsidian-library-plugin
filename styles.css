@@ -33,7 +33,8 @@
 	border-radius: 10px 10px 0 0;
 }
 
-/* Not started yet: an eye in the cover's corner, legible on any cover. */
+/* Not started yet: an eye in the theme's accent, on a disc that keeps it
+   legible on any cover. */
 .library-card .card-unstarted {
 	position: absolute;
 	top: 6px;
@@ -42,7 +43,7 @@
 	padding: 4px;
 	border-radius: 50%;
 	background: color-mix(in srgb, var(--background-primary) 80%, transparent);
-	color: var(--text-normal);
+	color: var(--interactive-accent);
 }
 
 .library-card .card-unstarted svg {

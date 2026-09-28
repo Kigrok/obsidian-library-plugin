@@ -44,12 +44,12 @@ interface TimeSlice {
 	color: string
 }
 
-// Only the watched-time media types get a slice; the colour comes from the
-// theme palette so it stays legible in light and dark themes alike.
+// Only the watched-time media types get a slice, each a shade of the theme's
+// accent: the chart takes the theme's colour like the progress bars do.
 const TIME_COLORS: Record<string, string> = {
-	movie: 'var(--color-blue)',
-	series: 'var(--color-purple)',
-	anime: 'var(--color-pink)'
+	movie: 'var(--interactive-accent)',
+	series: 'color-mix(in srgb, var(--interactive-accent) 60%, var(--background-primary))',
+	anime: 'color-mix(in srgb, var(--interactive-accent) 30%, var(--background-primary))'
 }
 
 type SortKey = 'name' | 'year' | 'rating' | 'date'
@@ -421,7 +421,12 @@ export class LibraryView extends ItemView {
 
 		this.renderStats(root)
 
+		// Titles not started yet may live in Up next alone, and only while
+		// that block is on: switching both off must not hide them anywhere.
+		const settings = this.plugin.settings
+		const upNextOnly = settings.showUpNext && !settings.upNextInCategories
 		for (const { category, cards } of sections) {
+			const shown = upNextOnly ? cards.filter(card => !notStarted(card.fm)) : cards
 			const sectionEl = this.renderSection(root, {
 				title: category.name,
 				sortId: category.name,
@@ -431,13 +436,12 @@ export class LibraryView extends ItemView {
 					if (collapsed) category.collapsed = true
 					else delete category.collapsed
 				}
-			}, cards)
-			this.tocChip(toc, category.name, cards.length, sectionEl)
+			}, shown)
+			this.tocChip(toc, category.name, shown.length, sectionEl)
 		}
 
 		// At the end of the page: everything not started yet, from every
-		// category, newest first; the cards stay in their own sections too.
-		const settings = this.plugin.settings
+		// category, newest first.
 		const upNext: CardData[] = []
 		for (const { cards } of sections) {
 			for (const card of cards) if (notStarted(card.fm)) upNext.push(card)

@@ -23,6 +23,7 @@ import { AnimeProvider } from './providers/anime'
 import { ComicsProvider } from './providers/comics'
 import { SteamProvider } from './providers/steam'
 import { TmdbEnricher } from './providers/tmdb'
+import { RottenTomatoesEnricher } from './providers/wikidata'
 import { isContentType } from './providers/types'
 import type { ContentProvider, NormalizedMetadata, SearchResult } from './providers/types'
 import { PickTypeModal } from './ui/pickTypeModal'
@@ -71,6 +72,7 @@ const LINK_FIELDS = ['Genre', 'Creator', 'Cast']
 // The background metadata pass waits for the vault to settle, then walks the
 // library one note at a time so the sources are never hit in a burst.
 const ENRICH_START_DELAY = 10 * 1000
+const SOURCE_SCORES = ['Rating IMDB', 'Rating RT', 'Rating MC', 'Rating RAWG']
 const ENRICH_STEP_DELAY = 700
 
 export default class LibraryPlugin extends Plugin {
@@ -110,7 +112,7 @@ export default class LibraryPlugin extends Plugin {
 		// Cinemeta is keyless, so trailer/stills/seasons work without any setup;
 		// TMDB comes first and wins where both have data (richer season ratings).
 		this.registry.register(
-			new OmdbProvider(() => this.settings.omdbApiKey, [tmdb, new CinemetaEnricher()])
+			new OmdbProvider(() => this.settings.omdbApiKey, [tmdb, new CinemetaEnricher(), new RottenTomatoesEnricher()])
 		)
 		this.registry.register(new BookAggregatorProvider(googleBooks, openLibrary))
 		const trailers = new GameTrailerFinder(() => ({ id: this.settings.twitchClientId, secret: this.settings.twitchClientSecret }))
@@ -1160,6 +1162,9 @@ export default class LibraryPlugin extends Plugin {
 			// A junk runtime stored by an earlier pass must not shadow the
 			// trustworthy value that arrives behind it.
 			else if (key === 'Runtime' && plausibleRuntime(present) === null && plausibleRuntime(value) !== null) current[target] = value
+			// A source's own score moves over time and is never typed by hand:
+			// a refresh brings the current one instead of keeping the first.
+			else if (SOURCE_SCORES.indexOf(key) >= 0) current[target] = value
 		}
 		if (typeof meta.fields.Season === 'number' && meta.fields.Season > Number(current.Season || 0)) {
 			current.Season = meta.fields.Season
@@ -1668,6 +1673,7 @@ export default class LibraryPlugin extends Plugin {
 		if (typeof this.settings.statsCollapsed !== 'boolean') this.settings.statsCollapsed = false
 		if (typeof this.settings.showUpNext !== 'boolean') this.settings.showUpNext = true
 		if (typeof this.settings.upNextCollapsed !== 'boolean') this.settings.upNextCollapsed = false
+		if (typeof this.settings.upNextInCategories !== 'boolean') this.settings.upNextInCategories = true
 		if (!this.settings.enrichMarks || typeof this.settings.enrichMarks !== 'object') this.settings.enrichMarks = {}
 		// Categories an earlier build kept out of the statistics, through the
 		// switches that came before the top list: `showTop`, `stats.rating`, `showRated`.

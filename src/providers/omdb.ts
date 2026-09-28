@@ -1,5 +1,6 @@
 import { requestUrl } from 'obsidian'
 import { isEmptyValue, plausibleRuntime } from '../util'
+import { claim, entities, languages, searchItems, textIn, yearIn } from './wikidata'
 import type {
 	ContentProvider,
 	ContentType,
@@ -78,6 +79,43 @@ function na(value: string | undefined): string | null {
 	return value && value !== 'N/A' ? value : null
 }
 
+// Letters of another script than Latin: Greek and Cyrillic onward, past the
+// punctuation block, so a curly apostrophe keeps a query Latin.
+const NON_LATIN = /[\u0370-\u1fff\u2c00-\uffff]/
+
+// Wikidata classes a title must have to count as a movie or as a series.
+const FILM_CLASSES = ['Q11424', 'Q24869', 'Q506240', 'Q202866', 'Q29168811']
+const SERIES_CLASSES = ['Q5398426', 'Q1259759', 'Q526877', 'Q63952888', 'Q117467246']
+
+// "brother 1997" searches "brother" and puts the 1997 titles first. A bare
+// year stays a title ("1917"), and so does a far-future one ("2049").
+export function splitYear(query: string): { title: string; year: number | null } {
+	const match = query.trim().match(/^(.*\S)\s+(\d{4})$/)
+	const year = match ? Number(match[2]) : NaN
+	if (match?.[1] && year >= 1870 && year <= new Date().getFullYear() + 5) return { title: match[1], year }
+	return { title: query.trim(), year: null }
+}
+
+// One entry per title, where the first source to list it put it; a later
+// source still fills what that one left out (the reader's own title, the
+// year, the poster). Then the titles of the asked-for year come first.
+function arrange(results: SearchResult[], year: number | null): SearchResult[] {
+	const byId = new Map<string, SearchResult>()
+	for (const result of results) {
+		const kept = byId.get(result.sourceId)
+		if (!kept) {
+			byId.set(result.sourceId, { ...result })
+			continue
+		}
+		kept.subtitle = kept.subtitle ?? result.subtitle
+		kept.year = kept.year ?? result.year
+		kept.cover = kept.cover ?? result.cover
+	}
+	const unique = [...byId.values()]
+	if (year === null) return unique
+	return [...unique.filter(r => r.year === year), ...unique.filter(r => r.year !== year)]
+}
+
 export class OmdbProvider implements ContentProvider {
 	readonly id = 'omdb'
 	readonly contentTypes: ContentType[] = ['movie', 'series']
@@ -86,9 +124,9 @@ export class OmdbProvider implements ContentProvider {
 	private static readonly CINEMETA = 'https://v3-cinemeta.strem.io'
 	private static readonly REST = 60 * 60 * 1000
 
-	// A free OMDb key allows 1,000 requests a day. Once OMDb says the limit is
-	// reached, or it is down, search and fetch go to Cinemeta (same IMDb ids,
-	// no key, no daily cap) for the next hour instead of failing.
+	// With no key, or for an hour after OMDb reports its daily limit (1,000
+	// requests on a free key) or an outage, notes come from Cinemeta: the same
+	// IMDb ids, no key, no daily cap.
 	private restingSince = 0
 
 	private getKey: () => string
@@ -151,15 +189,24 @@ export class OmdbProvider implements ContentProvider {
 		return false
 	}
 
+	// OMDb answers ten titles at most, and only with a key; Cinemeta and
+	// Wikidata add the rest, so a title many films share still lists the one
+	// meant, and a search in Russian or Japanese finds its titles by name.
 	async search(query: string, type: ContentType): Promise<SearchResult[]> {
+		const kind = type === 'series' ? 'series' : 'movie'
+		const { title, year } = splitYear(query)
+		const open = this.searchOpen(query, title, kind)
+		const keyed = this.getKey() && !this.resting() ? await this.searchOmdb(title, kind, year) : []
+		return arrange([...keyed, ...(await open)], year)
+	}
+
+	private async searchOmdb(title: string, kind: 'movie' | 'series', year: number | null): Promise<SearchResult[]> {
 		try {
-			if (!this.getKey()) return []
-			const omdbType = type === 'series' ? 'series' : 'movie'
-			if (this.resting()) return this.searchCinemeta(query, omdbType)
-			const resp = await requestUrl({ url: this.url({ s: query, type: omdbType }), throw: false })
+			const params: Record<string, string> = { s: title, type: kind }
+			if (year !== null) params.y = String(year)
+			const resp = await requestUrl({ url: this.url(params), throw: false })
 			const data = jsonOf(resp) as OmdbSearchResponse | null
-			if (this.unavailable(resp.status, data)) return this.searchCinemeta(query, omdbType)
-			if (resp.status !== 200) return []
+			if (this.unavailable(resp.status, data) || resp.status !== 200) return []
 			if (!data || typeof data !== 'object' || data.Response === 'False') return []
 			const items = Array.isArray(data.Search) ? data.Search : []
 			return items.map((item) => ({
@@ -173,6 +220,52 @@ export class OmdbProvider implements ContentProvider {
 			}))
 		} catch (e) {
 			console.error('Library: OMDb search error', e)
+			return []
+		}
+	}
+
+	// A query in another script finds its titles through Wikidata's labels,
+	// so those lead; a Latin one leads with Cinemeta, which ranks by fame.
+	private async searchOpen(query: string, title: string, kind: 'movie' | 'series'): Promise<SearchResult[]> {
+		const [cinemeta, wikidata] = await Promise.all([
+			this.searchCinemeta(title, kind),
+			this.searchWikidata(query, kind)
+		])
+		return NON_LATIN.test(query) ? [...wikidata, ...cinemeta] : [...cinemeta, ...wikidata]
+	}
+
+	private async searchWikidata(query: string, kind: 'movie' | 'series'): Promise<SearchResult[]> {
+		try {
+			const classes = (kind === 'series' ? SERIES_CLASSES : FILM_CLASSES).map(c => `P31=${c}`).join('|')
+			const ids = await searchItems(query, `haswbstatement:P345 haswbstatement:${classes}`, 8)
+			const langs = languages()
+			const [found, imdbIds] = await Promise.all([
+				entities(ids, 'labels|descriptions', langs),
+				Promise.all(ids.map(id => claim(id, 'P345')))
+			])
+			const out: SearchResult[] = []
+			ids.forEach((id, i) => {
+				const imdb = imdbIds[i]
+				if (typeof imdb !== 'string' || !/^tt\d+$/.test(imdb)) return
+				const entity = found[id]
+				const english = textIn(entity?.labels, ['en', 'mul'])
+				const local = textIn(entity?.labels, langs)
+				const description = textIn(entity?.descriptions, langs)
+				out.push({
+					provider: this.id,
+					sourceId: imdb,
+					// Named in English like every other movie note; the reader's
+					// own title and the description go underneath.
+					title: english ?? local ?? imdb,
+					year: yearIn(description),
+					cover: `https://images.metahub.space/poster/small/${imdb}/img`,
+					subtitle: [local !== english ? local : null, description].filter(Boolean).join(' · ') || null,
+					raw: null
+				})
+			})
+			return out
+		} catch (e) {
+			console.error('Library: Wikidata search error', e)
 			return []
 		}
 	}
@@ -240,9 +333,8 @@ export class OmdbProvider implements ContentProvider {
 
 	async fetch(sourceId: string, type: ContentType): Promise<NormalizedMetadata | null> {
 		try {
-			if (!this.getKey()) return null
 			let details: OmdbDetails | null = null
-			if (!this.resting()) {
+			if (this.getKey() && !this.resting()) {
 				const resp = await requestUrl({ url: this.url({ i: sourceId }), throw: false })
 				const json = jsonOf(resp) as OmdbDetails | null
 				if (!this.unavailable(resp.status, json)) {
@@ -319,7 +411,7 @@ export class OmdbProvider implements ContentProvider {
 		const seasons = Array.isArray(fields.Seasons) ? fields.Seasons as { episodes?: unknown }[] : []
 		const listed = seasons.reduce((sum, s) => sum + (Number(s.episodes) || 0), 0)
 		const episodes = listed > 0 && seasons.length >= totalSeasons ? listed
-			: totalSeasons > 0 && !this.resting() ? await this.countEpisodes(imdbId, totalSeasons) : 0
+			: totalSeasons > 0 && this.getKey() && !this.resting() ? await this.countEpisodes(imdbId, totalSeasons) : 0
 		return { fields, progressTotal: episodes > 0 ? episodes : null, imdbId }
 	}
 

@@ -57,6 +57,8 @@ export class AddContentModal extends SuggestModal<SearchResult> {
 		el.addClass('library-suggest')
 		if (result.cover) {
 			const img = el.createEl('img', { cls: 'library-suggest-cover' })
+			// A poster the source does not have leaves no broken-image icon.
+			img.addEventListener('error', () => img.remove())
 			img.src = result.cover
 		}
 		const info = el.createDiv({ cls: 'library-suggest-info' })
