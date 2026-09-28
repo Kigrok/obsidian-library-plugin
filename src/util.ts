@@ -190,6 +190,14 @@ function isComplete(fm: Record<string, unknown>): boolean {
 	return fm.Complete === true || toStr(fm.Complete) === 'true'
 }
 
+// Nothing of it done yet: not complete, nothing watched, read or played, and
+// no rating of one's own, since a rated title was seen whether ticked or not.
+export function notStarted(fm: Record<string, unknown>): boolean {
+	if (isComplete(fm) || parseWatched(fm.Progress) > 0) return false
+	const rating = fm['My Rating'] ?? fm.Rating
+	return rating === null || rating === undefined || toStr(rating).trim() === ''
+}
+
 // A series keeps the length of one episode in `Runtime`; the note shows the
 // whole run. A movie's Progress is 1/1, so it falls through unchanged.
 export function totalRuntimeMinutes(fm: Record<string, unknown>, perEpisode: number): number {

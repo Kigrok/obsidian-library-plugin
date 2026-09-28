@@ -1666,6 +1666,8 @@ export default class LibraryPlugin extends Plugin {
 		this.settings.categories = this.settings.categories.filter(cat => !!cat && typeof cat === 'object')
 		if (!this.settings.sortState || typeof this.settings.sortState !== 'object') this.settings.sortState = {}
 		if (typeof this.settings.statsCollapsed !== 'boolean') this.settings.statsCollapsed = false
+		if (typeof this.settings.showUpNext !== 'boolean') this.settings.showUpNext = true
+		if (typeof this.settings.upNextCollapsed !== 'boolean') this.settings.upNextCollapsed = false
 		if (!this.settings.enrichMarks || typeof this.settings.enrichMarks !== 'object') this.settings.enrichMarks = {}
 		// Categories an earlier build kept out of the statistics, through the
 		// switches that came before the top list: `showTop`, `stats.rating`, `showRated`.

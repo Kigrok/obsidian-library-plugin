@@ -217,6 +217,18 @@ export class LibrarySettingTab extends PluginSettingTab {
 							);
 						},
 					},
+					{
+						name: tr("settings.upNext.name"),
+						desc: tr("settings.upNext.desc"),
+						render: (row) => {
+							row.addToggle((toggle) =>
+								toggle.setValue(this.plugin.settings.showUpNext).onChange(async (value) => {
+									this.plugin.settings.showUpNext = value;
+									await this.plugin.saveSettings();
+								}),
+							);
+						},
+					},
 				],
 			},
 			{
