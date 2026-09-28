@@ -31,16 +31,34 @@ const COMPARISONS: { key: string; icon: string; kind: ComparisonKind; minutes: n
 	// Birth to first litter: about ten weeks.
 	{ key: 'fact.mice', icon: 'rat', kind: 'times', minutes: 70 * DAY },
 	// Egg to adult in warm weather: about ten days.
-	{ key: 'fact.mosquitoes', icon: 'bug', kind: 'times', minutes: 10 * DAY }
+	{ key: 'fact.mosquitoes', icon: 'bug', kind: 'times', minutes: 10 * DAY },
+	// Sunlight reaches the Earth in 8 minutes 20 seconds.
+	{ key: 'fact.sunlight', icon: 'sun', kind: 'times', minutes: 8 + 20 / 60 },
+	// Jupiter turns on its axis in 9 hours 56 minutes.
+	{ key: 'fact.jupiter', icon: 'orbit', kind: 'times', minutes: 9 * HOUR + 56 },
+	// The Earth moves along its orbit at 29.8 km/s, about 107,000 km an hour:
+	// the count is millions of km.
+	{ key: 'fact.earth', icon: 'earth', kind: 'times', minutes: (1e6 / 107000) * HOUR },
+	// The eight Harry Potter films: 152 + 161 + 142 + 157 + 138 + 153 + 146 + 130 minutes.
+	{ key: 'fact.potter', icon: 'wand', kind: 'times', minutes: 1179 },
+	// An airliner cruising at 900 km/h around the Equator, 40,075 km: 44.5 hours.
+	{ key: 'fact.plane', icon: 'plane', kind: 'times', minutes: (40075 / 900) * HOUR },
+	// Venus turns once on its axis in 243 Earth days.
+	{ key: 'fact.venus', icon: 'telescope', kind: 'share', minutes: 243 * DAY },
+	// Jules Verne, Around the World in Eighty Days.
+	{ key: 'fact.fogg', icon: 'ship', kind: 'share', minutes: 80 * DAY },
+	// The Equator, 40,075 km, walked at 5 km/h.
+	{ key: 'fact.equator', icon: 'footprints', kind: 'share', minutes: (40075 / 5) * HOUR },
+	// An elephant's pregnancy: about 22 months.
+	{ key: 'fact.elephant', icon: 'baby', kind: 'share', minutes: 660 * DAY }
 ]
 
-// A comparison is shown once it says something: one whole repeat, 1% of the record.
-const THRESHOLD: Record<ComparisonKind, number> = { times: 1, share: 0.01 }
-
+// A comparison is shown while it says something: from one whole repeat, or
+// from 1% of a record up to the whole of it ("104% of 80 days" says little).
 export function watchComparisons(minutes: number): WatchComparison[] {
 	return COMPARISONS
 		.map(c => ({ key: c.key, icon: c.icon, kind: c.kind, value: minutes / c.minutes }))
-		.filter(c => c.value >= THRESHOLD[c.kind])
+		.filter(c => (c.kind === 'times' ? c.value >= 1 : c.value >= 0.01 && c.value < 1))
 }
 
 // The comparisons take turns by the local day number, so the one shown stays
