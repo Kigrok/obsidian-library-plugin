@@ -1,6 +1,6 @@
 import { requestUrl } from 'obsidian'
 import { isEmptyValue, plausibleRuntime } from '../util'
-import { claim, entities, languages, searchItems, textIn, yearIn } from './wikidata'
+import { NON_LATIN, claim, entities, languages, searchItems, textIn, yearIn } from './wikidata'
 import type {
 	ContentProvider,
 	ContentType,
@@ -78,10 +78,6 @@ function jsonOf(resp: { json: unknown }): unknown {
 function na(value: string | undefined): string | null {
 	return value && value !== 'N/A' ? value : null
 }
-
-// Letters of another script than Latin: Greek and Cyrillic onward, past the
-// punctuation block, so a curly apostrophe keeps a query Latin.
-const NON_LATIN = /[\u0370-\u1fff\u2c00-\uffff]/
 
 // Wikidata classes a title must have to count as a movie or as a series.
 const FILM_CLASSES = ['Q11424', 'Q24869', 'Q506240', 'Q202866', 'Q29168811']

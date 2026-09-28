@@ -29,8 +29,10 @@ export class BookAggregatorProvider implements ContentProvider {
 		return [...wrap(fromGoogle, 'googlebooks'), ...wrap(fromOpenlib, 'openlibrary')]
 	}
 
+	// Open Library keys start with '/' and have nothing to refetch by id;
+	// Google ids are refetched only with a key.
 	refreshable(sourceId: string): boolean {
-		return !sourceId.startsWith('/')
+		return !sourceId.startsWith('/') && (this.google.refreshable?.(sourceId) ?? true)
 	}
 
 	async fetch(sourceId: string, type: ContentType, raw?: unknown): Promise<NormalizedMetadata | null> {

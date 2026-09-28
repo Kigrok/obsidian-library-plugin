@@ -54,8 +54,15 @@ export class GoogleBooksProvider implements ContentProvider {
 		return url ? url.replace('http://', 'https://') : null
 	}
 
+	// Google's keyless quota is shared by every caller and answers "quota
+	// exceeded" most of the time: without a key, books come from Open Library.
+	refreshable(): boolean {
+		return !!this.getKey().trim()
+	}
+
 	async search(query: string): Promise<SearchResult[]> {
 		try {
+			if (!this.getKey().trim()) return []
 			const params = this.withKey(new URLSearchParams({ q: query, maxResults: '20' }))
 			const resp = await requestUrl({ url: `${GoogleBooksProvider.BASE}?${params.toString()}`, throw: false })
 			if (resp.status !== 200) return []

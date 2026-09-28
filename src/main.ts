@@ -21,7 +21,11 @@ import { GameTrailerFinder } from './providers/gameTrailer'
 import { DeezerProvider } from './providers/deezer'
 import { AnimeProvider } from './providers/anime'
 import { ComicsProvider } from './providers/comics'
+import { ComicsAggregatorProvider } from './providers/comicsAggregator'
+import { WikidataComicProvider } from './providers/wikidataComics'
+import { MangaProvider } from './providers/manga'
 import { SteamProvider } from './providers/steam'
+import { WikidataGameProvider } from './providers/wikidataGames'
 import { TmdbEnricher } from './providers/tmdb'
 import { RottenTomatoesEnricher } from './providers/wikidata'
 import { isContentType } from './providers/types'
@@ -118,11 +122,16 @@ export default class LibraryPlugin extends Plugin {
 		const trailers = new GameTrailerFinder(() => ({ id: this.settings.twitchClientId, secret: this.settings.twitchClientSecret }))
 		this.registry.register(new GameAggregatorProvider(
 			new RawgProvider(() => this.settings.rawgApiKey, trailers),
-			new SteamProvider(trailers)
+			new SteamProvider(trailers),
+			new WikidataGameProvider()
 		))
 		this.registry.register(new DeezerProvider())
 		this.registry.register(new AnimeProvider())
-		this.registry.register(new ComicsProvider(() => this.settings.comicVineApiKey))
+		this.registry.register(new ComicsAggregatorProvider(
+			new ComicsProvider(() => this.settings.comicVineApiKey),
+			new WikidataComicProvider(),
+			new MangaProvider()
+		))
 		this.addSettingTab(new LibrarySettingTab(this.app, this))
 
 		this.registerView(LIBRARY_VIEW_TYPE, (leaf) => new LibraryView(leaf, this))
@@ -386,11 +395,6 @@ export default class LibraryPlugin extends Plugin {
 				}).open()
 				return
 			}
-			const missing = this.missingKey(category.contentType)
-			if (missing) {
-				new Notice(tr('notice.keyRequired', { name: missing }))
-				return
-			}
 			new AddContentModal(this.app, provider, category.contentType, (result) => {
 				void this.createFromResult(category, result)
 			}).open()
@@ -399,12 +403,6 @@ export default class LibraryPlugin extends Plugin {
 
 	// Movies, series and comics have no keyless source: without the key a
 	// search can only come back empty, so name the missing key instead.
-	private missingKey(type: ICategory['contentType']): string | null {
-		if ((type === 'movie' || type === 'series') && !this.settings.omdbApiKey.trim()) return tr('settings.omdb.name')
-		if (type === 'comic' && !this.settings.comicVineApiKey.trim()) return tr('settings.comicvine.name')
-		return null
-	}
-
 	// The active note, when it belongs to a category that has a source.
 	private activeLibraryFile(): TFile | null {
 		const file = this.app.workspace.getActiveFile()
@@ -1049,15 +1047,12 @@ export default class LibraryPlugin extends Plugin {
 		if (!provider) return
 		const sourceId = toStr(fm['Source ID'])
 
-		if (force) {
-			const missing = this.missingKey(category.contentType)
-			if (missing) {
-				new Notice(tr('notice.keyRequired', { name: missing }))
-				return
-			}
-		} else {
+		if (!force) {
+			// Opening a note refreshes it at most every five minutes, and never
+			// one its source cannot look up (a RAWG game once the key is gone).
 			const last = this.refreshCooldowns.get(file.path)
 			if (last && Date.now() - last < 5 * 60 * 1000) return
+			if (sourceId && provider.refreshable?.(sourceId) === false) return
 		}
 		this.refreshCooldowns.set(file.path, Date.now())
 

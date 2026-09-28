@@ -37,6 +37,11 @@ export class RawgProvider implements ContentProvider {
 
 	private trailers: GameTrailerFinder
 
+	// A RAWG id is only looked up with a key; without one the note stays as it is.
+	refreshable(): boolean {
+		return !!this.getKey().trim()
+	}
+
 	constructor(getKey: () => string, trailers: GameTrailerFinder) {
 		this.getKey = getKey
 		this.trailers = trailers

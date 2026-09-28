@@ -6,6 +6,10 @@ import type { MetadataEnricher } from './types'
 
 const API = 'https://www.wikidata.org/w/api.php'
 
+// Letters of another script than Latin: Greek and Cyrillic onward, past the
+// punctuation block, so a curly apostrophe keeps a query Latin.
+export const NON_LATIN = /[\u0370-\u1fff\u2c00-\uffff]/
+
 export interface WikidataClaim {
 	mainsnak?: { datavalue?: { value?: unknown } }
 	qualifiers?: Record<string, { datavalue?: { value?: unknown } }[]>
@@ -18,10 +22,13 @@ export interface WikidataEntity {
 	sitelinks?: Record<string, { title?: string }>
 }
 
+// Wikimedia asks API clients to say who they are.
+const HEADERS = { 'Api-User-Agent': 'LibraryObsidianPlugin (https://github.com/Kigrok/obsidian-library-plugin)' }
+
 async function api<T>(params: Record<string, string>): Promise<T | null> {
 	try {
 		const query = new URLSearchParams({ ...params, format: 'json', origin: '*' })
-		const resp = await requestUrl({ url: `${API}?${query.toString()}`, throw: false })
+		const resp = await requestUrl({ url: `${API}?${query.toString()}`, headers: HEADERS, throw: false })
 		return resp.status === 200 ? resp.json as T : null
 	} catch (e) {
 		console.error('Library: Wikidata request error', e)
@@ -118,6 +125,70 @@ export class RottenTomatoesEnricher implements MetadataEnricher {
 		}
 		return best ? { 'Rating RT': best.score } : {}
 	}
+}
+
+// The lead images of English Wikipedia articles, by article title: a game's
+// box art, a comic's first cover. Non-free images count, or a cover would
+// never qualify. One request for up to 50 titles.
+export async function wikipediaImages(titles: string[]): Promise<Record<string, string>> {
+	const images: Record<string, string> = {}
+	if (titles.length === 0) return images
+	try {
+		const query = new URLSearchParams({
+			action: 'query', prop: 'pageimages', titles: titles.slice(0, 50).join('|'), piprop: 'thumbnail',
+			pithumbsize: '600', pilicense: 'any', redirects: '1', format: 'json', origin: '*'
+		})
+		const resp = await requestUrl({ url: `https://en.wikipedia.org/w/api.php?${query.toString()}`, headers: HEADERS, throw: false })
+		if (resp.status !== 200) return images
+		type Hop = { from: string; to: string }
+		type Page = { title?: string; thumbnail?: { source?: string } }
+		const answer = (resp.json as { query?: { normalized?: Hop[]; redirects?: Hop[]; pages?: Record<string, Page> } }).query
+		const byTitle: Record<string, string> = {}
+		for (const page of Object.values(answer?.pages ?? {})) {
+			// Without the tracking query Wikipedia appends to image links.
+			if (page.title && page.thumbnail?.source) byTitle[page.title] = page.thumbnail.source.split('?')[0] ?? page.thumbnail.source
+		}
+		// The answer is keyed by each article's final title: a title asked for
+		// is spelled out ("the_witcher" to "The witcher"), then redirected.
+		const hops = [...(answer?.normalized ?? []), ...(answer?.redirects ?? [])]
+		for (const title of titles) {
+			let final = title
+			for (const hop of hops) if (hop.from === final) final = hop.to
+			const source = byTitle[final]
+			if (source) images[title] = source
+		}
+	} catch (e) {
+		console.error('Library: Wikipedia request error', e)
+	}
+	return images
+}
+
+// Labels of the items a list of claims points at, in one request.
+export async function labelsOf(ids: string[], langs: string[]): Promise<(list: string[]) => string[]> {
+	const named = await entities(ids.filter((id, i) => ids.indexOf(id) === i), 'labels', langs)
+	return (list) => list.map(id => textIn(named[id]?.labels, langs)).filter((label): label is string => !!label)
+}
+
+// The first year among an item's dates: a game released on several
+// platforms keeps one date each, a series its start.
+export function firstYear(entity: WikidataEntity | undefined, properties: string[]): number | null {
+	const years: number[] = []
+	for (const property of properties) {
+		for (const value of claimValues(entity, property)) {
+			const time = (value as { time?: unknown } | null)?.time
+			const year = typeof time === 'string' ? yearIn(time) : null
+			if (year !== null) years.push(year)
+		}
+	}
+	return years.length > 0 ? Math.min(...years) : null
+}
+
+// The article on English Wikipedia, else the item's own page.
+export function pageUrl(id: string, article: string | null): string {
+	// Colons and commas read as themselves in an article link.
+	return article
+		? `https://en.wikipedia.org/wiki/${encodeURIComponent(article.replace(/ /g, '_')).replace(/%3A/g, ':').replace(/%2C/g, ',')}`
+		: `https://www.wikidata.org/wiki/${id}`
 }
 
 // The year a description names: "1997 film by…", "фильм 1997 года".

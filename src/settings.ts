@@ -195,15 +195,6 @@ export class LibrarySettingTab extends PluginSettingTab {
 			{
 				rows: [
 					note(tr("settings.intro")),
-					this.textRow("settings.omdb", "omdbApiKey", tr("settings.omdb.placeholder")),
-					this.textRow("settings.google", "googleBooksApiKey", tr("settings.google.placeholder")),
-					this.textRow("settings.rawg", "rawgApiKey", tr("settings.rawg.placeholder")),
-					this.textRow("settings.tmdbApiKey", "tmdbApiKey", tr("settings.rawg.placeholder")),
-					this.textRow("settings.comicvine", "comicVineApiKey", tr("settings.comicvine.placeholder")),
-					this.textRow("settings.steamKey", "steamApiKey", tr("settings.rawg.placeholder")),
-					this.textRow("settings.steamId", "steamId", "76561198000000000"),
-					this.textRow("settings.twitchId", "twitchClientId", tr("settings.rawg.placeholder")),
-					this.textRow("settings.twitchSecret", "twitchClientSecret", tr("settings.rawg.placeholder")),
 					this.textRow("settings.coverProperty", "coverProperty", "Cover"),
 					{
 						name: tr("settings.recs.name"),
@@ -241,6 +232,20 @@ export class LibrarySettingTab extends PluginSettingTab {
 							);
 						},
 					},
+				],
+			},
+			{
+				heading: tr("settings.section.keys"),
+				rows: [
+					this.textRow("settings.omdb", "omdbApiKey", tr("settings.omdb.placeholder")),
+					this.textRow("settings.tmdbApiKey", "tmdbApiKey", tr("settings.rawg.placeholder")),
+					this.textRow("settings.google", "googleBooksApiKey", tr("settings.google.placeholder")),
+					this.textRow("settings.rawg", "rawgApiKey", tr("settings.rawg.placeholder")),
+					this.textRow("settings.twitchId", "twitchClientId", tr("settings.rawg.placeholder")),
+					this.textRow("settings.twitchSecret", "twitchClientSecret", tr("settings.rawg.placeholder")),
+					this.textRow("settings.comicvine", "comicVineApiKey", tr("settings.comicvine.placeholder")),
+					this.textRow("settings.steamKey", "steamApiKey", tr("settings.rawg.placeholder")),
+					this.textRow("settings.steamId", "steamId", "76561198000000000"),
 				],
 			},
 			{
