@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## 機能
 
 - タイトルを検索すると、ポスター、公開年、ジャンル、制作者、キャスト、評価が入ったノートができます。
+- どの言語でも作品を探せます。ロシア語や日本語のタイトルでも映画、ゲーム、漫画が見つかります。タイトルの後に年を付けると（`brother 1997`）、よくある名前を絞り込めます。
 - ライブラリはカバー画像のカードで表示され、カテゴリごとにまとまり、名前、年、評価、日付で並べ替えられます。
+- まだ始めていない作品はカバーに目のアイコンが付き、ページの最後の **これから** ブロックにまとまります。
+- 折りたたんだカテゴリはカードを横にスクロールする 1 列で表示します。
 - ドラマのエピソードや本の章にチェックを入れて一つずつ評価できます。`Progress` と `My Rating` はそこから計算されます。
 - 映画・ドラマ・アニメ・ゲームのノートには予告編と場面写真があり、映画とドラマには上映時間とシーズン一覧もあります。
 - 各ノートの下に、まだ持っていない似た作品が並び、クリックひとつで追加できます。
@@ -37,24 +40,25 @@
 
 1. 設定 → コミュニティプラグイン → 閲覧 から **Library** をインストールするか、[GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases) から入手します。
 2. 設定 → Library で、メディアごとにカテゴリを追加します：映画、テレビ番組、本、漫画、ゲーム、音楽、アニメ、手動。
-3. 使うソースに必要な API キーを入力します（下記参照）。
-4. リボンから「ライブラリ」タブを開き、**+** を押し、カテゴリを選んでタイトルを検索します。すでにライブラリにあるタイトルは、既存のノートが開きます。
+3. リボンから「ライブラリ」タブを開き、**+** を押し、カテゴリを選んでタイトルを検索します。すでにライブラリにあるタイトルは、既存のノートが開きます。
 
 カテゴリの `Type` 値（例：`Movie`）はどのノートがそのカテゴリに属するかを決め、フォルダーは新しいノートの保存先を決めます。どちらもカテゴリ設定の **詳細設定** にあります。
 
 ## ソース
 
-| カテゴリ | ソース | キー |
+| カテゴリ | ソース | キーがあれば最初に |
 | --- | --- | --- |
-| 映画、ドラマ | OMDb | [無料キー](https://www.omdbapi.com/apikey.aspx) |
-| 本 | Google Books + Open Library | 任意の [Google Books キー](https://console.cloud.google.com/apis/library/books.googleapis.com) |
-| ゲーム | RAWG + Steam | [無料の RAWG キー](https://rawg.io/apidocs)。Steam は不要 |
-| 音楽 | Deezer | 不要 |
-| アニメ | AniList | 不要 |
-| 漫画 | Comic Vine | [無料キー](https://comicvine.gamespot.com/api/) |
-| その他 | 手動：項目を自分で入力 | 不要 |
+| 映画、ドラマ | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| 本 | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| ゲーム | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| 音楽 | Deezer | — |
+| アニメ | AniList | — |
+| 漫画 | Wikidata, 日本の漫画は AniList | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| その他 | 手動：項目を自分で入力 | — |
 
-予告編、スチル画像、上映時間、シーズン一覧はキーなしで Cinemeta から取得します。[TMDB キー](https://www.themoviedb.org/settings/api) を設定すると、シーズン評価とスチル画像が増えます。
+キーは 設定 → Library → API キー に入力します。
+
+予告編、スチル画像、上映時間、シーズン一覧は Cinemeta から、Rotten Tomatoes のスコアは Wikidata または OMDb から取得します。[TMDB キー](https://www.themoviedb.org/settings/api) を設定すると、シーズン評価とスチル画像が増えます。
 
 自分のゲームを取り込むには、設定に [Steam Web API キー](https://steamcommunity.com/dev/apikey) と Steam プロフィールを入れて `Steam ライブラリを取り込む` を実行します。ゲームごとに `Playtime`（時間）付きのノートを作り、もう一度実行すると新しいゲームを追加して時間を更新します。プロフィールのゲーム詳細は公開にしてください。
 
@@ -73,6 +77,10 @@
 ## 統計
 
 「ライブラリ」タブ上部のパネルには、設定 → Library → 統計 で選んだ列が表示されます。カテゴリの評価上位 3 作品、プロパティの出現頻度上位 3 つの値（ジャンル、俳優など）、映画・ドラマ・アニメに費やした時間です。グラフの下には 1 日に 1 つ比較が表示されます。例: アポロ 11 号なら月まで 8 往復できた計算です。
+
+## これから
+
+まだ進捗のない作品（完了していない、チェックがない、自分のスコアがない）はカバーに目のアイコンが付きます。「ライブラリ」タブの最後の **これから** ブロックは、すべてのカテゴリからこうした作品を新しい順に集め、カテゴリと同じように折りたたみと並べ替えができます。設定 → Library の **「これから」ブロック** でブロックをオフにでき、**未着手もカテゴリに表示** をオフにするとこれらの作品は「これから」にだけ表示されます。
 
 ## グラフのリンク
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 ドラマの `Runtime` は 1 エピソードの長さです。本には `ISBN` もあり、章は同じ `title`、`watched`、`my_rating` フィールドで `Chapters` に保存されます。アニメには `Rating AniList` と `Status` があります。カバーのプロパティ名は設定で変更できます（例：`image`）。
 
-更新では空のフィールドだけが埋まるので、編集した値はそのまま残ります。また `Progress` の総エピソード数を更新し、新しいシーズンとエピソードタイトルを追加します。
+更新は空の項目だけを埋めるので、編集した値はそのまま残ります。ソースの評価（`Rating IMDB`、`Rating RT`、`Rating MC`、`Rating RAWG`）は最新の値になります。`Progress` のエピソード総数も更新し、新しいシーズンとエピソード名を追加します。
 
 ## おすすめ
 
@@ -135,7 +143,7 @@ Source ID: tt4574334
 
 - アニメ: AniList ユーザーのおすすめ
 - 映画とドラマ: TMDB キーがあれば TMDB のおすすめ、なければ Cinemeta で同じジャンルの評価が高い作品
-- ゲーム: RAWG の同じシリーズの作品とジャンルの名作（RAWG キーが必要）
+- ゲーム: シリーズのほかの作品と同じジャンルの名作。RAWG キーがあれば RAWG から、なければ Wikidata から
 - 本: ノートの最初の 2 つのジャンルが同じ、Open Library でよく読まれている本
 
 表紙をクリックすると作品を追加します。コミックと音楽にはおすすめはありません。列は 設定 → Library → おすすめを表示 でオフにできます。
@@ -146,26 +154,27 @@ Source ID: tt4574334
 
 | ホスト | タイミング | 送信内容 |
 | --- | --- | --- |
-| `www.omdbapi.com` | 映画とドラマの検索 | タイトルまたは IMDb ID、OMDb キー |
+| `www.omdbapi.com` | 映画とドラマの検索（OMDb キーがある場合） | タイトルまたは IMDb ID、OMDb キー |
 | `openlibrary.org` | 本の検索、本を追加・表示したときの章の検索、ノートを開いたときのおすすめ | タイトルと著者、ISBN、または作品 ID、ジャンル |
 | `covers.openlibrary.org` | 本のカバー | カバー ID |
-| `www.googleapis.com` | 本の検索 | タイトル、Google Books キー |
-| `api.rawg.io` | ゲームの検索と更新、ノートを開いたときのおすすめ | タイトルまたは RAWG ID、ジャンル、RAWG キー |
+| `www.googleapis.com` | 本の検索（Google Books キーがある場合） | タイトル、Google Books キー |
+| `api.rawg.io` | ゲームの検索と更新、ノートを開いたときのおすすめ（RAWG キーがある場合） | タイトルまたは RAWG ID、ジャンル、RAWG キー |
 | `media.rawg.io` | ゲームのカバーとスクリーンショット | 画像のパス |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | ゲームの検索、カバー、予告編、スクリーンショット | タイトルまたは Steam アプリ ID |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Steam の予告編の再生、ゲームのスクリーンショット | 動画または画像のパス |
 | `api.steampowered.com` | `Steam ライブラリを取り込む` を実行したとき | Steam Web API キー、SteamID またはプロフィール名 |
 | `id.twitch.tv`, `api.igdb.com` | Twitch キーを設定した場合のゲームの追加と更新 | Twitch Client ID とシークレット、ゲームの Steam app id または名前 |
-| `www.wikidata.org` | Steam のゲームの追加と更新 | Steam app id |
+| `www.wikidata.org` | 映画、ドラマ、ゲーム、漫画の検索、そこから追加したゲームと漫画、Rotten Tomatoes のスコア、ゲームの予告編、ノートを開いたときのゲームのおすすめ | 検索語、IMDb ID、Steam app id、またはアイテム ID |
+| `en.wikipedia.org`, `upload.wikimedia.org` | Wikidata で見つけたゲームと漫画のカバー | 記事名、画像のパス |
 | `api.deezer.com` | 音楽の検索 | アルバムまたはアーティスト |
-| `graphql.anilist.co` | アニメの検索、AniList 同期; 同期用の MyAnimeList ID、ノートを開いたときのおすすめ | タイトル、トークン・進捗・ステータス・スコア; AniList ID |
+| `graphql.anilist.co` | アニメの検索、AniList 同期; 同期用の MyAnimeList ID、ノートを開いたときのおすすめ、漫画の検索 | タイトル、トークン・進捗・ステータス・スコア; AniList ID |
 | `anilist.co` | **接続** をクリックしたとき | Client ID（ブラウザで開きます） |
 | `myanimelist.net` | MyAnimeList の **接続** を押したとき、トークン更新時 | Client ID とシークレット、認可コード、リフレッシュトークン |
 | `api.myanimelist.net` | MyAnimeList 同期 | トークン、進捗、ステータス、スコア |
 | `s4.anilist.co` | アニメのバナー | CDN パス |
-| `comicvine.gamespot.com` | 漫画の検索 | タイトル、Comic Vine キー |
-| `v3-cinemeta.strem.io` | 映画・ドラマの追加または更新、OMDb の1日の上限に達したときの映画とドラマの検索、TMDB キーがない場合のノートを開いたときのおすすめ | タイトルまたは IMDb ID、ジャンル |
-| `images.metahub.space`, `episodes.metahub.space` | スチル画像 | IMDb ID、シーズン番号とエピソード番号 |
+| `comicvine.gamespot.com` | 漫画の検索（Comic Vine キーがある場合） | タイトル、Comic Vine キー |
+| `v3-cinemeta.strem.io` | 映画・ドラマの追加または更新、映画とドラマの検索、TMDB キーがない場合のノートを開いたときのおすすめ | タイトルまたは IMDb ID、ジャンル |
+| `images.metahub.space`, `episodes.metahub.space` | 映画検索のポスター、スチル画像 | IMDb ID、シーズン番号とエピソード番号 |
 | `api.themoviedb.org`, `image.tmdb.org` | TMDB キーを設定した場合の映画・ドラマの追加と更新、ノートを開いたときのおすすめ | IMDb ID と TMDB キー、画像パス |
 | `i.ytimg.com` | 予告編のスチル画像 | 動画 ID |
 | 配信サービスの画像サーバー（AniList 経由） | アニメの各話の場面写真 | 画像のパス |

@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## Funzionalità
 
 - Cerca un titolo e ottieni una nota con poster, anno, genere, autori, cast e valutazioni già compilati.
+- I titoli si trovano in qualsiasi lingua: un titolo russo o giapponese trova il suo film, gioco o fumetto. Un anno dopo il titolo (`brother 1997`) restringe un nome comune.
 - Sfoglia la libreria come galleria di copertine, raggruppate per categoria e ordinate per nome, anno, valutazione o data.
+- I titoli che non hai ancora iniziato hanno un occhio sulla copertina e si raccolgono nel blocco **In programma** in fondo alla pagina.
+- Una categoria compressa mostra le schede in una fila che scorre di lato.
 - Spunta gli episodi di una serie o i capitoli di un libro e valuta ciascuno; `Progress` e `My Rating` vengono calcolati da questi.
 - Le note di film, serie, anime e giochi mostrano un trailer e dei fotogrammi; film e serie anche la durata e l'elenco delle stagioni.
 - Sotto ogni nota ci sono titoli simili che non hai ancora; un clic ne aggiunge uno.
@@ -37,24 +40,25 @@
 
 1. Installa **Library** da Impostazioni → Plugin di terze parti → Sfoglia, oppure dalle [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 2. In Impostazioni → Library, aggiungi una categoria per ogni tipo di contenuto: Film, Serie, Libri, Fumetti, Giochi, Musica, Anime, Manuale.
-3. Inserisci le chiavi API richieste dalle tue fonti (vedi sotto).
-4. Apri la scheda Libreria dalla barra multifunzione, premi **+**, scegli una categoria e cerca un titolo. Un titolo già presente nella libreria apre la sua nota esistente.
+3. Apri la scheda Libreria dalla barra multifunzione, premi **+**, scegli una categoria e cerca un titolo. Un titolo già presente nella libreria apre la sua nota esistente.
 
 Il valore `Type` di una categoria (per esempio `Movie`) stabilisce quali note le appartengono, e la sua cartella dove finiscono le note nuove. Entrambi si trovano sotto **Avanzate** nelle impostazioni della categoria.
 
 ## Fonti
 
-| Categoria | Fonte | Chiave |
+| Categoria | Fonti | Prima, con chiave |
 | --- | --- | --- |
-| Film, serie | OMDb | [Chiave gratuita](https://www.omdbapi.com/apikey.aspx) |
-| Libri | Google Books + Open Library | [Chiave Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) facoltativa |
-| Giochi | RAWG + Steam | [Chiave RAWG gratuita](https://rawg.io/apidocs); Steam non ne ha bisogno |
-| Musica | Deezer | Nessuna |
-| Anime | AniList | Nessuna |
-| Fumetti | Comic Vine | [Chiave gratuita](https://comicvine.gamespot.com/api/) |
-| Tutto il resto | Manuale: compili tu i campi | Nessuna |
+| Film, serie | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| Libri | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| Giochi | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| Musica | Deezer | — |
+| Anime | AniList | — |
+| Fumetti | Wikidata, AniList per i manga | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| Tutto il resto | Manuale: compili tu i campi | — |
 
-Trailer, fotogrammi, durata ed elenchi delle stagioni arrivano da Cinemeta senza chiave. Una [chiave TMDB](https://www.themoviedb.org/settings/api) aggiunge le valutazioni delle stagioni e più fotogrammi.
+Le chiavi vanno in Impostazioni → Library → Chiavi API.
+
+Trailer, immagini, durata ed elenchi delle stagioni arrivano da Cinemeta, e i punteggi di Rotten Tomatoes da Wikidata o OMDb. Una [chiave TMDB](https://www.themoviedb.org/settings/api) aggiunge i voti delle stagioni e altre immagini.
 
 Per importare i tuoi giochi, inserisci nelle impostazioni una [chiave Steam Web API](https://steamcommunity.com/dev/apikey) e il tuo profilo Steam, poi esegui `Importa libreria Steam`. Il comando crea una nota per ogni gioco con `Playtime` in ore; rieseguito, aggiunge i giochi nuovi e aggiorna le ore. I dettagli dei giochi del profilo devono essere pubblici.
 
@@ -73,6 +77,10 @@ Le note delle versioni precedenti mantengono i loro progressi. Finché non spunt
 ## Statistiche
 
 Il pannello in cima alla scheda Libreria mostra le colonne scelte in Impostazioni → Library → Statistiche: i tre titoli con il voto più alto di una categoria, i tre valori più frequenti di una proprietà (generi, attori o qualsiasi altra) e le ore dedicate a film, serie e anime. Sotto il grafico compare un confronto al giorno, per esempio: L'Apollo 11 avrebbe potuto andare sulla Luna e tornare 8 volte.
+
+## In programma
+
+Un titolo senza progressi (non completato, niente spuntato, nessun tuo voto) ha un occhio sulla copertina. Il blocco **In programma** in fondo alla scheda Libreria raccoglie questi titoli da tutte le categorie, i più recenti prima, e si comprime e si ordina come una categoria. In Impostazioni → Library, **Blocco «In programma»** spegne il blocco, e con **Non iniziati nelle categorie** disattivato questi titoli compaiono solo in «In programma».
 
 ## Collegamenti nel grafo
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 Per una serie, `Runtime` è la durata di un episodio. I libri aggiungono `ISBN` e tengono i capitoli in `Chapters` con gli stessi campi `title`, `watched` e `my_rating`; gli anime aggiungono `Rating AniList` e `Status`. La proprietà della copertina si può rinominare nelle impostazioni, per esempio in `image`.
 
-Un aggiornamento riempie solo i campi vuoti, quindi i valori che modifichi restano. Aggiorna anche il totale degli episodi in `Progress` e aggiunge nuove stagioni e titoli degli episodi.
+Un aggiornamento riempie solo i campi vuoti, quindi le tue modifiche restano; i voti delle fonti (`Rating IMDB`, `Rating RT`, `Rating MC`, `Rating RAWG`) vengono aggiornati. Aggiorna anche il totale degli episodi in `Progress` e aggiunge nuove stagioni e titoli degli episodi.
 
 ## Consigli
 
@@ -135,7 +143,7 @@ Sotto l'intestazione di ogni nota, una fila di titoli simili che non hai ancora:
 
 - anime: i consigli degli utenti di AniList;
 - film e serie: i consigli di TMDB con una chiave TMDB, altrimenti i titoli con il voto più alto degli stessi generi da Cinemeta;
-- giochi: il resto della serie e i migliori giochi del genere da RAWG (serve la chiave RAWG);
+- giochi: il resto della serie e i migliori giochi dello stesso genere, da RAWG con una chiave RAWG, altrimenti da Wikidata;
 - libri: i libri più letti su Open Library che condividono i primi due generi della nota.
 
 Fai clic su una copertina per aggiungere il titolo. Fumetti e musica non hanno consigli. Disattiva la fila da Impostazioni → Library → Mostra i consigli.
@@ -146,26 +154,27 @@ La tua libreria è fatta di semplici note e funziona offline. Il plugin va onlin
 
 | Host | Quando | Cosa viene inviato |
 | --- | --- | --- |
-| `www.omdbapi.com` | Ricerca di film e serie | Titolo o id IMDb, chiave OMDb |
+| `www.omdbapi.com` | Ricerca di film e serie (con chiave OMDb) | Titolo o id IMDb, chiave OMDb |
 | `openlibrary.org` | Ricerca di libri; ricerca dei capitoli quando aggiungi o apri un libro; consigli all'apertura di una nota | Titolo e autore, ISBN o id dell'opera; generi |
 | `covers.openlibrary.org` | Copertine dei libri | Id della copertina |
-| `www.googleapis.com` | Ricerca di libri | Titolo, chiave Google Books |
-| `api.rawg.io` | Ricerca e aggiornamento dei giochi; consigli all'apertura di una nota | Titolo o id RAWG, genere, chiave RAWG |
+| `www.googleapis.com` | Ricerca di libri (con chiave Google Books) | Titolo, chiave Google Books |
+| `api.rawg.io` | Ricerca e aggiornamento dei giochi; consigli all'apertura di una nota (con chiave RAWG) | Titolo o id RAWG, genere, chiave RAWG |
 | `media.rawg.io` | Copertine e screenshot dei giochi | Percorso dell'immagine |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Ricerca di giochi, copertine, trailer e screenshot | Titolo o id dell'app Steam |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Riproduzione di un trailer Steam; screenshot dei giochi | Percorso del video o dell'immagine |
 | `api.steampowered.com` | Esegui `Importa libreria Steam` | Chiave Steam Web API, il tuo SteamID o nome del profilo |
 | `id.twitch.tv`, `api.igdb.com` | Aggiunta o aggiornamento di un gioco, se imposti le chiavi Twitch | Twitch Client ID e segreto; id dell'app Steam o nome del gioco |
-| `www.wikidata.org` | Aggiunta o aggiornamento di un gioco da Steam | Id dell'app Steam |
+| `www.wikidata.org` | Ricerca di film, serie, giochi e fumetti; giochi e fumetti aggiunti da lì; punteggi di Rotten Tomatoes; trailer dei giochi; consigli di giochi all'apertura di una nota | Testo cercato, id IMDb, Steam app id o id dell'elemento |
+| `en.wikipedia.org`, `upload.wikimedia.org` | Copertine di giochi e fumetti trovati su Wikidata | Titolo della voce; percorso dell'immagine |
 | `api.deezer.com` | Ricerca di musica | Album o artista |
-| `graphql.anilist.co` | Ricerca di anime; sincronizzazione AniList; id MyAnimeList per la sincronizzazione; consigli all'apertura di una nota | Titolo; il tuo token, progressi, stato e voto; id AniList |
+| `graphql.anilist.co` | Ricerca di anime; sincronizzazione AniList; id MyAnimeList per la sincronizzazione; consigli all'apertura di una nota; ricerca di manga | Titolo; il tuo token, progressi, stato e voto; id AniList |
 | `anilist.co` | Fai clic su **Connetti** | Client ID, aperto nel browser |
 | `myanimelist.net` | Fai clic su **Connetti** per MyAnimeList; rinnovo del token | Client ID e segreto, codice di autorizzazione, token di rinnovo |
 | `api.myanimelist.net` | Sincronizzazione MyAnimeList | Il tuo token, progressi, stato e voto |
 | `s4.anilist.co` | Banner degli anime | Percorso CDN |
-| `comicvine.gamespot.com` | Ricerca di fumetti | Titolo, chiave Comic Vine |
-| `v3-cinemeta.strem.io` | Aggiunta o aggiornamento di un film o di una serie; ricerca di film e serie quando il limite giornaliero di OMDb è esaurito; consigli all'apertura di una nota, senza chiave TMDB | Titolo o id IMDb; genere |
-| `images.metahub.space`, `episodes.metahub.space` | Fotogrammi | Id IMDb, numeri di stagione ed episodio |
+| `comicvine.gamespot.com` | Ricerca di fumetti (con chiave Comic Vine) | Titolo, chiave Comic Vine |
+| `v3-cinemeta.strem.io` | Aggiunta o aggiornamento di un film o di una serie; ricerca di film e serie; consigli all'apertura di una nota, senza chiave TMDB | Titolo o id IMDb; genere |
+| `images.metahub.space`, `episodes.metahub.space` | Locandine nella ricerca dei film; immagini | Id IMDb, numeri di stagione ed episodio |
 | `api.themoviedb.org`, `image.tmdb.org` | Aggiunta o aggiornamento di un film o di una serie, e consigli all'apertura di una nota, se imposti una chiave TMDB | Id IMDb e chiave TMDB; percorso dell'immagine |
 | `i.ytimg.com` | Fotogrammi dei trailer | Id del video |
 | Server di immagini dei servizi di streaming, tramite AniList | Fotogrammi degli episodi anime | Percorso dell'immagine |

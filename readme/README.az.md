@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## İmkanlar
 
 - Əsəri adı ilə axtarın və posteri, ili, janrı, müəllifləri, aktyorları və reytinqləri doldurulmuş qeyd alın.
+- Əsərlər istənilən dildə tapılır: rusca və ya yaponca ad öz filmini, oyununu və ya komiksini tapır. Addan sonra il (`brother 1997`) çox rast gəlinən adı daraldır.
 - Kitabxana kateqoriyalara bölünmüş, ad, il, reytinq və ya tarixə görə sıralanmış üz qabıqlı kartlar kimi görünür.
+- Hələ başlamadığınız əsərlərin üz qabığında göz olur və onlar səhifənin sonunda **Növbəti** blokunda toplanır.
+- Yığılmış kateqoriya kartlarını yana sürüşən bir cərgədə göstərir.
 - Serialın seriyalarını və ya kitabın fəsillərini işarələyin və hər birini qiymətləndirin; `Progress` və `My Rating` onlara görə hesablanır.
 - Film, serial, anime və oyun qeydlərində treyler və kadrlar var, film və seriallarda isə müddət və mövsüm siyahısı da var.
 - Hər qeydin altında sizdə hələ olmayan oxşar əsərlər var; bir kliklə əlavə olunur.
@@ -37,24 +40,25 @@
 
 1. **Library** plaginini Settings → Community plugins → Browse vasitəsilə və ya [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases) səhifəsindən quraşdırın.
 2. Settings → Library bölməsində hər məzmun növü üçün kateqoriya əlavə edin: Filmlər, Seriallar, Kitablar, Komikslər, Oyunlar, Musiqi, Anime, Əllə.
-3. Mənbələrinizin tələb etdiyi API açarlarını daxil edin (aşağıya baxın).
-4. Yan paneldən «Kitabxana» tabını açın, **+** düyməsini basın, kateqoriya seçin və əsəri axtarın. Əsər artıq kitabxanadadırsa, mövcud qeyd açılır.
+3. Yan paneldən «Kitabxana» tabını açın, **+** düyməsini basın, kateqoriya seçin və əsəri axtarın. Əsər artıq kitabxanadadırsa, mövcud qeyd açılır.
 
 Kateqoriyanın `Type` dəyəri (məsələn, `Movie`) hansı qeydlərin ona aid olduğunu, qovluq isə yeni qeydlərin hara düşdüyünü müəyyən edir. Hər iki ayar kateqoriyanın yanındakı **Ətraflı** düyməsi ilə açılır.
 
 ## Mənbələr
 
-| Kateqoriya | Mənbə | Açar |
+| Kateqoriya | Mənbələr | Açar olduqda əvvəlcə |
 | --- | --- | --- |
-| Filmlər, seriallar | OMDb | [Pulsuz açar](https://www.omdbapi.com/apikey.aspx) |
-| Kitablar | Google Books + Open Library | İstəyə bağlı [Google Books açarı](https://console.cloud.google.com/apis/library/books.googleapis.com) |
-| Oyunlar | RAWG + Steam | [Pulsuz RAWG açarı](https://rawg.io/apidocs); Steam üçün açar lazım deyil |
-| Musiqi | Deezer | Lazım deyil |
-| Anime | AniList | Lazım deyil |
-| Komikslər | Comic Vine | [Pulsuz açar](https://comicvine.gamespot.com/api/) |
-| Qalan hər şey | Əl ilə: sahələri özünüz doldurursunuz | Lazım deyil |
+| Filmlər, seriallar | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| Kitablar | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| Oyunlar | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| Musiqi | Deezer | — |
+| Anime | AniList | — |
+| Komikslər | Wikidata, manqa üçün AniList | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| Qalan hər şey | Əl ilə: sahələri özünüz doldurursunuz | — |
 
-Treylerlər, kadrlar, müddət və mövsüm siyahıları Cinemeta-dan açarsız gəlir. [TMDB açarı](https://www.themoviedb.org/settings/api) mövsüm qiymətlərini və daha çox kadr əlavə edir.
+Açarlar Settings → Library → API açarları bölməsinə yazılır.
+
+Treylerlər, kadrlar, müddət və mövsüm siyahıları Cinemeta-dan, Rotten Tomatoes balları isə Wikidata və ya OMDb-dən gəlir. [TMDB açarı](https://www.themoviedb.org/settings/api) mövsüm qiymətləri və daha çox kadr əlavə edir.
 
 Oyunlarınızı əlavə etmək üçün ayarlarda [Steam Web API açarını](https://steamcommunity.com/dev/apikey) və Steam profilini göstərin, sonra `Steam kitabxanasını idxal et` əmrini işə salın. Əmr hər oyun üçün `Playtime` saatları ilə qeyd yaradır, yenidən işə salındıqda yeni oyunları əlavə edir və saatları yeniləyir. Profildəki oyun məlumatları açıq olmalıdır.
 
@@ -73,6 +77,10 @@ Köhnə versiyalardan qalan qeydlər irəliləyişini saxlayır. Heç nə işar�
 ## Statistika
 
 «Kitabxana» tabının yuxarısındakı panel Settings → Library → Statistika bölməsində seçdiyiniz sütunları göstərir: kateqoriyanın ən yüksək qiymətləndirilmiş üç əsəri, xüsusiyyətin ən tez-tez rast gəlinən üç dəyəri (janrlar, aktyorlar və ya istənilən digəri) və filmlərə, seriallara və animeyə sərf olunan saatlar. Diaqramın altında gündə bir müqayisə görünür, məsələn: Apollon 11 Aya 8 dəfə gedib qayıda bilərdi.
+
+## Növbəti
+
+Hələ irəliləyişi olmayan əsərin (tamamlanmayıb, heç nə işarələnməyib, sizin qiymətiniz yoxdur) üz qabığında göz olur. Kitabxana tabının sonundakı **Növbəti** bloku bu əsərləri bütün kateqoriyalardan, yeniləri əvvəldə olmaqla toplayır, kateqoriya kimi yığılır və sıralanır. Settings → Library-də **«Növbəti» bloku** bloku söndürür, **Başlanmayanlar kateqoriyalarda** söndürüləndə isə bu əsərlər yalnız Növbəti blokunda görünür.
 
 ## Qraf əlaqələri
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 Serialda `Runtime` bir seriyanın müddətidir. Kitablarda `ISBN` var, fəsillər isə eyni `title`, `watched` və `my_rating` sahələri ilə `Chapters`-də saxlanılır; animedə `Rating AniList` və `Status` var. Üz qabığı xüsusiyyətinin adını ayarlarda dəyişmək olar, məsələn `image`-ə.
 
-Metaməlumatların yenilənməsi yalnız boş sahələri doldurur, buna görə düzəlişləriniz qalır. O, həmçinin `Progress`-dəki ümumi seriya sayını yeniləyir və yeni mövsümləri və seriya adlarını əlavə edir.
+Yeniləmə yalnız boş sahələri doldurur, ona görə dəyişdiyiniz dəyərlər qalır; mənbə reytinqləri (`Rating IMDB`, `Rating RT`, `Rating MC`, `Rating RAWG`) cari dəyərlərə yenilənir. O, həmçinin `Progress`-dəki seriya sayını yeniləyir və yeni mövsümləri və seriya adlarını əlavə edir.
 
 ## Tövsiyələr
 
@@ -135,7 +143,7 @@ Hər qeydin başlığının altında sizdə hələ olmayan oxşar əsərlər len
 
 - anime: AniList istifadəçilərinin tövsiyələri;
 - filmlər və seriallar: TMDB açarı varsa TMDB tövsiyələri, əks halda Cinemeta-dan eyni janrların ən yüksək qiymətli filmləri;
-- oyunlar: RAWG-dən seriyanın digər hissələri və janrın ən yaxşı oyunları (RAWG açarı lazımdır);
+- oyunlar: seriyanın digər hissələri və eyni janrın ən yaxşı oyunları, RAWG açarı ilə RAWG-dan, əks halda Wikidata-dan;
 - kitablar: ilk iki janrı eyni olan Open Library-də ən çox oxunan kitablar.
 
 Əsəri əlavə etmək üçün üz qabığına klikləyin. Komikslər və musiqi üçün tövsiyə yoxdur. Lenti Settings → Library → Tövsiyələri göstər ilə söndürmək olar.
@@ -146,26 +154,27 @@ Kitabxana adi qeydlərdən ibarətdir və oflayn işləyir. Plagin şəbəkəyə
 
 | Host | Nə vaxt | Nə göndərilir |
 | --- | --- | --- |
-| `www.omdbapi.com` | Film və serial axtarışı | Ad və ya IMDb id, OMDb açarı |
+| `www.omdbapi.com` | Film və serial axtarışı (OMDb açarı ilə) | Ad və ya IMDb id, OMDb açarı |
 | `openlibrary.org` | Kitab axtarışı; kitab əlavə edəndə və ya açanda fəsillərin axtarışı; qeyd açılanda tövsiyələr | Ad və müəllif, ISBN və ya əsər id; janrlar |
 | `covers.openlibrary.org` | Kitab üz qabıqları | Üz qabığı id |
-| `www.googleapis.com` | Kitab axtarışı | Ad, Google Books açarı |
-| `api.rawg.io` | Oyun axtarışı və yenilənməsi; qeyd açılanda tövsiyələr | Ad və ya RAWG id, janr, RAWG açarı |
+| `www.googleapis.com` | Kitab axtarışı (Google Books açarı ilə) | Ad, Google Books açarı |
+| `api.rawg.io` | Oyun axtarışı və yenilənməsi; qeyd açılanda tövsiyələr (RAWG açarı ilə) | Ad və ya RAWG id, janr, RAWG açarı |
 | `media.rawg.io` | Oyun üz qabıqları və skrinşotları | Şəkil yolu |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Oyun axtarışı, üz qabıqları, treylerlər və skrinşotlar | Ad və ya Steam app id |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Steam treylerinin oynadılması; oyun skrinşotları | Video və ya şəkil yolu |
 | `api.steampowered.com` | Siz `Steam kitabxanasını idxal et` əmrini işə salırsınız | Steam Web API açarı, SteamID və ya profil adı |
 | `id.twitch.tv`, `api.igdb.com` | Twitch açarları təyin olunubsa, oyun əlavə etmək və ya yeniləmək | Twitch Client ID və sirr; oyunun Steam app id-si və ya adı |
-| `www.wikidata.org` | Steam-dən oyun əlavə etmək və ya yeniləmək | Steam app id |
+| `www.wikidata.org` | Film, serial, oyun və komiks axtarışı; oradan əlavə edilən oyunlar və komikslər; Rotten Tomatoes balları; oyun treylerləri; qeyd açılanda oyun tövsiyələri | Axtarış mətni, IMDb id, Steam app id və ya element id-si |
+| `en.wikipedia.org`, `upload.wikimedia.org` | Wikidata-da tapılan oyun və komikslərin üz qabıqları | Məqalə adı; şəkil yolu |
 | `api.deezer.com` | Musiqi axtarışı | Albom və ya ifaçı |
-| `graphql.anilist.co` | Anime axtarışı; AniList sinxronlaşdırması; sinxronlaşdırma üçün MyAnimeList id; qeyd açılanda tövsiyələr | Ad; tokeniniz, irəliləyiş, status və qiymət; AniList id |
+| `graphql.anilist.co` | Anime axtarışı; AniList sinxronlaşdırması; sinxronlaşdırma üçün MyAnimeList id; qeyd açılanda tövsiyələr; manqa axtarışı | Ad; tokeniniz, irəliləyiş, status və qiymət; AniList id |
 | `anilist.co` | Siz **Qoşul** düyməsini basırsınız | Client ID, brauzerdə açılır |
 | `myanimelist.net` | Siz MyAnimeList üçün **Qoşul** düyməsini basırsınız; tokenin yenilənməsi | Client ID və sirr, avtorizasiya kodu, yeniləmə tokeni |
 | `api.myanimelist.net` | MyAnimeList sinxronlaşdırması | Tokeniniz, irəliləyiş, status və qiymət |
 | `s4.anilist.co` | Anime bannerləri | CDN yolu |
-| `comicvine.gamespot.com` | Komiks axtarışı | Ad, Comic Vine açarı |
-| `v3-cinemeta.strem.io` | Film və ya serial əlavə etmək və ya yeniləmək; OMDb-nin gündəlik limiti bitəndə film və serial axtarışı; TMDB açarı yoxdursa, qeyd açılanda tövsiyələr | Ad və ya IMDb id; janr |
-| `images.metahub.space`, `episodes.metahub.space` | Kadrlar | IMDb id, mövsüm və seriya nömrələri |
+| `comicvine.gamespot.com` | Komiks axtarışı (Comic Vine açarı ilə) | Ad, Comic Vine açarı |
+| `v3-cinemeta.strem.io` | Film və ya serial əlavə etmək və ya yeniləmək; film və serial axtarışı; TMDB açarı yoxdursa, qeyd açılanda tövsiyələr | Ad və ya IMDb id; janr |
+| `images.metahub.space`, `episodes.metahub.space` | Film axtarışında posterlər; kadrlar | IMDb id, mövsüm və seriya nömrələri |
 | `api.themoviedb.org`, `image.tmdb.org` | TMDB açarı təyin olunubsa, film və ya serial əlavə etmək, yeniləmək və qeyd açılanda tövsiyələr | IMDb id və TMDB açarı; şəkil yolu |
 | `i.ytimg.com` | Treyler kadrları | Video id |
 | Strim xidmətlərinin şəkil serverləri, AniList vasitəsilə | Anime seriyalarının kadrları | Şəkil yolu |

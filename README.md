@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## Features
 
 - Search a title and get a note with the poster, year, genre, creators, cast, and ratings filled in.
+- Titles are found in any language: a Russian or Japanese title finds its movie, game, or comic. A year after the title (`brother 1997`) narrows a common name.
 - Browse the library as cover cards, grouped by category and sorted by name, year, rating, or date.
+- Titles you haven't started have an eye on the cover and gather in an **Up next** block at the end of the page.
+- A folded category shows its cards in one row that scrolls sideways.
 - Tick the episodes of a series or the chapters of a book and rate each one; `Progress` and `My Rating` are computed from them.
 - Movie, series, anime, and game notes show a trailer and stills; movies and series also show the runtime and the season list.
 - Each note suggests similar titles you don't have yet, and a click adds one.
@@ -37,24 +40,25 @@
 
 1. Install **Library** from Settings → Community plugins → Browse, or from [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 2. In Settings → Library, add a category for each medium: Movies, Series, Books, Comics, Games, Music, Anime, Manual.
-3. Add the API keys your sources need (see below).
-4. Open the Library tab from the ribbon, press **+**, pick a category, and search a title. A title already in the library opens its existing note.
+3. Open the Library tab from the ribbon, press **+**, pick a category, and search a title. A title already in the library opens its existing note.
 
 A category's `Type` value (for example `Movie`) decides which notes belong to it, and its folder decides where new notes go. Both are under **Advanced** in the category's settings.
 
 ## Sources
 
-| Category | Source | Key |
+| Category | Sources | Searched first with a key |
 | --- | --- | --- |
-| Movies, series | OMDb | [Free key](https://www.omdbapi.com/apikey.aspx) |
-| Books | Google Books + Open Library | Optional [Google Books key](https://console.cloud.google.com/apis/library/books.googleapis.com) |
-| Games | RAWG + Steam | [Free RAWG key](https://rawg.io/apidocs); Steam needs none |
-| Music | Deezer | None |
-| Anime | AniList | None |
-| Comics | Comic Vine | [Free key](https://comicvine.gamespot.com/api/) |
-| Anything else | Manual: you fill the fields | None |
+| Movies, series | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| Books | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| Games | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| Music | Deezer | — |
+| Anime | AniList | — |
+| Comics | Wikidata, AniList for manga | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| Anything else | Manual: you fill the fields | — |
 
-Trailers, stills, runtime, and season lists come from Cinemeta without a key. A [TMDB key](https://www.themoviedb.org/settings/api) adds season ratings and more stills.
+Keys go in Settings → Library → API keys.
+
+Trailers, stills, runtime, and season lists come from Cinemeta, and Rotten Tomatoes scores from Wikidata or OMDb. A [TMDB key](https://www.themoviedb.org/settings/api) adds season ratings and more stills.
 
 To bring in the games you own, add a [Steam Web API key](https://steamcommunity.com/dev/apikey) and your Steam profile in settings, then run `Import Steam library`. It adds a note per game with `Playtime` in hours, and running it again adds new games and updates the hours. The profile's game details must be public.
 
@@ -73,6 +77,10 @@ Notes from older versions keep their progress. Until you tick anything, the firs
 ## Statistics
 
 The panel at the top of the Library tab shows the columns you pick in Settings → Library → Statistics: a category's three highest-rated titles, a property's three most frequent values (genres, actors, or any other), and the hours spent on movies, series, and anime. Under the chart, one comparison a day puts your watch time in other terms, for example: Apollo 11 could have flown to the Moon and back 8 times.
+
+## Up next
+
+A title with no progress yet (not complete, nothing ticked, no score of yours) has an eye on its cover. **Up next** at the end of the Library tab gathers these titles from every category, newest first, and folds and sorts like a category. In Settings → Library, **Up next block** turns the block off, and with **Not started in categories** off these titles show in Up next only.
 
 ## Graph links
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 For a series, `Runtime` is the length of one episode. Books add `ISBN` and keep chapters in `Chapters` with the same `title`, `watched`, and `my_rating` fields; anime adds `Rating AniList` and `Status`. The cover property can be renamed in settings, for example to `image`.
 
-A refresh fills only empty fields, so the values you edit stay. It also updates the episode total in `Progress` and adds new seasons and episode titles.
+A refresh fills only empty fields, so the values you edit stay; source ratings (`Rating IMDB`, `Rating RT`, `Rating MC`, `Rating RAWG`) are brought up to date. It also updates the episode total in `Progress` and adds new seasons and episode titles.
 
 ## Recommendations
 
@@ -135,7 +143,7 @@ Under each note's header, a row of similar titles you don't have yet:
 
 - anime: AniList's user recommendations;
 - movies and series: TMDB's recommendations with a TMDB key, otherwise the highest-rated titles of the same genres from Cinemeta;
-- games: the rest of the series and the genre's top-rated games from RAWG (needs the RAWG key);
+- games: the rest of the series and top games of the same genre, from RAWG with a RAWG key, otherwise from Wikidata;
 - books: the most read books on Open Library that share the note's first two genres.
 
 Click a cover to add the title. Comics and music have no recommendations. Turn the row off with Settings → Library → Show recommendations.
@@ -146,26 +154,27 @@ Your library is plain notes and works offline. The plugin goes online when you s
 
 | Host | When | What is sent |
 | --- | --- | --- |
-| `www.omdbapi.com` | Movie and series search | Title or IMDb id, OMDb key |
+| `www.omdbapi.com` | Movie and series search (with an OMDb key) | Title or IMDb id, OMDb key |
 | `openlibrary.org` | Book search; chapter lookup when you add or open a book; recommendations when a note opens | Title and author, ISBN, or work id; genres |
 | `covers.openlibrary.org` | Book covers | Cover id |
-| `www.googleapis.com` | Book search | Title, Google Books key |
-| `api.rawg.io` | Game search and refresh; recommendations when a note opens | Title or RAWG id, genre, RAWG key |
+| `www.googleapis.com` | Book search (with a Google Books key) | Title, Google Books key |
+| `api.rawg.io` | Game search and refresh; recommendations when a note opens (with a RAWG key) | Title or RAWG id, genre, RAWG key |
 | `media.rawg.io` | Game covers and screenshots | Image path |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Game search, covers, trailers, and screenshots | Title or Steam app id |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Playing a Steam trailer; game screenshots | Video or image path |
 | `api.steampowered.com` | You run `Import Steam library` | Steam Web API key, your SteamID or profile name |
 | `id.twitch.tv`, `api.igdb.com` | Adding or refreshing a game, if you set Twitch keys | Twitch Client ID and secret; the game's Steam app id or name |
-| `www.wikidata.org` | Adding or refreshing a game from Steam | Steam app id |
+| `www.wikidata.org` | Movie, series, game, and comic search; games and comics added from it; Rotten Tomatoes scores; game trailers; game recommendations when a note opens | Search text, IMDb id, Steam app id, or item id |
+| `en.wikipedia.org`, `upload.wikimedia.org` | Covers of games and comics found on Wikidata | Article title; image path |
 | `api.deezer.com` | Music search | Album or artist |
-| `graphql.anilist.co` | Anime search; AniList sync; MyAnimeList ids for sync; recommendations when a note opens | Title; your token, progress, status, and score; AniList ids |
+| `graphql.anilist.co` | Anime search; AniList sync; MyAnimeList ids for sync; recommendations when a note opens; manga search | Title; your token, progress, status, and score; AniList ids |
 | `anilist.co` | You click **Connect** | Client ID, opened in your browser |
 | `myanimelist.net` | You click **Connect** for MyAnimeList; token refresh | Client ID and secret, authorization code, refresh token |
 | `api.myanimelist.net` | MyAnimeList sync | Your token, progress, status, and score |
 | `s4.anilist.co` | Anime banners | CDN path |
-| `comicvine.gamespot.com` | Comic search | Title, Comic Vine key |
-| `v3-cinemeta.strem.io` | Adding or refreshing a movie or series; movie and series search while OMDb is over its daily limit; recommendations when a note opens, without a TMDB key | Title or IMDb id; genre |
-| `images.metahub.space`, `episodes.metahub.space` | Stills | IMDb id, season and episode numbers |
+| `comicvine.gamespot.com` | Comic search (with a Comic Vine key) | Title, Comic Vine key |
+| `v3-cinemeta.strem.io` | Adding or refreshing a movie or series; movie and series search; recommendations when a note opens, without a TMDB key | Title or IMDb id; genre |
+| `images.metahub.space`, `episodes.metahub.space` | Posters in movie search; stills | IMDb id, season and episode numbers |
 | `api.themoviedb.org`, `image.tmdb.org` | Adding or refreshing a movie or series, and recommendations when a note opens, if you set a TMDB key | IMDb id and TMDB key; image path |
 | `i.ytimg.com` | Trailer stills | Video id |
 | Image hosts of streaming services, via AniList | Anime episode stills | Image path |

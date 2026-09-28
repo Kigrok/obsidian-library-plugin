@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## Funktionen
 
 - Suche einen Titel und erhalte eine Notiz mit Poster, Jahr, Genre, Machern, Besetzung und Bewertungen.
+- Titel werden in jeder Sprache gefunden: Ein russischer oder japanischer Titel findet seinen Film, sein Spiel oder seinen Comic. Eine Jahreszahl hinter dem Titel (`brother 1997`) grenzt einen häufigen Namen ein.
 - Die Bibliothek erscheint als Cover-Karten, nach Kategorien gruppiert und nach Name, Jahr, Bewertung oder Datum sortiert.
+- Titel, die du noch nicht begonnen hast, tragen ein Auge auf dem Cover und sammeln sich im Block **Als Nächstes** am Ende der Seite.
+- Eine eingeklappte Kategorie zeigt ihre Karten in einer Reihe, die seitwärts scrollt.
 - Hake Folgen einer Serie oder Kapitel eines Buchs ab und bewerte jede einzeln; `Progress` und `My Rating` werden daraus berechnet.
 - Film-, Serien-, Anime- und Spielnotizen zeigen Trailer und Standbilder, Filme und Serien zusätzlich Laufzeit und Staffelliste.
 - Unter jeder Notiz stehen ähnliche Titel, die du noch nicht hast; ein Klick fügt einen hinzu.
@@ -37,24 +40,25 @@
 
 1. Installiere **Library** über Einstellungen → Externe Erweiterungen → Durchsuchen oder aus den [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 2. Lege unter Einstellungen → Library für jedes Medium eine Kategorie an: Filme, Serien, Bücher, Comics, Spiele, Musik, Anime, Manuell.
-3. Trage die API-Schlüssel ein, die deine Quellen brauchen (siehe unten).
-4. Öffne den Tab „Bibliothek“ über die Werkzeugleiste, klicke auf **+**, wähle eine Kategorie und suche einen Titel. Ein Titel, der schon in der Bibliothek ist, öffnet seine vorhandene Notiz.
+3. Öffne den Tab „Bibliothek“ über die Werkzeugleiste, klicke auf **+**, wähle eine Kategorie und suche einen Titel. Ein Titel, der schon in der Bibliothek ist, öffnet seine vorhandene Notiz.
 
 Der `Type`-Wert einer Kategorie (zum Beispiel `Movie`) legt fest, welche Notizen dazugehören, und ihr Ordner, wo neue Notizen landen. Beides findest du unter **Erweitert** in den Einstellungen der Kategorie.
 
 ## Quellen
 
-| Kategorie | Quelle | Schlüssel |
+| Kategorie | Quellen | Zuerst, mit Schlüssel |
 | --- | --- | --- |
-| Filme, Serien | OMDb | [Kostenloser Schlüssel](https://www.omdbapi.com/apikey.aspx) |
-| Bücher | Google Books + Open Library | Optionaler [Google-Books-Schlüssel](https://console.cloud.google.com/apis/library/books.googleapis.com) |
-| Spiele | RAWG + Steam | [Kostenloser RAWG-Schlüssel](https://rawg.io/apidocs); Steam braucht keinen |
-| Musik | Deezer | Keiner |
-| Anime | AniList | Keiner |
-| Comics | Comic Vine | [Kostenloser Schlüssel](https://comicvine.gamespot.com/api/) |
-| Alles andere | Manuell: du füllst die Felder aus | Keiner |
+| Filme, Serien | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| Bücher | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| Spiele | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| Musik | Deezer | — |
+| Anime | AniList | — |
+| Comics | Wikidata, AniList für Manga | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| Alles andere | Manuell: du füllst die Felder aus | — |
 
-Trailer, Standbilder, Laufzeit und Staffellisten kommen ohne Schlüssel von Cinemeta. Ein [TMDB-Schlüssel](https://www.themoviedb.org/settings/api) ergänzt Staffelbewertungen und mehr Standbilder.
+Die Schlüssel kommen in Einstellungen → Library → API-Schlüssel.
+
+Trailer, Standbilder, Laufzeit und Staffellisten kommen von Cinemeta, Rotten-Tomatoes-Wertungen von Wikidata oder OMDb. Ein [TMDB-Schlüssel](https://www.themoviedb.org/settings/api) ergänzt Staffelbewertungen und weitere Standbilder.
 
 Um deine Spiele zu übernehmen, trage in den Einstellungen einen [Steam-Web-API-Schlüssel](https://steamcommunity.com/dev/apikey) und dein Steam-Profil ein und führe `Steam-Bibliothek importieren` aus. Der Befehl legt für jedes Spiel eine Notiz mit `Playtime` in Stunden an; erneut ausgeführt, ergänzt er neue Spiele und aktualisiert die Stunden. Die Spieldetails des Profils müssen öffentlich sein.
 
@@ -73,6 +77,10 @@ Notizen aus älteren Versionen behalten ihren Fortschritt. Solange du nichts abh
 ## Statistik
 
 Das Panel oben im Tab „Bibliothek“ zeigt die Spalten, die du unter Einstellungen → Library → Statistik auswählst: die drei bestbewerteten Titel einer Kategorie, die drei häufigsten Werte einer Eigenschaft (Genres, Schauspieler oder jede andere) und die Stunden für Filme, Serien und Anime. Unter dem Diagramm steht jeden Tag ein anderer Vergleich, zum Beispiel: Apollo 11 hätte 8-mal zum Mond und zurück fliegen können.
+
+## Als Nächstes
+
+Ein Titel ohne Fortschritt (nicht abgeschlossen, nichts abgehakt, keine eigene Wertung) trägt ein Auge auf dem Cover. Der Block **Als Nächstes** am Ende des Bibliothek-Tabs sammelt diese Titel aus allen Kategorien, die neuesten zuerst, und lässt sich wie eine Kategorie einklappen und sortieren. In Einstellungen → Library schaltet **Block „Als Nächstes“** den Block ab, und mit ausgeschaltetem **Nicht Begonnenes in Kategorien** erscheinen diese Titel nur in „Als Nächstes“.
 
 ## Graph-Verknüpfungen
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 Bei einer Serie ist `Runtime` die Länge einer Folge. Bücher haben zusätzlich `ISBN` und speichern Kapitel in `Chapters` mit denselben Feldern `title`, `watched` und `my_rating`; Anime haben `Rating AniList` und `Status`. Die Cover-Eigenschaft lässt sich in den Einstellungen umbenennen, zum Beispiel in `image`.
 
-Eine Aktualisierung füllt nur leere Felder, deine Änderungen bleiben also erhalten. Außerdem aktualisiert sie die Gesamtzahl der Folgen in `Progress` und ergänzt neue Staffeln und Folgentitel.
+Eine Aktualisierung füllt nur leere Felder, deine Änderungen bleiben also erhalten; die Wertungen der Quellen (`Rating IMDB`, `Rating RT`, `Rating MC`, `Rating RAWG`) werden auf den aktuellen Stand gebracht. Außerdem aktualisiert sie die Episodenzahl in `Progress` und ergänzt neue Staffeln und Episodentitel.
 
 ## Empfehlungen
 
@@ -135,7 +143,7 @@ Unter dem Kopf jeder Notiz steht eine Reihe ähnlicher Titel, die du noch nicht 
 
 - Anime: die Empfehlungen der AniList-Nutzer;
 - Filme und Serien: die TMDB-Empfehlungen mit TMDB-Schlüssel, sonst die bestbewerteten Titel derselben Genres aus Cinemeta;
-- Spiele: der Rest der Reihe und die besten Spiele des Genres aus RAWG (RAWG-Schlüssel nötig);
+- Spiele: die übrigen Teile der Reihe und die besten Spiele desselben Genres, von RAWG mit RAWG-Schlüssel, sonst von Wikidata;
 - Bücher: die meistgelesenen Bücher bei Open Library mit denselben ersten zwei Genres.
 
 Ein Klick auf ein Cover fügt den Titel hinzu. Comics und Musik haben keine Empfehlungen. Abschalten lässt sich die Reihe unter Einstellungen → Library → Empfehlungen anzeigen.
@@ -146,26 +154,27 @@ Deine Bibliothek besteht aus einfachen Notizen und funktioniert offline. Das Plu
 
 | Host | Wann | Was gesendet wird |
 | --- | --- | --- |
-| `www.omdbapi.com` | Film- und Seriensuche | Titel oder IMDb-ID, OMDb-Schlüssel |
+| `www.omdbapi.com` | Film- und Seriensuche (mit Schlüssel für OMDb) | Titel oder IMDb-ID, OMDb-Schlüssel |
 | `openlibrary.org` | Buchsuche; Kapitelsuche, wenn du ein Buch hinzufügst oder öffnest; Empfehlungen beim Öffnen einer Notiz | Titel und Autor, ISBN oder Werk-ID; Genres |
 | `covers.openlibrary.org` | Buchcover | Cover-ID |
-| `www.googleapis.com` | Buchsuche | Titel, Google-Books-Schlüssel |
-| `api.rawg.io` | Spielesuche und Aktualisierung; Empfehlungen beim Öffnen einer Notiz | Titel oder RAWG-ID, Genre, RAWG-Schlüssel |
+| `www.googleapis.com` | Buchsuche (mit Schlüssel für Google Books) | Titel, Google-Books-Schlüssel |
+| `api.rawg.io` | Spielesuche und Aktualisierung; Empfehlungen beim Öffnen einer Notiz (mit Schlüssel für RAWG) | Titel oder RAWG-ID, Genre, RAWG-Schlüssel |
 | `media.rawg.io` | Spielcover und Screenshots | Bildpfad |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Spielesuche, Cover, Trailer und Screenshots | Titel oder Steam-App-ID |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Abspielen eines Steam-Trailers; Spiel-Screenshots | Video- oder Bildpfad |
 | `api.steampowered.com` | Du führst `Steam-Bibliothek importieren` aus | Steam-Web-API-Schlüssel, deine SteamID oder dein Profilname |
 | `id.twitch.tv`, `api.igdb.com` | Hinzufügen oder Aktualisieren eines Spiels, wenn Twitch-Schlüssel gesetzt sind | Twitch Client ID und Secret; Steam-App-ID oder Name des Spiels |
-| `www.wikidata.org` | Hinzufügen oder Aktualisieren eines Spiels aus Steam | Steam-App-ID |
+| `www.wikidata.org` | Suche nach Filmen, Serien, Spielen und Comics; von dort hinzugefügte Spiele und Comics; Rotten-Tomatoes-Wertungen; Spieletrailer; Spielempfehlungen beim Öffnen einer Notiz | Suchtext, IMDb-ID, Steam app id oder Element-ID |
+| `en.wikipedia.org`, `upload.wikimedia.org` | Cover von Spielen und Comics, die auf Wikidata gefunden wurden | Artikeltitel; Bildpfad |
 | `api.deezer.com` | Musiksuche | Album oder Künstler |
-| `graphql.anilist.co` | Anime-Suche; AniList-Synchronisierung; MyAnimeList-IDs für die Synchronisierung; Empfehlungen beim Öffnen einer Notiz | Titel; dein Token, Fortschritt, Status und Wertung; AniList-IDs |
+| `graphql.anilist.co` | Anime-Suche; AniList-Synchronisierung; MyAnimeList-IDs für die Synchronisierung; Empfehlungen beim Öffnen einer Notiz; Mangasuche | Titel; dein Token, Fortschritt, Status und Wertung; AniList-IDs |
 | `anilist.co` | Du klickst auf **Verbinden** | Client ID, im Browser geöffnet |
 | `myanimelist.net` | Du klickst bei MyAnimeList auf **Verbinden**; Token-Erneuerung | Client ID und Secret, Autorisierungscode, Refresh-Token |
 | `api.myanimelist.net` | MyAnimeList-Synchronisierung | Dein Token, Fortschritt, Status und Wertung |
 | `s4.anilist.co` | Anime-Banner | CDN-Pfad |
-| `comicvine.gamespot.com` | Comicsuche | Titel, Comic-Vine-Schlüssel |
-| `v3-cinemeta.strem.io` | Hinzufügen oder Aktualisieren eines Films oder einer Serie; Film- und Seriensuche, solange das Tageslimit von OMDb erreicht ist; Empfehlungen beim Öffnen einer Notiz, ohne TMDB-Schlüssel | Titel oder IMDb-ID; Genre |
-| `images.metahub.space`, `episodes.metahub.space` | Standbilder | IMDb-ID, Staffel- und Folgennummer |
+| `comicvine.gamespot.com` | Comicsuche (mit Schlüssel für Comic Vine) | Titel, Comic-Vine-Schlüssel |
+| `v3-cinemeta.strem.io` | Hinzufügen oder Aktualisieren eines Films oder einer Serie; Film- und Seriensuche; Empfehlungen beim Öffnen einer Notiz, ohne TMDB-Schlüssel | Titel oder IMDb-ID; Genre |
+| `images.metahub.space`, `episodes.metahub.space` | Poster in der Filmsuche; Standbilder | IMDb-ID, Staffel- und Folgennummer |
 | `api.themoviedb.org`, `image.tmdb.org` | Hinzufügen oder Aktualisieren eines Films oder einer Serie und Empfehlungen beim Öffnen einer Notiz, wenn ein TMDB-Schlüssel gesetzt ist | IMDb-ID und TMDB-Schlüssel; Bildpfad |
 | `i.ytimg.com` | Trailer-Standbilder | Video-ID |
 | Bildserver von Streamingdiensten, über AniList | Standbilder von Anime-Folgen | Bildpfad |

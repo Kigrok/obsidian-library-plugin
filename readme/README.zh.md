@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## 功能
 
 - 搜索标题，即可得到一篇填好海报、年份、类型、主创、演员和评分的笔记。
+- 任何语言都能找到作品：俄文或日文标题也能找到对应的电影、游戏或漫画。在标题后加上年份（`brother 1997`）可以缩小常见名称的范围。
 - 以封面卡片浏览库，按分类分组，并按名称、年份、评分或日期排序。
+- 尚未开始的作品封面上有一个眼睛图标，并汇集在页面末尾的 **接下来** 区块中。
+- 折叠的分类会把卡片排成一行，可横向滚动。
 - 勾选剧集的每一集或书的每一章并分别评分；`Progress` 和 `My Rating` 由此计算。
 - 电影、剧集、动漫和游戏笔记会显示预告片和剧照；电影和剧集还显示时长和季列表。
 - 每条笔记下方都有你还没有的相似作品，点一下即可添加。
@@ -37,24 +40,25 @@
 
 1. 在 设置 → 第三方插件 → 浏览 中安装 **Library**，或从 [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases) 下载。
 2. 在 设置 → Library 中为每种媒体添加一个分类：电影、剧集、书籍、漫画、游戏、音乐、动画、手动。
-3. 填入你的数据源所需的 API 密钥（见下文）。
-4. 从功能区打开“库”标签页，点击 **+**，选择分类并搜索标题。已在库中的标题会打开已有笔记。
+3. 从功能区打开“库”标签页，点击 **+**，选择分类并搜索标题。已在库中的标题会打开已有笔记。
 
 分类的 `Type` 值（例如 `Movie`）决定哪些笔记属于该分类，其文件夹决定新笔记存放的位置。两者都在分类设置的 **高级** 下。
 
 ## 数据源
 
-| 分类 | 数据源 | 密钥 |
+| 分类 | 来源 | 有密钥时优先 |
 | --- | --- | --- |
-| 电影、剧集 | OMDb | [免费密钥](https://www.omdbapi.com/apikey.aspx) |
-| 书籍 | Google Books + Open Library | 可选的 [Google Books 密钥](https://console.cloud.google.com/apis/library/books.googleapis.com) |
-| 游戏 | RAWG + Steam | [免费 RAWG 密钥](https://rawg.io/apidocs)；Steam 无需密钥 |
-| 音乐 | Deezer | 无需 |
-| 动画 | AniList | 无需 |
-| 漫画 | Comic Vine | [免费密钥](https://comicvine.gamespot.com/api/) |
-| 其他一切 | 手动：字段由你填写 | 无需 |
+| 电影、剧集 | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| 书籍 | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| 游戏 | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| 音乐 | Deezer | — |
+| 动画 | AniList | — |
+| 漫画 | Wikidata, AniList（日本漫画） | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| 其他一切 | 手动：字段由你填写 | — |
 
-预告片、剧照、时长和季列表无需密钥，来自 Cinemeta。填入 [TMDB 密钥](https://www.themoviedb.org/settings/api) 可增加季评分和更多剧照。
+密钥填写在 设置 → Library → API 密钥。
+
+预告片、剧照、时长和季列表来自 Cinemeta，Rotten Tomatoes 评分来自 Wikidata 或 OMDb。[TMDB 密钥](https://www.themoviedb.org/settings/api) 会增加各季评分和更多剧照。
 
 要导入自己的游戏，请在设置中填写 [Steam Web API 密钥](https://steamcommunity.com/dev/apikey) 和 Steam 个人资料，然后运行 `导入 Steam 游戏库`。它会为每款游戏创建一条带 `Playtime`（小时）的笔记；再次运行会添加新游戏并更新时长。个人资料的游戏详情必须公开。
 
@@ -73,6 +77,10 @@
 ## 统计
 
 “库”标签页顶部的面板显示你在 设置 → Library → 统计 中选择的列：某个分类中评分最高的三部作品、某个属性最常见的三个值（类型、演员或其他任意属性），以及在电影、剧集和动画上花费的小时数。图表下方每天显示一条比较，例如：阿波罗 11 号可以往返月球 8 次。
+
+## 接下来
+
+尚无进度的作品（未完成、没有勾选、没有你的评分）封面上有一个眼睛图标。“库”标签页末尾的 **接下来** 区块会从所有分类汇集这些作品，最新的在前，并可像分类一样折叠和排序。在 设置 → Library 中，**“接下来”区块** 可关闭该区块，关闭 **未开始的内容也显示在分类中** 后这些作品只显示在“接下来”中。
 
 ## 关系图谱链接
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 对剧集来说，`Runtime` 是单集时长。书籍另有 `ISBN`，章节以相同的 `title`、`watched` 和 `my_rating` 字段保存在 `Chapters` 中；动画另有 `Rating AniList` 和 `Status`。封面属性可在设置中改名，例如改为 `image`。
 
-刷新只填写空字段，所以你编辑过的值会保留。它还会更新 `Progress` 中的总集数，并添加新的季和集标题。
+刷新只填写空字段，因此你编辑过的值会保留；来源评分（`Rating IMDB`、`Rating RT`、`Rating MC`、`Rating RAWG`）会更新为最新值。它还会更新 `Progress` 中的总集数，并添加新的季和集标题。
 
 ## 推荐
 
@@ -135,7 +143,7 @@ Source ID: tt4574334
 
 - 动漫：AniList 用户的推荐；
 - 电影和剧集：有 TMDB 密钥时用 TMDB 的推荐，否则用 Cinemeta 中同类型评分最高的作品；
-- 游戏：RAWG 中同系列的其他作品和该类型的佳作（需要 RAWG 密钥）；
+- 游戏：同系列的其他作品和同类型的佳作，有 RAWG 密钥时来自 RAWG，否则来自 Wikidata；
 - 书籍：Open Library 中前两个类型与笔记相同、读者最多的书。
 
 点击封面即可添加作品。漫画和音乐没有推荐。可在 设置 → Library → 显示推荐 中关闭这一行。
@@ -146,26 +154,27 @@ Source ID: tt4574334
 
 | 主机 | 何时 | 发送内容 |
 | --- | --- | --- |
-| `www.omdbapi.com` | 搜索电影和剧集 | 标题或 IMDb ID、OMDb 密钥 |
+| `www.omdbapi.com` | 搜索电影和剧集（有 OMDb 密钥时） | 标题或 IMDb ID、OMDb 密钥 |
 | `openlibrary.org` | 搜索书籍；添加或打开书时查找章节；打开笔记时的推荐 | 标题和作者、ISBN 或作品 ID；类型 |
 | `covers.openlibrary.org` | 书籍封面 | 封面 ID |
-| `www.googleapis.com` | 搜索书籍 | 标题、Google Books 密钥 |
-| `api.rawg.io` | 游戏搜索和刷新；打开笔记时的推荐 | 标题或 RAWG ID、类型、RAWG 密钥 |
+| `www.googleapis.com` | 搜索书籍（有 Google Books 密钥时） | 标题、Google Books 密钥 |
+| `api.rawg.io` | 游戏搜索和刷新；打开笔记时的推荐（有 RAWG 密钥时） | 标题或 RAWG ID、类型、RAWG 密钥 |
 | `media.rawg.io` | 游戏封面和截图 | 图片路径 |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | 游戏搜索、封面、预告片和截图 | 标题或 Steam 应用 ID |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | 播放 Steam 预告片；游戏截图 | 视频或图片路径 |
 | `api.steampowered.com` | 你运行 `导入 Steam 游戏库` 时 | Steam Web API 密钥、你的 SteamID 或个人资料名 |
 | `id.twitch.tv`, `api.igdb.com` | 设置了 Twitch 密钥时添加或刷新游戏 | Twitch Client ID 和密钥；游戏的 Steam app id 或名称 |
-| `www.wikidata.org` | 添加或刷新来自 Steam 的游戏 | Steam app id |
+| `www.wikidata.org` | 搜索电影、剧集、游戏和漫画；从那里添加的游戏和漫画；Rotten Tomatoes 评分；游戏预告片；打开笔记时的游戏推荐 | 搜索文本、IMDb ID、Steam app id 或条目 ID |
+| `en.wikipedia.org`, `upload.wikimedia.org` | 在 Wikidata 找到的游戏和漫画的封面 | 条目标题；图片路径 |
 | `api.deezer.com` | 搜索音乐 | 专辑或艺术家 |
-| `graphql.anilist.co` | 搜索动画；AniList 同步; 用于同步的 MyAnimeList ID；打开笔记时的推荐 | 标题；你的令牌、进度、状态和评分; AniList ID |
+| `graphql.anilist.co` | 搜索动画；AniList 同步; 用于同步的 MyAnimeList ID；打开笔记时的推荐；日本漫画搜索 | 标题；你的令牌、进度、状态和评分; AniList ID |
 | `anilist.co` | 你点击 **连接** 时 | Client ID，在浏览器中打开 |
 | `myanimelist.net` | 为 MyAnimeList 点击 **连接** 时；令牌续期 | Client ID 和密钥、授权码、刷新令牌 |
 | `api.myanimelist.net` | MyAnimeList 同步 | 你的令牌、进度、状态和评分 |
 | `s4.anilist.co` | 动画横幅 | CDN 路径 |
-| `comicvine.gamespot.com` | 搜索漫画 | 标题、Comic Vine 密钥 |
-| `v3-cinemeta.strem.io` | 添加或刷新电影、剧集；OMDb 每日额度用完时搜索电影和剧集；没有 TMDB 密钥时，打开笔记时的推荐 | 标题或 IMDb ID；类型 |
-| `images.metahub.space`, `episodes.metahub.space` | 剧照 | IMDb ID、季号和集号 |
+| `comicvine.gamespot.com` | 搜索漫画（有 Comic Vine 密钥时） | 标题、Comic Vine 密钥 |
+| `v3-cinemeta.strem.io` | 添加或刷新电影、剧集；搜索电影和剧集；没有 TMDB 密钥时，打开笔记时的推荐 | 标题或 IMDb ID；类型 |
+| `images.metahub.space`, `episodes.metahub.space` | 电影搜索中的海报；剧照 | IMDb ID、季号和集号 |
 | `api.themoviedb.org`, `image.tmdb.org` | 设置了 TMDB 密钥时，添加或刷新电影或剧集以及打开笔记时的推荐 | IMDb ID 和 TMDB 密钥；图片路径 |
 | `i.ytimg.com` | 预告片截图 | 视频 ID |
 | 流媒体服务的图片服务器（经由 AniList） | 动漫分集剧照 | 图片路径 |

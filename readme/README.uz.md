@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## Imkoniyatlar
 
 - Asarni nomi bo'yicha qidiring va posteri, yili, janri, mualliflari, aktyorlari va reytinglari to'ldirilgan qayd oling.
+- Asarlar istalgan tilda topiladi: ruscha yoki yaponcha nom o'z filmi, o'yini yoki komiksini topadi. Nomdan keyingi yil (`brother 1997`) keng tarqalgan nomni toraytiradi.
 - Kutubxona toifalarga ajratilgan va nomi, yili, reytingi yoki sanasi bo'yicha saralangan muqovali kartochkalar ko'rinishida.
+- Hali boshlamagan asarlaringiz muqovasida ko'z belgisi bo'ladi va ular sahifa oxiridagi **Keyingi** blokida to'planadi.
+- Yig'ilgan toifa kartalarini yon tomonga aylanadigan bitta qatorda ko'rsatadi.
 - Serial qismlarini yoki kitob boblarini belgilang va har birini baholang; `Progress` va `My Rating` ular asosida hisoblanadi.
 - Film, serial, anime va o'yin qaydlarida treyler va kadrlar bor, film va seriallarda esa davomiylik va mavsumlar ro'yxati ham bor.
 - Har bir qayd ostida sizda hali yo'q o'xshash asarlar bor; bir bosishda qo'shiladi.
@@ -37,24 +40,25 @@
 
 1. **Library** plaginini Sozlamalar → Tashqi plaginlar → Ko'rish orqali yoki [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases) sahifasidan o'rnating.
 2. Sozlamalar → Library bo'limida har bir kontent turi uchun toifa qo'shing: Filmlar, Seriallar, Kitoblar, Komikslar, Oʻyinlar, Musiqa, Anime, Qoʻlda.
-3. Manbalaringizga kerakli API kalitlarini kiriting (quyida qarang).
-4. Yon paneldan «Kutubxona» yorlig'ini oching, **+** tugmasini bosing, toifani tanlang va asarni qidiring. Agar u kutubxonada allaqachon bo'lsa, mavjud qayd ochiladi.
+3. Yon paneldan «Kutubxona» yorlig'ini oching, **+** tugmasini bosing, toifani tanlang va asarni qidiring. Agar u kutubxonada allaqachon bo'lsa, mavjud qayd ochiladi.
 
 Toifaning `Type` qiymati (masalan, `Movie`) qaysi qaydlar unga tegishli ekanini, jild esa yangi qaydlar qayerga tushishini belgilaydi. Ikkala sozlama ham toifa yonidagi **Kengaytirilgan** tugmasi bilan ochiladi.
 
 ## Manbalar
 
-| Toifa | Manba | Kalit |
+| Toifa | Manbalar | Kalit bo'lsa, avval |
 | --- | --- | --- |
-| Filmlar, seriallar | OMDb | [Bepul kalit](https://www.omdbapi.com/apikey.aspx) |
-| Kitoblar | Google Books + Open Library | Ixtiyoriy [Google Books kaliti](https://console.cloud.google.com/apis/library/books.googleapis.com) |
-| O'yinlar | RAWG + Steam | [Bepul RAWG kaliti](https://rawg.io/apidocs); Steam uchun kalit kerak emas |
-| Musiqa | Deezer | Kerak emas |
-| Anime | AniList | Kerak emas |
-| Komikslar | Comic Vine | [Bepul kalit](https://comicvine.gamespot.com/api/) |
-| Qolgan hammasi | Qo'lda: maydonlarni o'zingiz to'ldirasiz | Kerak emas |
+| Filmlar, seriallar | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| Kitoblar | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| O'yinlar | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| Musiqa | Deezer | — |
+| Anime | AniList | — |
+| Komikslar | Wikidata, manga uchun AniList | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| Qolgan hammasi | Qo'lda: maydonlarni o'zingiz to'ldirasiz | — |
 
-Treylerlar, kadrlar, davomiylik va mavsumlar ro'yxati Cinemeta'dan kalitsiz keladi. [TMDB kaliti](https://www.themoviedb.org/settings/api) mavsum baholari va ko'proq kadr qo'shadi.
+Kalitlar Sozlamalar → Library → API kalitlari bo'limiga kiritiladi.
+
+Treylerlar, kadrlar, davomiylik va mavsumlar ro'yxati Cinemeta'dan, Rotten Tomatoes baholari esa Wikidata yoki OMDb'dan keladi. [TMDB kaliti](https://www.themoviedb.org/settings/api) mavsum baholari va ko'proq kadr qo'shadi.
 
 O'yinlaringizni qo'shish uchun sozlamalarda [Steam Web API kalitini](https://steamcommunity.com/dev/apikey) va Steam profilini kiriting, so'ng `Steam kutubxonasini import qilish` buyrug'ini bajaring. U har bir o'yin uchun `Playtime` soatlari bilan qayd yaratadi, qayta ishga tushirilganda yangi o'yinlarni qo'shadi va soatlarni yangilaydi. Profildagi o'yinlar haqidagi ma'lumot ochiq bo'lishi kerak.
 
@@ -73,6 +77,10 @@ Eski versiyalardagi qaydlar progressini saqlaydi. Hech narsa belgilamaguningizch
 ## Statistika
 
 «Kutubxona» yorlig'ining yuqorisidagi panel Sozlamalar → Library → Statistika bo'limida tanlangan ustunlarni ko'rsatadi: toifaning eng yuqori baholangan uchta asari, xususiyatning eng ko'p uchraydigan uchta qiymati (janrlar, aktyorlar yoki boshqa istalgani) va filmlar, seriallar hamda animega sarflangan soatlar. Diagramma ostida kuniga bitta taqqoslash chiqadi, masalan: Apollon 11 Oyga 8 marta borib kelishi mumkin edi.
+
+## Keyingi
+
+Hali ilgarilashi yo'q asarning (tugallanmagan, hech narsa belgilanmagan, sizning bahoingiz yo'q) muqovasida ko'z belgisi bo'ladi. Kutubxona yorlig'i oxiridagi **Keyingi** bloki bunday asarlarni barcha toifalardan, eng yangisi birinchi bo'lib, to'playdi va toifa kabi yig'iladi hamda saralanadi. Sozlamalar → Library bo'limida **«Keyingi» bloki** blokni o'chiradi, **Toifalarda boshlanmaganlar** o'chirilsa, bu asarlar faqat Keyingi blokida ko'rinadi.
 
 ## Graf bog'lanishlari
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 Serialda `Runtime` bitta qismning davomiyligini bildiradi. Kitoblarda `ISBN` bor, boblar esa xuddi shunday `title`, `watched` va `my_rating` maydonlari bilan `Chapters` ichida saqlanadi; animeda `Rating AniList` va `Status` bor. Muqova xususiyati nomini sozlamalarda o'zgartirish mumkin, masalan `image` ga.
 
-Metama'lumotlarni yangilash faqat bo'sh maydonlarni to'ldiradi, shuning uchun tuzatishlaringiz saqlanib qoladi. U, shuningdek, `Progress` dagi umumiy qismlar sonini yangilaydi va yangi mavsumlar hamda qism nomlarini qo'shadi.
+Yangilash faqat bo'sh maydonlarni to'ldiradi, shuning uchun siz o'zgartirgan qiymatlar qoladi; manba baholari (`Rating IMDB`, `Rating RT`, `Rating MC`, `Rating RAWG`) joriy qiymatga yangilanadi. U `Progress` dagi qismlar sonini ham yangilaydi va yangi mavsumlar hamda qism nomlarini qo'shadi.
 
 ## Tavsiyalar
 
@@ -135,7 +143,7 @@ Har bir qayd sarlavhasi ostida sizda hali yo'q o'xshash asarlar tasmasi bor:
 
 - anime: AniList foydalanuvchilarining tavsiyalari;
 - filmlar va seriallar: TMDB kaliti bo'lsa TMDB tavsiyalari, aks holda Cinemeta'dagi o'sha janrlarning eng yuqori baholanganlari;
-- o'yinlar: RAWG'dagi seriyaning boshqa qismlari va janrning eng yaxshi o'yinlari (RAWG kaliti kerak);
+- o'yinlar: seriyaning qolgan qismlari va shu janrning eng yaxshi o'yinlari, RAWG kaliti bo'lsa RAWG'dan, aks holda Wikidata'dan;
 - kitoblar: dastlabki ikki janri mos keladigan Open Library'dagi eng ko'p o'qilgan kitoblar.
 
 Asarni qo'shish uchun muqovani bosing. Komiks va musiqada tavsiyalar yo'q. Tasmani Sozlamalar → Library → Tavsiyalarni ko'rsatish orqali o'chirish mumkin.
@@ -146,26 +154,27 @@ Kutubxona oddiy qaydlardan iborat va oflayn ishlaydi. Plagin tarmoqqa siz qidirg
 
 | Xost | Qachon | Nima yuboriladi |
 | --- | --- | --- |
-| `www.omdbapi.com` | Film va serial qidirish | Nom yoki IMDb id, OMDb kaliti |
+| `www.omdbapi.com` | Film va serial qidirish (OMDb kaliti bilan) | Nom yoki IMDb id, OMDb kaliti |
 | `openlibrary.org` | Kitob qidirish; kitob qo'shilganda yoki ochilganda boblarni qidirish; qayd ochilganda tavsiyalar | Nom va muallif, ISBN yoki asar id; janrlar |
 | `covers.openlibrary.org` | Kitob muqovalari | Muqova id |
-| `www.googleapis.com` | Kitob qidirish | Nom, Google Books kaliti |
-| `api.rawg.io` | O'yin qidirish va yangilash; qayd ochilganda tavsiyalar | Nom yoki RAWG id, janr, RAWG kaliti |
+| `www.googleapis.com` | Kitob qidirish (Google Books kaliti bilan) | Nom, Google Books kaliti |
+| `api.rawg.io` | O'yin qidirish va yangilash; qayd ochilganda tavsiyalar (RAWG kaliti bilan) | Nom yoki RAWG id, janr, RAWG kaliti |
 | `media.rawg.io` | O'yin muqovalari va skrinshotlari | Rasm yo'li |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | O'yin qidirish, muqovalar, treylerlar va skrinshotlar | Nom yoki Steam app id |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Steam treylerini ijro etish; o'yin skrinshotlari | Video yoki rasm yo'li |
 | `api.steampowered.com` | Siz `Steam kutubxonasini import qilish` ni ishga tushirasiz | Steam Web API kaliti, SteamID yoki profil nomi |
 | `id.twitch.tv`, `api.igdb.com` | Twitch kalitlari o'rnatilgan bo'lsa, o'yin qo'shish yoki yangilash | Twitch Client ID va sir; o'yinning Steam app id yoki nomi |
-| `www.wikidata.org` | Steam'dan o'yin qo'shish yoki yangilash | Steam app id |
+| `www.wikidata.org` | Film, serial, o'yin va komiks qidirish; u yerdan qo'shilgan o'yinlar va komikslar; Rotten Tomatoes baholari; o'yin treylerlari; qayd ochilganda o'yin tavsiyalari | Qidiruv matni, IMDb id, Steam app id yoki element id |
+| `en.wikipedia.org`, `upload.wikimedia.org` | Wikidata'da topilgan o'yinlar va komikslar muqovalari | Maqola nomi; rasm yo'li |
 | `api.deezer.com` | Musiqa qidirish | Albom yoki ijrochi |
-| `graphql.anilist.co` | Anime qidirish; AniList sinxronlash; sinxronlash uchun MyAnimeList id; qayd ochilganda tavsiyalar | Nom; tokeningiz, progress, holat va baho; AniList id |
+| `graphql.anilist.co` | Anime qidirish; AniList sinxronlash; sinxronlash uchun MyAnimeList id; qayd ochilganda tavsiyalar; manga qidiruvi | Nom; tokeningiz, progress, holat va baho; AniList id |
 | `anilist.co` | Siz **Ulanish** tugmasini bosasiz | Client ID, brauzerda ochiladi |
 | `myanimelist.net` | Siz MyAnimeList uchun **Ulanish** tugmasini bosasiz; tokenni yangilash | Client ID va sir, avtorizatsiya kodi, yangilash tokeni |
 | `api.myanimelist.net` | MyAnimeList sinxronlash | Tokeningiz, progress, holat va baho |
 | `s4.anilist.co` | Anime bannerlari | CDN yo'li |
-| `comicvine.gamespot.com` | Komiks qidirish | Nom, Comic Vine kaliti |
-| `v3-cinemeta.strem.io` | Film yoki serial qo'shish yoki yangilash; OMDb kunlik limiti tugaganda film va serial qidirish; TMDB kaliti bo'lmasa, qayd ochilganda tavsiyalar | Nom yoki IMDb id; janr |
-| `images.metahub.space`, `episodes.metahub.space` | Kadrlar | IMDb id, mavsum va qism raqamlari |
+| `comicvine.gamespot.com` | Komiks qidirish (Comic Vine kaliti bilan) | Nom, Comic Vine kaliti |
+| `v3-cinemeta.strem.io` | Film yoki serial qo'shish yoki yangilash; film va serial qidirish; TMDB kaliti bo'lmasa, qayd ochilganda tavsiyalar | Nom yoki IMDb id; janr |
+| `images.metahub.space`, `episodes.metahub.space` | Film qidiruvidagi posterlar; kadrlar | IMDb id, mavsum va qism raqamlari |
 | `api.themoviedb.org`, `image.tmdb.org` | TMDB kaliti o'rnatilgan bo'lsa, film yoki serial qo'shish yoki yangilash va qayd ochilganda tavsiyalar | IMDb id va TMDB kaliti; rasm yo'li |
 | `i.ytimg.com` | Treyler kadrlari | Video id |
 | Striming xizmatlarining rasm serverlari, AniList orqali | Anime qismlari kadrlari | Rasm yo'li |

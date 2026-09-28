@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## Funciones
 
 - Busca un título y obtén una nota con el póster, el año, el género, los creadores, el reparto y las valoraciones ya rellenados.
+- Los títulos se encuentran en cualquier idioma: un título en ruso o japonés encuentra su película, juego o cómic. Un año tras el título (`brother 1997`) acota un nombre común.
 - Explora la biblioteca como tarjetas con portada, agrupadas por categoría y ordenadas por nombre, año, valoración o fecha.
+- Los títulos que aún no has empezado llevan un ojo en la portada y se reúnen en el bloque **A continuación** al final de la página.
+- Una categoría plegada muestra sus tarjetas en una fila que se desplaza de lado.
 - Marca los episodios de una serie o los capítulos de un libro y puntúa cada uno; `Progress` y `My Rating` se calculan a partir de ellos.
 - Las notas de películas, series, anime y juegos muestran un tráiler y fotogramas; las de películas y series, también la duración y la lista de temporadas.
 - Bajo cada nota hay títulos parecidos que aún no tienes; un clic añade uno.
@@ -37,24 +40,25 @@
 
 1. Instala **Library** desde Preferencias → Complementos comunitarios → Buscar, o desde [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 2. En Preferencias → Library, añade una categoría por cada medio: Películas, Series, Libros, Cómics, Juegos, Música, Anime, Manual.
-3. Añade las claves de API que necesiten tus fuentes (ver abajo).
-4. Abre la pestaña Biblioteca desde la cinta, pulsa **+**, elige una categoría y busca un título. Un título que ya está en la biblioteca abre su nota existente.
+3. Abre la pestaña Biblioteca desde la cinta, pulsa **+**, elige una categoría y busca un título. Un título que ya está en la biblioteca abre su nota existente.
 
 El valor `Type` de una categoría (por ejemplo `Movie`) decide qué notas le pertenecen, y su carpeta decide dónde van las notas nuevas. Ambos están en **Avanzado** dentro de los ajustes de la categoría.
 
 ## Fuentes
 
-| Categoría | Fuente | Clave |
+| Categoría | Fuentes | Primero, con clave |
 | --- | --- | --- |
-| Películas, series | OMDb | [Clave gratuita](https://www.omdbapi.com/apikey.aspx) |
-| Libros | Google Books + Open Library | [Clave de Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) opcional |
-| Juegos | RAWG + Steam | [Clave gratuita de RAWG](https://rawg.io/apidocs); Steam no necesita |
-| Música | Deezer | Ninguna |
-| Anime | AniList | Ninguna |
-| Cómics | Comic Vine | [Clave gratuita](https://comicvine.gamespot.com/api/) |
-| Todo lo demás | Manual: tú rellenas los campos | Ninguna |
+| Películas, series | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| Libros | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| Juegos | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| Música | Deezer | — |
+| Anime | AniList | — |
+| Cómics | Wikidata, AniList para manga | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| Todo lo demás | Manual: tú rellenas los campos | — |
 
-Los tráileres, fotogramas, la duración y las listas de temporadas vienen de Cinemeta sin clave. Una [clave de TMDB](https://www.themoviedb.org/settings/api) añade valoraciones de temporadas y más fotogramas.
+Las claves van en Preferencias → Library → Claves de API.
+
+Los tráileres, las imágenes, la duración y las listas de temporadas vienen de Cinemeta, y las puntuaciones de Rotten Tomatoes de Wikidata u OMDb. Una [clave de TMDB](https://www.themoviedb.org/settings/api) añade valoraciones de temporadas y más imágenes.
 
 Para traer tus juegos, indica en los ajustes una [clave de Steam Web API](https://steamcommunity.com/dev/apikey) y tu perfil de Steam, y ejecuta `Importar biblioteca de Steam`. Crea una nota por juego con `Playtime` en horas; al volver a ejecutarlo añade los juegos nuevos y actualiza las horas. Los detalles de juegos del perfil deben ser públicos.
 
@@ -73,6 +77,10 @@ Las notas de versiones anteriores conservan su progreso. Mientras no marques nad
 ## Estadísticas
 
 El panel de la parte superior de la pestaña Biblioteca muestra las columnas que elijas en Preferencias → Library → Estadísticas: los tres títulos mejor puntuados de una categoría, los tres valores más frecuentes de una propiedad (géneros, actores o cualquier otra) y las horas dedicadas a películas, series y anime. Debajo del gráfico aparece una comparación al día, por ejemplo: El Apolo 11 podría haber ido a la Luna y vuelto 8 veces.
+
+## A continuación
+
+Un título sin progreso (sin terminar, nada marcado, sin tu puntuación) lleva un ojo en la portada. El bloque **A continuación** al final de la pestaña Biblioteca reúne esos títulos de todas las categorías, los más nuevos primero, y se pliega y ordena como una categoría. En Preferencias → Library, **Bloque «A continuación»** apaga el bloque, y con **Lo no empezado en categorías** desactivado esos títulos solo aparecen en «A continuación».
 
 ## Enlaces del grafo
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 En una serie, `Runtime` es la duración de un episodio. Los libros añaden `ISBN` y guardan los capítulos en `Chapters` con los mismos campos `title`, `watched` y `my_rating`; el anime añade `Rating AniList` y `Status`. La propiedad de la portada se puede renombrar en los ajustes, por ejemplo a `image`.
 
-Una actualización solo rellena los campos vacíos, así que los valores que edites se mantienen. También actualiza el total de episodios en `Progress` y añade temporadas y títulos de episodios nuevos.
+Una actualización solo rellena los campos vacíos, así que lo que editas se mantiene; las puntuaciones de las fuentes (`Rating IMDB`, `Rating RT`, `Rating MC`, `Rating RAWG`) se ponen al día. También actualiza el total de episodios en `Progress` y añade temporadas y títulos de episodios nuevos.
 
 ## Recomendaciones
 
@@ -135,7 +143,7 @@ Bajo la cabecera de cada nota, una fila de títulos parecidos que aún no tienes
 
 - anime: las recomendaciones de los usuarios de AniList;
 - películas y series: las recomendaciones de TMDB con una clave de TMDB; si no, los títulos mejor valorados de los mismos géneros en Cinemeta;
-- juegos: el resto de la saga y los mejores juegos del género en RAWG (necesita la clave de RAWG);
+- juegos: el resto de la saga y los mejores juegos del mismo género, de RAWG con una clave de RAWG, si no de Wikidata;
 - libros: los libros más leídos de Open Library que comparten los dos primeros géneros de la nota.
 
 Haz clic en una portada para añadir el título. Los cómics y la música no tienen recomendaciones. Desactiva la fila en Preferencias → Library → Mostrar recomendaciones.
@@ -146,26 +154,27 @@ Tu biblioteca son notas normales y funciona sin conexión. El plugin se conecta 
 
 | Host | Cuándo | Qué se envía |
 | --- | --- | --- |
-| `www.omdbapi.com` | Búsqueda de películas y series | Título o id de IMDb, clave de OMDb |
+| `www.omdbapi.com` | Búsqueda de películas y series (con clave de OMDb) | Título o id de IMDb, clave de OMDb |
 | `openlibrary.org` | Búsqueda de libros; búsqueda de capítulos al añadir o abrir un libro; recomendaciones al abrir una nota | Título y autor, ISBN o id de la obra; géneros |
 | `covers.openlibrary.org` | Portadas de libros | Id de la portada |
-| `www.googleapis.com` | Búsqueda de libros | Título, clave de Google Books |
-| `api.rawg.io` | Búsqueda y actualización de juegos; recomendaciones al abrir una nota | Título o id de RAWG, género, clave de RAWG |
+| `www.googleapis.com` | Búsqueda de libros (con clave de Google Books) | Título, clave de Google Books |
+| `api.rawg.io` | Búsqueda y actualización de juegos; recomendaciones al abrir una nota (con clave de RAWG) | Título o id de RAWG, género, clave de RAWG |
 | `media.rawg.io` | Portadas y capturas de juegos | Ruta de la imagen |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Búsqueda de juegos, portadas, tráileres y capturas | Título o id de app de Steam |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Reproducir un tráiler de Steam; capturas de juegos | Ruta del vídeo o de la imagen |
 | `api.steampowered.com` | Ejecutas `Importar biblioteca de Steam` | Clave de Steam Web API, tu SteamID o nombre de perfil |
 | `id.twitch.tv`, `api.igdb.com` | Añadir o actualizar un juego, si configuras las claves de Twitch | Twitch Client ID y secreto; id de app de Steam o nombre del juego |
-| `www.wikidata.org` | Añadir o actualizar un juego de Steam | Id de app de Steam |
+| `www.wikidata.org` | Búsqueda de películas, series, juegos y cómics; juegos y cómics añadidos desde allí; puntuaciones de Rotten Tomatoes; tráileres de juegos; recomendaciones de juegos al abrir una nota | Texto de búsqueda, id de IMDb, Steam app id o id del elemento |
+| `en.wikipedia.org`, `upload.wikimedia.org` | Portadas de juegos y cómics encontrados en Wikidata | Título del artículo; ruta de la imagen |
 | `api.deezer.com` | Búsqueda de música | Álbum o artista |
-| `graphql.anilist.co` | Búsqueda de anime; sincronización con AniList; ids de MyAnimeList para sincronizar; recomendaciones al abrir una nota | Título; tu token, el progreso, el estado y la puntuación; ids de AniList |
+| `graphql.anilist.co` | Búsqueda de anime; sincronización con AniList; ids de MyAnimeList para sincronizar; recomendaciones al abrir una nota; búsqueda de manga | Título; tu token, el progreso, el estado y la puntuación; ids de AniList |
 | `anilist.co` | Haces clic en **Conectar** | Client ID, abierto en tu navegador |
 | `myanimelist.net` | Haces clic en **Conectar** para MyAnimeList; renovación del token | Client ID y secreto, código de autorización, token de renovación |
 | `api.myanimelist.net` | Sincronización con MyAnimeList | Tu token, el progreso, el estado y la puntuación |
 | `s4.anilist.co` | Banners de anime | Ruta del CDN |
-| `comicvine.gamespot.com` | Búsqueda de cómics | Título, clave de Comic Vine |
-| `v3-cinemeta.strem.io` | Añadir o actualizar una película o serie; búsqueda de películas y series cuando se agota el límite diario de OMDb; recomendaciones al abrir una nota, sin clave de TMDB | Título o id de IMDb; género |
-| `images.metahub.space`, `episodes.metahub.space` | Fotogramas | Id de IMDb, números de temporada y episodio |
+| `comicvine.gamespot.com` | Búsqueda de cómics (con clave de Comic Vine) | Título, clave de Comic Vine |
+| `v3-cinemeta.strem.io` | Añadir o actualizar una película o serie; búsqueda de películas y series; recomendaciones al abrir una nota, sin clave de TMDB | Título o id de IMDb; género |
+| `images.metahub.space`, `episodes.metahub.space` | Pósteres en la búsqueda de películas; imágenes | Id de IMDb, números de temporada y episodio |
 | `api.themoviedb.org`, `image.tmdb.org` | Añadir o actualizar una película o serie, y recomendaciones al abrir una nota, si configuras una clave de TMDB | Id de IMDb y clave de TMDB; ruta de la imagen |
 | `i.ytimg.com` | Fotogramas de tráileres | Id del vídeo |
 | Servidores de imágenes de servicios de streaming, a través de AniList | Fotogramas de episodios de anime | Ruta de la imagen |

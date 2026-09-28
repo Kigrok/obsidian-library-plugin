@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## Functies
 
 - Zoek een titel en krijg een notitie met poster, jaar, genre, makers, cast en beoordelingen ingevuld.
+- Titels worden in elke taal gevonden: een Russische of Japanse titel vindt zijn film, game of strip. Een jaartal achter de titel (`brother 1997`) verfijnt een veelvoorkomende naam.
 - Blader door de bibliotheek als covers, gegroepeerd per categorie en gesorteerd op naam, jaar, beoordeling of datum.
+- Titels waar je nog niet aan begonnen bent, krijgen een oog op de cover en verzamelen zich in het blok **Hierna** onderaan de pagina.
+- Een ingeklapte categorie toont de kaarten in één rij die zijwaarts scrolt.
 - Vink afleveringen van een serie of hoofdstukken van een boek af en beoordeel ze stuk voor stuk; `Progress` en `My Rating` worden daaruit berekend.
 - Notities van films, series, anime en games tonen een trailer en stills; films en series ook de speelduur en de seizoenslijst.
 - Onder elke notitie staan vergelijkbare titels die je nog niet hebt; één klik voegt er een toe.
@@ -37,24 +40,25 @@
 
 1. Installeer **Library** via Instellingen → Externe plug-in → Doorbladeren, of uit [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 2. Voeg in Instellingen → Library een categorie toe voor elk medium: Films, Series, Boeken, Strips, Spellen, Muziek, Anime, Handmatig.
-3. Vul de API-sleutels in die je bronnen nodig hebben (zie hieronder).
-4. Open het tabblad Bibliotheek via de werkbalk, druk op **+**, kies een categorie en zoek een titel. Een titel die al in de bibliotheek staat, opent de bestaande notitie.
+3. Open het tabblad Bibliotheek via de werkbalk, druk op **+**, kies een categorie en zoek een titel. Een titel die al in de bibliotheek staat, opent de bestaande notitie.
 
 De `Type`-waarde van een categorie (bijvoorbeeld `Movie`) bepaalt welke notities erbij horen, en de map bepaalt waar nieuwe notities komen. Beide staan onder **Geavanceerd** in de instellingen van de categorie.
 
 ## Bronnen
 
-| Categorie | Bron | Sleutel |
+| Categorie | Bronnen | Eerst, met een sleutel |
 | --- | --- | --- |
-| Films, series | OMDb | [Gratis sleutel](https://www.omdbapi.com/apikey.aspx) |
-| Boeken | Google Books + Open Library | Optionele [Google Books-sleutel](https://console.cloud.google.com/apis/library/books.googleapis.com) |
-| Games | RAWG + Steam | [Gratis RAWG-sleutel](https://rawg.io/apidocs); Steam heeft er geen nodig |
-| Muziek | Deezer | Geen |
-| Anime | AniList | Geen |
-| Strips | Comic Vine | [Gratis sleutel](https://comicvine.gamespot.com/api/) |
-| Al het andere | Handmatig: je vult de velden zelf in | Geen |
+| Films, series | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| Boeken | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| Games | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| Muziek | Deezer | — |
+| Anime | AniList | — |
+| Strips | Wikidata, AniList voor manga | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| Al het andere | Handmatig: je vult de velden zelf in | — |
 
-Trailers, stills, speelduur en seizoenslijsten komen zonder sleutel van Cinemeta. Een [TMDB-sleutel](https://www.themoviedb.org/settings/api) voegt seizoensbeoordelingen en meer stills toe.
+Sleutels voer je in bij Instellingen → Library → API-sleutels.
+
+Trailers, stills, speelduur en seizoenslijsten komen van Cinemeta, en Rotten Tomatoes-scores van Wikidata of OMDb. Een [TMDB-sleutel](https://www.themoviedb.org/settings/api) voegt seizoensbeoordelingen en meer stills toe.
 
 Om je eigen games binnen te halen, vul je in de instellingen een [Steam Web API-sleutel](https://steamcommunity.com/dev/apikey) en je Steam-profiel in en voer je `Steam-bibliotheek importeren` uit. Het maakt per game een notitie met `Playtime` in uren; opnieuw uitgevoerd voegt het nieuwe games toe en werkt het de uren bij. De gamegegevens van het profiel moeten openbaar zijn.
 
@@ -73,6 +77,10 @@ Notities uit oudere versies houden hun voortgang. Zolang je niets afvinkt, staan
 ## Statistieken
 
 Het paneel bovenaan het tabblad Bibliotheek toont de kolommen die je kiest in Instellingen → Library → Statistieken: de drie best beoordeelde titels van een categorie, de drie vaakst voorkomende waarden van een eigenschap (genres, acteurs of een andere) en de uren besteed aan films, series en anime. Onder de grafiek staat elke dag één vergelijking, bijvoorbeeld: Apollo 11 had 8 keer naar de maan en terug kunnen vliegen.
+
+## Hierna
+
+Een titel zonder voortgang (niet af, niets aangevinkt, geen eigen score) krijgt een oog op de cover. Het blok **Hierna** onderaan het tabblad Bibliotheek verzamelt die titels uit alle categorieën, de nieuwste eerst, en klapt in en sorteert zoals een categorie. In Instellingen → Library zet **Blok ‘Hierna’** het blok uit, en met **Niet begonnen in categorieën** uit staan deze titels alleen in ‘Hierna’.
 
 ## Graafkoppelingen
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 Bij een serie is `Runtime` de duur van één aflevering. Boeken hebben daarnaast `ISBN` en bewaren hoofdstukken in `Chapters` met dezelfde velden `title`, `watched` en `my_rating`; anime heeft `Rating AniList` en `Status`. De eigenschap voor de cover kun je in de instellingen hernoemen, bijvoorbeeld naar `image`.
 
-Een verversing vult alleen lege velden, dus waarden die je bewerkt blijven staan. Ze werkt ook het totaal aantal afleveringen in `Progress` bij en voegt nieuwe seizoenen en afleveringstitels toe.
+Verversen vult alleen lege velden, dus wat je zelf aanpast blijft staan; de beoordelingen van bronnen (`Rating IMDB`, `Rating RT`, `Rating MC`, `Rating RAWG`) worden bijgewerkt. Het werkt ook het aantal afleveringen in `Progress` bij en voegt nieuwe seizoenen en afleveringstitels toe.
 
 ## Aanbevelingen
 
@@ -135,7 +143,7 @@ Onder de kop van elke notitie staat een rij vergelijkbare titels die je nog niet
 
 - anime: aanbevelingen van AniList-gebruikers;
 - films en series: de aanbevelingen van TMDB met een TMDB-sleutel, anders de best beoordeelde titels van dezelfde genres uit Cinemeta;
-- games: de rest van de serie en de beste games van het genre uit RAWG (RAWG-sleutel nodig);
+- games: de rest van de reeks en de beste games van hetzelfde genre, van RAWG met een RAWG-sleutel, anders van Wikidata;
 - boeken: de meest gelezen boeken op Open Library met dezelfde eerste twee genres.
 
 Klik op een cover om de titel toe te voegen. Strips en muziek hebben geen aanbevelingen. Zet de rij uit via Instellingen → Library → Aanbevelingen tonen.
@@ -146,26 +154,27 @@ Je bibliotheek bestaat uit gewone notities en werkt offline. De plugin gaat onli
 
 | Host | Wanneer | Wat wordt verstuurd |
 | --- | --- | --- |
-| `www.omdbapi.com` | Films en series zoeken | Titel of IMDb-id, OMDb-sleutel |
+| `www.omdbapi.com` | Films en series zoeken (met een OMDb-sleutel) | Titel of IMDb-id, OMDb-sleutel |
 | `openlibrary.org` | Boeken zoeken; hoofdstukken opzoeken als je een boek toevoegt of opent; aanbevelingen bij het openen van een notitie | Titel en auteur, ISBN of werk-id; genres |
 | `covers.openlibrary.org` | Boekcovers | Cover-id |
-| `www.googleapis.com` | Boeken zoeken | Titel, Google Books-sleutel |
-| `api.rawg.io` | Games zoeken en verversen; aanbevelingen bij het openen van een notitie | Titel of RAWG-id, genre, RAWG-sleutel |
+| `www.googleapis.com` | Boeken zoeken (met een Google Books-sleutel) | Titel, Google Books-sleutel |
+| `api.rawg.io` | Games zoeken en verversen; aanbevelingen bij het openen van een notitie (met een RAWG-sleutel) | Titel of RAWG-id, genre, RAWG-sleutel |
 | `media.rawg.io` | Gamecovers en screenshots | Afbeeldingspad |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Games zoeken, covers, trailers en screenshots | Titel of Steam-app-id |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Een Steam-trailer afspelen; gamescreenshots | Video- of afbeeldingspad |
 | `api.steampowered.com` | Je voert `Steam-bibliotheek importeren` uit | Steam Web API-sleutel, je SteamID of profielnaam |
 | `id.twitch.tv`, `api.igdb.com` | Een game toevoegen of verversen, als je Twitch-sleutels hebt ingesteld | Twitch Client ID en secret; Steam-app-id of naam van de game |
-| `www.wikidata.org` | Een game uit Steam toevoegen of verversen | Steam-app-id |
+| `www.wikidata.org` | Films, series, games en strips zoeken; games en strips die daaruit zijn toegevoegd; Rotten Tomatoes-scores; gametrailers; gameaanbevelingen bij het openen van een notitie | Zoektekst, IMDb-id, Steam app id of item-id |
+| `en.wikipedia.org`, `upload.wikimedia.org` | Covers van games en strips die op Wikidata zijn gevonden | Artikeltitel; afbeeldingspad |
 | `api.deezer.com` | Muziek zoeken | Album of artiest |
-| `graphql.anilist.co` | Anime zoeken; AniList-synchronisatie; MyAnimeList-id's voor synchronisatie; aanbevelingen bij het openen van een notitie | Titel; je token, voortgang, status en score; AniList-id's |
+| `graphql.anilist.co` | Anime zoeken; AniList-synchronisatie; MyAnimeList-id's voor synchronisatie; aanbevelingen bij het openen van een notitie; manga zoeken | Titel; je token, voortgang, status en score; AniList-id's |
 | `anilist.co` | Je klikt op **Verbinden** | Client ID, geopend in je browser |
 | `myanimelist.net` | Je klikt op **Verbinden** voor MyAnimeList; token vernieuwen | Client ID en secret, autorisatiecode, refresh-token |
 | `api.myanimelist.net` | MyAnimeList-synchronisatie | Je token, voortgang, status en score |
 | `s4.anilist.co` | Anime-banners | CDN-pad |
-| `comicvine.gamespot.com` | Strips zoeken | Titel, Comic Vine-sleutel |
-| `v3-cinemeta.strem.io` | Een film of serie toevoegen of verversen; films en series zoeken zolang de daglimiet van OMDb op is; aanbevelingen bij het openen van een notitie, zonder TMDB-sleutel | Titel of IMDb-id; genre |
-| `images.metahub.space`, `episodes.metahub.space` | Stills | IMDb-id, seizoens- en afleveringsnummer |
+| `comicvine.gamespot.com` | Strips zoeken (met een Comic Vine-sleutel) | Titel, Comic Vine-sleutel |
+| `v3-cinemeta.strem.io` | Een film of serie toevoegen of verversen; films en series zoeken; aanbevelingen bij het openen van een notitie, zonder TMDB-sleutel | Titel of IMDb-id; genre |
+| `images.metahub.space`, `episodes.metahub.space` | Posters bij het zoeken naar films; stills | IMDb-id, seizoens- en afleveringsnummer |
 | `api.themoviedb.org`, `image.tmdb.org` | Een film of serie toevoegen of verversen, en aanbevelingen bij het openen van een notitie, als je een TMDB-sleutel hebt ingesteld | IMDb-id en TMDB-sleutel; afbeeldingspad |
 | `i.ytimg.com` | Trailerstills | Video-id |
 | Afbeeldingsservers van streamingdiensten, via AniList | Stills van anime-afleveringen | Afbeeldingspad |
