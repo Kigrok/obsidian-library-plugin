@@ -1,5 +1,5 @@
 import { requestUrl } from 'obsidian'
-import { isEmptyValue, plausibleRuntime } from '../util'
+import { SEARCH_BUDGET_MS, isEmptyValue, plausibleRuntime, within } from '../util'
 import { NON_LATIN, claim, entities, languages, searchItems, textIn, yearIn } from './wikidata'
 import type {
 	ContentProvider,
@@ -192,7 +192,7 @@ export class OmdbProvider implements ContentProvider {
 		const kind = type === 'series' ? 'series' : 'movie'
 		const { title, year } = splitYear(query)
 		const open = this.searchOpen(query, title, kind)
-		const keyed = this.getKey() && !this.resting() ? await this.searchOmdb(title, kind, year) : []
+		const keyed = this.getKey() && !this.resting() ? await within(this.searchOmdb(title, kind, year), SEARCH_BUDGET_MS, []) : []
 		return arrange([...keyed, ...(await open)], year)
 	}
 
@@ -224,8 +224,8 @@ export class OmdbProvider implements ContentProvider {
 	// so those lead; a Latin one leads with Cinemeta, which ranks by fame.
 	private async searchOpen(query: string, title: string, kind: 'movie' | 'series'): Promise<SearchResult[]> {
 		const [cinemeta, wikidata] = await Promise.all([
-			this.searchCinemeta(title, kind),
-			this.searchWikidata(query, kind)
+			within(this.searchCinemeta(title, kind), SEARCH_BUDGET_MS, []),
+			within(this.searchWikidata(query, kind), SEARCH_BUDGET_MS, [])
 		])
 		return NON_LATIN.test(query) ? [...wikidata, ...cinemeta] : [...cinemeta, ...wikidata]
 	}

@@ -1,5 +1,6 @@
 import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
 import { findChapters } from './openlibrary'
+import { SEARCH_BUDGET_MS, within } from '../util'
 
 interface WrappedRaw {
 	__pid: string
@@ -21,8 +22,10 @@ export class BookAggregatorProvider implements ContentProvider {
 
 	async search(query: string): Promise<SearchResult[]> {
 		const [fromGoogle, fromOpenlib] = await Promise.all([
-			this.google.search(query, 'googlebook').catch(() => [] as SearchResult[]),
-			this.openlib.search(query, 'book').catch(() => [] as SearchResult[])
+			within(this.google.search(query, 'googlebook'), SEARCH_BUDGET_MS, [] as SearchResult[]),
+			// Open Library often takes several seconds, and it is the book source
+			// that needs no key: it gets a longer wait than the others.
+			within(this.openlib.search(query, 'book'), SEARCH_BUDGET_MS * 4, [] as SearchResult[])
 		])
 		const wrap = (results: SearchResult[], pid: string): SearchResult[] =>
 			results.map((r) => ({ ...r, raw: { __pid: pid, __raw: r.raw } }))

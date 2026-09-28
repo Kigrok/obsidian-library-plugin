@@ -321,3 +321,18 @@ export function coverSrc(app: App, raw: unknown): string | null {
 		?? app.metadataCache.getFirstLinkpathDest(path, '')
 	return file ? app.vault.getResourcePath(file) : null
 }
+
+// A search waits this long for each source; one that has not answered by
+// then is left out, so a stalled server cannot hold back the others.
+export const SEARCH_BUDGET_MS = 4000
+
+export function within<T>(promise: Promise<T>, ms: number, fallback: T): Promise<T> {
+	return new Promise((resolve) => {
+		const timer = window.setTimeout(() => resolve(fallback), ms)
+		promise.then(
+			(value) => { window.clearTimeout(timer); resolve(value) },
+			() => { window.clearTimeout(timer); resolve(fallback) }
+		)
+	})
+}
+

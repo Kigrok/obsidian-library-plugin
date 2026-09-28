@@ -1,4 +1,5 @@
 import { SteamProvider } from './steam'
+import { SEARCH_BUDGET_MS, within } from '../util'
 import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
 import { NON_LATIN } from './wikidata'
 
@@ -21,11 +22,10 @@ export class GameAggregatorProvider implements ContentProvider {
 	}
 
 	async search(query: string): Promise<SearchResult[]> {
-		const none = (): SearchResult[] => []
 		const [fromRawg, fromSteam, fromWikidata] = await Promise.all([
-			this.rawg.search(query, 'game').catch(none),
-			this.steam.search(query, 'game').catch(none),
-			this.wikidata.search(query, 'game').catch(none)
+			within(this.rawg.search(query, 'game'), SEARCH_BUDGET_MS, []),
+			within(this.steam.search(query, 'game'), SEARCH_BUDGET_MS, []),
+			within(this.wikidata.search(query, 'game'), SEARCH_BUDGET_MS, [])
 		])
 		// Steam's store search reads only Latin names: a title in another
 		// script finds its games through Wikidata's labels.

@@ -1,4 +1,5 @@
 import { MangaProvider } from './manga'
+import { SEARCH_BUDGET_MS, within } from '../util'
 import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
 
 // Japanese kana and kanji, and Korean hangul: a query in them names a manga
@@ -23,11 +24,10 @@ export class ComicsAggregatorProvider implements ContentProvider {
 	}
 
 	async search(query: string): Promise<SearchResult[]> {
-		const none = (): SearchResult[] => []
 		const [fromComicVine, fromWikidata, fromManga] = await Promise.all([
-			this.comicVine.search(query, 'comic').catch(none),
-			this.wikidata.search(query, 'comic').catch(none),
-			this.manga.search(query, 'comic').catch(none)
+			within(this.comicVine.search(query, 'comic'), SEARCH_BUDGET_MS, []),
+			within(this.wikidata.search(query, 'comic'), SEARCH_BUDGET_MS, []),
+			within(this.manga.search(query, 'comic'), SEARCH_BUDGET_MS, [])
 		])
 		const open = CJK.test(query) ? [...fromManga, ...fromWikidata] : [...fromWikidata, ...fromManga]
 		return [...fromComicVine, ...open]
