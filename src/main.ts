@@ -401,8 +401,6 @@ export default class LibraryPlugin extends Plugin {
 		}).open()
 	}
 
-	// Movies, series and comics have no keyless source: without the key a
-	// search can only come back empty, so name the missing key instead.
 	// The active note, when it belongs to a category that has a source.
 	private activeLibraryFile(): TFile | null {
 		const file = this.app.workspace.getActiveFile()
