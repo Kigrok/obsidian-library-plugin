@@ -68,7 +68,7 @@ export class SteamProvider implements ContentProvider {
 	}
 
 	private static readonly STORE = 'https://store.steampowered.com'
-	private static readonly CDN = 'https://cdn.cloudflare.steamstatic.com/steam/apps'
+	static readonly CDN = 'https://cdn.cloudflare.steamstatic.com/steam/apps'
 	// RAWG and Steam both use numeric ids, so Steam ids carry a prefix to stay
 	// distinguishable when a refresh routes without the original search result.
 	static readonly PREFIX = 'steam:'

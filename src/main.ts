@@ -21,8 +21,13 @@ import { GameTrailerFinder } from './providers/gameTrailer'
 import { DeezerProvider } from './providers/deezer'
 import { AnimeProvider } from './providers/anime'
 import { ComicsProvider } from './providers/comics'
+import { ComicsAggregatorProvider } from './providers/comicsAggregator'
+import { WikidataComicProvider } from './providers/wikidataComics'
+import { MangaProvider } from './providers/manga'
 import { SteamProvider } from './providers/steam'
+import { WikidataGameProvider } from './providers/wikidataGames'
 import { TmdbEnricher } from './providers/tmdb'
+import { RottenTomatoesEnricher } from './providers/wikidata'
 import { isContentType } from './providers/types'
 import type { ContentProvider, NormalizedMetadata, SearchResult } from './providers/types'
 import { PickTypeModal } from './ui/pickTypeModal'
@@ -71,6 +76,7 @@ const LINK_FIELDS = ['Genre', 'Creator', 'Cast']
 // The background metadata pass waits for the vault to settle, then walks the
 // library one note at a time so the sources are never hit in a burst.
 const ENRICH_START_DELAY = 10 * 1000
+const SOURCE_SCORES = ['Rating IMDB', 'Rating RT', 'Rating MC', 'Rating RAWG']
 const ENRICH_STEP_DELAY = 700
 
 export default class LibraryPlugin extends Plugin {
@@ -110,17 +116,22 @@ export default class LibraryPlugin extends Plugin {
 		// Cinemeta is keyless, so trailer/stills/seasons work without any setup;
 		// TMDB comes first and wins where both have data (richer season ratings).
 		this.registry.register(
-			new OmdbProvider(() => this.settings.omdbApiKey, [tmdb, new CinemetaEnricher()])
+			new OmdbProvider(() => this.settings.omdbApiKey, [tmdb, new CinemetaEnricher(), new RottenTomatoesEnricher()])
 		)
 		this.registry.register(new BookAggregatorProvider(googleBooks, openLibrary))
 		const trailers = new GameTrailerFinder(() => ({ id: this.settings.twitchClientId, secret: this.settings.twitchClientSecret }))
 		this.registry.register(new GameAggregatorProvider(
 			new RawgProvider(() => this.settings.rawgApiKey, trailers),
-			new SteamProvider(trailers)
+			new SteamProvider(trailers),
+			new WikidataGameProvider()
 		))
 		this.registry.register(new DeezerProvider())
 		this.registry.register(new AnimeProvider())
-		this.registry.register(new ComicsProvider(() => this.settings.comicVineApiKey))
+		this.registry.register(new ComicsAggregatorProvider(
+			new ComicsProvider(() => this.settings.comicVineApiKey),
+			new WikidataComicProvider(),
+			new MangaProvider()
+		))
 		this.addSettingTab(new LibrarySettingTab(this.app, this))
 
 		this.registerView(LIBRARY_VIEW_TYPE, (leaf) => new LibraryView(leaf, this))
@@ -384,23 +395,10 @@ export default class LibraryPlugin extends Plugin {
 				}).open()
 				return
 			}
-			const missing = this.missingKey(category.contentType)
-			if (missing) {
-				new Notice(tr('notice.keyRequired', { name: missing }))
-				return
-			}
 			new AddContentModal(this.app, provider, category.contentType, (result) => {
 				void this.createFromResult(category, result)
 			}).open()
 		}).open()
-	}
-
-	// Movies, series and comics have no keyless source: without the key a
-	// search can only come back empty, so name the missing key instead.
-	private missingKey(type: ICategory['contentType']): string | null {
-		if ((type === 'movie' || type === 'series') && !this.settings.omdbApiKey.trim()) return tr('settings.omdb.name')
-		if (type === 'comic' && !this.settings.comicVineApiKey.trim()) return tr('settings.comicvine.name')
-		return null
 	}
 
 	// The active note, when it belongs to a category that has a source.
@@ -1047,15 +1045,12 @@ export default class LibraryPlugin extends Plugin {
 		if (!provider) return
 		const sourceId = toStr(fm['Source ID'])
 
-		if (force) {
-			const missing = this.missingKey(category.contentType)
-			if (missing) {
-				new Notice(tr('notice.keyRequired', { name: missing }))
-				return
-			}
-		} else {
+		if (!force) {
+			// Opening a note refreshes it at most every five minutes, and never
+			// one its source cannot look up (a RAWG game once the key is gone).
 			const last = this.refreshCooldowns.get(file.path)
 			if (last && Date.now() - last < 5 * 60 * 1000) return
+			if (sourceId && provider.refreshable?.(sourceId) === false) return
 		}
 		this.refreshCooldowns.set(file.path, Date.now())
 
@@ -1160,6 +1155,9 @@ export default class LibraryPlugin extends Plugin {
 			// A junk runtime stored by an earlier pass must not shadow the
 			// trustworthy value that arrives behind it.
 			else if (key === 'Runtime' && plausibleRuntime(present) === null && plausibleRuntime(value) !== null) current[target] = value
+			// A source's own score moves over time and is never typed by hand:
+			// a refresh brings the current one instead of keeping the first.
+			else if (SOURCE_SCORES.indexOf(key) >= 0) current[target] = value
 		}
 		if (typeof meta.fields.Season === 'number' && meta.fields.Season > Number(current.Season || 0)) {
 			current.Season = meta.fields.Season
@@ -1666,6 +1664,9 @@ export default class LibraryPlugin extends Plugin {
 		this.settings.categories = this.settings.categories.filter(cat => !!cat && typeof cat === 'object')
 		if (!this.settings.sortState || typeof this.settings.sortState !== 'object') this.settings.sortState = {}
 		if (typeof this.settings.statsCollapsed !== 'boolean') this.settings.statsCollapsed = false
+		if (typeof this.settings.showUpNext !== 'boolean') this.settings.showUpNext = true
+		if (typeof this.settings.upNextCollapsed !== 'boolean') this.settings.upNextCollapsed = false
+		if (typeof this.settings.upNextInCategories !== 'boolean') this.settings.upNextInCategories = true
 		if (!this.settings.enrichMarks || typeof this.settings.enrichMarks !== 'object') this.settings.enrichMarks = {}
 		// Categories an earlier build kept out of the statistics, through the
 		// switches that came before the top list: `showTop`, `stats.rating`, `showRated`.

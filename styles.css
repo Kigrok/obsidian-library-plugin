@@ -17,6 +17,7 @@
 }
 
 .library-card .card-image {
+	position: relative;
 	width: 100%;
 	aspect-ratio: 2/3;
 	background: var(--background-primary);
@@ -30,6 +31,24 @@
 	height: 100%;
 	object-fit: cover;
 	border-radius: 10px 10px 0 0;
+}
+
+/* Not started yet: an eye in the theme's accent, on a disc that keeps it
+   legible on any cover. */
+.library-card .card-unstarted {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	display: flex;
+	padding: 4px;
+	border-radius: 50%;
+	background: color-mix(in srgb, var(--background-primary) 80%, transparent);
+	color: var(--interactive-accent);
+}
+
+.library-card .card-unstarted svg {
+	width: 14px;
+	height: 14px;
 }
 
 .library-card .card-info {
@@ -220,13 +239,23 @@
 	font-weight: bold;
 }
 
-/* Folded: one explicit row keeps its height, every further row collapses to
-   nothing and is clipped. */
+/* Folded: every card in one row that scrolls sideways (a trackpad swipe,
+   Shift with the wheel, or the scrollbar). CSS alone, so a fold also holds
+   in a render made while the tab is hidden and has no layout. The padding
+   keeps the hover lift and the shadow inside the clipped row. */
 .library-view .library-grid.collapsed {
-	grid-template-rows: auto;
-	grid-auto-rows: 0;
-	row-gap: 0;
-	overflow: hidden;
+	grid-template-columns: none;
+	grid-auto-flow: column;
+	grid-auto-columns: 160px;
+	overflow-x: auto;
+	overflow-y: hidden;
+	overscroll-behavior-x: contain;
+	scroll-snap-type: x proximity;
+	padding: 4px 2px 14px;
+}
+
+.library-view .library-grid.collapsed .library-card {
+	scroll-snap-align: start;
 }
 
 .note-header-wrap .note-header {

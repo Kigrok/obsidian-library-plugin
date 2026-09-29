@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## Funcții
 
 - Caută un titlu și primești o notă cu posterul, anul, genul, creatorii, distribuția și evaluările completate.
+- Titlurile se găsesc în orice limbă: un titlu în rusă sau japoneză își găsește filmul, jocul sau banda desenată. Un an după titlu (`brother 1997`) restrânge un nume des întâlnit.
 - Răsfoiește biblioteca drept carduri cu coperți, grupate pe categorii și sortate după nume, an, evaluare sau dată.
+- Titlurile pe care nu le-ați început au un ochi pe copertă și se adună în blocul **Urmează** de la finalul paginii.
+- O categorie restrânsă își arată cardurile pe un singur rând care se derulează lateral.
 - Bifează episoadele unui serial sau capitolele unei cărți și notează fiecare; `Progress` și `My Rating` se calculează din ele.
 - Notițele despre filme, seriale, anime și jocuri arată un trailer și cadre; filmele și serialele arată și durata și lista sezoanelor.
 - Sub fiecare notiță apar titluri asemănătoare pe care nu le ai încă; un clic adaugă unul.
@@ -37,24 +40,25 @@
 
 1. Instalează **Library** din Setări → Module comunitare → Răsfoiți sau din [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 2. În Setări → Library, adaugă o categorie pentru fiecare tip de conținut: Filme, Seriale, Cărți, Benzodesene, Jocuri, Muzică, Anime, Manual.
-3. Introdu cheile API de care au nevoie sursele tale (vezi mai jos).
-4. Deschide fila Bibliotecă din panglică, apasă **+**, alege o categorie și caută un titlu. Un titlu care e deja în bibliotecă deschide nota existentă.
+3. Deschide fila Bibliotecă din panglică, apasă **+**, alege o categorie și caută un titlu. Un titlu care e deja în bibliotecă deschide nota existentă.
 
 Valoarea `Type` a unei categorii (de exemplu `Movie`) stabilește ce note îi aparțin, iar dosarul ei stabilește unde ajung notele noi. Ambele sunt sub **Avansat** în setările categoriei.
 
 ## Surse
 
-| Categorie | Sursă | Cheie |
+| Categorie | Surse | Întâi, cu cheie |
 | --- | --- | --- |
-| Filme, seriale | OMDb | [Cheie gratuită](https://www.omdbapi.com/apikey.aspx) |
-| Cărți | Google Books + Open Library | [Cheie Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) opțională |
-| Jocuri | RAWG + Steam | [Cheie RAWG gratuită](https://rawg.io/apidocs); Steam nu are nevoie |
-| Muzică | Deezer | Niciuna |
-| Anime | AniList | Niciuna |
-| Benzi desenate | Comic Vine | [Cheie gratuită](https://comicvine.gamespot.com/api/) |
-| Orice altceva | Manual: completezi tu câmpurile | Niciuna |
+| Filme, seriale | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| Cărți | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| Jocuri | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| Muzică | Deezer | — |
+| Anime | AniList | — |
+| Benzi desenate | Wikidata, AniList pentru manga | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| Orice altceva | Manual: completezi tu câmpurile | — |
 
-Trailerele, cadrele, durata și listele de sezoane vin de la Cinemeta fără cheie. O [cheie TMDB](https://www.themoviedb.org/settings/api) adaugă evaluările sezoanelor și mai multe cadre.
+Cheile se introduc în Setări → Library → Chei API.
+
+Trailerele, imaginile, durata și listele de sezoane vin din Cinemeta, iar scorurile Rotten Tomatoes din Wikidata sau OMDb. O [cheie TMDB](https://www.themoviedb.org/settings/api) adaugă notele sezoanelor și mai multe imagini.
 
 Ca să îți aduci jocurile, introdu în setări o [cheie Steam Web API](https://steamcommunity.com/dev/apikey) și profilul Steam, apoi rulează `Importă biblioteca Steam`. Comanda creează o notiță pentru fiecare joc, cu `Playtime` în ore; rulată din nou, adaugă jocurile noi și actualizează orele. Detaliile jocurilor din profil trebuie să fie publice.
 
@@ -73,6 +77,10 @@ Notele din versiunile mai vechi își păstrează progresul. Cât timp nu bifezi
 ## Statistici
 
 Panoul din partea de sus a filei Bibliotecă arată coloanele alese în Setări → Library → Statistici: cele mai bine notate trei titluri ale unei categorii, cele mai frecvente trei valori ale unei proprietăți (genuri, actori sau oricare alta) și orele petrecute cu filme, seriale și anime. Sub grafic apare o comparație pe zi, de exemplu: Apollo 11 ar fi putut zbura până la Lună și înapoi de 8 ori.
+
+## Urmează
+
+Un titlu fără progres (neterminat, nimic bifat, fără nota dvs.) are un ochi pe copertă. Blocul **Urmează** de la finalul filei Bibliotecă adună aceste titluri din toate categoriile, cele mai noi primele, și se restrânge și se sortează ca o categorie. În Setări → Library, **Blocul „Urmează”** oprește blocul, iar cu **Neînceputele în categorii** dezactivat aceste titluri apar doar în „Urmează”.
 
 ## Legături în graf
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 La un serial, `Runtime` este durata unui episod. Cărțile adaugă `ISBN` și păstrează capitolele în `Chapters` cu aceleași câmpuri `title`, `watched` și `my_rating`; anime adaugă `Rating AniList` și `Status`. Proprietatea copertei poate fi redenumită în setări, de exemplu în `image`.
 
-O reîmprospătare completează doar câmpurile goale, deci valorile pe care le editezi rămân. Ea actualizează și totalul de episoade din `Progress` și adaugă sezoane și titluri de episoade noi.
+Reîmprospătarea completează doar câmpurile goale, așa că valorile editate rămân; notele surselor (`Rating IMDB`, `Rating RT`, `Rating MC`, `Rating RAWG`) sunt aduse la zi. Actualizează și numărul de episoade din `Progress` și adaugă sezoane și titluri de episoade noi.
 
 ## Recomandări
 
@@ -135,7 +143,7 @@ Sub antetul fiecărei notițe, un rând de titluri asemănătoare pe care nu le 
 
 - anime: recomandările utilizatorilor AniList;
 - filme și seriale: recomandările TMDB cu o cheie TMDB, altfel titlurile cel mai bine notate din aceleași genuri, din Cinemeta;
-- jocuri: restul seriei și cele mai bune jocuri ale genului din RAWG (necesită cheia RAWG);
+- jocuri: restul seriei și cele mai bune jocuri din același gen, din RAWG cu o cheie RAWG, altfel din Wikidata;
 - cărți: cele mai citite cărți de pe Open Library cu aceleași prime două genuri.
 
 Apasă pe o copertă ca să adaugi titlul. Benzile desenate și muzica nu au recomandări. Dezactivează rândul din Setări → Library → Arată recomandări.
@@ -146,26 +154,27 @@ Biblioteca ta este formată din note simple și funcționează offline. Pluginul
 
 | Gazdă | Când | Ce se trimite |
 | --- | --- | --- |
-| `www.omdbapi.com` | Căutare de filme și seriale | Titlu sau id IMDb, cheie OMDb |
+| `www.omdbapi.com` | Căutare de filme și seriale (cu cheie OMDb) | Titlu sau id IMDb, cheie OMDb |
 | `openlibrary.org` | Căutare de cărți; căutarea capitolelor când adaugi sau deschizi o carte; recomandări la deschiderea unei notițe | Titlu și autor, ISBN sau id-ul operei; genuri |
 | `covers.openlibrary.org` | Coperți de cărți | Id-ul copertei |
-| `www.googleapis.com` | Căutare de cărți | Titlu, cheie Google Books |
-| `api.rawg.io` | Căutarea și actualizarea jocurilor; recomandări la deschiderea unei notițe | Titlu sau id RAWG, gen, cheie RAWG |
+| `www.googleapis.com` | Căutare de cărți (cu cheie Google Books) | Titlu, cheie Google Books |
+| `api.rawg.io` | Căutarea și actualizarea jocurilor; recomandări la deschiderea unei notițe (cu cheie RAWG) | Titlu sau id RAWG, gen, cheie RAWG |
 | `media.rawg.io` | Coperte și capturi de ecran ale jocurilor | Calea imaginii |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Căutarea jocurilor, coperte, trailere și capturi de ecran | Titlu sau id de aplicație Steam |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Redarea unui trailer Steam; capturi de ecran ale jocurilor | Calea videoclipului sau a imaginii |
 | `api.steampowered.com` | Rulezi `Importă biblioteca Steam` | Cheia Steam Web API, SteamID-ul sau numele profilului |
 | `id.twitch.tv`, `api.igdb.com` | Adăugarea sau actualizarea unui joc, dacă setezi cheile Twitch | Twitch Client ID și secret; id-ul aplicației Steam sau numele jocului |
-| `www.wikidata.org` | Adăugarea sau actualizarea unui joc din Steam | Id-ul aplicației Steam |
+| `www.wikidata.org` | Căutare de filme, seriale, jocuri și benzi desenate; jocuri și benzi desenate adăugate de acolo; scoruri Rotten Tomatoes; trailere de jocuri; recomandări de jocuri la deschiderea unei notițe | Textul căutat, id IMDb, Steam app id sau id-ul elementului |
+| `en.wikipedia.org`, `upload.wikimedia.org` | Copertele jocurilor și benzilor desenate găsite pe Wikidata | Titlul articolului; calea imaginii |
 | `api.deezer.com` | Căutare de muzică | Album sau artist |
-| `graphql.anilist.co` | Căutare anime; sincronizare AniList; id-uri MyAnimeList pentru sincronizare; recomandări la deschiderea unei notițe | Titlu; tokenul tău, progresul, starea și nota; id-uri AniList |
+| `graphql.anilist.co` | Căutare anime; sincronizare AniList; id-uri MyAnimeList pentru sincronizare; recomandări la deschiderea unei notițe; căutare de manga | Titlu; tokenul tău, progresul, starea și nota; id-uri AniList |
 | `anilist.co` | Apeși **Conectează** | Client ID, deschis în browser |
 | `myanimelist.net` | Apeși **Conectează** pentru MyAnimeList; reînnoirea tokenului | Client ID și secret, cod de autorizare, token de reînnoire |
 | `api.myanimelist.net` | Sincronizare MyAnimeList | Tokenul tău, progresul, starea și nota |
 | `s4.anilist.co` | Bannere anime | Cale CDN |
-| `comicvine.gamespot.com` | Căutare de benzi desenate | Titlu, cheie Comic Vine |
-| `v3-cinemeta.strem.io` | Adăugarea sau reîmprospătarea unui film sau serial; căutare de filme și seriale când limita zilnică OMDb e epuizată; recomandări la deschiderea unei notițe, fără cheie TMDB | Titlu sau id IMDb; gen |
-| `images.metahub.space`, `episodes.metahub.space` | Cadre | Id IMDb, numerele sezonului și episodului |
+| `comicvine.gamespot.com` | Căutare de benzi desenate (cu cheie Comic Vine) | Titlu, cheie Comic Vine |
+| `v3-cinemeta.strem.io` | Adăugarea sau reîmprospătarea unui film sau serial; căutare de filme și seriale; recomandări la deschiderea unei notițe, fără cheie TMDB | Titlu sau id IMDb; gen |
+| `images.metahub.space`, `episodes.metahub.space` | Postere în căutarea de filme; imagini | Id IMDb, numerele sezonului și episodului |
 | `api.themoviedb.org`, `image.tmdb.org` | Adăugarea sau actualizarea unui film ori serial și recomandări la deschiderea unei notițe, dacă setezi o cheie TMDB | Id IMDb și cheie TMDB; calea imaginii |
 | `i.ytimg.com` | Cadre din trailere | Id-ul videoclipului |
 | Serverele de imagini ale serviciilor de streaming, prin AniList | Cadre din episoadele anime | Calea imaginii |

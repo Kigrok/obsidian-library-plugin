@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## Fitur
 
 - Goleki judhul lan entuk cathetan sing wis diisi poster, taun, genre, pangripta, pemain lan rating.
+- Judhul bisa ditemokake nganggo basa apa wae: judhul Rusia utawa Jepang nemokake film, game, utawa komik-e. Taun sawise judhul (`brother 1997`) nyempitake jeneng sing umum.
 - Deleng perpustakaan minangka kertu sampul, diklompokake miturut kategori lan diurutake miturut jeneng, taun, rating utawa tanggal.
+- Judhul sing durung sampeyan wiwiti duwe mripat ing sampul lan diklumpukake ing blok **Sabanjure** ing pungkasan kaca.
+- Kategori sing dilipat nuduhake kertu ing siji baris sing bisa digulung ngiwa-nengen.
 - Centhang episode seri utawa bab buku lan wenehi biji saben siji; `Progress` lan `My Rating` diitung saka kuwi.
 - Cathetan film, serial, anime lan game nuduhake trailer lan gambar; film lan serial uga dawane lan dhaptar musim.
 - Ing ngisor saben cathetan ana judhul sing padha sing durung sampeyan duwe; sepisan klik nambahake.
@@ -37,24 +40,25 @@
 
 1. Pasang **Library** saka Settings → Community plugins → Browse, utawa saka [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 2. Ing Settings → Library, tambahake kategori kanggo saben jinis isi: Film, Seri, Buku, Komik, Game, Musik, Anime, Manual.
-3. Lebokake kunci API sing dibutuhake sumber sampeyan (deleng ing ngisor).
-4. Bukak tab "Pustaka" saka ribbon, pencet **+**, pilih kategori lan goleki judhul. Judhul sing wis ana ing perpustakaan mbukak cathetan sing wis ana.
+3. Bukak tab "Pustaka" saka ribbon, pencet **+**, pilih kategori lan goleki judhul. Judhul sing wis ana ing perpustakaan mbukak cathetan sing wis ana.
 
 Nilai `Type` kategori (umpamane `Movie`) nemtokake cathetan endi sing kalebu, lan folder-e nemtokake ing ngendi cathetan anyar disimpen. Loro-lorone ana ing **Lanjut** ing setelan kategori.
 
 ## Sumber
 
-| Kategori | Sumber | Kunci |
+| Kategori | Sumber | Dhisik, yen ana kunci |
 | --- | --- | --- |
-| Film, seri | OMDb | [Kunci gratis](https://www.omdbapi.com/apikey.aspx) |
-| Buku | Google Books + Open Library | [Kunci Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) opsional |
-| Game | RAWG + Steam | [Kunci RAWG gratis](https://rawg.io/apidocs); Steam ora butuh |
-| Musik | Deezer | Ora perlu |
-| Anime | AniList | Ora perlu |
-| Komik | Comic Vine | [Kunci gratis](https://comicvine.gamespot.com/api/) |
-| Liyane | Manual: sampeyan ngisi kolom dhewe | Ora perlu |
+| Film, seri | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| Buku | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| Game | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| Musik | Deezer | — |
+| Anime | AniList | — |
+| Komik | Wikidata, AniList kanggo manga | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| Liyane | Manual: sampeyan ngisi kolom dhewe | — |
 
-Trailer, gambar, durasi lan dhaptar musim teka saka Cinemeta tanpa kunci. [Kunci TMDB](https://www.themoviedb.org/settings/api) nambahi rating musim lan luwih akeh gambar.
+Kunci dilebokake ing Settings → Library → Kunci API.
+
+Trailer, gambar, durasi, lan dhaptar musim teka saka Cinemeta, dene skor Rotten Tomatoes saka Wikidata utawa OMDb. [Kunci TMDB](https://www.themoviedb.org/settings/api) nambahake rating musim lan gambar liyane.
 
 Kanggo nggawa game sampeyan, isi [kunci Steam Web API](https://steamcommunity.com/dev/apikey) lan profil Steam ing setelan, banjur jalanake `Impor pustaka Steam`. Printah iki nggawe cathetan saben game kanthi `Playtime` ing jam; yen dijalanake maneh, nambahake game anyar lan nganyari jam. Rincian game ing profil kudu umum.
 
@@ -73,6 +77,10 @@ Cathetan saka versi lawas tetep nyimpen kemajuane. Sadurunge sampeyan nyenthang 
 ## Statistik
 
 Panel ing dhuwur tab "Pustaka" nampilake kolom sing sampeyan pilih ing Settings → Library → Statistik: telung judhul kanthi rating paling dhuwur ing kategori, telung nilai sing paling kerep metu ing properti (genre, aktor utawa liyane), lan jam sing dienggo nonton film, seri lan anime. Ing ngisor grafik saben dina ana siji perbandhingan, contone: Apollo 11 bisa mabur menyang Rembulan lan bali 8 kali.
+
+## Sabanjure
+
+Judhul sing durung ana kemajuane (durung rampung, ora ana sing dicenthang, ora ana skor saka sampeyan) duwe mripat ing sampul. Blok **Sabanjure** ing pungkasan tab Pustaka nglumpukake judhul kaya ngono saka kabeh kategori, sing paling anyar dhisik, lan bisa dilipat lan diurutake kaya kategori. Ing Settings → Library, **Blok «Sabanjure»** mateni blok, lan yen **Sing durung diwiwiti ing kategori** dipateni, judhul-judhul iki mung katon ing “Sabanjure”.
 
 ## Pranala graf
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 Kanggo seri, `Runtime` yaiku durasi siji episode. Buku uga nduweni `ISBN` lan nyimpen bab ing `Chapters` karo kolom sing padha `title`, `watched` lan `my_rating`; anime nduweni `Rating AniList` lan `Status`. Jeneng properti sampul bisa diganti ing setelan, umpamane dadi `image`.
 
-Nyegerake mung ngisi kolom sing kosong, mula nilai sing sampeyan owahi tetep ana. Uga nganyari total episode ing `Progress` lan nambahi musim lan judhul episode anyar.
+Nyegerake mung ngisi kolom sing kosong, dadi nilai sing sampeyan owahi tetep; rating sumber (`Rating IMDB`, `Rating RT`, `Rating MC`, `Rating RAWG`) dianyari. Uga nganyari cacahe episode ing `Progress` lan nambahake musim lan judhul episode anyar.
 
 ## Rekomendasi
 
@@ -135,7 +143,7 @@ Ing ngisor sirah saben cathetan ana baris judhul sing padha sing durung sampeyan
 
 - anime: rekomendasi pangguna AniList;
 - film lan serial: rekomendasi TMDB yen ana kunci TMDB, yen ora judhul paling dhuwur bijine kanthi genre sing padha saka Cinemeta;
-- game: seri liyane lan game paling apik ing genre saka RAWG (butuh kunci RAWG);
+- game: sisane seri lan game paling apik saka genre sing padha, saka RAWG yen ana kunci RAWG, yen ora saka Wikidata;
 - buku: buku sing paling akeh diwaca ing Open Library kanthi rong genre pisanan sing padha.
 
 Klik sampul kanggo nambahake judhul. Komik lan musik ora duwe rekomendasi. Pateni baris ing Settings → Library → Tampilake rekomendasi.
@@ -146,26 +154,27 @@ Perpustakaan sampeyan mung cathetan biasa lan bisa mlaku offline. Plugin mung on
 
 | Host | Kapan | Apa sing dikirim |
 | --- | --- | --- |
-| `www.omdbapi.com` | Nggoleki film lan seri | Judhul utawa IMDb id, kunci OMDb |
+| `www.omdbapi.com` | Nggoleki film lan seri (yen ana kunci OMDb) | Judhul utawa IMDb id, kunci OMDb |
 | `openlibrary.org` | Nggoleki buku; nggoleki bab nalika nambah utawa mbukak buku; rekomendasi nalika mbukak cathetan | Judhul lan pangarang, ISBN utawa id karya; genre |
 | `covers.openlibrary.org` | Sampul buku | Id sampul |
-| `www.googleapis.com` | Nggoleki buku | Judhul, kunci Google Books |
-| `api.rawg.io` | Nggoleki lan nyegerake game; rekomendasi nalika mbukak cathetan | Judhul utawa id RAWG, genre, kunci RAWG |
+| `www.googleapis.com` | Nggoleki buku (yen ana kunci Google Books) | Judhul, kunci Google Books |
+| `api.rawg.io` | Nggoleki lan nyegerake game; rekomendasi nalika mbukak cathetan (yen ana kunci RAWG) | Judhul utawa id RAWG, genre, kunci RAWG |
 | `media.rawg.io` | Sampul lan gambar layar game | Dalan gambar |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Nggoleki game, sampul, trailer lan gambar layar | Judhul utawa id aplikasi Steam |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Muter trailer Steam; gambar layar game | Dalan video utawa gambar |
 | `api.steampowered.com` | Sampeyan njalanake `Impor pustaka Steam` | Kunci Steam Web API, SteamID utawa jeneng profil |
 | `id.twitch.tv`, `api.igdb.com` | Nambah utawa nyegerake game, yen kunci Twitch disetel | Twitch Client ID lan rahasia; Steam app id utawa jeneng game |
-| `www.wikidata.org` | Nambah utawa nyegerake game saka Steam | Steam app id |
+| `www.wikidata.org` | Nggoleki film, seri, game, lan komik; game lan komik sing ditambahake saka kono; skor Rotten Tomatoes; trailer game; rekomendasi game nalika mbukak cathetan | Teks panelusuran, IMDb id, Steam app id, utawa id item |
+| `en.wikipedia.org`, `upload.wikimedia.org` | Sampul game lan komik sing ditemokake ing Wikidata | Judhul artikel; path gambar |
 | `api.deezer.com` | Nggoleki musik | Album utawa artis |
-| `graphql.anilist.co` | Nggoleki anime; sinkronisasi AniList; id MyAnimeList kanggo sinkronisasi; rekomendasi nalika mbukak cathetan | Judhul; token, kemajuan, status lan biji sampeyan; id AniList |
+| `graphql.anilist.co` | Nggoleki anime; sinkronisasi AniList; id MyAnimeList kanggo sinkronisasi; rekomendasi nalika mbukak cathetan; nggoleki manga | Judhul; token, kemajuan, status lan biji sampeyan; id AniList |
 | `anilist.co` | Sampeyan ngeklik **Sambungake** | Client ID, dibukak ing browser |
 | `myanimelist.net` | Sampeyan klik **Sambungake** kanggo MyAnimeList; nganyari token | Client ID lan rahasia, kode otorisasi, token refresh |
 | `api.myanimelist.net` | Sinkronisasi MyAnimeList | Token sampeyan, kemajuan, status lan biji |
 | `s4.anilist.co` | Banner anime | Path CDN |
-| `comicvine.gamespot.com` | Nggoleki komik | Judhul, kunci Comic Vine |
-| `v3-cinemeta.strem.io` | Nambah utawa nyegerake film utawa seri; nggoleki film lan seri nalika watesan saben dina OMDb wis entek; rekomendasi nalika mbukak cathetan, tanpa kunci TMDB | Judhul utawa IMDb id; genre |
-| `images.metahub.space`, `episodes.metahub.space` | Gambar | IMDb id, nomer musim lan episode |
+| `comicvine.gamespot.com` | Nggoleki komik (yen ana kunci Comic Vine) | Judhul, kunci Comic Vine |
+| `v3-cinemeta.strem.io` | Nambah utawa nyegerake film utawa seri; nggoleki film lan seri; rekomendasi nalika mbukak cathetan, tanpa kunci TMDB | Judhul utawa IMDb id; genre |
+| `images.metahub.space`, `episodes.metahub.space` | Poster ing panelusuran film; gambar | IMDb id, nomer musim lan episode |
 | `api.themoviedb.org`, `image.tmdb.org` | Nambah utawa nyegerake film utawa serial, lan rekomendasi nalika mbukak cathetan, yen kunci TMDB disetel | IMDb id lan kunci TMDB; path gambar |
 | `i.ytimg.com` | Gambar trailer | Id video |
 | Server gambar layanan streaming, liwat AniList | Gambar episode anime | Dalan gambar |

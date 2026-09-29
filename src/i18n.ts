@@ -41,7 +41,8 @@ export function trCount(key: string, count: number): string {
 	} catch {
 		// An unknown language tag keeps the English rule set above.
 	}
-	const vars = { count }
+	// The count in the reader's digit grouping: 11,325 or 11 325.
+	const vars = { count: formatNumber(count) }
 	if (category === 'one') return tr(key + '1', vars)
 	if (category === 'two' || category === 'few') return tr(key + '2', vars)
 	if (category === 'many' || category === 'zero') return tr(key + '5', vars)

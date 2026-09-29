@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## Mga tampok
 
 - Maghanap ng pamagat at makakuha ng talang may poster, taon, genre, mga lumikha, cast, at mga rating.
+- Nahahanap ang mga pamagat sa anumang wika: ang pamagat sa Ruso o Hapon ay nakakahanap ng pelikula, laro, o komiks nito. Ang taon pagkatapos ng pamagat (`brother 1997`) ay nagpapakitid sa karaniwang pangalan.
 - Tingnan ang library bilang mga cover card, naka-grupo ayon sa kategorya at nakaayos ayon sa pangalan, taon, rating, o petsa.
+- Ang mga pamagat na hindi mo pa nasisimulan ay may mata sa pabalat at nagtitipon sa bloke na **Susunod** sa dulo ng pahina.
+- Ang nakatiklop na kategorya ay nagpapakita ng mga card sa iisang hanay na nag-i-scroll patagilid.
 - Markahan ang mga episode ng serye o ang mga kabanata ng libro at i-rate ang bawat isa; kinukuwenta mula rito ang `Progress` at `My Rating`.
 - May trailer at mga larawan ang mga tala ng pelikula, serye, anime, at laro; may haba at listahan ng season din ang mga pelikula at serye.
 - Sa ilalim ng bawat tala may mga katulad na pamagat na wala ka pa; isang click lang para idagdag.
@@ -37,24 +40,25 @@
 
 1. I-install ang **Library** mula sa Settings → Community plugins → Browse, o mula sa [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 2. Sa Settings → Library, magdagdag ng kategorya para sa bawat uri ng nilalaman: Mga Pelikula, Mga Series, Mga Libro, Mga Komiks, Mga Laro, Musika, Anime, Manwal.
-3. Ilagay ang mga API key na kailangan ng iyong mga source (tingnan sa ibaba).
-4. Buksan ang tab na "Aklatan" mula sa ribbon, pindutin ang **+**, pumili ng kategorya, at maghanap ng pamagat. Ang pamagat na nasa library na ay magbubukas ng kasalukuyang tala nito.
+3. Buksan ang tab na "Aklatan" mula sa ribbon, pindutin ang **+**, pumili ng kategorya, at maghanap ng pamagat. Ang pamagat na nasa library na ay magbubukas ng kasalukuyang tala nito.
 
 Tinutukoy ng `Type` value ng kategorya (halimbawa `Movie`) kung aling mga tala ang kabilang dito, at tinutukoy ng folder nito kung saan mapupunta ang mga bagong tala. Parehong nasa ilalim ng **Advanced** sa mga setting ng kategorya.
 
 ## Mga source
 
-| Kategorya | Source | Key |
+| Kategorya | Mga pinagmulan | Una, kapag may key |
 | --- | --- | --- |
-| Mga pelikula, serye | OMDb | [Libreng key](https://www.omdbapi.com/apikey.aspx) |
-| Mga libro | Google Books + Open Library | Opsyonal na [Google Books key](https://console.cloud.google.com/apis/library/books.googleapis.com) |
-| Mga laro | RAWG + Steam | [Libreng RAWG key](https://rawg.io/apidocs); hindi kailangan ng Steam |
-| Musika | Deezer | Hindi kailangan |
-| Anime | AniList | Hindi kailangan |
-| Komiks | Comic Vine | [Libreng key](https://comicvine.gamespot.com/api/) |
-| Lahat ng iba pa | Manwal: ikaw ang pupuno sa mga field | Hindi kailangan |
+| Mga pelikula, serye | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| Mga libro | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| Mga laro | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| Musika | Deezer | — |
+| Anime | AniList | — |
+| Komiks | Wikidata, AniList para sa manga | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| Lahat ng iba pa | Manwal: ikaw ang pupuno sa mga field | — |
 
-Galing sa Cinemeta nang walang key ang mga trailer, still, haba, at listahan ng season. Nagdadagdag ang [TMDB key](https://www.themoviedb.org/settings/api) ng mga rating ng season at mas maraming still.
+Inilalagay ang mga key sa Settings → Library → Mga API key.
+
+Ang mga trailer, still, haba, at listahan ng season ay galing sa Cinemeta, at ang mga score ng Rotten Tomatoes ay galing sa Wikidata o OMDb. Ang [TMDB key](https://www.themoviedb.org/settings/api) ay nagdaragdag ng rating ng season at mas maraming still.
 
 Para maipasok ang iyong mga laro, ilagay sa mga setting ang isang [Steam Web API key](https://steamcommunity.com/dev/apikey) at ang iyong Steam profile, saka patakbuhin ang `I-import ang Steam library`. Gumagawa ito ng tala para sa bawat laro na may `Playtime` sa oras; kapag pinatakbo ulit, nagdadagdag ito ng bagong laro at ina-update ang oras. Dapat pampubliko ang mga detalye ng laro sa profile.
 
@@ -73,6 +77,10 @@ Napapanatili ng mga tala mula sa lumang bersyon ang kanilang progreso. Hangga't 
 ## Mga estadistika
 
 Ipinapakita ng panel sa itaas ng tab na "Aklatan" ang mga column na pinili mo sa Settings → Library → Mga estadistika: ang tatlong pamagat na may pinakamataas na rating sa isang kategorya, ang tatlong pinakamadalas na value ng isang property (genre, aktor, o anumang iba), at ang mga oras na ginugol sa mga pelikula, serye, at anime. Sa ilalim ng tsart, may isang paghahambing bawat araw, halimbawa: Nakapunta at nakabalik sana sa Buwan ang Apollo 11 nang isang beses.
+
+## Susunod
+
+Ang pamagat na wala pang progreso (hindi tapos, walang naka-tsek, walang score mo) ay may mata sa pabalat. Tinitipon ng bloke na **Susunod** sa dulo ng tab na Aklatan ang mga pamagat na ito mula sa bawat kategorya, pinakabago muna, at natitiklop at naaayos ito tulad ng kategorya. Sa Settings → Library, pinapatay ng **Bloke ng Susunod** ang bloke, at kapag naka-off ang **Hindi pa nasisimulan sa mga kategorya**, sa “Susunod” lang lalabas ang mga pamagat na ito.
 
 ## Mga link sa graph
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 Sa serye, ang `Runtime` ay ang haba ng isang episode. May `ISBN` din ang mga libro at nakatago ang mga kabanata sa `Chapters` na may parehong mga field na `title`, `watched`, at `my_rating`; may `Rating AniList` at `Status` ang anime. Puwedeng palitan ang pangalan ng property ng cover sa mga setting, halimbawa sa `image`.
 
-Pinupunan lang ng refresh ang mga bakanteng field, kaya nananatili ang mga value na inedit mo. Ina-update din nito ang kabuuang bilang ng episode sa `Progress` at nagdadagdag ng mga bagong season at pamagat ng episode.
+Pinupunan lang ng pag-refresh ang mga bakanteng field, kaya nananatili ang mga binago mo; ang mga rating ng pinagmulan (`Rating IMDB`, `Rating RT`, `Rating MC`, `Rating RAWG`) ay ina-update. Ina-update din nito ang kabuuang bilang ng episode sa `Progress` at nagdaragdag ng mga bagong season at pamagat ng episode.
 
 ## Mga rekomendasyon
 
@@ -135,7 +143,7 @@ Sa ilalim ng header ng bawat tala may hanay ng mga katulad na pamagat na wala ka
 
 - anime: mga rekomendasyon ng mga user ng AniList;
 - pelikula at serye: mga rekomendasyon ng TMDB kung may TMDB key, kung wala ay ang pinakamataas na rating na pamagat sa parehong genre mula sa Cinemeta;
-- laro: ang iba pang bahagi ng serye at ang pinakamahusay na laro ng genre mula sa RAWG (kailangan ang RAWG key);
+- mga laro: ang natitira sa serye at ang pinakamahuhusay na laro sa parehong genre, mula sa RAWG kapag may RAWG key, kung hindi ay mula sa Wikidata;
 - aklat: ang pinakamaraming nagbabasang aklat sa Open Library na may parehong unang dalawang genre ng tala.
 
 I-click ang pabalat para idagdag ang pamagat. Walang rekomendasyon ang komiks at musika. I-off ang hanay sa Settings → Library → Ipakita ang mga rekomendasyon.
@@ -146,26 +154,27 @@ Ang iyong library ay mga karaniwang tala at gumagana offline. Nag-o-online lang 
 
 | Host | Kailan | Ano ang ipinapadala |
 | --- | --- | --- |
-| `www.omdbapi.com` | Paghahanap ng pelikula at serye | Pamagat o IMDb id, OMDb key |
+| `www.omdbapi.com` | Paghahanap ng pelikula at serye (kapag may OMDb key) | Pamagat o IMDb id, OMDb key |
 | `openlibrary.org` | Paghahanap ng libro; paghahanap ng kabanata kapag nagdagdag o nagbukas ng libro; mga rekomendasyon kapag binuksan ang tala | Pamagat at may-akda, ISBN, o id ng akda; mga genre |
 | `covers.openlibrary.org` | Mga cover ng libro | Id ng cover |
-| `www.googleapis.com` | Paghahanap ng libro | Pamagat, Google Books key |
-| `api.rawg.io` | Paghahanap at pag-refresh ng laro; mga rekomendasyon kapag binuksan ang tala | Pamagat o RAWG id, genre, RAWG key |
+| `www.googleapis.com` | Paghahanap ng libro (kapag may Google Books key) | Pamagat, Google Books key |
+| `api.rawg.io` | Paghahanap at pag-refresh ng laro; mga rekomendasyon kapag binuksan ang tala (kapag may RAWG key) | Pamagat o RAWG id, genre, RAWG key |
 | `media.rawg.io` | Mga pabalat at screenshot ng laro | Path ng larawan |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Paghahanap ng laro, pabalat, trailer, at screenshot | Pamagat o Steam app id |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Pag-play ng Steam trailer; mga screenshot ng laro | Path ng video o larawan |
 | `api.steampowered.com` | Pinatakbo mo ang `I-import ang Steam library` | Steam Web API key, ang iyong SteamID o pangalan ng profile |
 | `id.twitch.tv`, `api.igdb.com` | Pagdaragdag o pag-refresh ng laro, kung may Twitch keys | Twitch Client ID at secret; Steam app id o pangalan ng laro |
-| `www.wikidata.org` | Pagdaragdag o pag-refresh ng laro mula sa Steam | Steam app id |
+| `www.wikidata.org` | Paghahanap ng pelikula, serye, laro, at komiks; mga laro at komiks na idinagdag mula roon; mga score ng Rotten Tomatoes; mga trailer ng laro; mga rekomendasyon ng laro kapag binuksan ang tala | Teksto ng paghahanap, IMDb id, Steam app id, o item id |
+| `en.wikipedia.org`, `upload.wikimedia.org` | Mga pabalat ng laro at komiks na nahanap sa Wikidata | Pamagat ng artikulo; path ng larawan |
 | `api.deezer.com` | Paghahanap ng musika | Album o artist |
-| `graphql.anilist.co` | Paghahanap ng anime; AniList sync; mga id ng MyAnimeList para sa sync; mga rekomendasyon kapag binuksan ang tala | Pamagat; ang iyong token, progreso, status, at score; mga id ng AniList |
+| `graphql.anilist.co` | Paghahanap ng anime; AniList sync; mga id ng MyAnimeList para sa sync; mga rekomendasyon kapag binuksan ang tala; paghahanap ng manga | Pamagat; ang iyong token, progreso, status, at score; mga id ng AniList |
 | `anilist.co` | Nag-click ka ng **Ikonekta** | Client ID, binubuksan sa iyong browser |
 | `myanimelist.net` | Iki-click mo ang **Ikonekta** para sa MyAnimeList; pag-renew ng token | Client ID at secret, authorization code, refresh token |
 | `api.myanimelist.net` | Pag-sync sa MyAnimeList | Ang iyong token, progreso, status, at score |
 | `s4.anilist.co` | Mga banner ng anime | CDN path |
-| `comicvine.gamespot.com` | Paghahanap ng komiks | Pamagat, Comic Vine key |
-| `v3-cinemeta.strem.io` | Pagdagdag o pag-refresh ng pelikula o serye; paghahanap ng pelikula at serye kapag ubos na ang pang-araw-araw na limit ng OMDb; mga rekomendasyon kapag binuksan ang tala, kung walang TMDB key | Pamagat o IMDb id; genre |
-| `images.metahub.space`, `episodes.metahub.space` | Mga still | IMDb id, numero ng season at episode |
+| `comicvine.gamespot.com` | Paghahanap ng komiks (kapag may Comic Vine key) | Pamagat, Comic Vine key |
+| `v3-cinemeta.strem.io` | Pagdagdag o pag-refresh ng pelikula o serye; paghahanap ng pelikula at serye; mga rekomendasyon kapag binuksan ang tala, kung walang TMDB key | Pamagat o IMDb id; genre |
+| `images.metahub.space`, `episodes.metahub.space` | Mga poster sa paghahanap ng pelikula; mga still | IMDb id, numero ng season at episode |
 | `api.themoviedb.org`, `image.tmdb.org` | Pagdaragdag o pag-refresh ng pelikula o serye, at mga rekomendasyon kapag binuksan ang tala, kung may TMDB key | IMDb id at TMDB key; path ng larawan |
 | `i.ytimg.com` | Mga still ng trailer | Id ng video |
 | Mga image server ng streaming service, sa pamamagitan ng AniList | Mga larawan ng episode ng anime | Path ng larawan |

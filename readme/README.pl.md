@@ -7,7 +7,7 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.3.4-blue" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.3.5-blue" alt="Version">
   <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
   <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
@@ -22,7 +22,10 @@
 ## Funkcje
 
 - Wyszukaj tytuł i dostań notatkę z plakatem, rokiem, gatunkiem, twórcami, obsadą i ocenami.
+- Tytuły znajdziesz w każdym języku: rosyjski czy japoński tytuł odnajdzie swój film, grę lub komiks. Rok po tytule (`brother 1997`) zawęża popularną nazwę.
 - Przeglądaj bibliotekę jako karty z okładkami, pogrupowane według kategorii i posortowane według nazwy, roku, oceny lub daty.
+- Tytuły, których jeszcze nie zaczęto, mają oko na okładce i trafiają do bloku **Następne** na końcu strony.
+- Zwinięta kategoria pokazuje karty w jednym rzędzie przewijanym na boki.
 - Odhaczaj odcinki serialu lub rozdziały książki i oceniaj każdy z osobna; `Progress` i `My Rating` są z nich liczone.
 - Notatki o filmach, serialach, anime i grach pokazują zwiastun i kadry; filmy i seriale także czas trwania i listę sezonów.
 - Pod każdą notatką są podobne tytuły, których jeszcze nie masz; jedno kliknięcie dodaje tytuł.
@@ -37,24 +40,25 @@
 
 1. Zainstaluj **Library** przez Ustawienia → Wtyczki społeczności → Przeglądaj albo z [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
 2. W Ustawienia → Library dodaj kategorię dla każdego rodzaju treści: Filmy, Seriale, Książki, Komiksy, Gry, Muzyka, Anime, Ręcznie.
-3. Wpisz klucze API, których potrzebują twoje źródła (patrz niżej).
-4. Otwórz kartę Biblioteka z paska bocznego, naciśnij **+**, wybierz kategorię i wyszukaj tytuł. Tytuł, który już jest w bibliotece, otwiera istniejącą notatkę.
+3. Otwórz kartę Biblioteka z paska bocznego, naciśnij **+**, wybierz kategorię i wyszukaj tytuł. Tytuł, który już jest w bibliotece, otwiera istniejącą notatkę.
 
 Wartość `Type` kategorii (na przykład `Movie`) decyduje, które notatki do niej należą, a jej folder, gdzie trafiają nowe notatki. Oba ustawienia są pod **Zaawansowane** w ustawieniach kategorii.
 
 ## Źródła
 
-| Kategoria | Źródło | Klucz |
+| Kategoria | Źródła | Najpierw, z kluczem |
 | --- | --- | --- |
-| Filmy, seriale | OMDb | [Darmowy klucz](https://www.omdbapi.com/apikey.aspx) |
-| Książki | Google Books + Open Library | Opcjonalny [klucz Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
-| Gry | RAWG + Steam | [Darmowy klucz RAWG](https://rawg.io/apidocs); Steam go nie potrzebuje |
-| Muzyka | Deezer | Brak |
-| Anime | AniList | Brak |
-| Komiksy | Comic Vine | [Darmowy klucz](https://comicvine.gamespot.com/api/) |
-| Wszystko inne | Ręcznie: pola wypełniasz sam | Brak |
+| Filmy, seriale | Cinemeta, Wikidata | [OMDb](https://www.omdbapi.com/apikey.aspx) |
+| Książki | Open Library | [Google Books](https://console.cloud.google.com/apis/library/books.googleapis.com) |
+| Gry | Steam, Wikidata | [RAWG](https://rawg.io/apidocs) |
+| Muzyka | Deezer | — |
+| Anime | AniList | — |
+| Komiksy | Wikidata, AniList dla mangi | [Comic Vine](https://comicvine.gamespot.com/api/) |
+| Wszystko inne | Ręcznie: pola wypełniasz sam | — |
 
-Zwiastuny, kadry, czas trwania i listy sezonów pochodzą z Cinemeta bez klucza. [Klucz TMDB](https://www.themoviedb.org/settings/api) dodaje oceny sezonów i więcej kadrów.
+Klucze wpisuje się w Ustawienia → Library → Klucze API.
+
+Zwiastuny, kadry, czas trwania i listy sezonów pochodzą z Cinemeta, a oceny Rotten Tomatoes z Wikidata lub OMDb. [Klucz TMDB](https://www.themoviedb.org/settings/api) dodaje oceny sezonów i więcej kadrów.
 
 Aby dodać swoje gry, podaj w ustawieniach [klucz Steam Web API](https://steamcommunity.com/dev/apikey) i profil Steam, a potem uruchom `Importuj bibliotekę Steam`. Polecenie tworzy notatkę dla każdej gry z `Playtime` w godzinach; uruchomione ponownie dodaje nowe gry i aktualizuje godziny. Szczegóły gier w profilu muszą być publiczne.
 
@@ -73,6 +77,10 @@ Notatki ze starszych wersji zachowują postęp. Dopóki niczego nie odhaczysz, p
 ## Statystyki
 
 Panel u góry karty Biblioteka pokazuje kolumny wybrane w Ustawienia → Library → Statystyki: trzy najwyżej ocenione tytuły kategorii, trzy najczęstsze wartości właściwości (gatunki, aktorzy lub dowolna inna) oraz godziny spędzone na filmach, serialach i anime. Pod wykresem codziennie pojawia się jedno porównanie, na przykład: Apollo 11 mogłoby polecieć na Księżyc i z powrotem 8 razy.
+
+## Następne
+
+Tytuł bez postępu (nieukończony, nic nie zaznaczono, brak Twojej oceny) ma oko na okładce. Blok **Następne** na końcu karty Biblioteka zbiera takie tytuły ze wszystkich kategorii, najnowsze na górze, i zwija się oraz sortuje jak kategoria. W Ustawienia → Library przełącznik **Blok „Następne”** wyłącza blok, a po wyłączeniu **Nierozpoczęte w kategoriach** te tytuły są tylko w bloku „Następne”.
 
 ## Połączenia w grafie
 
@@ -127,7 +135,7 @@ Source ID: tt4574334
 
 W serialu `Runtime` to długość jednego odcinka. Książki mają dodatkowo `ISBN` i trzymają rozdziały w `Chapters` z tymi samymi polami `title`, `watched` i `my_rating`; anime ma `Rating AniList` i `Status`. Właściwość okładki można przemianować w ustawieniach, na przykład na `image`.
 
-Odświeżenie wypełnia tylko puste pola, więc wartości, które edytujesz, zostają. Aktualizuje też łączną liczbę odcinków w `Progress` i dodaje nowe sezony oraz tytuły odcinków.
+Odświeżenie wypełnia tylko puste pola, więc Twoje zmiany zostają; oceny źródeł (`Rating IMDB`, `Rating RT`, `Rating MC`, `Rating RAWG`) są aktualizowane. Aktualizuje też liczbę odcinków w `Progress` i dodaje nowe sezony oraz tytuły odcinków.
 
 ## Rekomendacje
 
@@ -135,7 +143,7 @@ Pod nagłówkiem każdej notatki jest pasek podobnych tytułów, których jeszcz
 
 - anime: rekomendacje użytkowników AniList;
 - filmy i seriale: rekomendacje TMDB z kluczem TMDB, w przeciwnym razie najlepiej oceniane tytuły tych samych gatunków z Cinemeta;
-- gry: pozostałe części serii i najlepsze gry gatunku z RAWG (potrzebny klucz RAWG);
+- gry: pozostałe części serii i najlepsze gry tego samego gatunku, z RAWG z kluczem RAWG, w przeciwnym razie z Wikidata;
 - książki: najczęściej czytane książki w Open Library z tymi samymi dwoma pierwszymi gatunkami.
 
 Kliknij okładkę, aby dodać tytuł. Komiksy i muzyka nie mają rekomendacji. Pasek wyłączysz w Ustawienia → Library → Pokazuj rekomendacje.
@@ -146,26 +154,27 @@ Twoja biblioteka to zwykłe notatki i działa offline. Wtyczka łączy się z si
 
 | Host | Kiedy | Co jest wysyłane |
 | --- | --- | --- |
-| `www.omdbapi.com` | Wyszukiwanie filmów i seriali | Tytuł lub id IMDb, klucz OMDb |
+| `www.omdbapi.com` | Wyszukiwanie filmów i seriali (z kluczem OMDb) | Tytuł lub id IMDb, klucz OMDb |
 | `openlibrary.org` | Wyszukiwanie książek; szukanie rozdziałów przy dodaniu lub otwarciu książki; rekomendacje po otwarciu notatki | Tytuł i autor, ISBN lub id dzieła; gatunki |
 | `covers.openlibrary.org` | Okładki książek | Id okładki |
-| `www.googleapis.com` | Wyszukiwanie książek | Tytuł, klucz Google Books |
-| `api.rawg.io` | Wyszukiwanie i odświeżanie gier; rekomendacje po otwarciu notatki | Tytuł lub id RAWG, gatunek, klucz RAWG |
+| `www.googleapis.com` | Wyszukiwanie książek (z kluczem Google Books) | Tytuł, klucz Google Books |
+| `api.rawg.io` | Wyszukiwanie i odświeżanie gier; rekomendacje po otwarciu notatki (z kluczem RAWG) | Tytuł lub id RAWG, gatunek, klucz RAWG |
 | `media.rawg.io` | Okładki i zrzuty ekranu gier | Ścieżka obrazu |
 | `store.steampowered.com`, `cdn.cloudflare.steamstatic.com` | Wyszukiwanie gier, okładki, zwiastuny i zrzuty ekranu | Tytuł lub id aplikacji Steam |
 | `video.akamai.steamstatic.com`, `shared.akamai.steamstatic.com` | Odtwarzanie zwiastuna ze Steam; zrzuty ekranu gier | Ścieżka filmu lub obrazu |
 | `api.steampowered.com` | Uruchamiasz `Importuj bibliotekę Steam` | Klucz Steam Web API, Twój SteamID lub nazwa profilu |
 | `id.twitch.tv`, `api.igdb.com` | Dodawanie lub odświeżanie gry, jeśli ustawisz klucze Twitch | Twitch Client ID i sekret; id aplikacji Steam lub nazwa gry |
-| `www.wikidata.org` | Dodawanie lub odświeżanie gry ze Steam | Id aplikacji Steam |
+| `www.wikidata.org` | Wyszukiwanie filmów, seriali, gier i komiksów; gry i komiksy dodane stamtąd; oceny Rotten Tomatoes; zwiastuny gier; rekomendacje gier po otwarciu notatki | Szukany tekst, id IMDb, Steam app id lub id elementu |
+| `en.wikipedia.org`, `upload.wikimedia.org` | Okładki gier i komiksów znalezionych w Wikidata | Tytuł artykułu; ścieżka obrazu |
 | `api.deezer.com` | Wyszukiwanie muzyki | Album lub wykonawca |
-| `graphql.anilist.co` | Wyszukiwanie anime; synchronizacja z AniList; id MyAnimeList do synchronizacji; rekomendacje po otwarciu notatki | Tytuł; twój token, postęp, status i ocena; id AniList |
+| `graphql.anilist.co` | Wyszukiwanie anime; synchronizacja z AniList; id MyAnimeList do synchronizacji; rekomendacje po otwarciu notatki; wyszukiwanie mangi | Tytuł; twój token, postęp, status i ocena; id AniList |
 | `anilist.co` | Klikasz **Połącz** | Client ID, otwierany w przeglądarce |
 | `myanimelist.net` | Klikasz **Połącz** dla MyAnimeList; odnawianie tokenu | Client ID i sekret, kod autoryzacji, token odświeżania |
 | `api.myanimelist.net` | Synchronizacja z MyAnimeList | Twój token, postęp, status i ocena |
 | `s4.anilist.co` | Banery anime | Ścieżka CDN |
-| `comicvine.gamespot.com` | Wyszukiwanie komiksów | Tytuł, klucz Comic Vine |
-| `v3-cinemeta.strem.io` | Dodanie lub odświeżenie filmu albo serialu; wyszukiwanie filmów i seriali, gdy dzienny limit OMDb się wyczerpie; rekomendacje po otwarciu notatki, bez klucza TMDB | Tytuł lub id IMDb; gatunek |
-| `images.metahub.space`, `episodes.metahub.space` | Kadry | Id IMDb, numery sezonu i odcinka |
+| `comicvine.gamespot.com` | Wyszukiwanie komiksów (z kluczem Comic Vine) | Tytuł, klucz Comic Vine |
+| `v3-cinemeta.strem.io` | Dodanie lub odświeżenie filmu albo serialu; wyszukiwanie filmów i seriali; rekomendacje po otwarciu notatki, bez klucza TMDB | Tytuł lub id IMDb; gatunek |
+| `images.metahub.space`, `episodes.metahub.space` | Plakaty w wyszukiwaniu filmów; kadry | Id IMDb, numery sezonu i odcinka |
 | `api.themoviedb.org`, `image.tmdb.org` | Dodawanie lub odświeżanie filmu albo serialu i rekomendacje po otwarciu notatki, jeśli ustawisz klucz TMDB | Id IMDb i klucz TMDB; ścieżka obrazka |
 | `i.ytimg.com` | Kadry zwiastunów | Id wideo |
 | Serwery obrazów serwisów streamingowych, przez AniList | Kadry z odcinków anime | Ścieżka obrazu |

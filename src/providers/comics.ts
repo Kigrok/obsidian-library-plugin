@@ -33,6 +33,11 @@ export class ComicsProvider implements ContentProvider {
 		this.getKey = getKey
 	}
 
+	// A Comic Vine volume is only looked up with a key; without one the note stays as it is.
+	refreshable(): boolean {
+		return !!this.getKey().trim()
+	}
+
 	private volumeId(sourceId: string): string {
 		return sourceId.replace(/^\d+-/, '')
 	}

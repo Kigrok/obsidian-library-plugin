@@ -10,6 +10,7 @@ import {
 	parseDate,
 	isTemplateFile,
 	linkLabel,
+	notStarted,
 	coverSrc,
 	coverValue,
 	runtimeMinutes,
@@ -43,17 +44,35 @@ interface TimeSlice {
 	color: string
 }
 
-// Only the watched-time media types get a slice; the colour comes from the
-// theme palette so it stays legible in light and dark themes alike.
+// Only the watched-time media types get a slice, each a shade of the theme's
+// accent: the chart takes the theme's colour like the progress bars do.
 const TIME_COLORS: Record<string, string> = {
-	movie: 'var(--color-blue)',
-	series: 'var(--color-purple)',
-	anime: 'var(--color-pink)'
+	movie: 'var(--interactive-accent)',
+	series: 'color-mix(in srgb, var(--interactive-accent) 60%, var(--background-primary))',
+	anime: 'color-mix(in srgb, var(--interactive-accent) 30%, var(--background-primary))'
 }
 
 type SortKey = 'name' | 'year' | 'rating' | 'date'
 
 const SORT_KEYS: SortKey[] = ['name', 'year', 'rating', 'date']
+
+interface SortChoice {
+	key: SortKey
+	asc: boolean
+}
+
+// A heading over a grid of cards: a category's, or the "Up next" block's.
+interface SectionSpec {
+	title: string
+	// Where the sort choice is kept, and the order the section starts in.
+	sortId: string
+	defaultSort: SortChoice
+	collapsed: boolean
+	setCollapsed(collapsed: boolean): void
+}
+
+// A key no category name takes: the categories' sort choices share the map.
+const UP_NEXT_SORT = '@upNext'
 
 export class LibraryView extends ItemView {
 	private plugin: LibraryPlugin
@@ -112,9 +131,9 @@ export class LibraryView extends ItemView {
 
 	// The dropdown choice is page state: it lives in the settings file, per
 	// section, so a re-render or a restart does not throw it away.
-	private readSort(section: string): { key: SortKey; asc: boolean } {
+	private readSort(section: string, fallback: SortChoice): SortChoice {
 		const saved = this.plugin.settings.sortState[section]
-		if (!saved || SORT_KEYS.indexOf(saved.key as SortKey) < 0) return { key: 'name', asc: true }
+		if (!saved || SORT_KEYS.indexOf(saved.key as SortKey) < 0) return fallback
 		return { key: saved.key as SortKey, asc: saved.asc !== false }
 	}
 
@@ -402,28 +421,64 @@ export class LibraryView extends ItemView {
 
 		this.renderStats(root)
 
+		// Titles not started yet may live in Up next alone, and only while
+		// that block is on: switching both off must not hide them anywhere.
+		const settings = this.plugin.settings
+		const upNextOnly = settings.showUpNext && !settings.upNextInCategories
 		for (const { category, cards } of sections) {
-			const sectionEl = this.renderSection(root, category, cards)
-			const chip = toc.createEl('button', {
-				cls: 'library-toc-item',
-				text: `${category.name}: ${String(cards.length)}`
-			})
-			chip.addEventListener('click', () =>
-				sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
-			)
+			const shown = upNextOnly ? cards.filter(card => !notStarted(card.fm)) : cards
+			const sectionEl = this.renderSection(root, {
+				title: category.name,
+				sortId: category.name,
+				defaultSort: { key: 'name', asc: true },
+				collapsed: category.collapsed === true,
+				setCollapsed: (collapsed) => {
+					if (collapsed) category.collapsed = true
+					else delete category.collapsed
+				}
+			}, shown)
+			this.tocChip(toc, category.name, shown.length, sectionEl)
+		}
+
+		// At the end of the page: everything not started yet, from every
+		// category, newest first.
+		const upNext: CardData[] = []
+		for (const { cards } of sections) {
+			for (const card of cards) if (notStarted(card.fm)) upNext.push(card)
+		}
+		if (settings.showUpNext && upNext.length > 0) {
+			const upNextEl = this.renderSection(root, {
+				title: tr('upNext.title'),
+				sortId: UP_NEXT_SORT,
+				defaultSort: { key: 'date', asc: false },
+				collapsed: settings.upNextCollapsed,
+				setCollapsed: (collapsed) => { settings.upNextCollapsed = collapsed }
+			}, upNext)
+			upNextEl.addClass('library-up-next')
+			this.tocChip(toc, tr('upNext.title'), upNext.length, upNextEl)
 		}
 		root.scrollTop = scrollTop
 	}
 
-	private renderSection(root: HTMLElement, category: ICategory, cards: CardData[]): HTMLElement {
+	private tocChip(toc: HTMLElement, name: string, count: number, target: HTMLElement): void {
+		const chip = toc.createEl('button', {
+			cls: 'library-toc-item',
+			text: `${name}: ${String(count)}`
+		})
+		chip.addEventListener('click', () =>
+			target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		)
+	}
+
+	private renderSection(root: HTMLElement, spec: SectionSpec, cards: CardData[]): HTMLElement {
 		const section = root.createDiv({ cls: 'library-section' })
-		section.createEl('h2', { text: category.name })
+		section.createEl('h2', { text: spec.title })
 
 		const toolbar = section.createDiv({ cls: 'library-toolbar' })
 		const collapseBtn = toolbar.createEl('button', {
 			cls: 'library-collapse-btn',
 			text: '▼',
-			attr: { 'aria-label': category.name, 'aria-expanded': 'true' }
+			attr: { 'aria-label': spec.title, 'aria-expanded': 'true' }
 		})
 		toolbar.createDiv({ cls: 'library-toolbar-spacer' })
 
@@ -448,7 +503,7 @@ export class LibraryView extends ItemView {
 			{ label: tr('sort.date'), key: 'date' }
 		]
 
-		const savedSort = this.readSort(category.name)
+		const savedSort = this.readSort(spec.sortId, spec.defaultSort)
 		let currentSort: SortKey = savedSort.key
 		let sortAsc = savedSort.asc
 
@@ -488,7 +543,7 @@ export class LibraryView extends ItemView {
 				updateTrigger()
 				sortMenu.removeClass('open')
 				renderGrid()
-				this.writeSort(category.name, currentSort, sortAsc)
+				this.writeSort(spec.sortId, currentSort, sortAsc)
 			})
 		})
 
@@ -506,12 +561,11 @@ export class LibraryView extends ItemView {
 			collapseBtn.setText(collapsed ? '▶' : '▼')
 			collapseBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true')
 		}
-		// The fold is kept on the category in the settings file, so a
-		// re-render, a second tab or a restart opens the section as it was left.
+		// The fold is kept in the settings file, so a re-render, a second tab
+		// or a restart opens the section as it was left.
 		collapseBtn.addEventListener('click', () => {
 			const collapsed = !grid.hasClass('collapsed')
-			if (collapsed) category.collapsed = true
-			else delete category.collapsed
+			spec.setCollapsed(collapsed)
 			applyCollapsed(collapsed)
 			void this.plugin.persistSettings()
 		})
@@ -520,7 +574,7 @@ export class LibraryView extends ItemView {
 		// original label and caret.
 		if (currentSort !== 'name' || !sortAsc) updateTrigger()
 		renderGrid()
-		if (category.collapsed === true) applyCollapsed(true)
+		if (spec.collapsed) applyCollapsed(true)
 		return section
 	}
 
@@ -559,6 +613,13 @@ export class LibraryView extends ItemView {
 				: type === 'manual' ? '📝'
 				: '🎬'
 			imgDiv.createSpan({ text: emoji })
+		}
+		if (notStarted(fm)) {
+			const badge = imgDiv.createSpan({
+				cls: 'card-unstarted',
+				attr: { 'role': 'img', 'aria-label': tr('card.notStarted') }
+			})
+			setIcon(badge, 'eye')
 		}
 
 		const info = cardEl.createDiv({ cls: 'card-info' })

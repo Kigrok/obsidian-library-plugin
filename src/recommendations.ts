@@ -1,9 +1,12 @@
 import { requestUrl } from 'obsidian'
+import { SteamProvider } from './providers/steam'
 import type { ContentType } from './providers/types'
+import { claim, entities, itemIds, languages, searchItems, textIn, yearIn } from './providers/wikidata'
 
 // Titles similar to a note's, from whichever source can say so:
 // AniList's user recommendations for anime, TMDB's for movies and series (with
-// a key; without one, Cinemeta's best titles of the same genres), RAWG's same-series and same-genre games (with a key), Open Library's
+// a key; without one, Cinemeta's best titles of the same genres), RAWG's same-series and same-genre games (with a key;
+// without one, Wikidata's), Open Library's
 // most read works of the book's subject. Comics and music have no such data.
 
 export interface Recommendation {
@@ -65,7 +68,10 @@ async function pick(source: string, sourceId: string, name: string, genres: stri
 			const fromTmdb = keys.tmdb ? await tmdb(sourceId, keys.tmdb) : []
 			return fromTmdb.length > 0 ? fromTmdb : cinemeta(sourceId, genres, series)
 		}
-		case 'games': case 'rawg': case 'steam': return keys.rawg ? rawg(sourceId, name, genres[0] ?? '', keys.rawg) : []
+		case 'games': case 'rawg': case 'steam': {
+			const fromRawg = keys.rawg && !/^Q\d+$/.test(sourceId) ? await rawg(sourceId, name, genres[0] ?? '', keys.rawg) : []
+			return fromRawg.length > 0 ? fromRawg : wikidataGames(sourceId, name)
+		}
 		case 'books': case 'openlibrary': case 'googlebooks': return openLibrary(sourceId, name, genres)
 		default: return []
 	}
@@ -178,6 +184,43 @@ async function rawg(sourceId: string, name: string, genre: string, key: string):
 		type: 'game',
 		sourceId: String(g.id)
 	}))
+}
+
+const VIDEO_GAME = 'haswbstatement:P31=Q7889'
+
+// Without a RAWG key: the other games of the series, then well-known Steam
+// games of the same genre, both from Wikidata. The game's own item is found
+// by its Q-number, its Steam app id or, for a RAWG note, its name.
+async function wikidataGames(sourceId: string, name: string): Promise<Recommendation[]> {
+	const item = /^Q\d+$/.test(sourceId) ? sourceId
+		: sourceId.startsWith(SteamProvider.PREFIX)
+			? (await searchItems('', `haswbstatement:P1733=${sourceId.slice(SteamProvider.PREFIX.length)}`, 1))[0]
+			: name ? (await searchItems(name, VIDEO_GAME, 1))[0] : undefined
+	if (!item) return []
+	const own = (await entities([item], 'claims', ['en']))[item]
+	const series = itemIds(own, 'P179')[0]
+	const genre = itemIds(own, 'P136')[0]
+	const [inSeries, inGenre] = await Promise.all([
+		series ? searchItems('', `haswbstatement:P179=${series} ${VIDEO_GAME}`, LIMIT) : Promise.resolve<string[]>([]),
+		genre ? searchItems('', `haswbstatement:P136=${genre} ${VIDEO_GAME} haswbstatement:P1733`, LIMIT) : Promise.resolve<string[]>([])
+	])
+	const ids = [...inSeries, ...inGenre].filter((id, i, all) => id !== item && all.indexOf(id) === i).slice(0, LIMIT)
+	const langs = languages()
+	const [found, steamIds] = await Promise.all([
+		entities(ids, 'labels|descriptions', langs),
+		Promise.all(ids.map(id => claim(id, 'P1733')))
+	])
+	return ids.map((id, i): Recommendation => {
+		const steam = steamIds[i]
+		const appId = typeof steam === 'string' && /^\d+$/.test(steam) ? steam : null
+		return {
+			title: textIn(found[id]?.labels, ['en', 'mul', ...langs]) ?? id,
+			year: yearIn(textIn(found[id]?.descriptions, langs)),
+			cover: appId ? `${SteamProvider.CDN}/${appId}/header.jpg` : null,
+			type: 'game',
+			sourceId: appId ? SteamProvider.PREFIX + appId : id
+		}
+	})
 }
 
 // Library bookkeeping Open Library files as subjects, not what a book is about.
