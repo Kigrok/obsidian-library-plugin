@@ -17,9 +17,11 @@ import { BookAggregatorProvider } from './providers/bookAggregator'
 import { CinemetaEnricher } from './providers/cinemeta'
 import { RawgProvider } from './providers/rawg'
 import { GameAggregatorProvider } from './providers/gameAggregator'
+import { AnimeAggregatorProvider } from './providers/animeAggregator'
 import { GameTrailerFinder } from './providers/gameTrailer'
 import { DeezerProvider } from './providers/deezer'
 import { AnimeProvider } from './providers/anime'
+import { MalProvider } from './providers/mal'
 import { ComicsProvider } from './providers/comics'
 import { ComicsAggregatorProvider } from './providers/comicsAggregator'
 import { WikidataComicProvider } from './providers/wikidataComics'
@@ -126,7 +128,7 @@ export default class LibraryPlugin extends Plugin {
 			new WikidataGameProvider()
 		))
 		this.registry.register(new DeezerProvider())
-		this.registry.register(new AnimeProvider())
+		this.registry.register(new AnimeAggregatorProvider(new AnimeProvider(), new MalProvider(this)))
 		this.registry.register(new ComicsAggregatorProvider(
 			new ComicsProvider(() => this.settings.comicVineApiKey),
 			new WikidataComicProvider(),
@@ -270,7 +272,10 @@ export default class LibraryPlugin extends Plugin {
 			checkCallback: (checking: boolean) => {
 				const file = this.app.workspace.getActiveFile()
 				const fm = file ? this.app.metadataCache.getFileCache(file)?.frontmatter : undefined
-				if (!fm || toStr(fm.Source) !== 'anilist' || !toStr(fm['Source ID'])) return false
+				const source = fm ? toStr(fm.Source) : ''
+				const sourceId = fm ? toStr(fm['Source ID']) : ''
+				const validSource = source === 'anime' || source === 'anilist'
+				if (!fm || !validSource || !sourceId) return false
 				if (!checking) void this.malPushCurrent()
 				return true
 			}
@@ -758,15 +763,33 @@ export default class LibraryPlugin extends Plugin {
 		if (!token) { new Notice(tr('notice.mal.noToken')); return }
 		const file = this.app.workspace.getActiveFile()
 		const fm = file ? this.app.metadataCache.getFileCache(file)?.frontmatter : undefined
-		const mediaId = fm ? Number(toStr(fm['Source ID'])) : NaN
-		if (!file || !fm || toStr(fm.Source) !== 'anilist' || !Number.isFinite(mediaId)) {
+		const source = fm ? toStr(fm.Source) : ''
+		const sourceId = fm ? toStr(fm['Source ID']) : ''
+		if (!file || !fm || !sourceId ||
+			(source !== 'anilist' && source !== 'anime')) {
 			new Notice(tr('notice.anilist.notAnime'))
 			return
 		}
-		const ids = await malIdsFor([mediaId])
-		if (!ids) { new Notice(tr('notice.mal.pushFailed')); return }
-		const malId = ids.get(mediaId)
-		if (!malId) { new Notice(tr('notice.mal.noMalId')); return }
+		let malId: number
+		if (source === 'anime' && sourceId.startsWith('mal:')) {
+			const directId = sourceId.replace(/^mal:/, '')
+			malId = Number(directId)
+			if (!Number.isSafeInteger(malId) || malId <= 0) {
+				new Notice(tr('notice.mal.noMalId'))
+				return
+			}
+		} else {
+			const mediaId = Number(sourceId)
+			if (!Number.isSafeInteger(mediaId) || mediaId <= 0) {
+				new Notice(tr('notice.anilist.notAnime'))
+				return
+			}
+			const ids = await malIdsFor([mediaId])
+			if (!ids) { new Notice(tr('notice.mal.pushFailed')); return }
+			const resolvedId = ids.get(mediaId)
+			if (!resolvedId) { new Notice(tr('notice.mal.noMalId')); return }
+			malId = resolvedId
+		}
 		const watched = parseWatched(fm.Progress)
 		const rating = Number(toStr(fm['My Rating']))
 		const ok = await pushMalEntry(token, malId, watched, malStatus(fm.Complete === true, watched),
