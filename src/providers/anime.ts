@@ -1,8 +1,10 @@
 import { requestUrl } from 'obsidian'
+import { MalProvider } from './mal'
 import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
 
 interface AniListMedia {
 	id: number
+	idMal?: number | null
 	title: { romaji?: string; english?: string; native?: string }
 	startDate?: { year?: number | null }
 	episodes?: number | null
@@ -27,9 +29,10 @@ interface AniListMediaResponse {
 }
 
 const MEDIA_FIELDS =
-	'id title { romaji english native } startDate { year } episodes duration genres status averageScore coverImage { extraLarge large } bannerImage trailer { id site } streamingEpisodes { thumbnail } studios(isMain: true) { nodes { name } } siteUrl'
+	'id idMal title { romaji english native } startDate { year } episodes duration genres status averageScore coverImage { extraLarge large } bannerImage trailer { id site } streamingEpisodes { thumbnail } studios(isMain: true) { nodes { name } } siteUrl'
 
 // Anime via AniList GraphQL (no key). Jikan's search endpoint proxies MyAnimeList and is frequently down (504).
+// A note added from MyAnimeList ("mal:" id) is found here by its MyAnimeList id.
 export class AnimeProvider implements ContentProvider {
 	readonly id = 'anilist'
 	readonly contentTypes: ContentType[] = ['anime']
@@ -88,8 +91,10 @@ export class AnimeProvider implements ContentProvider {
 		try {
 			let media = raw as AniListMedia | undefined
 			if (!media || typeof media !== 'object') {
-				const q = `query ($id: Int) { Media(id: $id, type: ANIME) { ${MEDIA_FIELDS} } }`
-				const json = await this.gql<AniListMediaResponse>(q, { id: Number(sourceId) })
+				const byMal = sourceId.startsWith(MalProvider.PREFIX)
+				const id = Number(byMal ? sourceId.slice(MalProvider.PREFIX.length) : sourceId)
+				const q = `query ($id: Int) { Media(${byMal ? 'idMal' : 'id'}: $id, type: ANIME) { ${MEDIA_FIELDS} } }`
+				const json = await this.gql<AniListMediaResponse>(q, { id })
 				media = json?.data?.Media ?? undefined
 			}
 			if (!media) return null

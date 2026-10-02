@@ -1,133 +1,116 @@
 import { requestUrl } from 'obsidian'
-import type LibraryPlugin from '../main'
 import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
 
 interface MalAnime {
 	id: number
 	title: string
-	alternative_titles?: { en?: string; ja?: string; synonyms?: string[] }
+	alternative_titles?: { en?: string; ja?: string }
 	start_date?: string
-	end_date?: string
-	synopsis?: string
 	mean?: number
 	num_episodes?: number
 	average_episode_duration?: number
 	genres?: { name: string }[]
 	studios?: { name: string }[]
 	main_picture?: { medium?: string; large?: string }
-	status?: string
-	rating?: string
-	start_season?: { year: number; season: string }
-	background?: string
 }
 
-interface MalSearchResponse {
-	data?: { node: MalAnime }[]
-}
+// `id`, `title` and `main_picture` come with every answer; the rest is asked for.
+const SEARCH_FIELDS = 'alternative_titles,start_date'
+const DETAIL_FIELDS = 'alternative_titles,start_date,mean,num_episodes,average_episode_duration,genres,studios'
 
-const SEARCH_FIELDS = 'id,title,alternative_titles,start_date,genres,num_episodes,main_picture'
-const DETAIL_FIELDS = 'id,title,alternative_titles,start_date,end_date,synopsis,mean,num_episodes,average_episode_duration,genres,studios,main_picture,status,rating,start_season,background'
-const RETRY_DELAYS = [1000, 2500, 5000]
-
+// Anime from the MyAnimeList API, for notes kept on that site. Public data
+// needs only the Client ID the MyAnimeList sync already asks for; without it
+// the provider stays silent. Its notes carry "mal:" ids, so a refresh comes
+// back here and the sync uses the id as is.
 export class MalProvider implements ContentProvider {
 	readonly id = 'mal'
 	readonly contentTypes: ContentType[] = ['anime']
 
-	private readonly endpoint = 'https://api.myanimelist.net/v2'
+	static readonly PREFIX = 'mal:'
+	private static readonly API = 'https://api.myanimelist.net/v2'
 
-	constructor(private readonly plugin: LibraryPlugin) {}
+	private getClientId: () => string
 
-	private async headers(): Promise<Record<string, string> | null> {
-		const clientId = this.plugin.settings.malClientId.trim()
-		if (!clientId) return null
-		const headers: Record<string, string> = {
-			'X-MAL-CLIENT-ID': clientId,
-			Accept: 'application/json'
-		}
-		const token = await this.plugin.malToken()
-		if (token) headers.Authorization = `Bearer ${token}`
-		return headers
+	constructor(getClientId: () => string) {
+		this.getClientId = getClientId
 	}
 
-	private async request(url: string, headers: Record<string, string>): Promise<{ status: number; json: unknown }> {
-		let response = await requestUrl({ url, headers, throw: false })
-		for (let attempt = 0; attempt < RETRY_DELAYS.length && (response.status === 429 || response.status >= 500); attempt++) {
-			await new Promise(resolve => window.setTimeout(resolve, RETRY_DELAYS[attempt]))
-			response = await requestUrl({ url, headers, throw: false })
-		}
-		if (response.status === 401 || response.status === 403 || response.status === 404) {
-			const publicHeaders = { ...headers }
-			delete publicHeaders.Authorization
-			if (Object.keys(publicHeaders).length !== Object.keys(headers).length) {
-				response = await requestUrl({ url, headers: publicHeaders, throw: false })
-			}
-		}
-		return { status: response.status, json: response.json }
+	enabled(): boolean {
+		return !!this.getClientId().trim()
+	}
+
+	refreshable(): boolean {
+		return this.enabled()
+	}
+
+	private async get<T>(path: string): Promise<T | null> {
+		const clientId = this.getClientId().trim()
+		if (!clientId) return null
+		const resp = await requestUrl({
+			url: MalProvider.API + path,
+			headers: { 'X-MAL-CLIENT-ID': clientId, Accept: 'application/json' },
+			throw: false
+		})
+		// A failed request may answer with an HTML page: only a 200 is read as JSON.
+		return resp.status === 200 ? resp.json as T : null
+	}
+
+	// The English title first, as AniList's notes have it; MyAnimeList's own
+	// title is the romaji one.
+	private title(anime: MalAnime): string {
+		return anime.alternative_titles?.en || anime.title
 	}
 
 	async search(query: string): Promise<SearchResult[]> {
 		try {
-			const headers = await this.headers()
-			if (!headers) return []
-			const url = `${this.endpoint}/anime?q=${encodeURIComponent(query)}&limit=20&fields=${SEARCH_FIELDS}`
-			const response = await this.request(url, headers)
-			if (response.status !== 200) return []
-			const data = response.json as MalSearchResponse
-			return (data.data ?? []).map(({ node }) => ({
+			const json = await this.get<{ data?: { node: MalAnime }[] }>(
+				`/anime?q=${encodeURIComponent(query)}&limit=20&fields=${SEARCH_FIELDS}`
+			)
+			return (json?.data ?? []).map(({ node }) => ({
 				provider: this.id,
-				sourceId: `mal:${String(node.id)}`,
-				title: node.alternative_titles?.synonyms?.[0] ?? node.title,
-				year: node.start_date ? new Date(node.start_date).getFullYear() : null,
+				sourceId: MalProvider.PREFIX + String(node.id),
+				title: this.title(node),
+				year: yearOf(node.start_date),
 				cover: node.main_picture?.large ?? node.main_picture?.medium ?? null,
-				subtitle: node.alternative_titles?.ja ?? node.alternative_titles?.en ?? null,
-				raw: node
+				subtitle: node.alternative_titles?.ja || null,
+				raw: null
 			}))
-		} catch (error) {
-			console.error('Library: MAL search error', error)
+		} catch (e) {
+			console.error('Library: MyAnimeList search error', e)
 			return []
 		}
 	}
 
-	async fetch(sourceId: string, _type: ContentType, raw?: unknown): Promise<NormalizedMetadata | null> {
-		const id = sourceId.startsWith('mal:') ? sourceId.slice(4) : ''
-		if (!id || !/^\d+$/.test(id)) return null
+	async fetch(sourceId: string): Promise<NormalizedMetadata | null> {
+		const id = sourceId.startsWith(MalProvider.PREFIX) ? sourceId.slice(MalProvider.PREFIX.length) : ''
+		if (!/^\d+$/.test(id)) return null
 		try {
-			const headers = await this.headers()
-			if (!headers) return null
-			let anime = raw as MalAnime | undefined
-			if (!anime || typeof anime !== 'object' || anime.id !== Number(id)) {
-				const url = `${this.endpoint}/anime/${id}?fields=${DETAIL_FIELDS}`
-				const response = await this.request(url, headers)
-				if (response.status !== 200) return null
-				anime = response.json as MalAnime
-			}
+			const anime = await this.get<MalAnime>(`/anime/${id}?fields=${DETAIL_FIELDS}`)
+			if (!anime) return null
 			const fields: Record<string, unknown> = {
-				Name: anime.title,
-				Year: anime.start_date ? new Date(anime.start_date).getFullYear() : null,
-				Genre: anime.genres?.map((genre) => genre.name) ?? [],
-				Creator: anime.studios?.map((studio) => studio.name) ?? [],
+				Name: this.title(anime),
+				Year: yearOf(anime.start_date),
+				Genre: (anime.genres ?? []).map(genre => genre.name),
+				Creator: (anime.studios ?? []).map(studio => studio.name),
 				Cover: anime.main_picture?.large ?? anime.main_picture?.medium ?? null,
-				URL: `https://myanimelist.net/anime/${anime.id}`
+				URL: `https://myanimelist.net/anime/${id}`
 			}
 			if (typeof anime.mean === 'number') fields['Rating MAL'] = anime.mean
-			if (anime.status) fields.Status = anime.status
-			if (anime.rating) fields['Content Rating'] = anime.rating
-			if (anime.num_episodes && anime.num_episodes > 0) fields.Episodes = anime.num_episodes
-			if (anime.average_episode_duration && anime.average_episode_duration > 0) {
-				fields.Runtime = Math.round(anime.average_episode_duration / 60)
-			}
-			if (anime.end_date) fields['End Date'] = anime.end_date
-			if (anime.start_season) fields.Season = `${anime.start_season.season} ${anime.start_season.year}`
-			if (anime.synopsis) fields.Synopsis = anime.synopsis
-			if (anime.background) fields.Background = anime.background
-			return {
-				fields,
-				progressTotal: anime.num_episodes && anime.num_episodes > 0 ? anime.num_episodes : null,
-				imdbId: null
-			}
-		} catch (error) {
-			console.error('Library: MAL fetch error', error)
+			// MyAnimeList gives seconds; `Runtime` keeps the minutes of one episode.
+			const seconds = anime.average_episode_duration ?? 0
+			if (seconds > 0) fields.Runtime = Math.round(seconds / 60)
+			const episodes = anime.num_episodes && anime.num_episodes > 0 ? anime.num_episodes : null
+			return { fields, progressTotal: episodes, imdbId: null }
+		} catch (e) {
+			console.error('Library: MyAnimeList fetch error', e)
 			return null
 		}
 	}
+}
+
+// "2006-10-04", "2006-10" or "2006", read as written: `new Date` takes it for
+// UTC midnight and gives the year before west of Greenwich.
+export function yearOf(date: string | undefined): number | null {
+	const match = date?.match(/^(\d{4})/)
+	return match ? Number(match[1]) : null
 }

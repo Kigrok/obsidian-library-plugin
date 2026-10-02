@@ -1,6 +1,7 @@
 import { requestUrl } from 'obsidian'
+import { MalProvider } from './providers/mal'
 
-// MyAnimeList progress sync for the anime notes AniList created. MAL's OAuth has
+// MyAnimeList progress sync for anime notes, from AniList or MyAnimeList. MAL's OAuth has
 // no PIN page: the user registers a client with any redirect URL (http://localhost
 // works), authorizes, and pastes the address the browser lands on, which carries
 // the code. PKCE uses the plain method, the only one MAL accepts.
@@ -155,31 +156,51 @@ export async function fetchMalList(token: string): Promise<MalEntry[] | null> {
 	return out
 }
 
-// AniList knows each title's MAL id; notes keep only the AniList one. Public
-// query, 50 ids per page. Titles MAL does not list are simply missing.
-export async function malIdsFor(anilistIds: number[]): Promise<Map<number, number> | null> {
+// AniList knows each title's MAL id, so it maps ids both ways: AniList ids to
+// MyAnimeList ones, or back. Public query, 50 ids per page. Titles the other
+// site does not list are simply missing.
+async function mapIds(ids: number[], from: 'id' | 'idMal'): Promise<Map<number, number> | null> {
 	const out = new Map<number, number>()
-	for (let i = 0; i < anilistIds.length; i += 50) {
-		const ids = anilistIds.slice(i, i + 50)
+	for (let i = 0; i < ids.length; i += 50) {
+		const page = ids.slice(i, i + 50)
 		try {
 			const resp = await requestUrl({
 				url: ANILIST,
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 				body: JSON.stringify({
-					query: 'query ($ids: [Int]) { Page(perPage: 50) { media(id_in: $ids, type: ANIME) { id idMal } } }',
-					variables: { ids }
+					query: `query ($ids: [Int]) { Page(perPage: 50) { media(${from}_in: $ids, type: ANIME) { id idMal } } }`,
+					variables: { ids: page }
 				}),
 				throw: false
 			})
 			if (resp.status !== 200) return null
 			const media = (resp.json as { data?: { Page?: { media?: { id: number; idMal: number | null }[] } } })
 				.data?.Page?.media ?? []
-			for (const m of media) if (m.idMal) out.set(m.id, m.idMal)
+			for (const m of media) {
+				if (m.idMal) out.set(from === 'id' ? m.id : m.idMal, from === 'id' ? m.idMal : m.id)
+			}
 		} catch (e) {
 			console.error('Library: AniList MAL id lookup error', e)
 			return null
 		}
 	}
 	return out
+}
+
+export function malIdsFor(anilistIds: number[]): Promise<Map<number, number> | null> {
+	return mapIds(anilistIds, 'id')
+}
+
+export function anilistIdsFor(malIds: number[]): Promise<Map<number, number> | null> {
+	return mapIds(malIds, 'idMal')
+}
+
+// The id an anime note was added under: AniList's, or MyAnimeList's for a
+// note found there ("mal:" ids). Null for anything else.
+export function animeIds(sourceId: string): { anilist: number | null; mal: number | null } | null {
+	const fromMal = sourceId.startsWith(MalProvider.PREFIX)
+	const id = Number(fromMal ? sourceId.slice(MalProvider.PREFIX.length) : sourceId)
+	if (!Number.isSafeInteger(id) || id <= 0) return null
+	return fromMal ? { anilist: null, mal: id } : { anilist: id, mal: null }
 }

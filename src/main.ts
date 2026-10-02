@@ -41,7 +41,7 @@ import { ShareModal, shareTargetFromFile } from './ui/shareModal'
 import { aniListViewer, fetchList, listStatus, pushEntry, type AniListEntry } from './anilistSync'
 import { recommendationsFor, type Recommendation } from './recommendations'
 import { ownedGames, playtimeHours, resolveSteamId } from './steamLibrary'
-import { fetchMalList, isExpired, malIdsFor, malStatus, pushMalEntry, refreshTokens, type MalEntry } from './malSync'
+import { anilistIdsFor, animeIds, fetchMalList, isExpired, malIdsFor, malStatus, pushMalEntry, refreshTokens, type MalEntry } from './malSync'
 import { LibraryView, LIBRARY_VIEW_TYPE } from './view'
 import { createEmbedPlayer, toEmbed } from './trailer'
 import { applyEpisodeChange, followProgress, hasChapters, mergeSeasons, seasonsOf, setChapters, type EpisodeChange, type TrackKind } from './episodes'
@@ -80,6 +80,14 @@ const LINK_FIELDS = ['Genre', 'Creator', 'Cast']
 const ENRICH_START_DELAY = 10 * 1000
 const SOURCE_SCORES = ['Rating IMDB', 'Rating RT', 'Rating MC', 'Rating RAWG']
 const ENRICH_STEP_DELAY = 700
+
+// An anime note and the id it was added under; a sync looks up the other
+// site's id through AniList when it needs it.
+interface AnimeNote {
+	file: TFile
+	anilist: number | null
+	mal: number | null
+}
 
 export default class LibraryPlugin extends Plugin {
 	settings!: ILibrarySettings
@@ -128,7 +136,7 @@ export default class LibraryPlugin extends Plugin {
 			new WikidataGameProvider()
 		))
 		this.registry.register(new DeezerProvider())
-		this.registry.register(new AnimeAggregatorProvider(new AnimeProvider(), new MalProvider(this)))
+		this.registry.register(new AnimeAggregatorProvider(new AnimeProvider(), new MalProvider(() => this.settings.malClientId)))
 		this.registry.register(new ComicsAggregatorProvider(
 			new ComicsProvider(() => this.settings.comicVineApiKey),
 			new WikidataComicProvider(),
@@ -272,10 +280,7 @@ export default class LibraryPlugin extends Plugin {
 			checkCallback: (checking: boolean) => {
 				const file = this.app.workspace.getActiveFile()
 				const fm = file ? this.app.metadataCache.getFileCache(file)?.frontmatter : undefined
-				const source = fm ? toStr(fm.Source) : ''
-				const sourceId = fm ? toStr(fm['Source ID']) : ''
-				const validSource = source === 'anime' || source === 'anilist'
-				if (!fm || !validSource || !sourceId) return false
+				if (!fm || toStr(fm.Source) !== 'anilist' || !toStr(fm['Source ID'])) return false
 				if (!checking) void this.malPushCurrent()
 				return true
 			}
@@ -651,13 +656,13 @@ export default class LibraryPlugin extends Plugin {
 		const file = this.app.workspace.getActiveFile()
 		if (!file) { new Notice(tr('notice.anilist.notAnime')); return }
 		const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
-		const sourceId = fm ? toStr(fm['Source ID']) : ''
-		if (!fm || toStr(fm.Source) !== 'anilist' || !sourceId) {
+		const note = fm && toStr(fm.Source) === 'anilist' ? animeIds(toStr(fm['Source ID'])) : null
+		if (!fm || !note) {
 			new Notice(tr('notice.anilist.notAnime'))
 			return
 		}
-		const mediaId = Number(sourceId)
-		if (!Number.isFinite(mediaId)) { new Notice(tr('notice.anilist.notAnime')); return }
+		const mediaId = (await this.idsOn('anilist', [{ file, ...note }]))?.get(file)
+		if (!mediaId) { new Notice(tr('notice.anilist.pushFailed')); return }
 		const watched = parseWatched(fm.Progress)
 		const status = listStatus(fm.Complete === true, watched)
 		const rating = Number(toStr(fm['My Rating']))
@@ -679,32 +684,54 @@ export default class LibraryPlugin extends Plugin {
 			new Notice(tr('notice.anilist.pullFailed'))
 			return
 		}
+		const ids = await this.idsOn('anilist', this.animeNotes())
+		if (!ids) {
+			new Notice(tr('notice.anilist.pullFailed'))
+			return
+		}
 		const byId = new Map<number, AniListEntry>()
 		for (const e of entries) byId.set(e.mediaId, e)
-		const updated = await this.applyPulled(id => {
+		const updated = await this.applyPulled(ids, id => {
 			const entry = byId.get(id)
 			return entry && { progress: entry.progress, complete: entry.status === 'COMPLETED' }
 		})
 		new Notice(tr('notice.anilist.pulled', { count: updated }))
 	}
 
-	// AniList-sourced anime notes, with their AniList id.
-	private anilistNotes(): { file: TFile; id: number }[] {
-		const out: { file: TFile; id: number }[] = []
+	// Anime notes (`Source: anilist`), each with the id it was added under:
+	// AniList's, or MyAnimeList's for a note found there.
+	private animeNotes(): AnimeNote[] {
+		const out: AnimeNote[] = []
 		for (const file of this.app.vault.getMarkdownFiles()) {
 			if (isTemplateFile(file.path)) continue
 			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
 			if (!fm || toStr(fm.Source) !== 'anilist') continue
-			const id = Number(toStr(fm['Source ID']))
-			if (Number.isFinite(id) && id > 0) out.push({ file, id })
+			const ids = animeIds(toStr(fm['Source ID']))
+			if (ids) out.push({ file, ...ids })
 		}
 		return out
 	}
 
-	// Writes a pulled list into the AniList notes; returns how many changed.
-	private async applyPulled(entryFor: (anilistId: number) => { progress: number; complete: boolean } | undefined): Promise<number> {
+	// Each note's id on one site: its own when it was added from there, else
+	// looked up through AniList. Null when AniList cannot answer.
+	private async idsOn(site: 'anilist' | 'mal', notes: AnimeNote[]): Promise<Map<TFile, number> | null> {
+		const other = site === 'mal' ? 'anilist' : 'mal'
+		const lookup = notes.filter(note => note[site] === null).map(note => note[other] ?? 0)
+		const found = lookup.length === 0 ? new Map<number, number>()
+			: site === 'mal' ? await malIdsFor(lookup) : await anilistIdsFor(lookup)
+		if (!found) return null
+		const out = new Map<TFile, number>()
+		for (const note of notes) {
+			const id = note[site] ?? found.get(note[other] ?? 0)
+			if (id) out.set(note.file, id)
+		}
+		return out
+	}
+
+	// Writes a pulled list into the anime notes; returns how many changed.
+	private async applyPulled(ids: Map<TFile, number>, entryFor: (id: number) => { progress: number; complete: boolean } | undefined): Promise<number> {
 		let updated = 0
-		for (const { file, id } of this.anilistNotes()) {
+		for (const [file, id] of ids) {
 			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
 			const entry = entryFor(id)
 			if (!fm || !entry) continue
@@ -763,33 +790,15 @@ export default class LibraryPlugin extends Plugin {
 		if (!token) { new Notice(tr('notice.mal.noToken')); return }
 		const file = this.app.workspace.getActiveFile()
 		const fm = file ? this.app.metadataCache.getFileCache(file)?.frontmatter : undefined
-		const source = fm ? toStr(fm.Source) : ''
-		const sourceId = fm ? toStr(fm['Source ID']) : ''
-		if (!file || !fm || !sourceId ||
-			(source !== 'anilist' && source !== 'anime')) {
+		const note = fm && toStr(fm.Source) === 'anilist' ? animeIds(toStr(fm['Source ID'])) : null
+		if (!file || !fm || !note) {
 			new Notice(tr('notice.anilist.notAnime'))
 			return
 		}
-		let malId: number
-		if (source === 'anime' && sourceId.startsWith('mal:')) {
-			const directId = sourceId.replace(/^mal:/, '')
-			malId = Number(directId)
-			if (!Number.isSafeInteger(malId) || malId <= 0) {
-				new Notice(tr('notice.mal.noMalId'))
-				return
-			}
-		} else {
-			const mediaId = Number(sourceId)
-			if (!Number.isSafeInteger(mediaId) || mediaId <= 0) {
-				new Notice(tr('notice.anilist.notAnime'))
-				return
-			}
-			const ids = await malIdsFor([mediaId])
-			if (!ids) { new Notice(tr('notice.mal.pushFailed')); return }
-			const resolvedId = ids.get(mediaId)
-			if (!resolvedId) { new Notice(tr('notice.mal.noMalId')); return }
-			malId = resolvedId
-		}
+		const ids = await this.idsOn('mal', [{ file, ...note }])
+		if (!ids) { new Notice(tr('notice.mal.pushFailed')); return }
+		const malId = ids.get(file)
+		if (!malId) { new Notice(tr('notice.mal.noMalId')); return }
 		const watched = parseWatched(fm.Progress)
 		const rating = Number(toStr(fm['My Rating']))
 		const ok = await pushMalEntry(token, malId, watched, malStatus(fm.Complete === true, watched),
@@ -804,16 +813,15 @@ export default class LibraryPlugin extends Plugin {
 		if (!token) { new Notice(tr('notice.mal.noToken')); return }
 		new Notice(tr('notice.mal.pulling'))
 		const entries = await fetchMalList(token)
-		const ids = entries && await malIdsFor(this.anilistNotes().map(n => n.id))
+		const ids = entries && await this.idsOn('mal', this.animeNotes())
 		if (!entries || !ids) {
 			new Notice(tr('notice.mal.pullFailed'))
 			return
 		}
 		const byMal = new Map<number, MalEntry>()
 		for (const e of entries) byMal.set(e.malId, e)
-		const updated = await this.applyPulled(id => {
-			const malId = ids.get(id)
-			const entry = malId === undefined ? undefined : byMal.get(malId)
+		const updated = await this.applyPulled(ids, malId => {
+			const entry = byMal.get(malId)
 			return entry && { progress: entry.progress, complete: entry.status === 'completed' }
 		})
 		new Notice(tr('notice.mal.pulled', { count: updated }))
