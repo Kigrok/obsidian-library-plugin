@@ -1,4 +1,5 @@
 import { requestUrl } from 'obsidian'
+import { MalProvider } from './providers/mal'
 import { SteamProvider } from './providers/steam'
 import type { ContentType } from './providers/types'
 import { claim, entities, itemIds, languages, searchItems, textIn, yearIn } from './providers/wikidata'
@@ -63,7 +64,7 @@ export async function recommendationsFor(source: string, sourceId: string, name:
 
 async function pick(source: string, sourceId: string, name: string, genres: string[], keys: RecommendationKeys, series: boolean): Promise<Recommendation[]> {
 	switch (source) {
-		case 'anilist': return anilist(Number(sourceId))
+		case 'anilist': return anilist(sourceId)
 		case 'omdb': {
 			const fromTmdb = keys.tmdb ? await tmdb(sourceId, keys.tmdb) : []
 			return fromTmdb.length > 0 ? fromTmdb : cinemeta(sourceId, genres, series)
@@ -77,12 +78,16 @@ async function pick(source: string, sourceId: string, name: string, genres: stri
 	}
 }
 
-async function anilist(id: number): Promise<Recommendation[]> {
+// A note added from MyAnimeList ("mal:" id) is found on AniList by that id,
+// and gets its suggestions as MyAnimeList titles where they have one.
+async function anilist(sourceId: string): Promise<Recommendation[]> {
+	const fromMal = sourceId.startsWith(MalProvider.PREFIX)
+	const id = Number(fromMal ? sourceId.slice(MalProvider.PREFIX.length) : sourceId)
 	if (!Number.isFinite(id)) return []
-	type Node = { mediaRecommendation: { id: number; title: { romaji?: string; english?: string }; coverImage?: { large?: string }; seasonYear?: number | null } | null }
+	type Node = { mediaRecommendation: { id: number; idMal?: number | null; title: { romaji?: string; english?: string }; coverImage?: { large?: string }; seasonYear?: number | null } | null }
 	const json = await getJson<{ data?: { Media?: { recommendations?: { nodes?: Node[] } } } }>(ANILIST, {
-		query: 'query ($id: Int) { Media(id: $id, type: ANIME) { recommendations(sort: RATING_DESC, perPage: 10) {' +
-			' nodes { mediaRecommendation { id title { romaji english } coverImage { large } seasonYear } } } } }',
+		query: `query ($id: Int) { Media(${fromMal ? 'idMal' : 'id'}: $id, type: ANIME) { recommendations(sort: RATING_DESC, perPage: 10) {` +
+			' nodes { mediaRecommendation { id idMal title { romaji english } coverImage { large } seasonYear } } } } }',
 		variables: { id }
 	})
 	const out: Recommendation[] = []
@@ -94,7 +99,7 @@ async function anilist(id: number): Promise<Recommendation[]> {
 			year: m.seasonYear ?? null,
 			cover: m.coverImage?.large ?? null,
 			type: 'anime',
-			sourceId: String(m.id)
+			sourceId: fromMal && m.idMal ? MalProvider.PREFIX + String(m.idMal) : String(m.id)
 		})
 	}
 	return out
