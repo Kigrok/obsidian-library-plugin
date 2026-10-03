@@ -1,0 +1,38 @@
+name: Bug report
+description: Something in Library does not work as it should
+labels: [bug]
+body:
+    - type: textarea
+      id: what
+      attributes:
+          label: What happened
+          description: What you did, what you expected, and what you got instead.
+      validations:
+          required: true
+    - type: input
+      id: library
+      attributes:
+          label: Library version
+          placeholder: "2.3.6"
+      validations:
+          required: true
+    - type: input
+      id: obsidian
+      attributes:
+          label: Obsidian version
+          placeholder: "1.13.7"
+      validations:
+          required: true
+    - type: dropdown
+      id: platform
+      attributes:
+          label: Platform
+          options: [Windows, macOS, Linux, iOS, Android]
+      validations:
+          required: true
+    - type: textarea
+      id: console
+      attributes:
+          label: Console errors
+          description: Optional. Errors that start with "Library:" in the developer console (Ctrl+Shift+I, or Cmd+Option+I on macOS). Remove API keys and tokens first.
+          render: text
