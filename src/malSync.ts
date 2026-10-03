@@ -26,14 +26,13 @@ export interface MalEntry {
 
 export type MalStatus = 'watching' | 'completed' | 'plan_to_watch'
 
-const UNRESERVED = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~'
-
-// 128 unreserved characters, the longest verifier RFC 7636 allows.
+// 96 random bytes in base64url: 128 characters, the longest verifier RFC 7636
+// allows, all from its unreserved set and each equally likely.
 export function makeVerifier(): string {
-	const bytes = crypto.getRandomValues(new Uint8Array(128))
-	let out = ''
-	for (let i = 0; i < bytes.length; i++) out += UNRESERVED.charAt((bytes[i] ?? 0) % UNRESERVED.length)
-	return out
+	const bytes = crypto.getRandomValues(new Uint8Array(96))
+	let binary = ''
+	for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i] ?? 0)
+	return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_')
 }
 
 export function malAuthUrl(clientId: string, verifier: string): string {
