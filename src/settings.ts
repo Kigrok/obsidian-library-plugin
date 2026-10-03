@@ -591,13 +591,13 @@ export class LibrarySettingTab extends PluginSettingTab {
 	// (Games = RAWG + Steam, Books = Google Books + Open Library).
 	private addSourceOptions(d: DropdownComponent): void {
 		const options: Array<[string, string]> = [
-			["movie", tr("settings.default.movie") + " — OMDb"],
-			["series", tr("settings.default.series") + " — OMDb"],
-			["book", tr("settings.default.book") + " — Google Books + Open Library"],
-			["comic", tr("settings.default.comic") + " — Comic Vine"],
-			["game", tr("settings.default.game") + " — RAWG + Steam"],
+			["movie", tr("settings.default.movie") + " — Cinemeta, Wikidata, OMDb"],
+			["series", tr("settings.default.series") + " — Cinemeta, Wikidata, OMDb"],
+			["book", tr("settings.default.book") + " — Open Library, Google Books"],
+			["comic", tr("settings.default.comic") + " — Wikidata, AniList, Comic Vine"],
+			["game", tr("settings.default.game") + " — Steam, Wikidata, RAWG"],
 			["music", tr("settings.default.music") + " — Deezer"],
-			["anime", tr("settings.default.anime") + " — AniList"],
+			["anime", tr("settings.default.anime") + " — AniList, MyAnimeList"],
 			["manual", tr("settings.category.manual")],
 		];
 		for (const [value, label] of options) d.addOption(value, label);
