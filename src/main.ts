@@ -78,7 +78,7 @@ const LINK_FIELDS = ['Genre', 'Creator', 'Cast']
 // The background metadata pass waits for the vault to settle, then walks the
 // library one note at a time so the sources are never hit in a burst.
 const ENRICH_START_DELAY = 10 * 1000
-const SOURCE_SCORES = ['Rating IMDB', 'Rating RT', 'Rating MC', 'Rating RAWG']
+const SOURCE_SCORES = ['Rating IMDB', 'Rating RT', 'Rating MC', 'Rating RAWG', 'Rating AniList', 'Rating MAL']
 const ENRICH_STEP_DELAY = 700
 
 // An anime note and the id it was added under; a sync looks up the other
