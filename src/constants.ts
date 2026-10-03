@@ -53,6 +53,8 @@ export const localeMap: Record<string, SupportedLocale> = {
 	id: 'id',
 	ka: 'ka',
 	kh: 'kh',
+	// Obsidian names Khmer `km`; the block keeps its older `kh` name.
+	km: 'kh',
 	kn: 'kn',
 	ky: 'ky',
 	la: 'la',
