@@ -50,13 +50,18 @@ jobs:
                       manifest.json
                       styles.css
 
-            - name: Create release
+            # A draft with the files built and attested above. The notes are
+            # written and the draft published by hand; from then on immutable
+            # releases lock the files and the tag. A release that already
+            # exists fails this step instead of being replaced.
+            - name: Create draft release
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                   tag="${GITHUB_REF#refs/tags/}"
-                  gh release delete "$tag" --yes || true
                   gh release create "$tag" \
+                      --draft \
+                      --verify-tag \
                       --title="$tag" \
                       --generate-notes \
                       main.js manifest.json styles.css

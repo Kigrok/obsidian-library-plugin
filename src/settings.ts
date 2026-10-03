@@ -47,6 +47,7 @@ type TextKey =
 	| "tmdbApiKey"
 	| "comicVineApiKey"
 	| "coverProperty"
+	| "skipFields"
 	| "anilistClientId"
 	| "anilistToken"
 	| "malClientId"
@@ -196,6 +197,7 @@ export class LibrarySettingTab extends PluginSettingTab {
 				rows: [
 					note(tr("settings.intro")),
 					this.textRow("settings.coverProperty", "coverProperty", "Cover"),
+					this.textRow("settings.skipFields", "skipFields", "Cast, Gallery, Trailer"),
 					{
 						name: tr("settings.recs.name"),
 						desc: tr("settings.recs.desc"),
@@ -383,8 +385,8 @@ export class LibrarySettingTab extends PluginSettingTab {
 		);
 	}
 
-	// A category is its name and source; the Type value and the folder unfold
-	// under it.
+	// A category is its name and source; the Type value, the folder and the
+	// template unfold under it.
 	private categoryRows(cat: ICategory, index: number): Row[] {
 		const label = (): string => cat.name || tr("settings.category.name", { index: index + 1 });
 		const unfolded = (): boolean => this.expanded.has(cat);
@@ -417,6 +419,25 @@ export class LibrarySettingTab extends PluginSettingTab {
 							.setValue(cat.folder)
 							.onChange(async (value) => {
 								cat.folder = value.trim();
+								await this.plugin.saveSettings();
+							}),
+					);
+				},
+			},
+			{
+				name: tr("settings.category.template"),
+				desc: tr("settings.category.template.desc"),
+				visible: unfolded,
+				render: (row) => {
+					row.settingEl.addClass("library-settings-advanced-row");
+					row.addText((text) =>
+						text
+							.setPlaceholder(tr("settings.category.template.placeholder"))
+							.setValue(cat.template ?? "")
+							.onChange(async (value) => {
+								const path = value.trim();
+								if (path) cat.template = path;
+								else delete cat.template;
 								await this.plugin.saveSettings();
 							}),
 					);
@@ -570,13 +591,13 @@ export class LibrarySettingTab extends PluginSettingTab {
 	// (Games = RAWG + Steam, Books = Google Books + Open Library).
 	private addSourceOptions(d: DropdownComponent): void {
 		const options: Array<[string, string]> = [
-			["movie", tr("settings.default.movie") + " — OMDb"],
-			["series", tr("settings.default.series") + " — OMDb"],
-			["book", tr("settings.default.book") + " — Google Books + Open Library"],
-			["comic", tr("settings.default.comic") + " — Comic Vine"],
-			["game", tr("settings.default.game") + " — RAWG + Steam"],
+			["movie", tr("settings.default.movie") + " — Cinemeta, Wikidata, OMDb"],
+			["series", tr("settings.default.series") + " — Cinemeta, Wikidata, OMDb"],
+			["book", tr("settings.default.book") + " — Open Library, Google Books"],
+			["comic", tr("settings.default.comic") + " — Wikidata, AniList, Comic Vine"],
+			["game", tr("settings.default.game") + " — Steam, Wikidata, RAWG"],
 			["music", tr("settings.default.music") + " — Deezer"],
-			["anime", tr("settings.default.anime") + " — AniList"],
+			["anime", tr("settings.default.anime") + " — AniList, MyAnimeList"],
 			["manual", tr("settings.category.manual")],
 		];
 		for (const [value, label] of options) d.addOption(value, label);

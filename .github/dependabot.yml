@@ -1,0 +1,8 @@
+# Keeps the actions in .github/workflows current; npm security fixes come
+# from Dependabot security updates, turned on in the repository settings.
+version: 2
+updates:
+    - package-ecosystem: github-actions
+      directory: /
+      schedule:
+          interval: monthly

@@ -78,7 +78,7 @@ const LINK_FIELDS = ['Genre', 'Creator', 'Cast']
 // The background metadata pass waits for the vault to settle, then walks the
 // library one note at a time so the sources are never hit in a burst.
 const ENRICH_START_DELAY = 10 * 1000
-const SOURCE_SCORES = ['Rating IMDB', 'Rating RT', 'Rating MC', 'Rating RAWG']
+const SOURCE_SCORES = ['Rating IMDB', 'Rating RT', 'Rating MC', 'Rating RAWG', 'Rating AniList', 'Rating MAL']
 const ENRICH_STEP_DELAY = 700
 
 // An anime note and the id it was added under; a sync looks up the other
@@ -422,7 +422,7 @@ export default class LibraryPlugin extends Plugin {
 	private async createManual(category: ICategory, title: string): Promise<void> {
 		try {
 			const path = await this.uniqueNotePath(title, category.folder)
-			const file = await this.app.vault.create(path, '')
+			const file = await this.app.vault.create(path, await this.templateText(category))
 			await this.app.fileManager.processFrontMatter(file, (fm) => {
 				Object.assign(fm, {
 					Type: category.typeValue,
@@ -473,7 +473,7 @@ export default class LibraryPlugin extends Plugin {
 
 	private async newNote(category: ICategory, source: string, sourceId: string, title: string, meta: NormalizedMetadata, extra: Record<string, unknown> = {}): Promise<TFile> {
 		const path = await this.uniqueNotePath(title, category.folder)
-		const file = await this.app.vault.create(path, '')
+		const file = await this.app.vault.create(path, await this.templateText(category))
 		await this.app.fileManager.processFrontMatter(file, (fm) => {
 			Object.assign(fm, {
 				Type: category.typeValue,
@@ -871,11 +871,35 @@ export default class LibraryPlugin extends Plugin {
 		return key === 'Cover' ? this.coverProperty() : key
 	}
 
+	// A field from the sources the user chose to leave out of notes, by its
+	// name or by the property it is written to (the cover's).
+	private skipped(key: string): boolean {
+		const names = this.settings.skipFields.split(',').map(name => name.trim().toLowerCase()).filter(Boolean)
+		return names.indexOf(key.toLowerCase()) >= 0 || names.indexOf(this.fieldTarget(key).toLowerCase()) >= 0
+	}
+
+	// The text of the category's template note: a new note starts as a copy of
+	// it, properties and body. Empty when the category has none; a template
+	// that is gone is reported and left out.
+	private async templateText(category: ICategory): Promise<string> {
+		const path = category.template?.trim()
+		if (!path) return ''
+		const template = this.app.metadataCache.getFirstLinkpathDest(path, '')
+		if (!template || template.extension !== 'md') {
+			new Notice(tr('notice.templateMissing', { path }))
+			return ''
+		}
+		return this.app.vault.read(template)
+	}
+
 	private applyMetaFields(fm: Record<string, unknown>, meta: NormalizedMetadata): void {
 		const fields: Record<string, unknown> = meta.fields
 		for (const [key, value] of Object.entries(fields)) {
-			if (isEmptyValue(value)) continue
-			fm[this.fieldTarget(key)] = LINK_FIELDS.indexOf(key) >= 0 ? toLinks(value) : value
+			if (isEmptyValue(value) || this.skipped(key)) continue
+			const target = this.fieldTarget(key)
+			// A value the category's template filled in stays.
+			if (!isEmptyValue(fm[target])) continue
+			fm[target] = LINK_FIELDS.indexOf(key) >= 0 ? toLinks(value) : value
 		}
 	}
 
@@ -1174,7 +1198,7 @@ export default class LibraryPlugin extends Plugin {
 	private applyMetaPatch(current: Record<string, unknown>, meta: NormalizedMetadata): void {
 		const fields: Record<string, unknown> = meta.fields
 		for (const [key, value] of Object.entries(fields)) {
-			if (isEmptyValue(value)) continue
+			if (isEmptyValue(value) || this.skipped(key)) continue
 			const target = this.fieldTarget(key)
 			// For the cover, any known cover property counts as present so a renamed
 			// property does not duplicate the value into a second field.
@@ -1190,7 +1214,7 @@ export default class LibraryPlugin extends Plugin {
 			// a refresh brings the current one instead of keeping the first.
 			else if (SOURCE_SCORES.indexOf(key) >= 0) current[target] = value
 		}
-		if (typeof meta.fields.Season === 'number' && meta.fields.Season > Number(current.Season || 0)) {
+		if (typeof meta.fields.Season === 'number' && meta.fields.Season > Number(current.Season || 0) && !this.skipped('Season')) {
 			current.Season = meta.fields.Season
 		}
 		if (meta.progressTotal && !hasChapters(current)) {
@@ -1698,6 +1722,7 @@ export default class LibraryPlugin extends Plugin {
 		if (typeof this.settings.showUpNext !== 'boolean') this.settings.showUpNext = true
 		if (typeof this.settings.upNextCollapsed !== 'boolean') this.settings.upNextCollapsed = false
 		if (typeof this.settings.upNextInCategories !== 'boolean') this.settings.upNextInCategories = true
+		if (typeof this.settings.skipFields !== 'string') this.settings.skipFields = ''
 		if (!this.settings.enrichMarks || typeof this.settings.enrichMarks !== 'object') this.settings.enrichMarks = {}
 		// Categories an earlier build kept out of the statistics, through the
 		// switches that came before the top list: `showTop`, `stats.rating`, `showRated`.
