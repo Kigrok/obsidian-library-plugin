@@ -1,0 +1,4 @@
+# The Sponsor button on the repository page. The wallet addresses live in
+# one place, README → Support, behind the protected main branch.
+custom:
+    - https://github.com/Kigrok/obsidian-library-plugin#support

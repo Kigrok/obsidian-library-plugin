@@ -6,5 +6,6 @@
 	"description": "Organize movies, series, anime, comics, books, games, and music as visual cards with automatic metadata.",
 	"author": "Kigrok",
 	"authorUrl": "https://github.com/Kigrok",
+	"fundingUrl": "https://github.com/Kigrok/obsidian-library-plugin#support",
 	"isDesktopOnly": false
 }
