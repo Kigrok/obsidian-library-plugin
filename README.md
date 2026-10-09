@@ -128,6 +128,8 @@ Your library is plain notes that open offline; covers load from the web. The plu
 
 Report bugs and suggest ideas in [Issues](https://github.com/Kigrok/obsidian-library-plugin/issues/new/choose); ask questions in [Discussions](https://github.com/Kigrok/obsidian-library-plugin/discussions). The plugin is under the [MIT License](LICENSE).
 
+<a href="https://buymeacoffee.com/venvk"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=venvk&button_colour=BD5FFF&font_colour=ffffff&font_family=Inter&outline_colour=000000&coffee_colour=FFDD00" alt="Buy me a coffee" height="50"></a>
+
 <details>
 <summary>If the plugin is useful to you, you can support it</summary>
 
