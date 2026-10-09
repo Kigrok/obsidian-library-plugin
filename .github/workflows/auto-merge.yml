@@ -4,8 +4,8 @@ name: Auto-merge
 # - the owner's, unless opened as a draft; marking a draft ready merges it.
 #   Merge commit as before: the title (release: for a version title) and
 #   the first paragraph of the description.
-# - Dependabot's patch and minor updates, squashed; major ones wait for a
-#   review by hand.
+# - Dependabot's patch and minor updates, squashed; major ones, and any
+#   whose type can't be read, wait for a review by hand.
 # Contributors' pull requests are left for review.
 # pull_request_target gives the token write access; no job checks out or
 # runs code from the pull request.
@@ -48,13 +48,29 @@ jobs:
             pull-requests: write
 
         steps:
-            - name: Dependabot metadata
-              id: meta
-              uses: dependabot/fetch-metadata@v3
-
-            - name: Enable auto-merge
-              if: steps.meta.outputs.update-type == 'version-update:semver-patch' || steps.meta.outputs.update-type == 'version-update:semver-minor'
+            # Only actions by GitHub may run here, so the update type is read
+            # from Dependabot's commit message rather than with fetch-metadata:
+            # "update-type: version-update:semver-…" on version updates, and
+            # "from X to Y" on every update, security ones included.
+            - name: Enable auto-merge for patch and minor updates
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   PR_URL: ${{ github.event.pull_request.html_url }}
-              run: gh pr merge --auto --squash "$PR_URL"
+                  COMMITS: repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/commits
+              run: |
+                  messages="$(gh api "$COMMITS" --jq '.[].commit.message')"
+                  types="$(grep -o 'update-type: version-update:semver-[a-z]*' <<<"$messages" || true)"
+                  bumps="$(grep -oE 'from v?[0-9]+(\.[0-9]+)* to v?[0-9]+(\.[0-9]+)*' <<<"$messages" | tr -d v || true)"
+                  echo "${types:-no update-type}"
+                  echo "${bumps:-no versions}"
+                  if [ -z "$types$bumps" ]; then
+                      echo "Update type unknown: left for review."
+                      exit 0
+                  fi
+                  # Major: a new first number, or a new second one below 1.0.
+                  major="$(awk '{ split($2, a, "."); split($4, b, "."); if (a[1] != b[1] || (a[1] == 0 && a[2] != b[2])) print }' <<<"$bumps")"
+                  if grep -q semver-major <<<"$types" || [ -n "$major" ]; then
+                      echo "Major update: left for review."
+                      exit 0
+                  fi
+                  gh pr merge --auto --squash "$PR_URL"
