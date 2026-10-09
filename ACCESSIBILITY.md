@@ -9,7 +9,7 @@ Library runs inside Obsidian 1.8.7 or newer, on desktop (Windows, macOS, Linux) 
 ## What works today
 
 - **Keyboard**: library cards are focusable and open with Enter or Space; section folds, sort menus, statistics and every toolbar button are native buttons. In the stills gallery, the arrow keys move between pictures and Escape closes it.
-- **Screen readers**: icon-only buttons have labels, folds and menus report whether they are open (`aria-expanded`), covers have the title as their alternative text, and the "not started" eye on a cover is announced. Episode and chapter ticks are native checkboxes, and scores are native number fields.
+- **Screen readers**: icon-only buttons have labels, folds report whether they are open (`aria-expanded`), covers have the title as their alternative text, and the "not started" eye on a cover is announced. Episode and chapter ticks are native checkboxes, and scores are native number fields.
 - **Not by colour alone**: the watch-time chart lists every medium with its hours and share in text next to the ring.
 - **Themes and text size**: colours come from the active theme (light, dark, or any community theme), and text sizes are relative, so they follow Obsidian's font size and zoom.
 - **Motion**: the hover zoom on recommended titles does not animate when your system asks for reduced motion.
@@ -19,6 +19,8 @@ Library runs inside Obsidian 1.8.7 or newer, on desktop (Windows, macOS, Linux) 
 - Library cards have no focus outline of their own; whether keyboard focus is visible on them depends on the theme.
 - The small lift of a card on hover still plays with reduced motion turned on.
 - The sort menu is a list of buttons: it has no arrow-key navigation and does not close with Escape.
+- The sort button is always announced by the label of the first sort ("A-Z" in English), whatever sort is chosen.
+- After a choice in the sort menu, or a click elsewhere, closes it, the sort button still reports the menu as open.
 - Episode and chapter checkboxes are labelled "Watched" without the episode's name, so a screen reader announces them alike.
 - In the share window, the buttons use each network's brand colour with white text; for WhatsApp, Telegram, Reddit, Bluesky and VK that is below the WCAG AA contrast ratio for text.
 - Trailers play in YouTube's or Vimeo's embedded player, so captions and player controls are theirs; the player is titled after the trailer.
