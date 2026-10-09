@@ -1,0 +1,75 @@
+name: Delete merged branches
+
+# GitHub deletes a head branch on merge only when a person merges; branches
+# merged by the Auto-merge workflow stay behind. After a successful check
+# this waits for the pull request's auto-merge and deletes its branch; a
+# daily sweep removes any merged branch left over. A branch is deleted only
+# while it still points at the merged commit, so later pushes are kept.
+on:
+    workflow_run:
+        workflows: [Check pull request]
+        types: [completed]
+    schedule:
+        - cron: "17 4 * * *"
+    workflow_dispatch:
+
+permissions: {}
+
+jobs:
+    delete:
+        if: >-
+            github.repository == 'Kigrok/obsidian-library-plugin' &&
+            (github.event_name != 'workflow_run' ||
+            (github.event.workflow_run.conclusion == 'success' &&
+            github.event.workflow_run.head_repository.full_name == github.repository &&
+            github.event.workflow_run.actor.login != 'dependabot[bot]'))
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: read
+
+        steps:
+            - name: Delete merged branches
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  REPO: ${{ github.repository }}
+                  OWNER: ${{ github.repository_owner }}
+                  DEFAULT: ${{ github.event.repository.default_branch || 'main' }}
+                  BRANCH: ${{ github.event.workflow_run.head_branch }}
+              run: |
+                  # state: "merged <sha>", "waiting" (open with auto-merge on) or "keep";
+                  # delete_if_merged: "gone" once handled, otherwise the state.
+                  state() {
+                      gh api "repos/$REPO/pulls?state=all&head=$OWNER:$1&per_page=1" --jq '
+                          .[0] // {} |
+                          if .merged_at then "merged \(.head.sha)"
+                          elif .state == "open" and .auto_merge then "waiting"
+                          else "keep" end'
+                  }
+                  delete_if_merged() {
+                      local branch="$1" s sha
+                      [ "$branch" = "$DEFAULT" ] && { echo keep; return; }
+                      s="$(state "$branch")"
+                      if [ "${s%% *}" = merged ]; then
+                          sha="$(gh api "repos/$REPO/branches/$branch" --jq .commit.sha 2>/dev/null || true)"
+                          if [ -n "$sha" ] && [ "$sha" = "${s#merged }" ]; then
+                              gh api -X DELETE "repos/$REPO/git/refs/heads/$branch"
+                              echo "deleted $branch" >&2
+                          fi
+                          echo gone
+                      else
+                          echo "$s"
+                      fi
+                  }
+
+                  if [ -n "$BRANCH" ]; then
+                      # Auto-merge lands seconds after the check; wait up to 3 minutes.
+                      for _ in $(seq 36); do
+                          [ "$(delete_if_merged "$BRANCH")" = waiting ] || exit 0
+                          sleep 5
+                      done
+                      echo "$BRANCH is still waiting to merge; the daily sweep will catch it."
+                  else
+                      gh api "repos/$REPO/branches?per_page=100" --paginate --jq '.[].name' |
+                          while read -r branch; do delete_if_merged "$branch" >/dev/null; done
+                  fi
