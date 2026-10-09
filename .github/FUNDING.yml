@@ -1,6 +1,2 @@
-# The Sponsor button on the repository page: Buy Me a Coffee, and the
-# wallet addresses, which live in one place, README → Support, behind the
-# protected main branch.
+# The Sponsor button on the repository page.
 buy_me_a_coffee: venvk
-custom:
-    - https://github.com/Kigrok/obsidian-library-plugin#support
