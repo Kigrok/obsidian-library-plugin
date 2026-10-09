@@ -1,0 +1,60 @@
+name: Auto-merge
+
+# Pull requests merge on their own once the required "check" passes:
+# - the owner's, unless opened as a draft; marking a draft ready merges it.
+#   Merge commit as before: the title (release: for a version title) and
+#   the first paragraph of the description.
+# - Dependabot's patch and minor updates, squashed; major ones wait for a
+#   review by hand.
+# Contributors' pull requests are left for review.
+# pull_request_target gives the token write access; no job checks out or
+# runs code from the pull request.
+on:
+    pull_request_target:
+        types: [opened, reopened, ready_for_review]
+
+permissions: {}
+
+jobs:
+    owner:
+        if: github.repository == 'Kigrok/obsidian-library-plugin' && github.event.pull_request.user.login == 'Kigrok' && !github.event.pull_request.draft
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
+
+        steps:
+            - name: Enable auto-merge
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  PR_URL: ${{ github.event.pull_request.html_url }}
+                  PR_NUMBER: ${{ github.event.pull_request.number }}
+                  PR_TITLE: ${{ github.event.pull_request.title }}
+                  PR_BODY: ${{ github.event.pull_request.body }}
+              run: |
+                  subject="$PR_TITLE (#$PR_NUMBER)"
+                  if [[ "$PR_TITLE" =~ ^[0-9]+\.[0-9]+\.[0-9]+[[:space:]] ]]; then
+                      subject="release: $subject"
+                  fi
+                  # First paragraph of the description, without template comments.
+                  body="$(printf '%s\n' "$PR_BODY" | tr -d '\r' | awk '/^<!--.*-->$/ { next } NF { p = 1 } p && !NF { exit } p')"
+                  gh pr merge --auto --merge --subject "$subject" --body "$body" "$PR_URL"
+
+    dependabot:
+        if: github.repository == 'Kigrok/obsidian-library-plugin' && github.event.pull_request.user.login == 'dependabot[bot]'
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+            pull-requests: write
+
+        steps:
+            - name: Dependabot metadata
+              id: meta
+              uses: dependabot/fetch-metadata@v3
+
+            - name: Enable auto-merge
+              if: steps.meta.outputs.update-type == 'version-update:semver-patch' || steps.meta.outputs.update-type == 'version-update:semver-minor'
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  PR_URL: ${{ github.event.pull_request.html_url }}
+              run: gh pr merge --auto --squash "$PR_URL"

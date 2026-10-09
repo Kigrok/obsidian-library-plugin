@@ -8,6 +8,11 @@ on:
 permissions:
     contents: read
 
+# A new push to the pull request cancels the run it makes obsolete.
+concurrency:
+    group: check-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
+
 jobs:
     check:
         runs-on: ubuntu-latest
