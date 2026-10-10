@@ -420,7 +420,7 @@ export class LibraryView extends ItemView {
 		searchBtn.addEventListener('click', () => this.plugin.openLibrarySearch())
 
 		if (sections.length === 0) {
-			root.createEl('p', { text: tr('modal.noCategories') })
+			root.createEl('p', { text: tr('view.empty') })
 			return
 		}
 

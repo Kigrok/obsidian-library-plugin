@@ -1097,3 +1097,10 @@
 	font-size: 0.75em;
 	color: var(--text-muted);
 }
+
+/* The add picker: a medium without a category yet. */
+.library-pick-new {
+	margin-inline-start: var(--size-4-2);
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+}

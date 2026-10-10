@@ -12,25 +12,11 @@ import type LibraryPlugin from "./main";
 import type { ICategory, IStatsTop } from "./constants";
 import { isTemplateFile, rankableProperties, toStr, topLabel } from "./util";
 import { isContentType, type ContentType } from "./providers/types";
+import { TYPE_DEFAULTS, addCategoryTop, cleanFolder, isDefaultTypeValue, newCategory } from "./categories";
 import { tr } from "./i18n";
 import { aniListViewer, anilistAuthUrl } from "./anilistSync";
 import { codeFromInput, exchangeCode, makeVerifier, malAuthUrl, malViewer } from "./malSync";
 import { PromptModal } from "./ui/promptModal";
-
-const TYPE_DEFAULTS: Record<string, string> = {
-	movie: "Movie",
-	series: "Series",
-	book: "Book",
-	comic: "Comic",
-	game: "Game",
-	music: "Music",
-	anime: "Anime",
-	manual: "Manual",
-};
-
-function isDefaultTypeValue(value: string): boolean {
-	return Object.values(TYPE_DEFAULTS).includes(value);
-}
 
 // A YAML sample, not UI text: it stays verbatim in every language.
 const FRONTMATTER_EXAMPLE = [
@@ -92,6 +78,10 @@ export class LibrarySettingTab extends PluginSettingTab {
 	private plugin: LibraryPlugin;
 	// Categories whose Type value and folder rows are unfolded; screen state only.
 	private expanded = new Set<ICategory>();
+	// Folder edits in progress, by the value they started from: moving notes
+	// is offered once the field is left or the tab closes, not per keystroke.
+	private libraryFrom: string | null = null;
+	private folderFrom = new Map<ICategory, string>();
 
 	constructor(app: App, plugin: LibraryPlugin) {
 		super(app, plugin);
@@ -113,6 +103,26 @@ export class LibrarySettingTab extends PluginSettingTab {
 	// Obsidian before 1.13 draws the same rows by hand.
 	display(): void {
 		this.draw();
+	}
+
+	hide(): void {
+		this.commitFolders(false);
+		super.hide();
+	}
+
+	// A folder edit is done: a changed library folder takes the categories
+	// inside it along, and either change offers to move their notes.
+	private commitFolders(redraw: boolean): void {
+		const settings = this.plugin.settings;
+		if (this.libraryFrom !== null) {
+			const from = this.libraryFrom;
+			this.libraryFrom = null;
+			void this.plugin.moveLibraryFolder(from, settings.libraryFolder).then((followed) => {
+				if (redraw && followed > 0) this.refresh();
+			});
+		}
+		for (const [cat, from] of this.folderFrom) void this.plugin.moveCategoryFolder(cat, from, cat.folder);
+		this.folderFrom.clear();
 	}
 
 	private definition(row: Row): SettingDefinition {
@@ -151,7 +161,9 @@ export class LibrarySettingTab extends PluginSettingTab {
 
 	private sections(): Section[] {
 		const settings = this.plugin.settings;
-		const categories: Section[] = [{ heading: tr("settings.section.categories"), rows: [note(tr("settings.categories.desc"))] }];
+		const categories: Section[] = [
+			{ heading: tr("settings.section.categories"), rows: [note(tr("settings.categories.desc")), this.libraryFolderRow()] },
+		];
 		settings.categories.forEach((cat, index) => {
 			categories.push({ group: true, rows: this.categoryRows(cat, index) });
 		});
@@ -284,6 +296,26 @@ export class LibrarySettingTab extends PluginSettingTab {
 		];
 	}
 
+	private libraryFolderRow(): Row {
+		return {
+			name: tr("settings.libraryFolder.name"),
+			desc: tr("settings.libraryFolder.desc"),
+			render: (row) => {
+				row.addText((text) => {
+					text
+						.setPlaceholder("Library")
+						.setValue(this.plugin.settings.libraryFolder)
+						.onChange(async (value) => {
+							if (this.libraryFrom === null) this.libraryFrom = this.plugin.settings.libraryFolder;
+							this.plugin.settings.libraryFolder = cleanFolder(value);
+							await this.plugin.saveSettings();
+						});
+					text.inputEl.addEventListener("change", () => this.commitFolders(true));
+				});
+			},
+		};
+	}
+
 	private textRow(prefix: string, key: TextKey, placeholder: string): Row {
 		return {
 			name: tr(`${prefix}.name`),
@@ -413,15 +445,17 @@ export class LibrarySettingTab extends PluginSettingTab {
 				visible: unfolded,
 				render: (row) => {
 					row.settingEl.addClass("library-settings-advanced-row");
-					row.addText((text) =>
+					row.addText((text) => {
 						text
 							.setPlaceholder(tr("settings.category.folder.placeholder"))
 							.setValue(cat.folder)
 							.onChange(async (value) => {
+								if (!this.folderFrom.has(cat)) this.folderFrom.set(cat, cat.folder);
 								cat.folder = value.trim();
 								await this.plugin.saveSettings();
-							}),
-					);
+							});
+						text.inputEl.addEventListener("change", () => this.commitFolders(false));
+					});
 				},
 			},
 			{
@@ -491,6 +525,7 @@ export class LibrarySettingTab extends PluginSettingTab {
 					const at = settings.categories.indexOf(cat);
 					if (at >= 0) settings.categories.splice(at, 1);
 					this.expanded.delete(cat);
+					this.folderFrom.delete(cat);
 					// Its statistics column goes too, unless another category
 					// still shows notes of that Type.
 					if (!settings.categories.some((c) => c.typeValue === cat.typeValue)) {
@@ -518,30 +553,10 @@ export class LibrarySettingTab extends PluginSettingTab {
 				.setButtonText(tr("settings.addCategory"))
 				.setCta()
 				.onClick(async () => {
-					const names: Record<string, string> = {
-						movie: tr("settings.default.movie"),
-						series: tr("settings.default.series"),
-						book: tr("settings.default.book"),
-						comic: tr("settings.default.comic"),
-						game: tr("settings.default.game"),
-						music: tr("settings.default.music"),
-						anime: tr("settings.default.anime"),
-						manual: tr("settings.default.manual"),
-					};
 					const contentType: ContentType = isContentType(addValue) ? addValue : "movie";
-					const typeValue = TYPE_DEFAULTS[contentType] ?? "Movie";
-					this.plugin.settings.categories.push({
-						name: names[contentType] ?? contentType,
-						typeValue,
-						contentType,
-						folder: "",
-					});
-					// A new category shows its top titles right away, the way
-					// every category did before tops were chosen.
-					const tops = this.plugin.settings.stats.tops;
-					if (!tops.some((top) => top.kind === "category" && top.key === typeValue)) {
-						tops.push({ kind: "category", key: typeValue });
-					}
+					const category = newCategory(contentType, this.plugin.settings);
+					this.plugin.settings.categories.push(category);
+					addCategoryTop(this.plugin.settings, category.typeValue);
 					await this.plugin.saveSettings();
 					this.refresh();
 				}),

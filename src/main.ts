@@ -4,10 +4,11 @@ import {
 	MarkdownView,
 	Notice,
 	normalizePath,
-	setIcon
+	setIcon,
+	type TFolder
 } from 'obsidian'
 import { progressPattern, RATING_RT_ICON, type ICategory, type ILibrarySettings, type IStatsSettings, type IStatsTop, DEFAULT_SETTINGS } from './constants'
-import { tr, trCount } from './i18n'
+import { formatNumber, tr, trCount } from './i18n'
 import { LibrarySettingTab } from './settings'
 import { ProviderRegistry } from './providers/registry'
 import { OmdbProvider } from './providers/omdb'
@@ -31,8 +32,10 @@ import { WikidataGameProvider } from './providers/wikidataGames'
 import { TmdbEnricher } from './providers/tmdb'
 import { RottenTomatoesEnricher } from './providers/wikidata'
 import { isContentType } from './providers/types'
-import type { ContentProvider, NormalizedMetadata, SearchResult } from './providers/types'
-import { PickTypeModal } from './ui/pickTypeModal'
+import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './providers/types'
+import { PickTypeModal, type AddChoice } from './ui/pickTypeModal'
+import { ConfirmModal } from './ui/confirmModal'
+import { MEDIA, TYPE_DEFAULTS, addCategoryTop, cleanFolder, inferLibraryFolder, isInside, joinFolder, newCategory, parentFolder } from './categories'
 import { AddContentModal } from './ui/addContentModal'
 import { LibrarySearchModal } from './ui/librarySearchModal'
 import { PromptModal } from './ui/promptModal'
@@ -51,8 +54,10 @@ import { Lightbox } from './ui/lightbox'
 import {
 	toStr,
 	toStrArray,
-	parseProgress,
 	parseWatched,
+	isFinished,
+	shownProgress,
+	trackingOf,
 	todayDmy,
 	sanitizeFilename,
 	isTemplateFile,
@@ -79,6 +84,21 @@ const LINK_FIELDS = ['Genre', 'Creator', 'Cast']
 // library one note at a time so the sources are never hit in a burst.
 const ENRICH_START_DELAY = 10 * 1000
 const SOURCE_SCORES = ['Rating IMDB', 'Rating RT', 'Rating MC', 'Rating RAWG', 'Rating AniList', 'Rating MAL']
+
+// Where a new note goes: a category, or a medium whose category is created
+// with the first note added to it.
+type Target = ICategory | ContentType
+
+function typeOf(target: Target): ContentType {
+	return typeof target === 'string' ? target : target.contentType
+}
+
+// A category's notes leave one folder for another, subfolders kept.
+interface FolderMove {
+	typeValue: string
+	from: string
+	to: string
+}
 const ENRICH_STEP_DELAY = 700
 
 // An anime note and the id it was added under; a sync looks up the other
@@ -391,24 +411,45 @@ export default class LibraryPlugin extends Plugin {
 		}).open()
 	}
 
-	openAddContent(): void {
+	// The categories, then every medium that has none yet: picking one of
+	// those creates its category with the first title added.
+	addChoices(): AddChoice[] {
 		const categories = this.settings.categories
-		if (categories.length === 0) {
-			new Notice(tr('modal.noCategories'))
-			return
+		const choices: AddChoice[] = categories.map(category => ({ category }))
+		for (const type of MEDIA) {
+			if (!categories.some(c => c.contentType === type)) choices.push({ type })
 		}
-		new PickTypeModal(this.app, categories, (category) => {
-			const provider = this.registry.forType(category.contentType)
+		return choices
+	}
+
+	openAddContent(): void {
+		new PickTypeModal(this.app, this.addChoices(), (choice) => {
+			const target: Target = 'category' in choice ? choice.category : choice.type
+			const provider = this.registry.forType(typeOf(target))
 			if (!provider) {
 				new PromptModal(this.app, tr('modal.search.placeholder'), (title) => {
-					void this.createManual(category, title)
+					void this.createManual(target, title)
 				}).open()
 				return
 			}
-			new AddContentModal(this.app, provider, category.contentType, (result) => {
-				void this.createFromResult(category, result)
+			new AddContentModal(this.app, provider, typeOf(target), (result) => {
+				void this.createFromResult(target, result)
 			}).open()
 		}).open()
+	}
+
+	// The category a note of this medium goes to: the first one of it, or a
+	// new one made now, with its folder inside the library folder.
+	private async categoryFor(target: Target): Promise<ICategory> {
+		if (typeof target !== 'string') return target
+		const existing = this.settings.categories.find(c => c.contentType === target)
+		if (existing) return existing
+		const category = newCategory(target, this.settings)
+		this.settings.categories.push(category)
+		addCategoryTop(this.settings, category.typeValue)
+		await this.saveSettings()
+		new Notice(tr('notice.categoryCreated', { name: category.name }))
+		return category
 	}
 
 	// The active note, when it belongs to a category that has a source.
@@ -419,17 +460,19 @@ export default class LibraryPlugin extends Plugin {
 		return file && category && this.registry.forType(category.contentType) ? file : null
 	}
 
-	private async createManual(category: ICategory, title: string): Promise<void> {
+	private async createManual(target: Target, title: string): Promise<void> {
 		try {
+			const category = await this.categoryFor(target)
 			const path = await this.uniqueNotePath(title, category.folder)
 			const file = await this.app.vault.create(path, await this.templateText(category))
+			const tracking = trackingOf(category.contentType)
 			await this.app.fileManager.processFrontMatter(file, (fm) => {
 				Object.assign(fm, {
 					Type: category.typeValue,
 					Name: title,
 					'My Rating': null,
-					Complete: false,
-					Progress: '',
+					...(tracking !== 'progress' ? { Complete: false } : {}),
+					...(tracking !== 'watched' ? { Progress: '' } : {}),
 					Date: todayDmy(),
 				})
 			})
@@ -441,12 +484,12 @@ export default class LibraryPlugin extends Plugin {
 		}
 	}
 
-	private async createFromResult(category: ICategory, result: SearchResult): Promise<void> {
-		const provider = this.registry.forType(category.contentType)
+	private async createFromResult(target: Target, result: SearchResult): Promise<void> {
+		const provider = this.registry.forType(typeOf(target))
 		if (!provider) return
 		new Notice(tr('notice.searching'))
 		try {
-			const meta = await provider.fetch(result.sourceId, category.contentType, result.raw)
+			const meta = await provider.fetch(result.sourceId, typeOf(target), result.raw)
 			if (!meta) {
 				new Notice(tr('notice.notFound'))
 				return
@@ -462,6 +505,8 @@ export default class LibraryPlugin extends Plugin {
 				}
 			}
 
+			// A new medium gets its category only now, when a note is sure to follow.
+			const category = await this.categoryFor(target)
 			const file = await this.newNote(category, provider.id, result.sourceId, result.title, meta)
 			await this.app.workspace.getLeaf(false).openFile(file)
 			new Notice(tr('notice.created', { name: toStr(meta.fields.Name) || result.title }))
@@ -474,12 +519,15 @@ export default class LibraryPlugin extends Plugin {
 	private async newNote(category: ICategory, source: string, sourceId: string, title: string, meta: NormalizedMetadata, extra: Record<string, unknown> = {}): Promise<TFile> {
 		const path = await this.uniqueNotePath(title, category.folder)
 		const file = await this.app.vault.create(path, await this.templateText(category))
+		// Series, anime and books track progress, movies a watched switch
+		// (Complete), every other medium both.
+		const tracking = trackingOf(category.contentType)
 		await this.app.fileManager.processFrontMatter(file, (fm) => {
 			Object.assign(fm, {
 				Type: category.typeValue,
-				Progress: meta.progressTotal ? `0/${String(meta.progressTotal)}` : '',
+				...(tracking !== 'watched' ? { Progress: meta.progressTotal ? `0/${String(meta.progressTotal)}` : '' } : {}),
 				'My Rating': null,
-				Complete: false,
+				...(tracking !== 'progress' ? { Complete: false } : {}),
 				Date: todayDmy(),
 				Source: source,
 				'Source ID': sourceId,
@@ -489,8 +537,8 @@ export default class LibraryPlugin extends Plugin {
 		return file
 	}
 
-	// Imports the user's Steam library into the first Games category: a note per
-	// owned game, Playtime in hours. Safe to run again: known games (matched by
+	// Imports the user's Steam library into the first Games category, made with
+	// the first new game when there is none: a note per owned game, Playtime in hours. Safe to run again: known games (matched by
 	// store URL) only get their Playtime updated. Store lookups are spaced out,
 	// since the store API limits requests per minute.
 	private async steamImport(): Promise<void> {
@@ -498,9 +546,11 @@ export default class LibraryPlugin extends Plugin {
 		const key = this.settings.steamApiKey.trim()
 		const profile = this.settings.steamId.trim()
 		if (!key || !profile) { new Notice(tr('notice.steam.noKey')); return }
-		const category = this.settings.categories.find(c => c.contentType === 'game')
+		let category = this.settings.categories.find(c => c.contentType === 'game')
 		const provider = this.registry.forType('game')
-		if (!category || !provider) { new Notice(tr('notice.steam.noCategory')); return }
+		if (!provider) return
+		// Without a Games category yet, notes of the Type it gets still count as known games.
+		const typeValue = category?.typeValue ?? TYPE_DEFAULTS.game ?? 'Game'
 		this.steamImporting = true
 		try {
 			new Notice(tr('notice.steam.importing'))
@@ -510,7 +560,7 @@ export default class LibraryPlugin extends Plugin {
 			const byUrl = new Map<string, TFile>()
 			for (const file of this.app.vault.getMarkdownFiles()) {
 				const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
-				if (fm && toStr(fm.Type) === category.typeValue && toStr(fm.URL)) byUrl.set(toStr(fm.URL), file)
+				if (fm && toStr(fm.Type) === typeValue && toStr(fm.URL)) byUrl.set(toStr(fm.URL), file)
 			}
 			let created = 0
 			let updated = 0
@@ -533,6 +583,7 @@ export default class LibraryPlugin extends Plugin {
 						progressTotal: null,
 						imdbId: null
 					}
+					if (!category) category = await this.categoryFor('game')
 					const file = await this.newNote(category, provider.id, sourceId, toStr(meta.fields.Name) || game.name, meta, { Playtime: hours })
 					byUrl.set(url, file)
 					created++
@@ -596,7 +647,7 @@ export default class LibraryPlugin extends Plugin {
 		if (!fm) return
 		if (!this.settings.categories.some(c => c.typeValue === toStr(fm.Type))) return
 		try {
-			await this.syncCompleteProgress(file, fm)
+			await this.syncTracking(file, fm)
 			await this.syncLinkFields(file, fm)
 		} catch (e) {
 			// A note whose YAML does not parse must not stop the ones after it.
@@ -604,21 +655,48 @@ export default class LibraryPlugin extends Plugin {
 		}
 	}
 
-	private async syncCompleteProgress(file: TFile, fm: Record<string, unknown>): Promise<void> {
-		if (fm.Complete !== true) return
+	// The medium of a note: the content type of its category.
+	private kindOf(fm: Record<string, unknown>): ContentType | undefined {
+		return this.settings.categories.find(c => c.typeValue === toStr(fm.Type))?.contentType
+	}
+
+	// Keeps a note in its medium's shape. Series, anime and books follow their
+	// progress: a Complete from before 2.4.1 fills the progress and goes, unless
+	// there is no total to hold it. Movies follow Complete: a Progress from
+	// before turns watched into Complete and goes. Every other medium keeps both,
+	// and Complete switched on fills the progress.
+	private async syncTracking(file: TFile, fm: Record<string, unknown>): Promise<void> {
+		const tracking = trackingOf(this.kindOf(fm))
 		const match = toStr(fm.Progress).match(progressPattern)
-		if (!match) return
-		const watched = Number(match[1])
-		const total = Number(match[2])
-		if (total <= 0 || watched === total) return
+		const watched = match ? Number(match[1]) : 0
+		const total = match ? Number(match[2]) : 0
+		const complete = fm.Complete === true || toStr(fm.Complete) === 'true'
+		const fill = (current: Record<string, unknown>): void => {
+			current.Progress = `${String(total)}/${String(total)}`
+			const kind = this.trackKind(fm)
+			if (kind) followProgress(current, kind)
+		}
+		let update: ((current: Record<string, unknown>) => void) | null = null
+		if (tracking === 'progress') {
+			if (!('Complete' in fm) || (complete && total <= 0)) return
+			update = (current) => {
+				if (complete && watched < total) fill(current)
+				delete current.Complete
+			}
+		} else if (tracking === 'watched') {
+			if (!('Progress' in fm)) return
+			update = (current) => {
+				current.Complete = complete || watched > 0
+				delete current.Progress
+			}
+		} else {
+			if (!complete || total <= 0 || watched === total) return
+			update = fill
+		}
 		if (this.syncingLinks.has(file.path)) return
 		this.syncingLinks.add(file.path)
 		try {
-			await this.app.fileManager.processFrontMatter(file, (current) => {
-				Object.assign(current, { Progress: `${String(total)}/${String(total)}` })
-				const kind = this.trackKind(fm)
-				if (kind) followProgress(current as Record<string, unknown>, kind)
-			})
+			await this.app.fileManager.processFrontMatter(file, (current) => update?.(current as Record<string, unknown>))
 		} finally {
 			this.syncingLinks.delete(file.path)
 		}
@@ -664,7 +742,7 @@ export default class LibraryPlugin extends Plugin {
 		const mediaId = (await this.idsOn('anilist', [{ file, ...note }]))?.get(file)
 		if (!mediaId) { new Notice(tr('notice.anilist.pushFailed')); return }
 		const watched = parseWatched(fm.Progress)
-		const status = listStatus(fm.Complete === true, watched)
+		const status = listStatus(isFinished(fm, this.kindOf(fm) ?? 'anime'), watched)
 		const rating = Number(toStr(fm['My Rating']))
 		const scoreRaw = Number.isFinite(rating) && rating > 0 ? Math.min(100, Math.round(rating * 10)) : null
 		const ok = await pushEntry(token, mediaId, watched, status, scoreRaw)
@@ -735,26 +813,24 @@ export default class LibraryPlugin extends Plugin {
 			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
 			const entry = entryFor(id)
 			if (!fm || !entry) continue
-			// Only advance forward — never regress a note that is locally further along or already
-			// complete. This makes pull safe to run over hand-edited notes (no silent data loss).
+			// Only advance forward — never regress a note that is locally further along. This
+			// makes pull safe to run over hand-edited notes (no silent data loss). An anime
+			// follows its episodes: an entry marked completed fills the note's progress.
+			const match = toStr(fm.Progress).match(progressPattern)
+			const noteTotal = match ? Number(match[2]) : 0
 			const localWatched = parseWatched(fm.Progress)
-			const localComplete = fm.Complete === true
-			const newWatched = Math.max(localWatched, entry.progress)
-			const newComplete = localComplete || entry.complete
-			if (newWatched === localWatched && newComplete === localComplete) continue
+			const pulled = Math.max(localWatched, entry.progress)
+			const newWatched = entry.complete ? Math.max(pulled, noteTotal) : pulled
+			if (newWatched === localWatched && !('Complete' in fm)) continue
 			// Keep the note's episode total so Progress stays in the "watched/total" shape the
 			// rest of the plugin parses; never let total fall below watched (a stale note total
 			// smaller than AniList progress would otherwise write nonsense like "15/12").
-			const match = toStr(fm.Progress).match(progressPattern)
-			const noteTotal = match ? Number(match[2]) : 0
 			const total = String(Math.max(noteTotal, newWatched, 1))
 			try {
-				await this.app.fileManager.processFrontMatter(file, (current) => {
-					Object.assign(current, {
-						Progress: `${String(newWatched)}/${total}`,
-						Complete: newComplete
-					})
-					followProgress(current as Record<string, unknown>)
+				await this.app.fileManager.processFrontMatter(file, (current: Record<string, unknown>) => {
+					current.Progress = `${String(newWatched)}/${total}`
+					delete current.Complete
+					followProgress(current, 'anime')
 				})
 				updated++
 			} catch (e) {
@@ -801,7 +877,7 @@ export default class LibraryPlugin extends Plugin {
 		if (!malId) { new Notice(tr('notice.mal.noMalId')); return }
 		const watched = parseWatched(fm.Progress)
 		const rating = Number(toStr(fm['My Rating']))
-		const ok = await pushMalEntry(token, malId, watched, malStatus(fm.Complete === true, watched),
+		const ok = await pushMalEntry(token, malId, watched, malStatus(isFinished(fm, this.kindOf(fm) ?? 'anime'), watched),
 			Number.isFinite(rating) ? rating : null)
 		new Notice(ok
 			? tr('notice.mal.pushed', { name: toStr(fm.Name) || file.basename })
@@ -903,17 +979,135 @@ export default class LibraryPlugin extends Plugin {
 		}
 	}
 
-	private async uniqueNotePath(title: string, categoryFolder: string): Promise<string> {
-		const folder = categoryFolder.trim()
-		const base = sanitizeFilename(title)
-		const dir = folder ? normalizePath(folder) : ''
-		if (dir && !this.app.vault.getAbstractFileByPath(dir)) {
+	// Creates a folder and each missing folder above it: a new category's
+	// Library/Movies may be the first thing inside Library.
+	private async ensureFolder(dir: string): Promise<void> {
+		let path = ''
+		for (const part of dir.split('/').filter(Boolean)) {
+			path = path ? `${path}/${part}` : part
+			if (this.app.vault.getAbstractFileByPath(path)) continue
 			try {
-				await this.app.vault.createFolder(dir)
+				await this.app.vault.createFolder(path)
 			} catch (e) {
 				console.error('Library: folder create error', e)
 			}
 		}
+	}
+
+	// The library folder changed: categories filed inside the old one follow
+	// it, and once the user agrees their notes move along. Returns how many
+	// categories followed.
+	async moveLibraryFolder(from: string, to: string): Promise<number> {
+		const oldRoot = cleanFolder(from)
+		const newRoot = cleanFolder(to)
+		this.settings.libraryFolder = newRoot
+		const moves: FolderMove[] = []
+		if (oldRoot && oldRoot !== newRoot) {
+			for (const category of this.settings.categories) {
+				const folder = cleanFolder(category.folder)
+				if (!isInside(folder, oldRoot)) continue
+				category.folder = joinFolder(newRoot, folder.slice(oldRoot.length + 1))
+				moves.push({ typeValue: category.typeValue, from: folder, to: category.folder })
+			}
+		}
+		await this.saveSettings()
+		await this.offerMove(moves)
+		return moves.length
+	}
+
+	// A category's folder changed: its notes in the old folder can move along.
+	// Notes of a category kept at the vault root stay where they are.
+	async moveCategoryFolder(category: ICategory, from: string, to: string): Promise<void> {
+		const oldFolder = cleanFolder(from)
+		category.folder = cleanFolder(to)
+		await this.saveSettings()
+		if (oldFolder && oldFolder !== category.folder) {
+			await this.offerMove([{ typeValue: category.typeValue, from: oldFolder, to: category.folder }])
+		}
+	}
+
+	// Counts the notes first and moves them only when the user agrees.
+	private async offerMove(moves: FolderMove[]): Promise<void> {
+		const plan = this.movePlan(moves)
+		if (plan.length === 0) return
+		const agreed = await new Promise<boolean>((resolve) => {
+			new ConfirmModal(this.app, {
+				title: tr('modal.moveNotes.title'),
+				text: tr('modal.moveNotes.count', { count: formatNumber(plan.length) }),
+				confirm: tr('modal.moveNotes.move'),
+				cancel: tr('modal.moveNotes.keep'),
+			}, resolve).open()
+		})
+		if (agreed) await this.runMoves(plan, moves)
+	}
+
+	// The notes of each moved category that sit in its old folder, with the
+	// path each gets in the new one.
+	private movePlan(moves: FolderMove[]): Array<{ file: TFile; target: string }> {
+		const plan: Array<{ file: TFile; target: string }> = []
+		if (moves.length === 0) return plan
+		for (const file of this.app.vault.getMarkdownFiles()) {
+			if (isTemplateFile(file.path)) continue
+			const type = toStr(this.app.metadataCache.getFileCache(file)?.frontmatter?.Type)
+			const folder = parentFolder(file.path)
+			const move = moves.find(m => m.typeValue === type && isInside(folder, m.from))
+			// With the new folder inside the old one, a note already in it stays.
+			if (!move || (isInside(move.to, move.from) && isInside(folder, move.to))) continue
+			plan.push({ file, target: normalizePath(joinFolder(move.to, file.path.slice(move.from.length + 1))) })
+		}
+		return plan
+	}
+
+	// Moves through the file manager, so links follow the user's link settings.
+	// A note whose new place is taken stays put; the old folders go to the
+	// trash once nothing is left in them.
+	private async runMoves(plan: Array<{ file: TFile; target: string }>, moves: FolderMove[]): Promise<void> {
+		let moved = 0
+		let kept = 0
+		for (const { file, target } of plan) {
+			if (this.app.vault.getAbstractFileByPath(target)) { kept++; continue }
+			try {
+				await this.ensureFolder(parentFolder(target))
+				await this.app.fileManager.renameFile(file, target)
+				moved++
+			} catch (e) {
+				console.error('Library: move note error', file.path, e)
+				kept++
+			}
+		}
+		for (const move of moves) await this.trashIfEmpty(move.from)
+		new Notice(tr('notice.notesMoved', { count: formatNumber(moved) }))
+		if (kept > 0) new Notice(tr('notice.notesNotMoved', { count: formatNumber(kept) }))
+	}
+
+	// A folder without files goes to the trash, then each parent it leaves empty.
+	private async trashIfEmpty(path: string): Promise<void> {
+		let current = path
+		while (current) {
+			const folder = this.app.vault.getFolderByPath(current)
+			if (!folder || this.holdsFiles(folder)) return
+			try {
+				await this.app.fileManager.trashFile(folder)
+			} catch (e) {
+				console.error('Library: folder trash error', current, e)
+				return
+			}
+			current = parentFolder(current)
+		}
+	}
+
+	private holdsFiles(folder: TFolder): boolean {
+		return folder.children.some((child) => {
+			const sub = this.app.vault.getFolderByPath(child.path)
+			return sub ? this.holdsFiles(sub) : true
+		})
+	}
+
+	private async uniqueNotePath(title: string, categoryFolder: string): Promise<string> {
+		const folder = categoryFolder.trim()
+		const base = sanitizeFilename(title)
+		const dir = folder ? normalizePath(folder) : ''
+		await this.ensureFolder(dir)
 		const build = (name: string): string => normalizePath(dir ? `${dir}/${name}.md` : `${name}.md`)
 		let candidate = build(base)
 		let counter = 2
@@ -1217,7 +1411,7 @@ export default class LibraryPlugin extends Plugin {
 		if (typeof meta.fields.Season === 'number' && meta.fields.Season > Number(current.Season || 0) && !this.skipped('Season')) {
 			current.Season = meta.fields.Season
 		}
-		if (meta.progressTotal && !hasChapters(current)) {
+		if (meta.progressTotal && !hasChapters(current) && trackingOf(this.kindOf(current)) !== 'watched') {
 			const watched = parseWatched(current.Progress)
 			current.Progress = `${String(watched)}/${String(meta.progressTotal)}`
 		}
@@ -1283,13 +1477,12 @@ export default class LibraryPlugin extends Plugin {
 		const ratingRawg = fm['Rating RAWG'] ? toStr(fm['Rating RAWG']) : ''
 		const ratingMc = fm['Rating MC'] ? toStr(fm['Rating MC']) : ''
 		const myRating = fm['My Rating'] ? toStr(fm['My Rating']) : ''
-		const complete = fm.Complete === true
+		const kind = this.kindOf(fm)
+		// Series, anime and books show progress and no Complete line; movies
+		// only the Complete line; every other medium either, as before.
+		const progressPercent = shownProgress(fm, kind)
+		const complete = trackingOf(kind) !== 'progress' && fm.Complete === true
 		const url = safeUrl(fm.URL)
-
-		let progressPercent = 0
-		if (fm.Progress != null) {
-			progressPercent = parseProgress(fm.Progress)
-		}
 
 		const header = createDiv()
 		header.classList.add('note-header')
@@ -1361,7 +1554,7 @@ export default class LibraryPlugin extends Plugin {
 		if (ratingMc) addRow('MC', ratingMc)
 		if (myRating) addRow(tr('header.myRating'), myRating)
 
-		if (!complete && progressPercent > 0) {
+		if (progressPercent !== null) {
 			const progRow = createDiv()
 			progRow.classList.add('note-header-row')
 			const b = createEl('b')
@@ -1370,7 +1563,7 @@ export default class LibraryPlugin extends Plugin {
 			progRow.appendText(String(progressPercent) + '%')
 			// How much of that progress is on the clock — the part a viewer
 			// actually wants when a season is still half unwatched.
-			const watchedMinutes = watchedRuntimeMinutes(fm)
+			const watchedMinutes = watchedRuntimeMinutes(fm, kind)
 			if (watchedMinutes > 0) progRow.appendText(' · ' + formatRuntime(watchedMinutes))
 			const bar = createDiv()
 			bar.classList.add('note-header-progress-bar')
@@ -1444,11 +1637,9 @@ export default class LibraryPlugin extends Plugin {
 	// Adding goes through the normal path, which opens the note instead when
 	// the title is already in the library.
 	private async addRecommendation(rec: Recommendation): Promise<void> {
-		const category = this.settings.categories.find(c => c.contentType === rec.type)
-		if (!category) { new Notice(tr('recs.noCategory')); return }
 		const sourceId = typeof rec.sourceId === 'string' ? rec.sourceId : await rec.sourceId()
 		if (!sourceId) { new Notice(tr('notice.notFound')); return }
-		await this.createFromResult(category, {
+		await this.createFromResult(rec.type, {
 			provider: '', sourceId, title: rec.title, year: rec.year, cover: rec.cover, subtitle: null, raw: undefined
 		})
 	}
@@ -1733,7 +1924,7 @@ export default class LibraryPlugin extends Plugin {
 			if (cat.contentType === 'googlebook') cat.contentType = 'book'
 			if ((cat.contentType as string) === 'steam') cat.contentType = 'game'
 			if (!isContentType(cat.contentType)) cat.contentType = inferContentType(cat.typeValue)
-			if (cat.folder === undefined) cat.folder = ''
+			if (typeof cat.folder !== 'string') cat.folder = ''
 			const legacy = cat as ICategory & { showTop?: unknown; showRated?: unknown; stats?: { rating?: unknown } }
 			if (legacy.showTop === false || legacy.showRated === false || legacy.stats?.rating === false) unrated.add(cat.typeValue)
 			delete legacy.showTop
@@ -1742,6 +1933,9 @@ export default class LibraryPlugin extends Plugin {
 			if (cat.collapsed !== true) delete cat.collapsed
 		}
 		this.settings.stats = this.loadStats(data?.stats, defaults.stats, unrated)
+		// Settings from before the library folder: the parent its categories share.
+		if (typeof data?.libraryFolder !== 'string') this.settings.libraryFolder = inferLibraryFolder(this.settings.categories, defaults.libraryFolder)
+		this.settings.libraryFolder = cleanFolder(this.settings.libraryFolder)
 	}
 
 	// Key by key: a settings file from an older version has no `stats` block
