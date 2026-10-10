@@ -1,6 +1,6 @@
 # Security
 
-Report a vulnerability privately through [GitHub's report form](https://github.com/Kigrok/obsidian-library-plugin/security/advisories/new), not in a public issue.
+Report a vulnerability privately through [GitHub's report form](https://github.com/venvk/obsidian-library-plugin/security/advisories/new), not in a public issue.
 
 Fixes go into the latest release, which Obsidian installs as an update.
 

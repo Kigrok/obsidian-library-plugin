@@ -21,4 +21,4 @@ Symlink or copy the repo into `<vault>/.obsidian/plugins/library/`, then enable 
 
 ## Reporting issues
 
-Open an [issue](https://github.com/Kigrok/obsidian-library-plugin/issues) with steps to reproduce, your Obsidian version, and the plugin version.
+Open an [issue](https://github.com/venvk/obsidian-library-plugin/issues) with steps to reproduce, your Obsidian version, and the plugin version.

@@ -23,7 +23,7 @@ export interface WikidataEntity {
 }
 
 // Wikimedia asks API clients to say who they are.
-const HEADERS = { 'Api-User-Agent': 'LibraryObsidianPlugin (https://github.com/Kigrok/obsidian-library-plugin)' }
+const HEADERS = { 'Api-User-Agent': 'LibraryObsidianPlugin (https://github.com/venvk/obsidian-library-plugin)' }
 
 async function api<T>(params: Record<string, string>): Promise<T | null> {
 	try {

@@ -17,7 +17,7 @@ permissions: {}
 
 jobs:
     owner:
-        if: github.repository == 'Kigrok/obsidian-library-plugin' && github.event.pull_request.user.login == 'Kigrok' && !github.event.pull_request.draft
+        if: github.repository == 'venvk/obsidian-library-plugin' && github.event.pull_request.user.login == 'venvk' && !github.event.pull_request.draft
         runs-on: ubuntu-latest
         permissions:
             contents: write
@@ -41,7 +41,7 @@ jobs:
                   gh pr merge --auto --merge --subject "$subject" --body "$body" "$PR_URL"
 
     dependabot:
-        if: github.repository == 'Kigrok/obsidian-library-plugin' && github.event.pull_request.user.login == 'dependabot[bot]'
+        if: github.repository == 'venvk/obsidian-library-plugin' && github.event.pull_request.user.login == 'dependabot[bot]'
         runs-on: ubuntu-latest
         permissions:
             contents: write
