@@ -40,6 +40,8 @@ export class GameAggregatorProvider implements ContentProvider {
 	}
 
 	async fetch(sourceId: string, _type: ContentType, raw?: unknown): Promise<NormalizedMetadata | null> {
+		// A PlayStation game no source knew: its note keeps what PlayStation gave.
+		if (sourceId.startsWith('psn:')) return null
 		if (sourceId.startsWith(SteamProvider.PREFIX)) return this.steam.fetch(sourceId, 'game')
 		if (/^Q\d+$/.test(sourceId)) return this.wikidata.fetch(sourceId, 'game')
 		return this.rawg.fetch(sourceId, 'game', raw)

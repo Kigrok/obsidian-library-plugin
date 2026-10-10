@@ -1,9 +1,11 @@
-import { ItemView, WorkspaceLeaf, TFile, setIcon } from 'obsidian'
+import { ItemView, WorkspaceLeaf, TFile, setIcon, setTooltip } from 'obsidian'
 import type LibraryPlugin from './main'
 import { RATING_RT_ICON, type ICategory, type IStatsTop } from './constants'
 import type { ContentType } from './providers/types'
-import { tr, trCount } from './i18n'
+import { formatNumber, tr, trCount } from './i18n'
 import { comparisonOfTheDay, comparisonText } from './facts'
+import { renderTrophies } from './ui/trophyIcons'
+import { renderPlatforms } from './ui/platformIcons'
 import {
 	toStr,
 	toStrArray,
@@ -15,8 +17,10 @@ import {
 	coverSrc,
 	coverValue,
 	runtimeMinutes,
-	watchedRuntimeMinutes,
 	formatRuntime,
+	spentTime,
+	spentMinutes,
+	exactHours,
 	runtimeParts,
 	propertyValues,
 	topLabel
@@ -38,6 +42,7 @@ interface CardData {
 // One statistics column, in the order the settings list them: a property's
 // most frequent values across the library, or a category's best-rated titles.
 type StatsColumn =
+	| { top: IStatsTop; kind: 'platform'; items: true[] }
 	| { top: IStatsTop; kind: 'property'; items: [string, number][] }
 	| { top: IStatsTop; kind: 'category'; items: CardData[] }
 
@@ -52,12 +57,13 @@ interface TimeSlice {
 const TIME_COLORS: Record<string, string> = {
 	movie: 'var(--interactive-accent)',
 	series: 'color-mix(in srgb, var(--interactive-accent) 60%, var(--background-primary))',
-	anime: 'color-mix(in srgb, var(--interactive-accent) 30%, var(--background-primary))'
+	anime: 'color-mix(in srgb, var(--interactive-accent) 30%, var(--background-primary))',
+	game: 'color-mix(in srgb, var(--interactive-accent) 80%, var(--text-normal))'
 }
 
-type SortKey = 'name' | 'year' | 'rating' | 'date'
+type SortKey = 'name' | 'year' | 'rating' | 'date' | 'played'
 
-const SORT_KEYS: SortKey[] = ['name', 'year', 'rating', 'date']
+const SORT_KEYS: SortKey[] = ['name', 'year', 'rating', 'date', 'played']
 
 interface SortChoice {
 	key: SortKey
@@ -72,6 +78,8 @@ interface SectionSpec {
 	defaultSort: SortChoice
 	collapsed: boolean
 	setCollapsed(collapsed: boolean): void
+	// The section's medium: movies, series, anime and music add the time spent.
+	kind?: ContentType
 }
 
 // A key no category name takes: the categories' sort choices share the map.
@@ -210,10 +218,10 @@ export class LibraryView extends ItemView {
 			rated.set(cat, list)
 
 			if (TIME_COLORS[cat.contentType]) {
-				const minutes = watchedRuntimeMinutes(fm, cat.contentType)
+				const minutes = spentMinutes(fm, cat.contentType)
 				if (minutes > 0) {
 					timeMinutes.set(cat.name, (timeMinutes.get(cat.name) || 0) + minutes)
-				} else if (runtimeMinutes(fm.Runtime) === null) {
+				} else if (cat.contentType !== 'game' && runtimeMinutes(fm.Runtime) === null) {
 					// Counted out loud: a chart that silently drops every note
 					// whose source never reported a length would look like a
 					// smaller library than it is.
@@ -224,6 +232,11 @@ export class LibraryView extends ItemView {
 
 		const columns: StatsColumn[] = []
 		for (const top of tops) {
+			if (top.kind === 'platform') {
+				// One item when the platform has totals to show, none otherwise.
+				columns.push({ top, kind: 'platform', items: top.key === 'playstation' && this.plugin.settings.psnStats ? [true] : [] })
+				continue
+			}
 			if (top.kind === 'property') {
 				const tally = counts[properties.indexOf(top.key)]
 				columns.push({
@@ -313,14 +326,16 @@ export class LibraryView extends ItemView {
 		row.createSpan({ cls: 'library-time-name', text: comparisonText(comparison) })
 	}
 
-	private renderStats(root: HTMLElement): void {
+	// Returns the statistics header, or null when there is nothing to show.
+	private renderStats(root: HTMLElement): HTMLElement | null {
 		const stats = this.collectStats()
 		// Only columns with something in them are drawn; with none of them (and
 		// the chart switched off) the section is left out entirely.
 		const columns = stats.columns.filter(column => column.items.length > 0)
 		const showTime = this.plugin.settings.stats.watchTime
 			&& this.plugin.settings.categories.some(c => TIME_COLORS[c.contentType])
-		if (!showTime && columns.length === 0) return
+		const psn = this.plugin.settings.psnStats
+		if (!showTime && columns.length === 0) return null
 
 		const section = root.createDiv({ cls: 'library-stats' })
 		const header = section.createDiv({ cls: 'library-stats-header' })
@@ -343,7 +358,24 @@ export class LibraryView extends ItemView {
 
 		const medals = ['🥇', '🥈', '🥉']
 
+		const renderPsn = (): void => {
+			if (!psn) return
+			const col = box.createDiv({ cls: 'library-stats-col library-stats-psn' })
+			col.createEl('h3', { text: tr('stats.psn') })
+			const line = (label: string, value: string, title = ''): void => {
+				const row = col.createDiv({ cls: 'library-stats-psn-row' })
+				if (title) setTooltip(row, title, { placement: 'top' })
+				row.createSpan({ cls: 'library-stats-psn-label', text: label })
+				row.createSpan({ cls: 'library-stats-psn-value', text: value })
+			}
+			line(tr('stats.psn.games'), formatNumber(psn.games))
+			if (psn.minutes > 0) line(tr('stats.psn.time'), spentTime(psn.minutes), exactHours(psn.minutes))
+			if (psn.level > 0) line(tr('stats.psn.level'), formatNumber(psn.level))
+			renderTrophies(col, { Platinum: psn.earned.platinum, Gold: psn.earned.gold, Silver: psn.earned.silver, Bronze: psn.earned.bronze }, 'library-stats-trophies')
+		}
+
 		for (const column of columns) {
+			if (column.kind === 'platform') { renderPsn(); continue }
 			const col = box.createDiv({ cls: 'library-stats-col' })
 			col.createEl('h3', { text: topLabel(column.top, this.plugin.settings.categories) })
 			if (column.kind === 'property') {
@@ -382,6 +414,7 @@ export class LibraryView extends ItemView {
 			this.plugin.settings.statsCollapsed = nowCollapsed
 			void this.plugin.persistSettings()
 		})
+		return header
 	}
 
 	render(): void {
@@ -401,9 +434,9 @@ export class LibraryView extends ItemView {
 			for (const card of cards) this.shown.add(card.file.path)
 		}
 
-		const header = root.createDiv({ cls: 'library-page-header' })
-		const toc = header.createDiv({ cls: 'library-toc' })
-		const actions = header.createDiv({ cls: 'library-actions' })
+		// + and search sit at the right end of the statistics header; without
+		// statistics (or with no categories yet) they get a row of their own.
+		const actions = createDiv({ cls: 'library-actions' })
 
 		const addBtn = actions.createEl('button', {
 			cls: 'library-icon-btn',
@@ -419,12 +452,18 @@ export class LibraryView extends ItemView {
 		setIcon(searchBtn, 'search')
 		searchBtn.addEventListener('click', () => this.plugin.openLibrarySearch())
 
+		const pageHeader = (): void => {
+			root.createDiv({ cls: 'library-page-header' }).appendChild(actions)
+		}
 		if (sections.length === 0) {
+			pageHeader()
 			root.createEl('p', { text: tr('view.empty') })
 			return
 		}
 
-		this.renderStats(root)
+		const statsHeader = this.renderStats(root)
+		if (statsHeader) statsHeader.appendChild(actions)
+		else pageHeader()
 
 		// Titles not started yet may live in Up next alone, and only while
 		// that block is on: switching both off must not hide them anywhere.
@@ -432,17 +471,17 @@ export class LibraryView extends ItemView {
 		const upNextOnly = settings.showUpNext && !settings.upNextInCategories
 		for (const { category, cards } of sections) {
 			const shown = upNextOnly ? cards.filter(card => !notStarted(card.fm, card.kind)) : cards
-			const sectionEl = this.renderSection(root, {
+			this.renderSection(root, {
 				title: category.name,
 				sortId: category.name,
 				defaultSort: { key: 'name', asc: true },
+				kind: category.contentType,
 				collapsed: category.collapsed === true,
 				setCollapsed: (collapsed) => {
 					if (collapsed) category.collapsed = true
 					else delete category.collapsed
 				}
 			}, shown)
-			this.tocChip(toc, category.name, shown.length, sectionEl)
 		}
 
 		// At the end of the page: everything not started yet, from every
@@ -460,19 +499,27 @@ export class LibraryView extends ItemView {
 				setCollapsed: (collapsed) => { settings.upNextCollapsed = collapsed }
 			}, upNext)
 			upNextEl.addClass('library-up-next')
-			this.tocChip(toc, tr('upNext.title'), upNext.length, upNextEl)
 		}
 		root.scrollTop = scrollTop
 	}
 
-	private tocChip(toc: HTMLElement, name: string, count: number, target: HTMLElement): void {
-		const chip = toc.createEl('button', {
-			cls: 'library-toc-item',
-			text: `${name}: ${String(count)}`
+	// Beside the fold button: the number of titles, and for movies, series,
+	// anime and music the time spent on them.
+	private sectionMeta(toolbar: HTMLElement, cards: CardData[], kind?: ContentType): void {
+		const count = formatNumber(cards.length)
+		toolbar.createSpan({
+			cls: 'library-section-count',
+			text: count,
+			attr: { 'aria-label': `${count} ${trCount('stats.works', cards.length)}` }
 		})
-		chip.addEventListener('click', () =>
-			target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-		)
+		if (kind !== 'movie' && kind !== 'series' && kind !== 'anime' && kind !== 'music' && kind !== 'game') return
+		let minutes = 0
+		for (const card of cards) minutes += spentMinutes(card.fm, card.kind)
+		if (minutes <= 0) return
+		const time = toolbar.createSpan({ cls: 'library-section-time' })
+		setTooltip(time, exactHours(minutes), { placement: 'top' })
+		setIcon(time.createSpan({ cls: 'library-section-time-icon' }), 'clock')
+		time.createSpan({ text: spentTime(minutes) })
 	}
 
 	private renderSection(root: HTMLElement, spec: SectionSpec, cards: CardData[]): HTMLElement {
@@ -485,6 +532,7 @@ export class LibraryView extends ItemView {
 			text: '▼',
 			attr: { 'aria-label': spec.title, 'aria-expanded': 'true' }
 		})
+		this.sectionMeta(toolbar, cards, spec.kind)
 		toolbar.createDiv({ cls: 'library-toolbar-spacer' })
 
 		const sortDropdown = toolbar.createDiv({ cls: 'library-sort-dropdown' })
@@ -505,7 +553,9 @@ export class LibraryView extends ItemView {
 			{ label: tr('sort.name'), key: 'name' },
 			{ label: tr('sort.year'), key: 'year' },
 			{ label: tr('sort.rating'), key: 'rating' },
-			{ label: tr('sort.date'), key: 'date' }
+			{ label: tr('sort.date'), key: 'date' },
+			// Games only: when it was last played, newest first.
+			...(spec.kind === 'game' ? [{ label: tr('sort.played'), key: 'played' as SortKey }] : [])
 		]
 
 		const savedSort = this.readSort(spec.sortId, spec.defaultSort)
@@ -522,9 +572,11 @@ export class LibraryView extends ItemView {
 				let cmp = 0
 				switch (currentSort) {
 					case 'name': cmp = a.name.localeCompare(b.name); break
-					case 'year': cmp = a.year - b.year; break
+					// Same year: the release day decides, where the source gave one.
+					case 'year': cmp = a.year - b.year || parseDate(a.fm.Released) - parseDate(b.fm.Released); break
 					case 'rating': cmp = a.rating - b.rating; break
 					case 'date': cmp = a.date - b.date; break
+					case 'played': cmp = parseDate(a.fm['Last Played']) - parseDate(b.fm['Last Played']); break
 				}
 				return sortAsc ? cmp : -cmp
 			})
@@ -607,7 +659,7 @@ export class LibraryView extends ItemView {
 		const imgDiv = cardEl.createDiv({ cls: 'card-image' })
 		const cardCover = coverSrc(this.app, cover)
 		if (cardCover) {
-			imgDiv.createEl('img', { attr: { src: cardCover, alt: card.name } })
+			imgDiv.createEl('img', { attr: { src: cardCover, alt: card.name, loading: 'lazy', decoding: 'async' } })
 		} else {
 			const type = toStr(fm.Type).toLowerCase()
 			const emoji = type === 'anime' ? '🎌'
@@ -619,6 +671,7 @@ export class LibraryView extends ItemView {
 				: '🎬'
 			imgDiv.createSpan({ text: emoji })
 		}
+		renderPlatforms(imgDiv, fm, 'card-platforms')
 		if (notStarted(fm, card.kind)) {
 			const badge = imgDiv.createSpan({
 				cls: 'card-unstarted',
@@ -648,6 +701,8 @@ export class LibraryView extends ItemView {
 			if (myRating) parts.push(toStr(myRating))
 			info.createDiv({ cls: 'card-rating', text: parts.join(' | ') })
 		}
+
+		renderTrophies(info, fm, 'card-trophies')
 
 		const percent = shownProgress(fm, card.kind)
 		if (percent !== null) {

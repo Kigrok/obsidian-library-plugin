@@ -1,6 +1,7 @@
 import { requestUrl } from 'obsidian'
 import type { GameTrailerFinder } from './gameTrailer'
 import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
+import { releasedDmy } from '../util'
 
 interface SteamSearchItem {
 	id: number
@@ -137,6 +138,7 @@ export class SteamProvider implements ContentProvider {
 			const fields: Record<string, unknown> = {
 				Name: app.name,
 				Year: this.year(app.release_date?.date),
+				Released: releasedDmy(app.release_date?.date) || null,
 				Genre: genres,
 				Creator: developers.length > 0 ? developers : publishers,
 				Cover: await this.cover(id, app.header_image),
