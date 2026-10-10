@@ -1,27 +1,38 @@
-import { App, FuzzySuggestModal } from 'obsidian'
+import { App, FuzzySuggestModal, type FuzzyMatch } from 'obsidian'
 import type { ICategory } from '../constants'
 import { tr } from '../i18n'
+import type { ContentType } from '../providers/types'
 
-export class PickTypeModal extends FuzzySuggestModal<ICategory> {
-	private categories: ICategory[]
-	private onPick: (category: ICategory) => void
+// A category, or a medium without one yet: its category is created with the
+// first title added to it.
+export type AddChoice = { category: ICategory } | { type: ContentType }
 
-	constructor(app: App, categories: ICategory[], onPick: (category: ICategory) => void) {
+export class PickTypeModal extends FuzzySuggestModal<AddChoice> {
+	private choices: AddChoice[]
+	private onPick: (choice: AddChoice) => void
+
+	constructor(app: App, choices: AddChoice[], onPick: (choice: AddChoice) => void) {
 		super(app)
-		this.categories = categories
+		this.choices = choices
 		this.onPick = onPick
 		this.setPlaceholder(tr('modal.pickType'))
 	}
 
-	getItems(): ICategory[] {
-		return this.categories
+	getItems(): AddChoice[] {
+		return this.choices
 	}
 
-	getItemText(category: ICategory): string {
-		return `${category.name} (${category.typeValue})`
+	getItemText(choice: AddChoice): string {
+		if ('category' in choice) return `${choice.category.name} (${choice.category.typeValue})`
+		return choice.type === 'manual' ? tr('settings.category.manual') : tr(`settings.default.${choice.type}`)
 	}
 
-	onChooseItem(category: ICategory): void {
-		this.onPick(category)
+	renderSuggestion(match: FuzzyMatch<AddChoice>, el: HTMLElement): void {
+		super.renderSuggestion(match, el)
+		if (!('category' in match.item)) el.createSpan({ cls: 'library-pick-new', text: tr('modal.pickType.new') })
+	}
+
+	onChooseItem(choice: AddChoice): void {
+		this.onPick(choice)
 	}
 }

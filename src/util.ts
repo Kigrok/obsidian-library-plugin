@@ -190,10 +190,50 @@ function isComplete(fm: Record<string, unknown>): boolean {
 	return fm.Complete === true || toStr(fm.Complete) === 'true'
 }
 
-// Nothing of it done yet: not complete, nothing watched, read or played, and
+// How a medium keeps track of a title: series, anime and books by their
+// progress alone, movies by the Complete switch alone (watched or not), every
+// other medium by both, as before.
+export type Tracking = 'progress' | 'watched' | 'both'
+
+export function trackingOf(kind: ContentType | undefined): Tracking {
+	if (kind === 'series' || kind === 'anime' || kind === 'book') return 'progress'
+	return kind === 'movie' ? 'watched' : 'both'
+}
+
+// Done with a title. Series, anime and books are done once every episode,
+// chapter or page counts as seen; a note without a total to count against
+// keeps the Complete it had. Every other medium is done by its Complete switch.
+export function isFinished(fm: Record<string, unknown>, kind?: ContentType): boolean {
+	if (trackingOf(kind) !== 'progress') return isComplete(fm)
+	const match = toStr(fm.Progress).match(progressPattern)
+	const total = match ? Number(match[2]) : 0
+	return total > 0 ? Number(match?.[1]) >= total : isComplete(fm)
+}
+
+// A title that will not grow: a series with an End Year, an anime that has
+// finished airing or was cancelled, and any book.
+export function hasEnded(fm: Record<string, unknown>, kind?: ContentType): boolean {
+	if (kind === 'book' || toStr(fm['End Year']).trim()) return true
+	return kind === 'anime' && /^(finished|cancelled)/i.test(toStr(fm.Status))
+}
+
+// The share of a title to show as progress, or null for none. Movies never
+// show one. Series, anime and books hide it once a title that will not grow is
+// done; a running series at 100% keeps it, more episodes may come. Every other
+// medium hides it once Complete is on. Nothing done yet shows nothing.
+export function shownProgress(fm: Record<string, unknown>, kind?: ContentType): number | null {
+	const tracking = trackingOf(kind)
+	if (tracking === 'watched') return null
+	const percent = Math.min(100, parseProgress(fm.Progress))
+	if (percent <= 0) return null
+	if (tracking === 'both') return isComplete(fm) ? null : percent
+	return isFinished(fm, kind) && hasEnded(fm, kind) ? null : percent
+}
+
+// Nothing of it done yet: not done, nothing watched, read or played, and
 // no rating of one's own, since a rated title was seen whether ticked or not.
-export function notStarted(fm: Record<string, unknown>): boolean {
-	if (isComplete(fm) || parseWatched(fm.Progress) > 0) return false
+export function notStarted(fm: Record<string, unknown>, kind?: ContentType): boolean {
+	if (isFinished(fm, kind) || parseWatched(fm.Progress) > 0) return false
 	const rating = fm['My Rating'] ?? fm.Rating
 	return rating === null || rating === undefined || toStr(rating).trim() === ''
 }
@@ -207,12 +247,12 @@ export function totalRuntimeMinutes(fm: Record<string, unknown>, perEpisode: num
 }
 
 // The time actually spent: watched episodes at the per-episode length, the
-// whole run once the note is marked complete. 0 when the length is unknown.
-export function watchedRuntimeMinutes(fm: Record<string, unknown>): number {
+// whole run once the title is done. 0 when the length is unknown.
+export function watchedRuntimeMinutes(fm: Record<string, unknown>, kind?: ContentType): number {
 	const perEpisode = runtimeMinutes(fm.Runtime)
 	if (perEpisode === null) return 0
 	const { watched, total } = progressEpisodes(fm)
-	if (isComplete(fm)) return perEpisode * (total > 0 ? total : 1)
+	if (isFinished(fm, kind)) return perEpisode * (total > 0 ? total : 1)
 	return perEpisode * watched
 }
 

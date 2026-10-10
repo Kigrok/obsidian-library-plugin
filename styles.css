@@ -991,9 +991,17 @@
 .library-share-btn[data-network="bluesky"] { --library-share-brand: #1185fe; }
 .library-share-btn[data-network="pinterest"] { --library-share-brand: #e60023; }
 
-/* Black on a dark theme needs an edge to read as a button. */
+/* Black sinks into a dark modal, so the X button read smaller than the rest;
+   there it turns light, the way X itself looks in its dark mode. Near-white
+   rather than #fff keeps the hover brightening visible. */
 .theme-dark .library-share-modal .library-share-btn[data-network="x"] {
-	border: 1px solid var(--background-modifier-border-hover);
+	--library-share-brand: #eff3f4;
+	color: #0f1419;
+}
+
+/* box-shadow: none above also removed the keyboard focus ring. */
+.library-share-modal .library-share-btn:focus-visible {
+	box-shadow: 0 0 0 3px var(--background-modifier-border-focus);
 }
 
 .library-share-actions {
@@ -1096,4 +1104,11 @@
 .library-rec-year {
 	font-size: 0.75em;
 	color: var(--text-muted);
+}
+
+/* The add picker: a medium without a category yet. */
+.library-pick-new {
+	margin-inline-start: var(--size-4-2);
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
 }

@@ -21,7 +21,8 @@
 
 - Ratings and stills for movies, series, anime, and games when the source has them; cast for movies and series.
 - Movies, series, games, and comics can be found by their title in another language.
-- Tick episodes or chapters and score them; `Progress` and `My Rating` follow.
+- Tick episodes or chapters and score them; `Progress` and `My Rating` follow. A movie is watched or not.
+- Categories and their folders (Library/Movies, Library/Books) appear as you add titles.
 - Titles you haven't started get an eye on the cover and gather in Up next.
 - Similar titles under movie, series, anime, game, and book notes.
 - Start new notes from a template of your own, and keep source fields you don't want out of them.
@@ -33,8 +34,10 @@
 ## Quick start
 
 1. Install Library from Settings → Community plugins, or from [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
-2. In Settings → Library, add a category and pick its source: Movies, Series, Books, Comics, Games, Music, Anime, or Manual. One is enough to start.
-3. Open the Library tab from the ribbon, press +, pick the category, and search. For movies and series, a year after the title picks between films that share a name: `dune 1984`.
+2. Open the Library tab from the ribbon, press +, pick what you are adding (Movies, Series, Books, Comics, Games, Music, Anime, or your own), and search. The first title of each kind creates its category and folder.
+3. For movies and series, a year after the title picks between films that share a name: `dune 1984`.
+
+Settings → Library → Categories renames categories and moves their folders; the notes can move along.
 
 The [wiki](https://github.com/Kigrok/obsidian-library-plugin/wiki) has the details: [API keys](https://github.com/Kigrok/obsidian-library-plugin/wiki/Sources-and-API-keys), [anime sync](https://github.com/Kigrok/obsidian-library-plugin/wiki/Anime-sync), [Steam import](https://github.com/Kigrok/obsidian-library-plugin/wiki/Steam-library-import), and [note properties](https://github.com/Kigrok/obsidian-library-plugin/wiki/Frontmatter-reference).
 
@@ -55,6 +58,8 @@ Keys go in Settings → Library → API keys. A [TMDB key](https://www.themovied
 ## Progress and statistics
 
 Open a season in a series note to tick episodes and score them from 1 to 10. `Progress` counts the ticked episodes, and `My Rating` averages the season scores. Anime is one season. Books get chapters from Open Library, or from Add chapters in the note header.
+
+A series, anime, or book is done when its progress is full; a finished series and a read book then hide their progress. A movie has no progress: `Complete` says whether you watched it.
 
 Settings → Library can hide Up next or keep its titles out of their categories. The statistics panel shows the top lists you pick and your hours on movies, series, and anime.
 
@@ -80,7 +85,6 @@ My Rating: 9
 Cover: https://m.media-amazon.com/images/...
 URL: https://www.imdb.com/title/tt4574334/
 Progress: 8/42
-Complete: false
 Date: 01.03.2026
 Source: omdb
 Source ID: tt4574334
