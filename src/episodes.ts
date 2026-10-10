@@ -158,7 +158,8 @@ export function seasonsOf(fm: Record<string, unknown>, kind: TrackKind = 'series
 }
 
 // Writes the seasons back into the note: every episode's tick and rating,
-// Progress and Complete from the ticks, My Rating from the seasons. Keys the
+// Progress from the ticks, My Rating from the seasons. Series, anime and books
+// are done when their progress is full, so a Complete switch goes. Keys the
 // plugin does not know stay as they are.
 function writeBack(fm: Record<string, unknown>, states: SeasonState[], kind: TrackKind = 'series'): void {
 	const raw = rawSeasons(fm, kind)
@@ -186,9 +187,11 @@ function writeBack(fm: Record<string, unknown>, states: SeasonState[], kind: Tra
 	const watched = episodes.filter((e) => e.watched).length
 	if (total > 0) {
 		// A book's old total counted pages; its chapters are the whole now.
-		const recorded = kind === 'book' ? total : Math.max(total, progressOf(fm).total)
+		// Every listed episode ticked is the whole too, even when the source
+		// counted more: the progress reaches 100% and the title is done.
+		const recorded = kind === 'book' || watched === total ? total : Math.max(total, progressOf(fm).total)
 		fm.Progress = `${String(watched)}/${String(recorded)}`
-		fm.Complete = watched === total
+		delete fm.Complete
 	}
 	const seasonRatings = states.map((s) => s.rating).filter((r): r is number => r !== null)
 	if (seasonRatings.length > 0) fm['My Rating'] = average(seasonRatings)
@@ -221,7 +224,7 @@ export function applyEpisodeChange(fm: Record<string, unknown>, change: EpisodeC
 	writeBack(fm, states, kind)
 }
 
-// Progress moved ahead from elsewhere (AniList pull, the Complete switch):
+// Progress moved ahead from elsewhere (AniList pull, a Complete from before 2.4.1):
 // tick the episodes up to it, never untick. Nothing to do while the note
 // still counts watched episodes from Progress alone.
 export function followProgress(fm: Record<string, unknown>, kind: TrackKind = 'series'): void {

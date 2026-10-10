@@ -1,16 +1,17 @@
 import { ItemView, WorkspaceLeaf, TFile, setIcon } from 'obsidian'
 import type LibraryPlugin from './main'
 import { RATING_RT_ICON, type ICategory, type IStatsTop } from './constants'
+import type { ContentType } from './providers/types'
 import { tr, trCount } from './i18n'
 import { comparisonOfTheDay, comparisonText } from './facts'
 import {
 	toStr,
 	toStrArray,
-	parseProgress,
 	parseDate,
 	isTemplateFile,
 	linkLabel,
 	notStarted,
+	shownProgress,
 	coverSrc,
 	coverValue,
 	runtimeMinutes,
@@ -26,6 +27,8 @@ export const LIBRARY_VIEW_TYPE = 'library-view'
 interface CardData {
 	file: TFile
 	fm: Record<string, unknown>
+	// The medium of the card's category: it decides what progress shows.
+	kind: ContentType
 	name: string
 	year: number
 	rating: number
@@ -151,6 +154,7 @@ export class LibraryView extends ItemView {
 			cards.push({
 				file,
 				fm,
+				kind: category.contentType,
 				name: toStr(fm.Name) || file.basename,
 				year: Number(fm.Year) || 0,
 				rating: Number(fm['My Rating'] ?? fm.Rating) || 0,
@@ -197,6 +201,7 @@ export class LibraryView extends ItemView {
 			list.push({
 				file,
 				fm,
+				kind: cat.contentType,
 				name: toStr(fm.Name) || file.basename,
 				year: Number(fm.Year) || 0,
 				rating: Number(fm['My Rating'] ?? fm['Rating IMDB'] ?? fm.Rating) || 0,
@@ -205,7 +210,7 @@ export class LibraryView extends ItemView {
 			rated.set(cat, list)
 
 			if (TIME_COLORS[cat.contentType]) {
-				const minutes = watchedRuntimeMinutes(fm)
+				const minutes = watchedRuntimeMinutes(fm, cat.contentType)
 				if (minutes > 0) {
 					timeMinutes.set(cat.name, (timeMinutes.get(cat.name) || 0) + minutes)
 				} else if (runtimeMinutes(fm.Runtime) === null) {
@@ -426,7 +431,7 @@ export class LibraryView extends ItemView {
 		const settings = this.plugin.settings
 		const upNextOnly = settings.showUpNext && !settings.upNextInCategories
 		for (const { category, cards } of sections) {
-			const shown = upNextOnly ? cards.filter(card => !notStarted(card.fm)) : cards
+			const shown = upNextOnly ? cards.filter(card => !notStarted(card.fm, card.kind)) : cards
 			const sectionEl = this.renderSection(root, {
 				title: category.name,
 				sortId: category.name,
@@ -444,7 +449,7 @@ export class LibraryView extends ItemView {
 		// category, newest first.
 		const upNext: CardData[] = []
 		for (const { cards } of sections) {
-			for (const card of cards) if (notStarted(card.fm)) upNext.push(card)
+			for (const card of cards) if (notStarted(card.fm, card.kind)) upNext.push(card)
 		}
 		if (settings.showUpNext && upNext.length > 0) {
 			const upNextEl = this.renderSection(root, {
@@ -614,7 +619,7 @@ export class LibraryView extends ItemView {
 				: '🎬'
 			imgDiv.createSpan({ text: emoji })
 		}
-		if (notStarted(fm)) {
+		if (notStarted(fm, card.kind)) {
 			const badge = imgDiv.createSpan({
 				cls: 'card-unstarted',
 				attr: { 'role': 'img', 'aria-label': tr('card.notStarted') }
@@ -644,14 +649,12 @@ export class LibraryView extends ItemView {
 			info.createDiv({ cls: 'card-rating', text: parts.join(' | ') })
 		}
 
-		if (fm.Complete !== true && fm.Progress != null) {
-			const percent = parseProgress(fm.Progress)
-			if (percent > 0) {
-				const pc = info.createDiv({ cls: 'card-progress' })
-				pc.createDiv({ cls: 'card-progress-label', text: String(percent) + '%' })
-				const bar = pc.createDiv({ cls: 'card-progress-bar' })
-				bar.createDiv({ cls: 'card-progress-fill' }).setCssStyles({ width: String(percent) + '%' })
-			}
+		const percent = shownProgress(fm, card.kind)
+		if (percent !== null) {
+			const pc = info.createDiv({ cls: 'card-progress' })
+			pc.createDiv({ cls: 'card-progress-label', text: String(percent) + '%' })
+			const bar = pc.createDiv({ cls: 'card-progress-bar' })
+			bar.createDiv({ cls: 'card-progress-fill' }).setCssStyles({ width: String(percent) + '%' })
 		}
 	}
 
