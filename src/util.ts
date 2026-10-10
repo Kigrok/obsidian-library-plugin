@@ -1,6 +1,6 @@
 import { App, normalizePath } from 'obsidian'
 import { progressPattern, dmyDatePattern, type ICategory, type IStatsTop } from './constants'
-import { tr } from './i18n'
+import { formatNumber, tr } from './i18n'
 import { normalizeSeasons } from './trailer'
 import type { ContentType } from './providers/types'
 
@@ -36,6 +36,27 @@ export function parseDate(val: unknown): number {
 	}
 	const timestamp = new Date(raw).getTime()
 	return Number.isNaN(timestamp) ? 0 : timestamp
+}
+
+// An ISO date ("2025-08-01T22:01:09Z") as the plugin writes dates, in local time.
+export function dmyOf(iso: string): string {
+	const date = new Date(iso)
+	if (Number.isNaN(date.getTime())) return ''
+	const dd = ('0' + String(date.getDate())).slice(-2)
+	const mm = ('0' + String(date.getMonth() + 1)).slice(-2)
+	return `${dd}.${mm}.${String(date.getFullYear())}`
+}
+
+// A release date as the plugin writes dates, from "2020-11-17", Wikidata's
+// "+2020-11-17T00:00:00Z" or Steam's "17 Nov, 2020"; '' when the value has no
+// day in it ("2020", "Q4 2020", "Coming soon").
+export function releasedDmy(value: string | null | undefined): string {
+	const raw = (value ?? '').trim()
+	const iso = raw.match(/^\+?(\d{4})-(\d{2})-(\d{2})/)
+	if (iso) return iso[2] === '00' || iso[3] === '00' ? '' : `${iso[3] ?? ''}.${iso[2] ?? ''}.${iso[1] ?? ''}`
+	if (!/\d{1,2}\D+\d{4}|[A-Za-z]{3,}\.? \d{1,2},? \d{4}/.test(raw)) return ''
+	const time = Date.parse(raw)
+	return Number.isNaN(time) ? '' : dmyOf(new Date(time).toISOString())
 }
 
 export function todayDmy(): string {
@@ -140,6 +161,7 @@ const MEDIUM_TOPS: Partial<Record<ContentType, string>> = {
 // for anything without a word of its own — another property, a manual
 // category, or two categories of one medium that the word could not tell apart.
 export function topLabel(top: IStatsTop, categories: ICategory[]): string {
+	if (top.kind === 'platform') return tr('stats.psn')
 	if (top.kind === 'property') {
 		switch (top.key.toLowerCase()) {
 			case 'genre': return tr('stats.topGenres')
@@ -234,16 +256,19 @@ export function shownProgress(fm: Record<string, unknown>, kind?: ContentType): 
 // no rating of one's own, since a rated title was seen whether ticked or not.
 export function notStarted(fm: Record<string, unknown>, kind?: ContentType): boolean {
 	if (isFinished(fm, kind) || parseWatched(fm.Progress) > 0) return false
+	// A game with hours on the clock was played, trophies or not.
+	if (Number(fm.Playtime) > 0) return false
 	const rating = fm['My Rating'] ?? fm.Rating
 	return rating === null || rating === undefined || toStr(rating).trim() === ''
 }
 
 // A series keeps the length of one episode in `Runtime`; the note shows the
-// whole run. A movie's Progress is 1/1, so it falls through unchanged.
-export function totalRuntimeMinutes(fm: Record<string, unknown>, perEpisode: number): number {
+// whole run. A movie has no Progress and an album keeps its whole length, so
+// both stay as they are.
+export function totalRuntimeMinutes(fm: Record<string, unknown>, perEpisode: number, kind?: ContentType): number {
 	if (perEpisode <= 0) return 0
 	const { total } = progressEpisodes(fm)
-	return total > 1 ? perEpisode * total : perEpisode
+	return total > 1 && kind !== 'music' ? perEpisode * total : perEpisode
 }
 
 // The time actually spent: watched episodes at the per-episode length, the
@@ -252,8 +277,43 @@ export function watchedRuntimeMinutes(fm: Record<string, unknown>, kind?: Conten
 	const perEpisode = runtimeMinutes(fm.Runtime)
 	if (perEpisode === null) return 0
 	const { watched, total } = progressEpisodes(fm)
+	// An album's Runtime is the whole album: the share of tracks played counts.
+	if (kind === 'music') {
+		if (isFinished(fm, kind)) return perEpisode
+		return total > 0 ? Math.round(perEpisode * Math.min(1, watched / total)) : 0
+	}
 	if (isFinished(fm, kind)) return perEpisode * (total > 0 ? total : 1)
 	return perEpisode * watched
+}
+
+// The time a title took: a game's Playtime in hours, or the watched or
+// listened runtime of everything else.
+export function spentMinutes(fm: Record<string, unknown>, kind?: ContentType): number {
+	if (kind === 'game') {
+		const hours = Number(fm.Playtime)
+		return Number.isFinite(hours) && hours > 0 ? Math.round(hours * 60) : 0
+	}
+	return watchedRuntimeMinutes(fm, kind)
+}
+
+// Time in the units a person would say it in, the larger two at most:
+// 45 min, 5 h 20 min, 12 d 5 h, 4 mo 12 d, 2 y 3 mo. Unit names come from
+// the platform in the reader's language, short form.
+export function spentTime(totalMinutes: number): string {
+	const minutes = Math.round(totalMinutes)
+	const HOUR = 60
+	const DAY = 24 * HOUR
+	const MONTH = 30.44 * DAY
+	const YEAR = 365.25 * DAY
+	const unit = (count: number, name: string): string =>
+		formatNumber(count, { style: 'unit', unit: name, unitDisplay: 'short' })
+	const pair = (big: number, bigName: string, small: number, smallName: string): string =>
+		small > 0 ? `${unit(big, bigName)} ${unit(small, smallName)}` : unit(big, bigName)
+	if (minutes < HOUR) return unit(minutes, 'minute')
+	if (minutes < DAY) return pair(Math.floor(minutes / HOUR), 'hour', minutes % HOUR, 'minute')
+	if (minutes < 100 * DAY) return pair(Math.floor(minutes / DAY), 'day', Math.floor((minutes % DAY) / HOUR), 'hour')
+	if (minutes < YEAR) return pair(Math.floor(minutes / MONTH), 'month', Math.floor((minutes % MONTH) / DAY), 'day')
+	return pair(Math.floor(minutes / YEAR), 'year', Math.floor((minutes % YEAR) / MONTH), 'month')
 }
 
 // Minutes alone stop reading once a whole series run is summed up: 2907 becomes
@@ -376,3 +436,36 @@ export function within<T>(promise: Promise<T>, ms: number, fallback: T): Promise
 	})
 }
 
+// A game on one more platform: the platform joins Platforms (once), its own
+// hours go to "Playtime <platform>" (Playtime PS5, Playtime Steam), and
+// Playtime becomes the sum over every platform. Only an import adds a
+// platform: a Steam store link alone says where the game is sold, not owned.
+export function addPlatform(fm: Record<string, unknown>, platform: string, hours: number | null): void {
+	const perPlatform = (): string[] => Object.keys(fm).filter(key => /^Playtime .+/.test(key))
+	// A game's console is listed once: "PS5" makes a bare "PlayStation" (Sony
+	// names no console for some entries) redundant; its hours still count.
+	const isPlayStation = (value: string): boolean => /^ps\d/i.test(value)
+	let platforms = toStrArray(fm.Platforms)
+	if (isPlayStation(platform)) platforms = platforms.filter(value => value.toLowerCase() !== 'playstation')
+	const covered = platform.toLowerCase() === 'playstation' && platforms.some(isPlayStation)
+	if (!covered && !platforms.some(value => value.toLowerCase() === platform.toLowerCase())) platforms.push(platform)
+	fm.Platforms = platforms
+	if (hours !== null) fm[`Playtime ${platform}`] = hours
+	const total = perPlatform().reduce((sum, key) => sum + (Number(fm[key]) || 0), 0)
+	if (perPlatform().length > 0) fm.Playtime = Math.round(total * 10) / 10
+}
+
+// Takes one platform family off a game before an import writes it afresh:
+// its Platforms entries and its hours. family: a test on a Platforms value.
+export function dropPlatforms(fm: Record<string, unknown>, family: (platform: string) => boolean): void {
+	fm.Platforms = toStrArray(fm.Platforms).filter(value => !family(value))
+	for (const key of Object.keys(fm)) {
+		const match = key.match(/^Playtime (.+)$/)
+		if (match?.[1] && family(match[1])) delete fm[key]
+	}
+}
+
+// The exact hours behind a converted time, for a tooltip: "1,578.5 hours".
+export function exactHours(totalMinutes: number): string {
+	return formatNumber(Math.round(totalMinutes / 6) / 10, { style: 'unit', unit: 'hour', unitDisplay: 'long', maximumFractionDigits: 1 })
+}

@@ -17,6 +17,7 @@ import { tr } from "./i18n";
 import { aniListViewer, anilistAuthUrl } from "./anilistSync";
 import { codeFromInput, exchangeCode, makeVerifier, malAuthUrl, malViewer } from "./malSync";
 import { PromptModal } from "./ui/promptModal";
+import { platformMark } from "./ui/platformIcons";
 
 // A YAML sample, not UI text: it stays verbatim in every language.
 const FRONTMATTER_EXAMPLE = [
@@ -278,6 +279,10 @@ export class LibrarySettingTab extends PluginSettingTab {
 					{ name: tr("settings.mal.clientSecret"), render: (row) => this.malClientSecret(row) },
 				],
 			},
+			{
+				heading: tr("settings.section.games"),
+				rows: [note(tr("settings.games.desc")), { name: "PlayStation", desc: tr("settings.psn.desc"), render: (row) => this.psnAccount(row) }],
+			},
 			...categories,
 			{ heading: tr("stats.title"), rows: statsRows },
 			{
@@ -402,7 +407,31 @@ export class LibrarySettingTab extends PluginSettingTab {
 		new Notice(viewer ? tr("settings.anilist.connected", { name: viewer.name }) : tr("notice.mal.connectFailed"));
 	}
 
-	private malClientSecret(row: Setting): void {
+	// Connected or not, and the one button that changes it.
+	private psnAccount(row: Setting): void {
+		const connected = this.plugin.settings.psnTokens !== null;
+		row.settingEl.addClass("library-platform-row");
+		const icon = createSpan({ cls: "library-platform-row-icon is-playstation" });
+		icon.appendChild(platformMark("playstation"));
+		row.nameEl.prepend(icon);
+		const status = row.nameEl.createSpan({ cls: `library-platform-status${connected ? " is-connected" : ""}` });
+		status.setText(tr(connected ? "settings.psn.connected" : "settings.psn.notConnected"));
+		row.addButton((button) => {
+			button.setButtonText(tr(connected ? "settings.psn.disconnect" : "settings.psn.connect"));
+			if (!connected) button.setCta();
+			button.onClick(async () => {
+				if (connected) {
+					this.plugin.settings.psnTokens = null;
+					await this.plugin.saveSettings();
+				} else {
+					await this.plugin.connectPsn();
+				}
+				this.refresh();
+			});
+		});
+	}
+
+		private malClientSecret(row: Setting): void {
 		this.textInput(row, "malClientSecret", "", true);
 		row.addButton((button) =>
 			button.setButtonText(tr("settings.anilist.test")).onClick(async () => {
@@ -653,6 +682,8 @@ export class LibrarySettingTab extends PluginSettingTab {
 		for (const cat of this.plugin.settings.categories) {
 			offer(tr("settings.section.categories"), cat.name || cat.typeValue, { kind: "category", key: cat.typeValue });
 		}
+		// A connected platform's own totals: chosen here, never shown unasked.
+		if (this.plugin.settings.psnStats) offer(tr("settings.stats.groupPlatforms"), tr("stats.psn"), { kind: "platform", key: "playstation" });
 		for (const property of rankableProperties(this.libraryFrontmatter(), this.plugin.settings.coverProperty)) {
 			offer(tr("settings.stats.groupProperties"), property, { kind: "property", key: property });
 		}

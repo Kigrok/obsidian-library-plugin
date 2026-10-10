@@ -26,6 +26,8 @@ interface DeezerAlbumFull {
 	cover_xl?: string
 	artist?: DeezerArtist
 	nb_tracks?: number
+	// The album's length in seconds.
+	duration?: number
 	genres?: { data?: { name?: string }[] }
 	link?: string
 }
@@ -86,6 +88,8 @@ export class DeezerProvider implements ContentProvider {
 				Cover: this.cover(album)
 			}
 			if (album.link) fields['URL'] = album.link
+			// The whole album in minutes; listening time counts the share of tracks played.
+			if (typeof album.duration === 'number' && album.duration > 0) fields['Runtime'] = Math.max(1, Math.round(album.duration / 60))
 
 			return { fields, progressTotal: album.nb_tracks && album.nb_tracks > 0 ? album.nb_tracks : 1, imdbId: null }
 		} catch (e) {

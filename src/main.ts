@@ -5,6 +5,8 @@ import {
 	Notice,
 	normalizePath,
 	setIcon,
+	setTooltip,
+	Platform,
 	type TFolder
 } from 'obsidian'
 import { progressPattern, RATING_RT_ICON, type ICategory, type ILibrarySettings, type IStatsSettings, type IStatsTop, DEFAULT_SETTINGS } from './constants'
@@ -46,6 +48,10 @@ import { recommendationsFor, type Recommendation } from './recommendations'
 import { ownedGames, playtimeHours, resolveSteamId } from './steamLibrary'
 import { anilistIdsFor, animeIds, fetchMalList, isExpired, malIdsFor, malStatus, pushMalEntry, refreshTokens, type MalEntry } from './malSync'
 import { LibraryView, LIBRARY_VIEW_TYPE } from './view'
+import { cleanPsnName, exchangePsnCode, psnExpired, psnOwnedGames, psnPlayedGames, psnTrophyIdsFor, psnTrophySummary, psnTrophyTitles, refreshPsnTokens, type PsnOwnedGame, type PsnPlayedGame, type PsnTrophySummary, type PsnTrophyTitle } from './psn'
+import { PsnLoginModal } from './ui/psnLoginModal'
+import { renderTrophies } from './ui/trophyIcons'
+import { renderPlatformLabels } from './ui/platformIcons'
 import { createEmbedPlayer, toEmbed } from './trailer'
 import { applyEpisodeChange, followProgress, hasChapters, mergeSeasons, seasonsOf, setChapters, type EpisodeChange, type TrackKind } from './episodes'
 import { ChaptersModal } from './ui/chaptersModal'
@@ -57,6 +63,7 @@ import {
 	parseWatched,
 	isFinished,
 	shownProgress,
+	spentTime,
 	trackingOf,
 	todayDmy,
 	sanitizeFilename,
@@ -71,6 +78,13 @@ import {
 	coverSrc,
 	coverValue,
 	sameTitle,
+	addPlatform,
+	dropPlatforms,
+	exactHours,
+	dmyOf,
+	parseDate,
+	within,
+	SEARCH_BUDGET_MS,
 	safeUrl,
 	linkLabel,
 	toLinks
@@ -118,7 +132,12 @@ export default class LibraryPlugin extends Plugin {
 	private isRefreshing = false
 	// One MyAnimeList token refresh at a time; concurrent callers share it.
 	private malRefreshing: Promise<string | null> | null = null
+	private psnRefreshing: Promise<string | null> | null = null
 	private steamImporting = false
+	private psnImporting = false
+	private psnTimer: number | null = null
+	// The sign-in ran out: said once a session, not on every attempt.
+	private psnExpiredSaid = false
 	// Recommendations per Source:Source ID, fetched once a session.
 	private recommendations = new Map<string, Promise<Recommendation[]>>()
 	private steamTimer: number | null = null
@@ -204,6 +223,10 @@ export default class LibraryPlugin extends Plugin {
 			)
 			this.refreshBanner()
 			this.scheduleEnrich(ENRICH_START_DELAY)
+			// PlayStation keeps itself current: checked a minute after start and
+			// then every hour, imported once a day.
+			this.registerInterval(window.setTimeout(() => this.psnSyncIfDue(), 60000))
+			this.registerInterval(window.setInterval(() => this.psnSyncIfDue(), 3600000))
 		})
 		this.keySignatures = this.apiKeySignatures()
 
@@ -317,6 +340,12 @@ export default class LibraryPlugin extends Plugin {
 			name: tr('cmd.steamImport'),
 			callback: () => { void this.steamImport() }
 		})
+
+		this.addCommand({
+			id: 'psn-import',
+			name: tr('cmd.psnImport'),
+			callback: () => { void this.psnImport(true) }
+		})
 	}
 
 	onunload(): void {
@@ -332,6 +361,8 @@ export default class LibraryPlugin extends Plugin {
 		if (this.enrichSleepTimer) window.clearTimeout(this.enrichSleepTimer)
 		if (this.steamTimer) window.clearTimeout(this.steamTimer)
 		this.steamTimer = null
+		if (this.psnTimer) window.clearTimeout(this.psnTimer)
+		this.psnTimer = null
 		this.recommendations.clear()
 		this.enrichTimer = null
 		this.enrichSleepTimer = null
@@ -558,22 +589,33 @@ export default class LibraryPlugin extends Plugin {
 			const games = steamId ? await ownedGames(key, steamId) : null
 			if (!games) { new Notice(tr('notice.steam.failed')); return }
 			const byUrl = new Map<string, TFile>()
+			const gameNotes: TFile[] = []
 			for (const file of this.app.vault.getMarkdownFiles()) {
 				const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
-				if (fm && toStr(fm.Type) === typeValue && toStr(fm.URL)) byUrl.set(toStr(fm.URL), file)
+				if (!fm || toStr(fm.Type) !== typeValue || isTemplateFile(file.path)) continue
+				gameNotes.push(file)
+				if (toStr(fm.URL)) byUrl.set(toStr(fm.URL), file)
 			}
+			// The same game from another platform is one note: found by name.
+			const byName = (name: string): TFile | undefined => gameNotes.find((file) => {
+				const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+				return sameTitle(toStr(fm?.Name) || file.basename, name)
+			})
 			let created = 0
 			let updated = 0
 			for (const game of games) {
 				if (this.unloaded) return
 				const url = `https://store.steampowered.com/app/${String(game.appId)}/`
 				const hours = playtimeHours(game.minutes)
-				const existing = byUrl.get(url)
+				const existing = byUrl.get(url) ?? byName(game.name)
 				try {
 					if (existing) {
 						const fm = this.app.metadataCache.getFileCache(existing)?.frontmatter
-						if (Number(fm?.Playtime) === hours) continue
-						await this.app.fileManager.processFrontMatter(existing, (current: Record<string, unknown>) => { current.Playtime = hours })
+						const listed = toStrArray(fm?.Platforms).some(value => value.toLowerCase() === 'steam')
+						if (listed && Number(fm?.['Playtime Steam']) === hours) continue
+						await this.app.fileManager.processFrontMatter(existing, (current: Record<string, unknown>) => {
+							addPlatform(current, 'Steam', hours)
+						})
 						updated++
 						continue
 					}
@@ -584,8 +626,11 @@ export default class LibraryPlugin extends Plugin {
 						imdbId: null
 					}
 					if (!category) category = await this.categoryFor('game')
-					const file = await this.newNote(category, provider.id, sourceId, toStr(meta.fields.Name) || game.name, meta, { Playtime: hours })
+					const extra: Record<string, unknown> = {}
+					addPlatform(extra, 'Steam', hours)
+					const file = await this.newNote(category, provider.id, sourceId, toStr(meta.fields.Name) || game.name, meta, extra)
 					byUrl.set(url, file)
+					gameNotes.push(file)
 					created++
 					await new Promise<void>(resolve => { this.steamTimer = window.setTimeout(resolve, 1500) })
 				} catch (e) {
@@ -841,6 +886,237 @@ export default class LibraryPlugin extends Plugin {
 	}
 
 	// A valid MyAnimeList access token, refreshed when it is about to expire.
+	// Opens Sony's sign-in window; true once the account is connected.
+	connectPsn(): Promise<boolean> {
+		if (!Platform.isDesktopApp) {
+			new Notice(tr('notice.psn.desktopOnly'))
+			return Promise.resolve(false)
+		}
+		return new Promise<boolean>((resolve) => {
+			new PsnLoginModal(this.app, (code) => {
+				void (async () => {
+					const tokens = code ? await exchangePsnCode(code) : null
+					if (tokens) {
+						this.settings.psnTokens = tokens
+						await this.saveSettings()
+					}
+					if (code) new Notice(tr(tokens ? 'notice.psn.connected' : 'notice.psn.failed'))
+					resolve(tokens !== null)
+					if (tokens) void this.psnImport(true)
+				})()
+			}).open()
+		})
+	}
+
+	// Everything PlayStation tells about the user: played games, trophy lists,
+	// trophy level. Null when not connected or Sony does not answer.
+	async psnData(): Promise<{ owned: PsnOwnedGame[]; played: PsnPlayedGame[]; trophies: PsnTrophyTitle[]; summary: PsnTrophySummary | null } | null> {
+		const token = await this.psnToken()
+		if (!token) return null
+		const [owned, played, trophies, summary] = await Promise.all([psnOwnedGames(token), psnPlayedGames(token), psnTrophyTitles(token), psnTrophySummary(token)])
+		if (!played && !trophies && !owned) return null
+		return { owned: owned ?? [], played: played ?? [], trophies: trophies ?? [], summary }
+	}
+
+	// Brings the PlayStation games into the Games category: every game played,
+	// and every game in the library that has trophies (apps have none). A game
+	// already in the library, by its PSN ID or by name, gets the PlayStation
+	// fields; a new one is looked up in the game sources first. Running it
+	// again updates playtime, trophies and progress.
+	async psnImport(loud: boolean): Promise<void> {
+		if (this.psnImporting) return
+		const token = await this.psnToken()
+		if (!token) { if (loud) new Notice(tr('notice.psn.noToken')); return }
+		const provider = this.registry.forType('game')
+		if (!provider) return
+		this.psnImporting = true
+		try {
+			if (loud) new Notice(tr('notice.psn.importing'))
+			const data = await this.psnData()
+			if (!data) { if (loud) new Notice(tr('notice.psn.failed')); return }
+			const played = new Map(data.played.map(game => [game.titleId, game]))
+			const ownedIds = data.owned.filter(game => !played.has(game.titleId)).map(game => game.titleId)
+			const trophyIds = await psnTrophyIdsFor(token, [...played.keys(), ...ownedIds])
+			const trophies = new Map(data.trophies.map(title => [title.npCommunicationId, title]))
+			type Entry = { titleId: string; name: string; platform: string; image: string | null; minutes: number | null; lastPlayed: string | null; firstPlayed: string | null }
+			const entries: Entry[] = []
+			// The console of a game Sony gives no category for: from its title id
+			// (PS5 ids start PPSA, PS4 ids CUSA), else from its trophy list.
+			const trophyPlatform = (titleId: string): string => {
+				if (/^PPSA/i.test(titleId)) return 'PS5'
+				if (/^CUSA/i.test(titleId)) return 'PS4'
+				const platform = trophies.get(trophyIds.get(titleId) ?? '')?.platform ?? ''
+				return (platform.split(',').pop() ?? '').trim().toUpperCase()
+			}
+			for (const game of data.played) {
+				// The portrait cover where Sony has one, as the cards are tall; its
+				// main square art otherwise.
+				const image = game.images.PORTRAIT_BANNER ?? game.images.MASTER ?? game.imageUrl
+				entries.push({ titleId: game.titleId, name: cleanPsnName(game.name), platform: game.category.startsWith('ps5') ? 'PS5' : game.category.startsWith('ps4') ? 'PS4' : trophyPlatform(game.titleId), image, minutes: game.minutes, lastPlayed: game.lastPlayed, firstPlayed: game.firstPlayed })
+			}
+			for (const game of data.owned) {
+				if (played.has(game.titleId) || !trophyIds.has(game.titleId)) continue
+				entries.push({ titleId: game.titleId, name: cleanPsnName(game.name), platform: /^PS\d$/i.test(game.platform) ? game.platform.toUpperCase() : trophyPlatform(game.titleId), image: game.imageUrl, minutes: null, lastPlayed: null, firstPlayed: null })
+			}
+			let category = this.settings.categories.find(c => c.contentType === 'game')
+			const typeValue = category?.typeValue ?? TYPE_DEFAULTS.game ?? 'Game'
+			const notes = this.app.vault.getMarkdownFiles().filter(file => !isTemplateFile(file.path)
+				&& toStr(this.app.metadataCache.getFileCache(file)?.frontmatter?.Type) === typeValue)
+			let created = 0
+			let updated = 0
+			// A note two PlayStation versions share (PS4 and PS5) loses its old
+			// PlayStation hours once, then gets each version's.
+			const isPlayStation = (value: string): boolean => /^ps\d|^playstation$/i.test(value)
+			const touched = new Set<string>()
+			for (const entry of entries) {
+				if (this.unloaded) return
+				const trophy = trophies.get(trophyIds.get(entry.titleId) ?? '')
+				const fields: Record<string, unknown> = { 'PSN ID': entry.titleId }
+				// PlayStation's own picture of the game is the cover.
+				if (entry.image) fields[this.fieldTarget('Cover')] = entry.image
+				if (entry.lastPlayed) fields['Last Played'] = dmyOf(entry.lastPlayed)
+				// A game is in the library since it was first played, when that is earlier.
+				const since = entry.firstPlayed ? dmyOf(entry.firstPlayed) : ''
+				if (trophy) {
+					// The share PlayStation shows as the game's progress.
+					fields.Progress = `${String(trophy.progress)}/100`
+					fields.Platinum = trophy.earned.platinum
+					fields.Gold = trophy.earned.gold
+					fields.Silver = trophy.earned.silver
+					fields.Bronze = trophy.earned.bronze
+					if (trophy.earned.platinum > 0) fields.Complete = true
+				}
+				try {
+					const existing = notes.find(file => {
+						const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+						return toStr(fm?.['PSN ID']) === entry.titleId || sameTitle(toStr(fm?.Name) || file.basename, entry.name)
+					})
+					if (existing) {
+						await this.app.fileManager.processFrontMatter(existing, (current: Record<string, unknown>) => {
+							for (const key of Object.keys(fields)) {
+								if (key === 'Complete' && current.Complete === true) continue
+								current[key] = fields[key]
+							}
+							if (!touched.has(existing.path)) dropPlatforms(current, isPlayStation)
+							touched.add(existing.path)
+							addPlatform(current, entry.platform || 'PlayStation', entry.minutes === null ? null : playtimeHours(entry.minutes))
+							if (since && parseDate(since) < parseDate(current.Date)) current.Date = since
+							// Fields an earlier test build wrote.
+							delete current.Trophies
+							delete current['Trophy Progress']
+							delete current.Platform
+						})
+						updated++
+						continue
+					}
+					// The note is made from what PlayStation gave, at once; genres,
+					// creators and the trailer are looked up afterwards, one game at
+					// a time (psnLookUp), so a big library shows up in seconds.
+					if (!category) category = await this.categoryFor('game')
+					const note = { fields: { Name: entry.name }, progressTotal: null, imdbId: null }
+					if (since) fields.Date = since
+					addPlatform(fields, entry.platform || 'PlayStation', entry.minutes === null ? null : playtimeHours(entry.minutes))
+					const file = await this.newNote(category, provider.id, `psn:${entry.titleId}`, entry.name, note, fields)
+					notes.push(file)
+					touched.add(file.path)
+					created++
+				} catch (e) {
+					console.error('Library: PlayStation import error', entry.titleId, e)
+				}
+			}
+			this.settings.psnStats = {
+				games: entries.length,
+				minutes: data.played.reduce((sum, game) => sum + game.minutes, 0),
+				level: data.summary?.level ?? 0,
+				earned: data.summary?.earned ?? { platinum: 0, gold: 0, silver: 0, bronze: 0 },
+				updated: Date.now(),
+			}
+			await this.saveSettings()
+			if (loud || created > 0) new Notice(tr('notice.psn.imported', { created, updated }))
+		} finally {
+			this.psnImporting = false
+		}
+		// The sources know games by their English titles; Sony names them in
+		// the account's language. The note keeps that name.
+		const english = new Map<string, string>()
+		for (const game of await psnPlayedGames(token, 'en-US') ?? []) english.set(game.titleId, cleanPsnName(game.name))
+		await this.psnLookUp(english)
+	}
+
+	// Games imported from PlayStation that no source matched yet get their
+	// genres, creators, year and trailer: one at a time, spaced out, in the
+	// background. A game no source knows keeps what PlayStation gave and is
+	// tried again on the next import.
+	private async psnLookUp(english: Map<string, string>): Promise<void> {
+		const provider = this.registry.forType('game')
+		if (!provider) return
+		const pending = this.app.vault.getMarkdownFiles().filter((file) => {
+			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+			return fm && toStr(fm['Source ID']).startsWith('psn:') && !isTemplateFile(file.path)
+		})
+		for (const file of pending) {
+			if (this.unloaded) return
+			const fm = this.app.metadataCache.getFileCache(file)?.frontmatter
+			const names = [english.get(toStr(fm?.['PSN ID'])), toStr(fm?.Name) || file.basename]
+				.filter((name, i, all): name is string => !!name && all.indexOf(name) === i)
+			try {
+				let match: SearchResult | undefined
+				for (const name of names) {
+					const results = await within(provider.search(name, 'game'), SEARCH_BUDGET_MS * 2, [] as SearchResult[])
+					match = results.find(result => sameTitle(result.title, name))
+					if (match) break
+				}
+				const meta = match ? await provider.fetch(match.sourceId, 'game', match.raw) : null
+				if (match && meta) {
+					const sourceId = match.sourceId
+					await this.app.fileManager.processFrontMatter(file, (current: Record<string, unknown>) => {
+						current.Source = provider.id
+						current['Source ID'] = sourceId
+						this.applyMetaPatch(current, meta)
+					})
+				}
+			} catch (e) {
+				console.error('Library: PlayStation look-up error', file.path, e)
+			}
+			await new Promise<void>(resolve => { this.psnTimer = window.setTimeout(resolve, 1500) })
+		}
+	}
+
+	// Desktop only, so two devices sharing a vault never import at the same
+	// time and make the same game twice; the notes reach the phone by sync.
+	private psnSyncIfDue(): void {
+		if (!Platform.isDesktopApp || !this.settings.psnTokens || this.psnImporting) return
+		const stats = this.settings.psnStats
+		if (stats && Date.now() - stats.updated < 24 * 3600000) return
+		void this.psnImport(false)
+	}
+
+	// A valid PlayStation access token, refreshed when it is about to expire;
+	// null when not connected or the sign-in has run out.
+	async psnToken(): Promise<string | null> {
+		const tokens = this.settings.psnTokens
+		if (!tokens) return null
+		if (!psnExpired(tokens)) return tokens.access
+		if (!this.psnRefreshing) {
+			this.psnRefreshing = (async () => {
+				try {
+					const next = await refreshPsnTokens(tokens.refresh)
+					if (!next) {
+						if (!this.psnExpiredSaid) new Notice(tr('notice.psn.expired'))
+						this.psnExpiredSaid = true
+						return null
+					}
+					this.settings.psnTokens = next
+					await this.saveSettings()
+					return next.access
+				} finally {
+					this.psnRefreshing = null
+				}
+			})()
+		}
+		return this.psnRefreshing
+	}
+
 	async malToken(): Promise<string | null> {
 		const tokens = this.settings.malTokens
 		if (!tokens) return null
@@ -1411,7 +1687,8 @@ export default class LibraryPlugin extends Plugin {
 		if (typeof meta.fields.Season === 'number' && meta.fields.Season > Number(current.Season || 0) && !this.skipped('Season')) {
 			current.Season = meta.fields.Season
 		}
-		if (meta.progressTotal && !hasChapters(current) && trackingOf(this.kindOf(current)) !== 'watched') {
+		// A PlayStation game's progress is PlayStation's own percentage.
+		if (meta.progressTotal && !hasChapters(current) && trackingOf(this.kindOf(current)) !== 'watched' && !current['PSN ID']) {
 			const watched = parseWatched(current.Progress)
 			current.Progress = `${String(watched)}/${String(meta.progressTotal)}`
 		}
@@ -1524,8 +1801,13 @@ export default class LibraryPlugin extends Plugin {
 		})
 		titleEl.appendChild(shareBtn)
 		infoSide.appendChild(titleEl)
+		// A game's platforms and trophies share one row right under its title.
+		const badges = createDiv({ cls: 'note-header-badges' })
+		renderPlatformLabels(badges, fm)
+		renderTrophies(badges, fm, 'note-header-trophies')
+		if (badges.childElementCount > 0) infoSide.appendChild(badges)
 
-		const addRow = (label: string, value: string, separator = ': '): void => {
+		const addRow = (label: string, value: string, separator = ': ', title = ''): void => {
 			if (!value) return
 			const row = createDiv()
 			row.classList.add('note-header-row')
@@ -1533,6 +1815,7 @@ export default class LibraryPlugin extends Plugin {
 			b.setText(label + separator)
 			row.appendChild(b)
 			row.appendText(value)
+			if (title) setTooltip(row, title, { placement: 'top' })
 			infoSide.appendChild(row)
 		}
 
@@ -1546,7 +1829,10 @@ export default class LibraryPlugin extends Plugin {
 		if (genres.length > 0) addRow(tr('header.genre'), genres.join(', '))
 
 		const runtime = runtimeMinutes(fm.Runtime)
-		if (runtime !== null) addRow(tr('header.runtime'), formatRuntime(totalRuntimeMinutes(fm, runtime)))
+		if (runtime !== null) addRow(tr('header.runtime'), formatRuntime(totalRuntimeMinutes(fm, runtime, kind)))
+		// PlayStation: platform, time, trophies by grade, last played.
+		if (typeof fm.Playtime === 'number' && fm.Playtime > 0) addRow(tr('stats.psn.time'), spentTime(fm.Playtime * 60), ': ', exactHours(fm.Playtime * 60))
+		if (fm['Last Played']) addRow(tr('header.lastPlayed'), toStr(fm['Last Played']))
 
 		if (ratingIMDB) addRow('IMDb', ratingIMDB)
 		if (ratingRT) addRow(RATING_RT_ICON, ratingRT, ' ')
@@ -1914,6 +2200,7 @@ export default class LibraryPlugin extends Plugin {
 		if (typeof this.settings.upNextCollapsed !== 'boolean') this.settings.upNextCollapsed = false
 		if (typeof this.settings.upNextInCategories !== 'boolean') this.settings.upNextInCategories = true
 		if (typeof this.settings.skipFields !== 'string') this.settings.skipFields = ''
+		if (!this.settings.psnTokens || typeof this.settings.psnTokens !== 'object') this.settings.psnTokens = null
 		if (!this.settings.enrichMarks || typeof this.settings.enrichMarks !== 'object') this.settings.enrichMarks = {}
 		// Categories an earlier build kept out of the statistics, through the
 		// switches that came before the top list: `showTop`, `stats.rating`, `showRated`.
@@ -1955,7 +2242,7 @@ export default class LibraryPlugin extends Plugin {
 		if (Array.isArray(raw.tops)) {
 			for (const top of raw.tops) {
 				const entry = (top && typeof top === 'object' ? top : {}) as Record<string, unknown>
-				if (entry.kind === 'category' || entry.kind === 'property') add(entry.kind, entry.key)
+				if (entry.kind === 'category' || entry.kind === 'property' || entry.kind === 'platform') add(entry.kind, entry.key)
 			}
 			return stats
 		}

@@ -183,6 +183,19 @@ export function firstYear(entity: WikidataEntity | undefined, properties: string
 	return years.length > 0 ? Math.min(...years) : null
 }
 
+// The earliest of the values given to the day (precision 11), as Wikidata
+// writes it: "+2020-11-17T00:00:00Z". Null when none is that precise.
+export function firstDate(entity: WikidataEntity | undefined, properties: string[]): string | null {
+	const dates: string[] = []
+	for (const property of properties) {
+		for (const value of claimValues(entity, property)) {
+			const v = value as { time?: unknown; precision?: unknown } | null
+			if (typeof v?.time === 'string' && Number(v.precision) >= 11) dates.push(v.time)
+		}
+	}
+	return dates.length > 0 ? dates.sort()[0] ?? null : null
+}
+
 // The article on English Wikipedia, else the item's own page.
 export function pageUrl(id: string, article: string | null): string {
 	// Colons and commas read as themselves in an article link.

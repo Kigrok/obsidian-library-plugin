@@ -500,28 +500,6 @@
 	flex-wrap: wrap;
 }
 
-.library-toc {
-	display: flex;
-	gap: 8px;
-	flex-wrap: wrap;
-	flex-grow: 1;
-}
-
-.library-toc-item {
-	background: var(--background-secondary);
-	border: 1px solid var(--background-modifier-border);
-	border-radius: 14px;
-	padding: 4px 12px;
-	font-size: 0.8em;
-	cursor: pointer;
-	color: var(--text-muted);
-}
-
-.library-toc-item:hover {
-	color: var(--text-normal);
-	background: var(--background-modifier-hover);
-}
-
 .library-actions {
 	display: flex;
 	gap: 6px;
@@ -1111,4 +1089,241 @@
 	margin-inline-start: var(--size-4-2);
 	color: var(--text-muted);
 	font-size: var(--font-ui-smaller);
+}
+
+/* A section's title count and time spent, beside its fold button. */
+.library-section-count,
+.library-section-time {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 1px 9px;
+	border-radius: var(--radius-l, 12px);
+	font-size: var(--font-ui-smaller);
+	font-weight: 600;
+	line-height: 1.6;
+	font-variant-numeric: tabular-nums;
+}
+
+.library-section-count {
+	color: var(--text-accent);
+	background-color: color-mix(in srgb, var(--interactive-accent) 16%, transparent);
+}
+
+.library-section-time {
+	color: var(--text-muted);
+	background-color: var(--background-modifier-hover);
+}
+
+.library-section-time-icon,
+.library-section-time-icon .svg-icon {
+	display: flex;
+	width: 12px;
+	height: 12px;
+}
+
+/* + and search in the statistics header: compact, the accent colour. */
+.library-stats-header .library-actions {
+	margin-left: 4px;
+	gap: 4px;
+}
+
+.library-stats-header .library-icon-btn {
+	width: 28px;
+	height: 28px;
+	padding: 0;
+}
+
+.library-stats-header .library-icon-btn .svg-icon {
+	width: 16px;
+	height: 16px;
+}
+
+.library-view .library-icon-btn {
+	color: var(--text-accent);
+}
+
+.library-view .library-icon-btn:hover {
+	color: var(--text-accent-hover, var(--text-accent));
+	background-color: color-mix(in srgb, var(--interactive-accent) 14%, var(--background-secondary));
+}
+
+/* Sony's sign-in page inside Obsidian. */
+.library-psn-modal {
+	width: min(560px, 92vw);
+}
+
+.library-psn-webview {
+	display: flex;
+	width: 100%;
+	height: min(680px, 75vh);
+	border-radius: var(--radius-m);
+	overflow: hidden;
+}
+
+/* The PlayStation column of the statistics panel. */
+.library-stats-psn-row {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 3px 0;
+	font-size: var(--font-ui-small);
+}
+
+.library-stats-psn-label {
+	color: var(--text-muted);
+}
+
+.library-stats-psn-value {
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+/* Trophies earned: a cup per grade and its count; grades with none are not drawn. */
+.library-trophies {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 10px;
+	font-variant-numeric: tabular-nums;
+	font-weight: 600;
+}
+
+.library-trophy {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+}
+
+.library-trophy-icon {
+	width: 1.15em;
+	height: 1.15em;
+	flex-shrink: 0;
+}
+
+.card-trophies {
+	justify-content: center;
+	margin-top: 4px;
+	font-size: var(--font-ui-smaller);
+}
+
+.note-header-badges {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px 14px;
+	margin: 6px 0 4px;
+}
+
+.note-header-badges .library-platform-labels {
+	margin: 0;
+}
+
+.note-header-trophies {
+	font-size: var(--font-ui-medium);
+}
+
+.library-stats-trophies {
+	margin-top: 8px;
+	font-size: var(--font-ui-small);
+}
+
+/* The platforms a game is on, bottom left of its cover, like the eye above. */
+.library-platforms {
+	display: flex;
+	gap: 4px;
+}
+
+.card-platforms {
+	position: absolute;
+	left: 6px;
+	bottom: 6px;
+}
+
+.library-platform {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	color: var(--text-normal);
+	background: color-mix(in srgb, var(--background-primary) 80%, transparent);
+}
+
+.library-platform svg {
+	width: 13px;
+	height: 13px;
+}
+
+/* Platform plates under a game's title, like a store marks a game's versions. */
+.library-platform-labels {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin: 6px 0 2px;
+}
+
+.library-platform-label {
+	padding: 1px 7px;
+	border-radius: 4px;
+	font-size: var(--font-ui-smaller);
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	color: #ffffff;
+	background-color: #3a3a3a;
+}
+
+.library-platform-label.is-playstation {
+	background-color: #0070d1;
+}
+
+.library-platform-label.is-steam {
+	background-color: #1b2838;
+}
+
+.library-platform-label.is-xbox {
+	background-color: #107c10;
+}
+
+.library-platform-label.is-nintendo {
+	background-color: #e60012;
+}
+
+/* A platform account in settings: its mark, its name and whether it is connected. */
+.library-platform-row .setting-item-name {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.library-platform-row-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: 6px;
+	color: #ffffff;
+	background-color: #0070d1;
+	flex-shrink: 0;
+}
+
+.library-platform-row-icon svg {
+	width: 17px;
+	height: 17px;
+}
+
+.library-platform-status {
+	padding: 1px 8px;
+	border-radius: 10px;
+	font-size: var(--font-ui-smaller);
+	font-weight: 500;
+	color: var(--text-muted);
+	background-color: var(--background-modifier-hover);
+}
+
+.library-platform-status.is-connected {
+	color: var(--color-green);
+	background-color: rgba(var(--color-green-rgb), 0.14);
 }

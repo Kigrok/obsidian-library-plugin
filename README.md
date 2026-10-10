@@ -27,6 +27,8 @@
 - Similar titles under movie, series, anime, game, and book notes.
 - Start new notes from a template of your own, and keep source fields you don't want out of them.
 - Anime sync with AniList and MyAnimeList, Steam library import, and share cards.
+- Connect PlayStation in Settings → Library → Games: your played games, playtime, progress, and trophies come into Games and stay up to date. One note per game, with PS4, PS5, and Steam badges and hours per platform.
+- Each section shows how many titles it holds and the time spent on them; hover for the exact hours. Statistics compare that time with facts about space, sport, and books.
 - Genres, creators, and actors are links that collect their titles.
 - Every field is in frontmatter, so Bases and Dataview can read it.
 - Desktop and mobile, with the interface in every language Obsidian supports.
@@ -111,6 +113,7 @@ Your library is plain notes that open offline; covers load from the web. The plu
 | `api.deezer.com`, `cdn-images.dzcdn.net` | Music search, covers | Album or artist |
 | `graphql.anilist.co`, `anilist.co`, `s4.anilist.co`, streaming services' image hosts | Anime, manga, sync | Title or ids; your token, progress, status, score |
 | `myanimelist.net`, `api.myanimelist.net`, `api-cdn.myanimelist.net` | Anime search with a Client ID, covers, sync | Search text, Client ID and secret; your token, progress, status, score |
+| `ca.account.sony.com`, `my.account.sony.com`, `m.np.playstation.com`, `web.np.playstation.com`, `image.api.playstation.com`, `psnobj.prod.dl.playstation.net` | PlayStation sign-in, played games, trophies, covers | Your sign-in on Sony's page (the plugin keeps only the token); the token |
 | `comicvine.gamespot.com` | Comic search, with a key | Title, key |
 | `www.youtube.com`, `www.youtube-nocookie.com`, `i.ytimg.com`, `player.vimeo.com`, `www.dailymotion.com` | Trailers | Video id |
 | `twitter.com`, `t.me`, `wa.me`, `www.reddit.com`, `www.facebook.com`, `www.linkedin.com`, `vk.com`, `bsky.app`, `www.pinterest.com` | Share buttons | Caption with title, score, and link; the image stays local |
@@ -127,6 +130,7 @@ Your library is plain notes that open offline; covers load from the web. The plu
 - `Push current note to AniList`, `Pull progress from AniList`
 - `Push current note to MyAnimeList`, `Pull progress from MyAnimeList`
 - `Import Steam library`
+- `Import PlayStation games and trophies`
 
 ## Support
 

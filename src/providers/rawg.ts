@@ -2,6 +2,7 @@ import { requestUrl } from 'obsidian'
 import { steamMediaFor } from './steam'
 import type { GameTrailerFinder } from './gameTrailer'
 import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
+import { releasedDmy } from '../util'
 
 interface RawgSearchItem {
 	id: number
@@ -111,6 +112,7 @@ export class RawgProvider implements ContentProvider {
 			const fields: Record<string, unknown> = {
 				Name: details.name,
 				Year: this.year(details.released),
+				Released: releasedDmy(details.released) || null,
 				Genre: (details.genres ?? []).map((g) => g.name),
 				Creator: creators,
 				Cover: details.background_image ?? null

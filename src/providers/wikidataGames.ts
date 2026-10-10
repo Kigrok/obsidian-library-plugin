@@ -1,7 +1,8 @@
 import { SteamProvider } from './steam'
+import { releasedDmy } from '../util'
 import type { ContentProvider, ContentType, NormalizedMetadata, SearchResult } from './types'
 import {
-	claim, claimValues, entities, firstYear, itemIds, labelsOf, languages, pageUrl, searchItems, textIn,
+	claim, claimValues, entities, firstDate, firstYear, itemIds, labelsOf, languages, pageUrl, searchItems, textIn,
 	wikipediaImages, yearIn
 } from './wikidata'
 
@@ -67,6 +68,7 @@ export class WikidataGameProvider implements ContentProvider {
 			const fields: Record<string, unknown> = {
 				Name: name,
 				Year: firstYear(item, ['P577']),
+				Released: releasedDmy(firstDate(item, ['P577'])) || null,
 				Genre: labels(genres),
 				Creator: developers.length > 0 ? labels(developers) : labels(publishers),
 				Cover: article ? covers[article] ?? null : null,
