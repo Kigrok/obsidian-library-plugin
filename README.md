@@ -5,16 +5,16 @@
 <h1 align="center">Library</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/github/v/release/Kigrok/obsidian-library-plugin" alt="Version">
-  <img src="https://img.shields.io/github/downloads/Kigrok/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
+  <img src="https://img.shields.io/github/v/release/venvk/obsidian-library-plugin" alt="Version">
+  <img src="https://img.shields.io/github/downloads/venvk/obsidian-library-plugin/total?color=brightgreen" alt="Downloads">
   <img src="https://img.shields.io/badge/Obsidian-v1.8.7+-purple" alt="Obsidian Version">
-  <img src="https://img.shields.io/github/license/Kigrok/obsidian-library-plugin?color=orange" alt="License">
+  <img src="https://img.shields.io/github/license/venvk/obsidian-library-plugin?color=orange" alt="License">
 </p>
 
 <p align="center">
   Your watchlist, reading list, and game backlog as a gallery of covers, kept as plain Markdown notes in your vault. Search a title, pick a result, and Library writes the note: cover, year, genres, and creators, plus a trailer for movies, series, anime, and games.
   <br />
-  <a href="https://community.obsidian.md/plugins/library">Community Plugins directory</a> · <a href="https://github.com/Kigrok/obsidian-library-plugin/wiki">Wiki</a>
+  <a href="https://community.obsidian.md/plugins/library">Community Plugins directory</a> · <a href="https://github.com/venvk/obsidian-library-plugin/wiki">Wiki</a>
 </p>
 
 ## Features
@@ -33,13 +33,13 @@
 
 ## Quick start
 
-1. Install Library from Settings → Community plugins, or from [GitHub Releases](https://github.com/Kigrok/obsidian-library-plugin/releases).
+1. Install Library from Settings → Community plugins, or from [GitHub Releases](https://github.com/venvk/obsidian-library-plugin/releases).
 2. Open the Library tab from the ribbon, press +, pick what you are adding (Movies, Series, Books, Comics, Games, Music, Anime, or your own), and search. The first title of each kind creates its category and folder.
 3. For movies and series, a year after the title picks between films that share a name: `dune 1984`.
 
 Settings → Library → Categories renames categories and moves their folders; the notes can move along.
 
-The [wiki](https://github.com/Kigrok/obsidian-library-plugin/wiki) has the details: [API keys](https://github.com/Kigrok/obsidian-library-plugin/wiki/Sources-and-API-keys), [anime sync](https://github.com/Kigrok/obsidian-library-plugin/wiki/Anime-sync), [Steam import](https://github.com/Kigrok/obsidian-library-plugin/wiki/Steam-library-import), and [note properties](https://github.com/Kigrok/obsidian-library-plugin/wiki/Frontmatter-reference).
+The [wiki](https://github.com/venvk/obsidian-library-plugin/wiki) has the details: [API keys](https://github.com/venvk/obsidian-library-plugin/wiki/Sources-and-API-keys), [anime sync](https://github.com/venvk/obsidian-library-plugin/wiki/Anime-sync), [Steam import](https://github.com/venvk/obsidian-library-plugin/wiki/Steam-library-import), and [note properties](https://github.com/venvk/obsidian-library-plugin/wiki/Frontmatter-reference).
 
 ## Sources
 
@@ -65,7 +65,7 @@ Settings → Library can hide Up next or keep its titles out of their categories
 
 ## Anime sync
 
-Anime notes sync with AniList and MyAnimeList through four commands. Push sends the open note's progress, status, and score; pull updates your notes from your list, never moves progress back, and leaves `My Rating` alone. Nothing syncs on its own. The [wiki](https://github.com/Kigrok/obsidian-library-plugin/wiki/Anime-sync) shows how to connect each site.
+Anime notes sync with AniList and MyAnimeList through four commands. Push sends the open note's progress, status, and score; pull updates your notes from your list, never moves progress back, and leaves `My Rating` alone. Nothing syncs on its own. The [wiki](https://github.com/venvk/obsidian-library-plugin/wiki/Anime-sync) shows how to connect each site.
 
 ## Frontmatter
 
@@ -91,7 +91,7 @@ Source ID: tt4574334
 ---
 ```
 
-A refresh fills empty fields and updates the sources' ratings, never yours. The [wiki](https://github.com/Kigrok/obsidian-library-plugin/wiki/Frontmatter-reference) lists every property.
+A refresh fills empty fields and updates the sources' ratings, never yours. The [wiki](https://github.com/venvk/obsidian-library-plugin/wiki/Frontmatter-reference) lists every property.
 
 ## Privacy and network use
 
@@ -130,7 +130,7 @@ Your library is plain notes that open offline; covers load from the web. The plu
 
 ## Support
 
-Report bugs and suggest ideas in [Issues](https://github.com/Kigrok/obsidian-library-plugin/issues/new/choose); ask questions in [Discussions](https://github.com/Kigrok/obsidian-library-plugin/discussions). The plugin is under the [MIT License](LICENSE).
+Report bugs and suggest ideas in [Issues](https://github.com/venvk/obsidian-library-plugin/issues/new/choose); ask questions in [Discussions](https://github.com/venvk/obsidian-library-plugin/discussions). The plugin is under the [MIT License](LICENSE).
 
 <a href="https://buymeacoffee.com/venvk"><img src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=venvk&button_colour=BD5FFF&font_colour=ffffff&font_family=Inter&outline_colour=000000&coffee_colour=FFDD00" alt="Buy me a coffee" height="50"></a>
 

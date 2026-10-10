@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
     - name: Questions and ideas to talk through
-      url: https://github.com/Kigrok/obsidian-library-plugin/discussions
+      url: https://github.com/venvk/obsidian-library-plugin/discussions
       about: Ask how something works, or discuss an idea before filing it.

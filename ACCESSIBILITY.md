@@ -28,4 +28,4 @@ Library runs inside Obsidian 1.8.7 or newer, on desktop (Windows, macOS, Linux) 
 
 ## Report a barrier
 
-Open a [bug report](https://github.com/Kigrok/obsidian-library-plugin/issues/new/choose) and put "Accessibility" in the title. Say what you were trying to do, what got in the way, and what you use: operating system, Obsidian version, theme, and any assistive technology (screen reader, magnifier, switch or voice control). If you'd rather ask first, start a thread in [Discussions](https://github.com/Kigrok/obsidian-library-plugin/discussions).
+Open a [bug report](https://github.com/venvk/obsidian-library-plugin/issues/new/choose) and put "Accessibility" in the title. Say what you were trying to do, what got in the way, and what you use: operating system, Obsidian version, theme, and any assistive technology (screen reader, magnifier, switch or voice control). If you'd rather ask first, start a thread in [Discussions](https://github.com/venvk/obsidian-library-plugin/discussions).

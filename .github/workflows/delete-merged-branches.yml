@@ -18,7 +18,7 @@ permissions: {}
 jobs:
     delete:
         if: >-
-            github.repository == 'Kigrok/obsidian-library-plugin' &&
+            github.repository == 'venvk/obsidian-library-plugin' &&
             (github.event_name != 'workflow_run' ||
             (github.event.workflow_run.conclusion == 'success' &&
             github.event.workflow_run.head_repository.full_name == github.repository &&
